@@ -8,6 +8,13 @@ function goBack() {
     window.location.href = 'activity-list.html';
 }
 
+function editActivity() {
+    const params = new URLSearchParams(window.location.search);
+    const activityId = params.get('id');
+    const query = activityId ? `?mode=edit&id=${encodeURIComponent(activityId)}` : '?mode=edit';
+    window.location.href = `activity-create.html${query}`;
+}
+
 function initTabSwitch() {
     const tabBtns = document.querySelectorAll('.tab-btn');
     
