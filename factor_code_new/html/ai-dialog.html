@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 学术助手 - 业务深度定制版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        body { font-family: 'Inter', 'Noto Sans SC', sans-serif; background-color: #F8FAFC; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        
+        /* 呼吸动画：模拟AI正在思考/待命的状态 */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.5; box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
+            50% { transform: scale(1.05); opacity: 0.8; box-shadow: 0 0 35px rgba(59, 130, 246, 0.4); }
+        }
+        .ai-core { animation: breathe 3s infinite ease-in-out; }
+        
+        /* 限制文本显示为14个中文字符，超过显示省略号 */
+        .history-title {
+            max-width: 200px; /* 大约14个中文字符的宽度 */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body class="text-slate-600 h-screen flex overflow-hidden">
+
+    <aside class="w-[280px] bg-white border-r border-slate-200 flex flex-col h-full flex-shrink-0 z-20">
+        
+        <div class="p-4 pb-2">
+            <a href="javascript:window.history.back()" class="flex items-center text-slate-500 hover:text-slate-700 text-sm font-medium mb-4 transition-all p-2 rounded-lg hover:bg-slate-100 cursor-pointer">
+                <i data-lucide="chevron-left" class="w-4 h-4 mr-1"></i>
+                返回系统
+            </a>
+            
+            <button class="w-full bg-slate-900 hover:bg-slate-800 text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-slate-200 transition-all active:scale-[0.98]">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span class="font-medium text-sm">新建对话</span>
+            </button>
+        </div>
+
+        <div class="px-4 py-3">
+            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">智能体 (Agents)</div>
+            
+            <div class="relative cursor-pointer" onclick="window.open('yaozhi-ruisheng.html', '_blank')">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100 opacity-100 transition-all hover:border-blue-300 hover:shadow-md"></div>
+                <div class="relative p-3 flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center text-blue-600 shrink-0">
+                        <i data-lucide="dna" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-slate-800 text-sm">药智睿生</span>
+                            <span class="text-[9px] bg-blue-600 text-white px-1.5 py-0.5 rounded-full font-medium">PRO</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-0.5 leading-tight hover:text-slate-700">深度生成高价值问卷与数据挖掘</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-4 py-2 scrollbar-hide space-y-6">
+            
+            <div>
+                <div class="sticky top-0 bg-white/95 backdrop-blur py-1 z-10 text-[10px] font-bold text-slate-400 uppercase tracking-wider">近 7 天</div>
+                <div class="space-y-1 mt-1">
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-700 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">PD-1抑制剂的临床应用进展</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-700 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">糖尿病新药GLP-1受体激动剂的安全性评估</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-700 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">抗生素耐药性监测数据分析</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-700 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">高血压患者的个体化用药方案</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="sticky top-0 bg-white/95 backdrop-blur py-1 z-10 text-[10px] font-bold text-slate-400 uppercase tracking-wider">近 30 天</div>
+                <div class="space-y-1 mt-1">
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-600 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">肿瘤免疫治疗的最新研究进展</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-600 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">心血管疾病患者的他汀类药物使用指南</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-600 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">精神类药物的不良反应监测</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-600 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">儿童疫苗接种时间表更新</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-600 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">慢性肾病患者的药物剂量调整</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="sticky top-0 bg-white/95 backdrop-blur py-1 z-10 text-[10px] font-bold text-slate-400 uppercase tracking-wider">2025-11</div>
+                <div class="space-y-1 mt-1">
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-500 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">自身免疫性疾病的生物制剂</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-500 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">抗肿瘤药物的药物相互作用</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-500 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">妊娠期用药安全性分级</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-500 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">抗菌药物临床应用指导原则</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-500 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">骨质疏松症的药物治疗选择</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-500 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">病毒性肝炎的抗病毒治疗方案</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                    <div class="relative history-item group">
+                        <button class="w-full text-left px-2 py-2 text-sm text-slate-500 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2 history-item-btn">
+                            <i data-lucide="message-square" class="w-3 h-3 text-slate-400"></i>
+                            <span class="history-title truncate">老年患者的合理用药原则</span>
+                        </button>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity more-btn z-10">
+                            <i data-lucide="more-horizontal" class="w-3 h-3"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50 min-w-[120px] hidden dropdown-menu">
+                            <button class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rename-btn">重命名</button>
+                            <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 delete-btn">删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4 border-t border-slate-100 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">DR</div>
+                <span class="text-sm font-medium text-slate-700">趣学术用户</span>
+            </div>
+
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col relative min-w-0 bg-white/50">
+        
+        <header class="h-14 flex items-center justify-end px-6 absolute top-0 w-full z-10">
+
+        </header>
+
+        <div class="flex-1 overflow-y-auto flex flex-col items-center justify-center px-4 pb-20">
+            
+            <div class="relative mb-8 group cursor-default">
+                <div class="absolute inset-0 bg-blue-400/20 rounded-full blur-2xl ai-core"></div>
+                <div class="relative w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl flex items-center justify-center shadow-2xl shadow-blue-300/50 transform transition-transform duration-500 group-hover:scale-110">
+                    <i data-lucide="sparkles" class="w-10 h-10 text-white"></i>
+                </div>
+            </div>
+
+            <div class="text-center max-w-lg mx-auto space-y-3">
+                <h1 class="text-2xl font-semibold text-slate-800 tracking-tight">
+                    已连接内部知识脉络
+                </h1>
+                <p class="text-slate-500 text-sm leading-relaxed">
+                    您可以通过聊天与我互动，向我询问任何业务知识。<br>
+                    <span class="text-slate-400 text-xs">Knowledge Base RAG V2.0 Ready</span>
+                </p>
+            </div>
+
+        </div>
+
+        <div class="absolute bottom-0 left-0 w-full z-20">
+            <div class="h-12 bg-gradient-to-t from-white via-white/80 to-transparent w-full"></div>
+            
+            <div class="bg-white pb-10 px-4">
+                <div class="max-w-3xl mx-auto">
+                    
+
+
+                    <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200 transition-all focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-500 overflow-hidden relative">
+                        
+                        <div class="flex items-end gap-2 p-3">
+
+                            
+                            <textarea placeholder="在这里输入您的问题..." class="w-full max-h-40 bg-transparent border-none focus:ring-0 text-slate-700 placeholder-slate-400 text-[15px] resize-none py-2.5 h-[52px] leading-relaxed" style="min-height: 52px; outline: none;"></textarea>
+                            
+                            <button class="p-2.5 bg-slate-900 text-white rounded-xl hover:bg-blue-600 disabled:opacity-50 transition-all shadow-md">
+                                <i data-lucide="arrow-up" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="px-4 pb-2 flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <label class="flex items-center cursor-pointer select-none group">
+                                    <input type="checkbox" class="peer sr-only">
+                                    <div class="text-[10px] font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 peer-checked:bg-blue-100 peer-checked:text-blue-600 peer-checked:border-blue-200 transition-all flex items-center gap-1 group-hover:text-blue-500">
+                                        <i data-lucide="brain-circuit" class="w-3 h-3"></i>
+                                        深度思考 (R1)
+                                    </div>
+                                </label>
+                            </div>
+                            <span class="text-[10px] text-slate-300">Enter 发送</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+        
+        // 实现历史聊天项的选中状态切换
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为所有历史聊天按钮添加点击事件
+            const historyButtons = document.querySelectorAll('.history-item-btn');
+            
+            historyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的选中状态
+                    historyButtons.forEach(btn => {
+                        btn.classList.remove('bg-blue-50');
+                        btn.classList.remove('text-blue-600');
+                        const icon = btn.querySelector('i');
+                        if (icon) {
+                            icon.classList.remove('text-blue-500');
+                        }
+                        const span = btn.querySelector('span');
+                        if (span) {
+                            span.classList.remove('text-blue-600');
+                        }
+                    });
+                    
+                    // 为当前点击的按钮添加选中状态
+                    this.classList.add('bg-blue-50');
+                    const icon = this.querySelector('i');
+                    if (icon) {
+                        icon.classList.add('text-blue-500');
+                    }
+                    const span = this.querySelector('span');
+                    if (span) {
+                        span.classList.add('text-blue-600');
+                    }
+                });
+            });
+            
+            // 默认选中第一个历史聊天项
+            if (historyButtons.length > 0) {
+                historyButtons[0].click();
+            }
+            
+            // 三个点菜单的显示与隐藏
+            const moreButtons = document.querySelectorAll('.more-btn');
+            const dropdownMenus = document.querySelectorAll('.dropdown-menu');
+            
+            moreButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    // 关闭所有其他下拉菜单
+                    dropdownMenus.forEach(menu => {
+                        menu.classList.add('hidden');
+                    });
+                    
+                    // 切换当前下拉菜单的显示状态
+                    const dropdown = this.nextElementSibling;
+                    dropdown.classList.toggle('hidden');
+                });
+            });
+            
+            // 点击页面其他地方关闭下拉菜单
+            document.addEventListener('click', function() {
+                dropdownMenus.forEach(menu => {
+                    menu.classList.add('hidden');
+                });
+            });
+            
+            // 重命名功能
+            const renameButtons = document.querySelectorAll('.rename-btn');
+            renameButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const historyItem = this.closest('.history-item');
+                    const historyTitle = historyItem.querySelector('.history-title');
+                    const newName = prompt('请输入新的对话名称：', historyTitle.textContent);
+                    if (newName && newName.trim()) {
+                        historyTitle.textContent = newName.trim();
+                    }
+                    // 关闭下拉菜单
+                    this.closest('.dropdown-menu').classList.add('hidden');
+                });
+            });
+            
+            // 删除功能
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (confirm('确定要删除这个对话吗？')) {
+                        const historyItem = this.closest('.history-item');
+                        historyItem.remove();
+                    }
+                    // 关闭下拉菜单
+                    this.closest('.dropdown-menu').classList.add('hidden');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

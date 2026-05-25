@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医学播客 - 趣学术CRM</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/medical-podcast.css">
+</head>
+<body>
+    <!-- 组件加载已移至script.js模块化管理 -->
+
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+            <!-- 标签页 -->
+            <div class="content-tabs">
+                <div class="tab-item active" data-tab="podcast">
+                    播客活动
+                </div>
+                <div class="tab-item" data-tab="video">视频内容</div>
+                <div class="tab-item" data-tab="courseware">课件内容</div>
+            </div>
+            
+            <!-- 白色背景容器，包含所有内容 -->
+            <div class="white-content-container">
+                <!-- 播客活动内容 -->
+                <div class="tab-content active" id="content-podcast">
+
+
+                    <!-- 快速筛选按钮 -->
+                    <div class="quick-filters">
+                        <button class="filter-btn active" data-status="all">
+                            全部活动
+                        </button>
+                        <button class="filter-btn" data-status="pending">
+                            待审核 <span class="filter-count">2</span>
+                        </button>
+                        <button class="filter-btn" data-status="not-started">
+                            待开始
+                        </button>
+                        <button class="filter-btn" data-status="in-progress">
+                            进行中
+                        </button>
+                        <button class="filter-btn" data-status="failed">
+                            审核失败
+                        </button>
+                        <button class="filter-btn" data-status="completed">
+                            已结束
+                        </button>
+                    </div>
+
+                    <!-- 搜索区域 -->
+                    <div class="search-section">
+                        <div class="filter-item">
+                            <input type="text" placeholder="请输入标题" style="width: 250px; vertical-align: middle;">
+                        </div>
+                        
+
+                        
+                        <div class="filter-item">
+                            <button class="btn btn-primary search-btn" style="vertical-align: middle;">搜索</button>
+                        </div>
+                    </div>
+
+                    <!-- 活动列表表格 -->
+                    <div class="table-container">
+                        <table class="data-table record-table">
+                            <thead>
+                                <tr>
+                                    <th>活动名称</th>
+                                    <th>活动时间</th>
+                                    <th>状态</th>
+                                    <th>产品标签</th>
+                                    <th>已报名</th>
+                                    <th>已采购/目标数</th>
+                                    <th>厂家</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 待审核活动 -->
+                                <tr class="pending-row">
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">新手术技术研讨会</a>
+                                        </div>
+                                        <div class="activity-id">ID: 123466</div>
+                                    </td>
+                                    <td>2026-02-15 - 2026-03-31</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td>多智安</td>
+                                    <td>0</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr class="pending-row">
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">麻醉学新进展论坛</a>
+                                        </div>
+                                        <div class="activity-id">ID: 123467</div>
+                                    </td>
+                                    <td>2026-03-01 - 2026-04-15</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td>多智安</td>
+                                    <td>0</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr class="pending-row">
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">围术期护理质量提升</a>
+                                        </div>
+                                        <div class="activity-id">ID: 123468</div>
+                                    </td>
+                                    <td>2026-02-20 - 2026-03-20</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td>多智安</td>
+                                    <td>0</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <!-- 进行中活动 -->
+                                <tr>
+                                    <td>
+                                    <div class="material-title">
+                                        <a href="#" class="activity-link">中心静脉置管解读</a>
+                                    </div>
+                                    <div class="activity-id">ID: 123456</div>
+                                </td>
+                                    <td>2025-12-25 - 2026-01-31</td>
+                                    <td><span class="status-tag in-progress">进行中</span></td>
+                                    <td>多智安</td>
+                                    <td>4</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div class="material-title">
+                                        <a href="#" class="activity-link">儿童镇静镇痛解读</a>
+                                    </div>
+                                    <div class="activity-id">ID: 123457</div>
+                                </td>
+                                    <td>2025-12-25 - 2026-01-31</td>
+                                    <td><span class="status-tag in-progress">进行中</span></td>
+                                    <td>多智安</td>
+                                    <td>0/2</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div class="material-title">
+                                        <a href="#" class="activity-link">围术期凝血功能障碍</a>
+                                    </div>
+                                    <div class="activity-id">ID: 123458</div>
+                                </td>
+                                    <td>2025-12-25 - 2026-01-31</td>
+                                    <td><span class="status-tag in-progress">进行中</span></td>
+                                    <td>多智安</td>
+                                    <td>0/2</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div class="material-title">
+                                        <a href="#" class="activity-link">围术期输血相关知识</a>
+                                    </div>
+                                    <div class="activity-id">ID: 123459</div>
+                                </td>
+                                    <td>2025-12-25 - 2026-01-31</td>
+                                    <td><span class="status-tag in-progress">进行中</span></td>
+                                    <td>多智安</td>
+                                    <td>4</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div class="material-title">
+                                        <a href="#" class="activity-link">围术期液体管理新进展</a>
+                                    </div>
+                                    <div class="activity-id">ID: 123460</div>
+                                </td>
+                                    <td>2025-12-25 - 2026-01-31</td>
+                                    <td><span class="status-tag in-progress">进行中</span></td>
+                                    <td>多智安</td>
+                                    <td>4</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div class="material-title">
+                                        <a href="#" class="activity-link">围术期血液管理策略</a>
+                                    </div>
+                                    <div class="activity-id">ID: 123461</div>
+                                </td>
+                                    <td>2025-12-25 - 2026-01-31</td>
+                                    <td><span class="status-tag in-progress">进行中</span></td>
+                                    <td>多智安</td>
+                                    <td>4</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div class="material-title">
+                                        <a href="#" class="activity-link">围术期镇痛治疗新进展</a>
+                                    </div>
+                                    <div class="activity-id">ID: 123462</div>
+                                </td>
+                                    <td>2025-12-25 - 2026-01-31</td>
+                                    <td><span class="status-tag in-progress">进行中</span></td>
+                                    <td>多智安</td>
+                                    <td>4</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页控件 -->
+                    <div class="pagination">
+                        <div class="pagination-info">
+                            共 10 条记录
+                        </div>
+                        <div class="pagination-buttons">
+                            <button class="page-btn" disabled>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 视频内容 -->
+                <div class="tab-content" id="content-video" style="display: none;">
+                    <!-- 快速筛选按钮 -->
+                    <div class="quick-filters">
+                        <button class="filter-btn active" data-status="all">
+                            全部视频
+                        </button>
+                        <button class="filter-btn" data-status="pending">
+                            待审核 <span class="filter-count">3</span>
+                        </button>
+                        <button class="filter-btn" data-status="approved">
+                            已通过
+                        </button>
+                        <button class="filter-btn" data-status="rejected">
+                            已拒绝
+                        </button>
+                        <button class="filter-btn" data-status="paid">
+                            已打款
+                        </button>
+                        <button class="filter-btn" data-status="unpaid">
+                            未打款
+                        </button>
+                    </div>
+
+                    <!-- 搜索区域 -->
+                    <div class="search-section">
+                        <div class="filter-item">
+                            <input type="text" placeholder="请输入标题、ID或讲者名称" style="width: 300px;">
+                        </div>
+                        <div class="filter-item">
+                            <input type="text" placeholder="请输入申请组织名称" style="width: 250px;">
+                            <button class="btn btn-primary search-btn" style="margin-left: 10px;">搜索</button>
+                        </div>
+                        <div class="filter-item" style="margin-left: auto;">
+                            <button class="btn btn-secondary">导出数据</button>
+                        </div>
+                    </div>
+
+                    <!-- 视频列表表格 -->
+                    <div class="table-container">
+                        <table class="data-table record-table">
+                            <thead>
+                                <tr>
+                                    <th>视频标题</th>
+                                    <th>讲者</th>
+                                    <th>职称</th>
+                                    <th>视频采购费</th>
+                                    <th>审核提交时间</th>
+                                    <th>企业名称</th>
+                                    <th>申请组织</th>
+                                    <th>审核状态</th>
+                                    <th>打款状态</th>
+                                    <th class="action-buttons-cell">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 待审核视频 -->
+                                <tr class="pending-row">
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">麻醉学新进展：围术期管理策略</a>
+                                        </div>
+                                        <div class="activity-id">ID: 20241201001</div>
+                                    </td>
+                                    <td>张三教授</td>
+                                    <td>主任医师</td>
+                                    <td>¥5,000.00</td>
+                                    <td>2024-12-01 14:30:00</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>中华医学会麻醉学分会</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td><span class="status-tag pending">未打款</span></td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr class="pending-row">
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">心血管疾病的诊断与治疗新进展</a>
+                                        </div>
+                                        <div class="activity-id">ID: 20241201002</div>
+                                    </td>
+                                    <td>李四博士</td>
+                                    <td>副主任医师</td>
+                                    <td>¥4,500.00</td>
+                                    <td>2024-12-02 09:15:00</td>
+                                    <td>北京同仁堂股份有限公司</td>
+                                    <td>中国医师协会心血管内科医师分会</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td><span class="status-tag pending">未打款</span></td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr class="pending-row">
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">糖尿病患者的血糖管理策略</a>
+                                        </div>
+                                        <div class="activity-id">ID: 20241203003</div>
+                                    </td>
+                                    <td>王五主任</td>
+                                    <td>主任医师</td>
+                                    <td>¥4,000.00</td>
+                                    <td>2024-12-03 16:45:00</td>
+                                    <td>上海医药集团股份有限公司</td>
+                                    <td>中华医学会内分泌学分会</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td><span class="status-tag pending">未打款</span></td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <!-- 已通过视频 -->
+                                <tr>
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">呼吸系统疾病的防治</a>
+                                        </div>
+                                        <div class="activity-id">ID: 20241128001</div>
+                                    </td>
+                                    <td>赵六教授</td>
+                                    <td>主任医师</td>
+                                    <td>¥5,500.00</td>
+                                    <td>2024-11-28 10:20:00</td>
+                                    <td>华润三九医药股份有限公司</td>
+                                    <td>中华医学会呼吸病学分会</td>
+                                    <td><span class="status-tag in-progress">已通过</span></td>
+                                    <td><span class="status-tag in-progress">已打款</span></td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">消化系统疾病的诊断与治疗</a>
+                                        </div>
+                                        <div class="activity-id">ID: 20241129002</div>
+                                    </td>
+                                    <td>孙七博士</td>
+                                    <td>副主任医师</td>
+                                    <td>¥4,800.00</td>
+                                    <td>2024-11-29 15:10:00</td>
+                                    <td>云南白药集团股份有限公司</td>
+                                    <td>中华医学会消化病学分会</td>
+                                    <td><span class="status-tag in-progress">已通过</span></td>
+                                    <td><span class="status-tag in-progress">已打款</span></td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页控件 -->
+                    <div class="pagination">
+                        <div class="pagination-info">
+                            共 5 条记录
+                        </div>
+                        <div class="pagination-buttons">
+                            <button class="page-btn" disabled>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn" disabled>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课件内容 -->
+                <div class="tab-content" id="content-courseware" style="display: none;">
+                    <!-- 快速筛选按钮 -->
+                    <div class="quick-filters">
+                        <button class="filter-btn active" data-status="all">
+                            全部课件
+                        </button>
+                        <button class="filter-btn" data-status="pending">
+                            待审核 <span class="filter-count">1</span>
+                        </button>
+                        <button class="filter-btn" data-status="approved">
+                            已通过
+                        </button>
+                        <button class="filter-btn" data-status="rejected">
+                            已拒绝
+                        </button>
+                    </div>
+
+                    <!-- 搜索区域 -->
+                    <div class="search-section">
+                        <div class="filter-item">
+                            <input type="text" placeholder="请输入课件名称" style="width: 300px;">
+                            <button class="btn btn-primary search-btn" style="margin-left: 10px;">搜索</button>
+                        </div>
+                    </div>
+
+                    <!-- 课件列表表格 -->
+                    <div class="table-container">
+                        <table class="data-table record-table">
+                            <thead>
+                                <tr>
+                                    <th>课件名称</th>
+                                    <th>上传时间</th>
+                                    <th>状态</th>
+                                    <th>作者</th>
+                                    <th>播客活动名称</th>
+                                    <th>企业名称</th>
+                                    <th>校验类型</th>
+                                    <th>播客所属组织</th>
+                                    <th class="action-buttons-cell">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 待审核课件 -->
+                                <tr class="pending-row">
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">麻醉学围术期管理课件</a>
+                                        </div>
+                                        <div class="activity-id">ID: 3001</div>
+                                    </td>
+                                    <td>2024-12-05 10:30:00</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td>张三</td>
+                                    <td>
+                                        <div class="material-title">
+                                            新手术技术研讨会
+                                        </div>
+                                        <div class="activity-id">ID: 123466</div>
+                                    </td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>人工校验</td>
+                                    <td>中华医学会麻醉学分会</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <!-- 已通过课件 -->
+                                <tr>
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">心血管疾病诊断与治疗课件</a>
+                                        </div>
+                                        <div class="activity-id">ID: 3002</div>
+                                    </td>
+                                    <td>2024-12-04 14:20:00</td>
+                                    <td><span class="status-tag in-progress">已通过</span></td>
+                                    <td>李四</td>
+                                    <td>
+                                        <div class="material-title">
+                                            麻醉学新进展论坛
+                                        </div>
+                                        <div class="activity-id">ID: 123467</div>
+                                    </td>
+                                    <td>北京同仁堂股份有限公司</td>
+                                    <td>自动校验</td>
+                                    <td>中国医师协会心血管内科医师分会</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">糖尿病患者血糖管理课件</a>
+                                        </div>
+                                        <div class="activity-id">ID: 3003</div>
+                                    </td>
+                                    <td>2024-12-03 09:15:00</td>
+                                    <td><span class="status-tag in-progress">已通过</span></td>
+                                    <td>王五</td>
+                                    <td>
+                                        <div class="material-title">
+                                            围术期护理质量提升
+                                        </div>
+                                        <div class="activity-id">ID: 123468</div>
+                                    </td>
+                                    <td>上海医药集团股份有限公司</td>
+                                    <td>人工校验</td>
+                                    <td>中华医学会内分泌学分会</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">中心静脉置管解读课件</a>
+                                        </div>
+                                        <div class="activity-id">ID: 3004</div>
+                                    </td>
+                                    <td>2024-12-02 16:45:00</td>
+                                    <td><span class="status-tag in-progress">已通过</span></td>
+                                    <td>赵六</td>
+                                    <td>
+                                        <div class="material-title">
+                                            中心静脉置管解读
+                                        </div>
+                                        <div class="activity-id">ID: 123456</div>
+                                    </td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>自动校验</td>
+                                    <td>中华医学会麻醉学分会</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">儿童镇静镇痛解读课件</a>
+                                        </div>
+                                        <div class="activity-id">ID: 3005</div>
+                                    </td>
+                                    <td>2024-12-01 11:20:00</td>
+                                    <td><span class="status-tag in-progress">已通过</span></td>
+                                    <td>孙七</td>
+                                    <td>
+                                        <div class="material-title">
+                                            儿童镇静镇痛解读
+                                        </div>
+                                        <div class="activity-id">ID: 123457</div>
+                                    </td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>人工校验</td>
+                                    <td>中华医学会麻醉学分会</td>
+                                    <td>
+                                        <a href="activity-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页控件 -->
+                    <div class="pagination">
+                        <div class="pagination-info">
+                            共 5 条记录
+                        </div>
+                        <div class="pagination-buttons">
+                            <button class="page-btn" disabled>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn" disabled>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

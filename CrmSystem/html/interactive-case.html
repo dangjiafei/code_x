@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线病例互动 - 趣学术CRM</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/medical-podcast.css">
+</head>
+<body>
+    <!-- 组件加载已移至script.js模块化管理 -->
+
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+            <!-- 标签页 -->
+            <div class="content-tabs">
+                <div class="tab-item active" data-tab="interactive-activity">
+                    互动病例征集活动
+                </div>
+                <div class="tab-item" data-tab="solicitation-content">医生投稿作品库</div>
+            </div>
+            
+            <!-- 白色背景容器，包含所有内容 -->
+            <div class="white-content-container">
+                <!-- 在线病例互动活动内容 -->
+                <div class="tab-content active" id="content-interactive-activity">
+
+                    <!-- 快速筛选按钮 -->
+                    <div class="quick-filters">
+                        <button class="filter-btn active" data-status="all">
+                            全部活动
+                        </button>
+                        <button class="filter-btn" data-status="pending">
+                            待审核 <span class="filter-count">2</span>
+                        </button>
+                        <button class="filter-btn" data-status="not-started">
+                            待开始
+                        </button>
+                        <button class="filter-btn" data-status="in-progress">
+                            进行中
+                        </button>
+                        <button class="filter-btn" data-status="failed">
+                            审核失败
+                        </button>
+                        <button class="filter-btn" data-status="completed">
+                            已结束
+                        </button>
+                    </div>
+
+                    <!-- 搜索区域 -->
+                    <div class="search-section">
+                        <div class="filter-item">
+                            <input type="text" placeholder="请输入标题" style="width: 250px; vertical-align: middle;">
+                        </div>
+                        
+                        <div class="filter-item">
+                            <button class="btn btn-primary search-btn" style="vertical-align: middle;">搜索</button>
+                        </div>
+                    </div>
+
+                    <!-- 活动列表表格 -->
+                    <div class="table-container">
+                        <table class="data-table record-table">
+                            <thead>
+                                <tr>
+                                    <th>活动名称</th>
+                                    <th>活动时间</th>
+                                    <th>状态</th>
+                                    <th>产品标签</th>
+                                    <th>已报名</th>
+                                    <th>已采购/目标数</th>
+                                    <th>厂家</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 待审核活动 -->
+                                <tr class="pending-row">
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">心血管疾病病例互动讨论</a>
+                                        </div>
+                                        <div class="activity-id">ID: 567890</div>
+                                    </td>
+                                    <td>2026-03-01 - 2026-04-15</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td>多智安</td>
+                                    <td>0</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="interactive-case-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr class="pending-row">
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">糖尿病并发症病例分析</a>
+                                        </div>
+                                        <div class="activity-id">ID: 567891</div>
+                                    </td>
+                                    <td>2026-03-10 - 2026-04-25</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td>多智安</td>
+                                    <td>0</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="interactive-case-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <!-- 进行中活动 -->
+                                <tr>
+                                    <td>
+                                    <div class="material-title">
+                                        <a href="#" class="activity-link">呼吸系统疾病病例研讨</a>
+                                    </div>
+                                    <div class="activity-id">ID: 567880</div>
+                                </td>
+                                    <td>2026-01-15 - 2026-02-28</td>
+                                    <td><span class="status-tag in-progress">进行中</span></td>
+                                    <td>多智安</td>
+                                    <td>8</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="interactive-case-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div class="material-title">
+                                        <a href="#" class="activity-link">消化系统疾病病例讨论</a>
+                                    </div>
+                                    <div class="activity-id">ID: 567881</div>
+                                </td>
+                                    <td>2026-01-10 - 2026-02-25</td>
+                                    <td><span class="status-tag in-progress">进行中</span></td>
+                                    <td>多智安</td>
+                                    <td>5</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="interactive-case-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <div class="material-title">
+                                        <a href="#" class="activity-link">神经系统疾病病例分析</a>
+                                    </div>
+                                    <div class="activity-id">ID: 567882</div>
+                                </td>
+                                    <td>2026-01-05 - 2026-02-20</td>
+                                    <td><span class="status-tag in-progress">进行中</span></td>
+                                    <td>多智安</td>
+                                    <td>7</td>
+                                    <td>0/0</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td>
+                                        <a href="interactive-case-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页控件 -->
+                    <div class="pagination">
+                        <div class="pagination-info">
+                            共 7 条记录
+                        </div>
+                        <div class="pagination-buttons">
+                            <button class="page-btn" disabled>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 征集内容 -->
+                <div class="tab-content" id="content-solicitation-content" style="display: none;">
+                    <!-- 快速筛选按钮 -->
+                    <div class="quick-filters">
+                        <button class="filter-btn active" data-status="all">
+                            全部征集内容
+                        </button>
+                        <button class="filter-btn" data-status="pending">
+                            待审核 <span class="filter-count">3</span>
+                        </button>
+                        <button class="filter-btn" data-status="approved">
+                            已通过
+                        </button>
+                        <button class="filter-btn" data-status="rejected">
+                            已拒绝
+                        </button>
+                        <button class="filter-btn" data-status="paid">
+                            已打款
+                        </button>
+                        <button class="filter-btn" data-status="unpaid">
+                            未打款
+                        </button>
+                    </div>
+
+                    <!-- 搜索区域 -->
+                    <div class="search-section">
+                        <div class="filter-item">
+                            <input type="text" placeholder="请输入标题、ID或作者" style="width: 300px;">
+                        </div>
+                        <div class="filter-item">
+                            <input type="text" placeholder="请输入申请组织名称" style="width: 250px;">
+                            <button class="btn btn-primary search-btn" style="margin-left: 10px;">搜索</button>
+                        </div>
+                        <div class="filter-item" style="margin-left: auto;">
+                            <button class="btn btn-secondary">导出数据</button>
+                        </div>
+                    </div>
+
+                    <!-- 征集内容列表表格 -->
+                    <div class="table-container">
+                        <table class="data-table record-table">
+                            <thead>
+                                <tr>
+                                    <th>病例标题</th>
+                                    <th>作者</th>
+                                    <th>职称</th>
+                                    <th>病例互动采购费</th>
+                                    <th>审核提交时间</th>
+                                    <th>企业名称</th>
+                                    <th>申请组织</th>
+                                    <th>审核状态</th>
+                                    <th class="action-buttons-cell">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 待审核征集内容 -->
+                                <tr class="pending-row">
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">复杂冠心病病例分析</a>
+                                        </div>
+                                        <div class="activity-id">ID: 6001</div>
+                                    </td>
+                                    <td>张医生</td>
+                                    <td>主任医师</td>
+                                    <td>¥6,000.00</td>
+                                    <td>2026-01-05 14:30:00</td>
+                                    <td>四川科伦药业股份有限公司</td>
+                                    <td class="org-application">山东齐鲁制药集团</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td>
+                                        <a href="case-review-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr class="pending-row">
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">2型糖尿病合并肾病病例讨论</a>
+                                        </div>
+                                        <div class="activity-id">ID: 6002</div>
+                                    </td>
+                                    <td>李医生</td>
+                                    <td>副主任医师</td>
+                                    <td>¥5,500.00</td>
+                                    <td>2026-01-04 09:15:00</td>
+                                    <td>北京同仁堂股份有限公司</td>
+                                    <td class="org-application">山东齐鲁制药集团</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td>
+                                        <a href="case-review-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr class="pending-row">
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">慢性阻塞性肺疾病急性加重</a>
+                                        </div>
+                                        <div class="activity-id">ID: 6003</div>
+                                    </td>
+                                    <td>王医生</td>
+                                    <td>主任医师</td>
+                                    <td>¥5,000.00</td>
+                                    <td>2026-01-03 16:45:00</td>
+                                    <td>上海医药集团股份有限公司</td>
+                                    <td class="org-application">山东齐鲁制药集团</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td>
+                                        <a href="case-review-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <!-- 已通过征集内容 -->
+                                <tr>
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">胃癌术后化疗方案选择病例讨论</a>
+                                        </div>
+                                        <div class="activity-id">ID: 5999</div>
+                                    </td>
+                                    <td>赵医生</td>
+                                    <td>主任医师</td>
+                                    <td>¥6,500.00</td>
+                                    <td>2026-01-02 10:20:00</td>
+                                    <td>华润三九医药股份有限公司</td>
+                                    <td class="org-application">山东齐鲁制药集团</td>
+                                    <td><span class="status-tag in-progress">已通过</span></td>
+                                    <td>
+                                        <a href="case-review-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">脑卒中后遗症康复治疗病例分析</a>
+                                        </div>
+                                        <div class="activity-id">ID: 5998</div>
+                                    </td>
+                                    <td>孙医生</td>
+                                    <td>副主任医师</td>
+                                    <td>¥5,800.00</td>
+                                    <td>2026-01-01 15:10:00</td>
+                                    <td>云南白药集团股份有限公司</td>
+                                    <td class="org-application">山东齐鲁制药集团</td>
+                                    <td><span class="status-tag in-progress">已打款</span></td>
+                                    <td>
+                                        <a href="case-review-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <!-- 已拒绝征集内容 -->
+                                <tr>
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">高血压危象急救处理病例分析</a>
+                                        </div>
+                                        <div class="activity-id">ID: 5997</div>
+                                    </td>
+                                    <td>周医生</td>
+                                    <td>主治医师</td>
+                                    <td>¥5,200.00</td>
+                                    <td>2025-12-30 11:45:00</td>
+                                    <td>广州白云山医药集团股份</td>
+                                    <td class="org-application">山东齐鲁制药集团</td>
+                                    <td><span class="status-tag pending">已拒绝</span></td>
+                                    <td>
+                                        <a href="case-review-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                                <!-- 未打款征集内容 -->
+                                <tr>
+                                    <td>
+                                        <div class="material-title">
+                                            <a href="#" class="activity-link">过敏性鼻炎规范化治疗病例分析</a>
+                                        </div>
+                                        <div class="activity-id">ID: 5996</div>
+                                    </td>
+                                    <td>吴医生</td>
+                                    <td>副主任医师</td>
+                                    <td>¥5,500.00</td>
+                                    <td>2025-12-29 09:30:00</td>
+                                    <td>修正药业集团股份有限公司</td>
+                                    <td class="org-application">山东齐鲁制药集团</td>
+                                    <td><span class="status-tag pending">未打款</span></td>
+                                    <td>
+                                        <a href="case-review-detail.html" class="action-btn view">查看详情</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页控件 -->
+                    <div class="pagination">
+                        <div class="pagination-info">
+                            共 5 条记录
+                        </div>
+                        <div class="pagination-buttons">
+                            <button class="page-btn" disabled>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn" disabled>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var orgApplicationCells = document.querySelectorAll('td.org-application');
+            orgApplicationCells.forEach(function(cell) {
+                var text = cell.textContent.trim();
+                var maxCharsPerLine = 15;
+                var maxTotalChars = 30;
+                
+                if (text.length > maxTotalChars) {
+                    var firstLine = text.substring(0, maxCharsPerLine);
+                    var secondLine = text.substring(maxCharsPerLine, maxTotalChars);
+                    cell.innerHTML = firstLine + '<br>' + secondLine + '...';
+                } else if (text.length > maxCharsPerLine) {
+                    var firstLine = text.substring(0, maxCharsPerLine);
+                    var secondLine = text.substring(maxCharsPerLine);
+                    cell.innerHTML = firstLine + '<br>' + secondLine;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

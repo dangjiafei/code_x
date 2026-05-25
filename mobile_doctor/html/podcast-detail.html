@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>医学播客详情 - 医生端</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/podcast-detail.css">
+</head>
+<body>
+  <!-- 手机屏幕模拟容器 -->
+  <div class="phone-container">
+    <!-- 屏幕内容容器 -->
+    <div class="screen-content">
+      <!-- 状态栏容器 -->
+      <div id="status-bar-container"></div>
+      
+      <!-- 头部组件 -->
+      <div id="header-container"></div>
+      
+      <!-- 内容区 -->
+      <main class="content">
+        <!-- 播客详情内容 -->
+        <div id="podcast-content" class="module-content active">
+        <!-- 活动头部信息 -->
+        <div class="podcast-card card-primary">
+          <h2 class="activity-name">心脏疾病诊疗新进展医学播客征集</h2>
+          <div class="activity-status-date">
+            <span class="activity-status ongoing">进行中</span>
+            <span class="activity-date">2025-12-05 ~ 2026-01-30</span>
+          </div>
+        </div>
+        
+        <!-- 邀请函内容 -->
+        <div class="podcast-card">
+          <div class="invitation-content">
+            <p class="invitation-greeting">活动详情</p>
+            <p class="invitation-text">
+              尊敬的老师，您好！在这知识爆炸的时代，医学领域的每一次突破都牵动着无数人的心。我深知您作为医学领域的佼佼者，不仅在临床实践中救治了无数患者，更在学术研究中不断探索着医学的边界。
+            </p>
+          </div>
+        </div>
+        
+        <!-- 征稿内容要求 -->
+        <div class="podcast-card">
+          <h3 class="invitation-greeting">征稿主题要求</h3>
+          <p class="invitation-text">
+            本次活动，我们精心策划了两个前沿医学主题，期待您能根据自己的兴趣与研究专长，选择其中一个进行深入探讨
+          </p>
+          <div class="requirement-item">
+            <span class="requirement-label">主题①：</span>
+            <span class="requirement-desc">围手术期渗血防治管理</span>
+          </div>
+          <div class="requirement-item">
+            <span class="requirement-label">主题②：</span>
+            <span class="requirement-desc">围手术期渗血防治管理</span>
+          </div>
+          <p class="invitation-text">
+            您可以根据自己的兴趣和研究专长，任选其一进行深入探讨。
+          </p>
+        </div>
+        
+        <!-- 内容要求 -->
+        <div class="podcast-card">
+          <h3 class="invitation-greeting">内容要求</h3>
+          <div class="requirement-item">
+            <span class="requirement-label">内容完整：</span>
+            <span class="requirement-desc">请确保病例信息完整，包括患者基本情况、诊断过程、治疗方案及随访结果等关键信息。</span>
+          </div>
+          <div class="requirement-item">
+            <span class="requirement-label">隐私保护：</span>
+            <span class="requirement-desc">请确保所有患者隐私信息已完全脱敏，如姓名、身份证号、联系方式等。</span>
+          </div>
+          <div class="requirement-item">
+            <span class="requirement-label">学术价值：</span>
+            <span class="requirement-desc">病例应具有一定的学术参考价值，能够反映临床诊疗思路或展示特殊病例特点。</span>
+          </div>
+        </div>
+        
+        <!-- 邀约对象要求 -->
+        <div class="podcast-card">
+          <h3 class="invitation-greeting">邀约对象要求</h3>
+          <div class="requirements-grid">
+            <div class="requirement-item">
+              <span class="requirement-label">地域范围：</span>
+              <span class="requirement-desc">面向浙江区域范围</span>
+            </div>
+            <div class="requirement-item">
+              <span class="requirement-label">机构等级：</span>
+              <span class="requirement-desc">三甲医院及以上</span>
+            </div>
+            <div class="requirement-item">
+              <span class="requirement-label">科室要求：</span>
+              <span class="requirement-desc">心内科相关科室</span>
+            </div>
+            <div class="requirement-item">
+              <span class="requirement-label">身份要求：</span>
+              <span class="requirement-desc">副主任医师及以上职称</span>
+            </div>
+          </div>
+        </div>
+        </div>
+      </main>
+      
+      <!-- 底部悬浮操作按钮 -->
+      <div class="floating-action-buttons" id="action-buttons">
+        <!-- 初始状态：关注按钮和报名按钮 -->
+        <div id="before-register">
+          <button class="action-btn follow-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            关注
+          </button>
+          <button class="action-btn register-btn" id="register-btn" onclick="handleRegister()">立即报名</button>
+        </div>
+        
+        <!-- 报名后状态：三个按钮 -->
+        <div id="after-register" style="display: none;">
+          <button class="action-btn follow-btn active">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#ff4d4f" stroke="#ff4d4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+            已关注
+          </button>
+          <button class="action-btn process-btn" onclick="window.location.href='process.html'">查看创作流程</button>
+          <button class="action-btn submission-btn" onclick="showMyWorksModal()">查看我的投稿</button>
+        </div>
+      </div>
+      
+      <!-- 我的作品弹窗 -->
+      <div id="my-works-modal" class="modal-overlay">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>我的作品</h3>
+            <button class="close-btn" onclick="hideMyWorksModal()">×</button>
+          </div>
+          <div class="works-list">
+        <div class="work-item">
+          <div class="work-left">
+            <div class="work-cover">
+              <img src="../img/zj.png" alt="播客活动" class="work-image">
+              <div class="work-status-badge approved">审核通过</div>
+            </div>
+          </div>
+          <div class="work-right">
+            <h3 class="work-title">2026年最新心血管疾病诊疗进展...</h3>
+            <p class="work-description">投稿时间：2026-01-01 12:00</p>
+            <p class="work-description">详细讲解心血管疾病的最新诊疗技术和药物应用，适合心内科医生和心血管医生学习...</p>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 脚本文件 -->
+  <script src="../js/scripts.js"></script>
+  <script>
+    // 页面加载完成后初始化组件，传递页面标题
+    document.addEventListener('DOMContentLoaded', function() {
+      initPageComponents({ title: '征集活动邀约' });
+    });
+    
+    // 显示我的作品弹窗
+    function showMyWorksModal() {
+      document.getElementById('my-works-modal').style.display = 'flex';
+    }
+    
+    // 隐藏我的作品弹窗
+    function hideMyWorksModal() {
+      document.getElementById('my-works-modal').style.display = 'none';
+    }
+    
+    // 点击弹窗外部关闭
+    document.getElementById('my-works-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        hideMyWorksModal();
+      }
+    });
+    
+    // 处理报名逻辑
+    function handleRegister() {
+      // 隐藏初始状态的按钮
+      document.getElementById('before-register').style.display = 'none';
+      // 显示报名后状态的按钮
+      document.getElementById('after-register').style.display = 'flex';
+      // 可以在这里添加其他报名逻辑，比如发送API请求等
+    }
+  </script>
+</body>
+</html>

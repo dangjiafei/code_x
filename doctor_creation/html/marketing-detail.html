@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平台征集详情 - 创作者中心</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js"></script>
+    <style>
+        .custom-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .custom-back-btn:hover {
+            background-color: #eef2f7;
+        }
+
+        .page-title {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background-color: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .platform-detail-page {
+            padding: 24px 20px 40px;
+        }
+
+        .hero-card {
+            display: grid;
+            grid-template-columns: 260px minmax(0, 1fr);
+            gap: 24px;
+            padding: 24px;
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 12px;
+            border: 1px solid #edf2f7;
+        }
+
+        .hero-cover {
+            width: 100%;
+            height: 166px;
+            border-radius: 10px;
+            object-fit: cover;
+            background-color: #eef2f7;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            height: 26px;
+            padding: 0 10px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            color: #4f46e5;
+            background-color: #eef2ff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .hero-title {
+            margin: 0 0 12px;
+            color: #111827;
+            font-size: 24px;
+            line-height: 1.35;
+            font-weight: 700;
+        }
+
+        .hero-desc {
+            max-width: 860px;
+            margin: 0 0 18px;
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .hero-meta-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 30px;
+            padding: 0 10px;
+            color: #475569;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .detail-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .content-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-card,
+        .side-card {
+            background-color: white;
+            border: 1px solid #edf2f7;
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            margin: 0;
+            color: #111827;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            margin: 4px 0 0;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .value-section {
+            overflow: hidden;
+            border-color: #dbeafe;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 48%, #f8fafc 100%);
+        }
+
+        .program-brief {
+            display: block;
+        }
+
+        .program-intro {
+            position: relative;
+            overflow: hidden;
+            padding: 18px;
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.82);
+        }
+
+        .program-intro::after {
+            display: none;
+        }
+
+        .program-kicker {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            height: 24px;
+            padding: 0 8px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            color: #1d4ed8;
+            background-color: #dbeafe;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .program-title {
+            position: relative;
+            z-index: 1;
+            margin: 0 0 12px;
+            color: #0f172a;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .program-desc {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .overview-meta {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .overview-meta-item {
+            padding: 12px;
+            border: 1px solid #edf2f7;
+            border-radius: 8px;
+            background-color: #ffffff;
+        }
+
+        .overview-meta-item span {
+            display: block;
+            margin-bottom: 6px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .overview-meta-item strong {
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        .overview-tags {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .overview-tag {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            padding: 0 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            color: #475569;
+            background-color: #f8fafc;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .topic-academic {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: #475569;
+            background-color: #f8fafc;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .topic-academic strong {
+            display: inline;
+            margin-right: 6px;
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .topic-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .topic-filter {
+            height: 32px;
+            padding: 0 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            background-color: white;
+            color: #64748b;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .topic-filter.active {
+            color: #4f46e5;
+            border-color: #c7d2fe;
+            background-color: #eef2ff;
+            font-weight: 600;
+        }
+
+        .topic-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .topic-card {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 176px;
+            gap: 18px;
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background-color: white;
+        }
+
+        .topic-card.available {
+            border-color: #c7d2fe;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+        }
+
+        .topic-card.closed {
+            background-color: #fafafa;
+        }
+
+        .topic-head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .topic-type {
+            display: inline-flex;
+            align-items: center;
+            height: 22px;
+            padding: 0 8px;
+            border-radius: 4px;
+            color: #475569;
+            background-color: #f1f5f9;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .topic-status {
+            display: inline-flex;
+            align-items: center;
+            height: 22px;
+            padding: 0 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .topic-status.available {
+            color: #166534;
+            background-color: #dcfce7;
+        }
+
+        .topic-status.submitted {
+            color: #0369a1;
+            background-color: #e0f2fe;
+        }
+
+        .topic-status.locked {
+            color: #64748b;
+            background-color: #f1f5f9;
+        }
+
+        .topic-status.ended {
+            color: #92400e;
+            background-color: #fef3c7;
+        }
+
+        .topic-card h3 {
+            margin: 0 0 8px;
+            color: #1e293b;
+            font-size: 16px;
+            line-height: 1.45;
+        }
+
+        .topic-card p {
+            margin: 0;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .topic-reason {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: #475569;
+            background-color: #f8fafc;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .topic-actions {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 12px;
+        }
+
+        .topic-deadline {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.6;
+            text-align: right;
+        }
+
+        .topic-deadline strong {
+            display: block;
+            color: #1e293b;
+            font-size: 18px;
+            line-height: 1.2;
+        }
+
+        .primary-action,
+        .secondary-action,
+        .disabled-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 38px;
+            padding: 0 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .primary-action {
+            border: 1px solid #667eea;
+            color: white;
+            background-color: #667eea;
+        }
+
+        .primary-action:hover {
+            background-color: #5a6fd8;
+        }
+
+        .secondary-action {
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            background-color: white;
+        }
+
+        .disabled-action {
+            border: 1px solid #e5e7eb;
+            color: #94a3b8;
+            background-color: #f8fafc;
+            cursor: not-allowed;
+        }
+
+        .submission-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .submission-table th,
+        .submission-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            text-align: left;
+            font-size: 13px;
+            vertical-align: top;
+        }
+
+        .submission-table th {
+            color: #475569;
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            height: 24px;
+            padding: 0 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pill.success {
+            color: #15803d;
+            background-color: #dcfce7;
+        }
+
+        .status-pill.reviewing {
+            color: #b45309;
+            background-color: #fef3c7;
+        }
+
+        .status-pill.rework {
+            color: #b91c1c;
+            background-color: #fee2e2;
+        }
+
+        .side-column {
+            position: sticky;
+            top: 84px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .side-card h3 {
+            margin: 0 0 14px;
+            color: #111827;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .progress-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .progress-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .progress-item strong {
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .match-note {
+            padding: 12px;
+            border-radius: 8px;
+            color: #475569;
+            background-color: #f8fafc;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .rule-list {
+            margin: 0;
+            padding-left: 18px;
+            color: #475569;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 1180px) {
+            .program-brief,
+            .hero-card,
+            .detail-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .side-column {
+                position: static;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .overview-meta,
+            .topic-card {
+                grid-template-columns: 1fr;
+            }
+
+            .topic-deadline {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        async function loadComponents() {
+            const headerResponse = await fetch('components/header.html');
+            const headerContent = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerContent;
+
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarContent = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarContent;
+
+            if (typeof initializeMenu === 'function') {
+                initializeMenu();
+            }
+        }
+
+        function showLockedReason(themeName) {
+            alert(themeName + '暂未向你开放投稿入口，你仍可查看主题要求与学术方向。');
+        }
+
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+
+    <div id="header-placeholder"></div>
+
+    <div class="main-container">
+        <div id="sidebar-placeholder"></div>
+
+        <div class="right-content">
+            <div class="page-title">
+                <button class="custom-back-btn" onclick="window.location.href='activity-management.html'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    返回列表
+                </button>
+            </div>
+
+            <main class="content-area platform-detail-page">
+                <section class="hero-card">
+                    <img class="hero-cover" src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=640&h=420&fit=crop" alt="心血管疾病病例征稿活动封面">
+                    <div>
+                        <span class="hero-eyebrow">平台官方学术征集</span>
+                        <h1 class="hero-title">心血管真实世界诊疗经验专题征集</h1>
+                        <p class="hero-desc">围绕冠心病、心衰、心律失常和复杂介入等临床场景，征集真实病例复盘、操作经验和长期管理观察。每个主题都对应一个具体创作方向，开放主题可直接投稿。</p>
+                        <div class="hero-meta">
+                            <span class="hero-meta-item">医学领域：心血管疾病</span>
+                            <span class="hero-meta-item">活动周期：2026-05-01 至 2026-05-20</span>
+                            <span class="hero-meta-item">全部主题：5 个</span>
+                            <span class="hero-meta-item">你可参与：2 个主题</span>
+                            <span class="hero-meta-item">活动状态：进行中</span>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="detail-layout">
+                    <div class="content-stack">
+                        <section class="section-card value-section">
+                            <div class="section-head">
+                                <div>
+                                    <h2 class="section-title">本期征集重点</h2>
+                                    <p class="section-subtitle">活动覆盖 5 个心血管方向，当前已有 2 个主题开放参与。</p>
+                                </div>
+                            </div>
+                            <div class="program-brief">
+                                <div class="program-intro">
+                                    <span class="program-kicker">活动概览</span>
+                                    <h3 class="program-title">围绕心血管真实世界诊疗经验，征集可复盘、可交流的内容</h3>
+                                    <p class="program-desc">本期主题覆盖冠心病、心衰、心律失常和复杂介入等方向，适合结合真实病例讲清诊疗判断、操作要点、风险处理和长期管理经验。</p>
+                                    <div class="overview-meta">
+                                        <div class="overview-meta-item">
+                                            <span>全部主题</span>
+                                            <strong>5 个</strong>
+                                        </div>
+                                        <div class="overview-meta-item">
+                                            <span>可参与主题</span>
+                                            <strong>2 个</strong>
+                                        </div>
+                                        <div class="overview-meta-item">
+                                            <span>已投稿</span>
+                                            <strong>2 篇</strong>
+                                        </div>
+                                    </div>
+                                    <div class="overview-tags">
+                                        <span class="overview-tag">冠心病诊疗</span>
+                                        <span class="overview-tag">心力衰竭管理</span>
+                                        <span class="overview-tag">心律失常诊治</span>
+                                        <span class="overview-tag">复杂冠脉介入</span>
+                                        <span class="overview-tag">起搏器植入</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="section-card">
+                            <div class="section-head">
+                                <div>
+                                    <h2 class="section-title">征集主题</h2>
+                                    <p class="section-subtitle">可查看全部主题。标记为“可创作”的主题已开放投稿入口。</p>
+                                </div>
+                            </div>
+
+                            <div class="topic-toolbar">
+                                <button class="topic-filter active">全部主题 5</button>
+                                <button class="topic-filter">可创作 2</button>
+                                <button class="topic-filter">已投稿 1</button>
+                                <button class="topic-filter">暂未开放 2</button>
+                            </div>
+
+                            <div class="topic-list">
+                                <article class="topic-card available">
+                                    <div>
+                                        <div class="topic-head">
+                                            <span class="topic-type">医学播客</span>
+                                            <span class="topic-status submitted">已投稿</span>
+                                        </div>
+                                        <h3>冠心病诊疗新进展</h3>
+                                        <p>围绕冠心病诊疗路径选择、药物方案调整和长期管理，复盘真实病例中的关键判断依据。</p>
+                                        <div class="topic-academic"><strong>本主题关注</strong>冠心病患者治疗路径调整中的诊断依据、药物方案和长期获益判断。</div>
+                                        <div class="topic-reason">该主题已开放。你已提交 1 篇作品，可继续查看处理进度或补充修改。</div>
+                                    </div>
+                                    <div class="topic-actions">
+                                        <div class="topic-deadline">
+                                            <strong>整理中</strong>
+                                            已提交：2026-05-12
+                                        </div>
+                                        <a class="secondary-action" href="podcast-detail.html">查看投稿</a>
+                                    </div>
+                                </article>
+
+                                <article class="topic-card available">
+                                    <div>
+                                        <div class="topic-head">
+                                            <span class="topic-type">医学播客</span>
+                                            <span class="topic-status available">可创作</span>
+                                        </div>
+                                        <h3>心力衰竭管理</h3>
+                                        <p>聚焦心衰患者长期管理中的药物调整、器械治疗选择、随访节奏和患者教育经验。</p>
+                                        <div class="topic-academic"><strong>本主题关注</strong>心衰长期管理中的药物优化、器械选择、依从性管理和复诊策略。</div>
+                                        <div class="topic-reason">你符合该主题征集条件：心血管内科、三级医院、副主任医师及以上。</div>
+                                    </div>
+                                    <div class="topic-actions">
+                                        <div class="topic-deadline">
+                                            <strong>剩余 5 天</strong>
+                                            可继续提交
+                                        </div>
+                                        <a class="primary-action" href="create-case.html?source=platform-activity&theme=heart-failure">去创作</a>
+                                    </div>
+                                </article>
+
+                                <article class="topic-card">
+                                    <div>
+                                        <div class="topic-head">
+                                            <span class="topic-type">在线互动病例</span>
+                                            <span class="topic-status locked">暂未开放</span>
+                                        </div>
+                                        <h3>心律失常诊治</h3>
+                                        <p>通过复杂病例复盘心律失常诊断、风险评估和治疗选择中的关键决策节点。</p>
+                                        <div class="topic-academic"><strong>本主题关注</strong>复杂心律失常患者的风险分层、治疗选择和复发管理。</div>
+                                        <div class="topic-reason">本期该主题暂未向你开放投稿入口，你仍可查看主题方向，为后续开放做准备。</div>
+                                    </div>
+                                    <div class="topic-actions">
+                                        <div class="topic-deadline">
+                                            <strong>可查看</strong>
+                                            暂未开放投稿
+                                        </div>
+                                        <button class="disabled-action" onclick="showLockedReason('心律失常诊治')">不可投稿</button>
+                                    </div>
+                                </article>
+
+                                <article class="topic-card">
+                                    <div>
+                                        <div class="topic-head">
+                                            <span class="topic-type">手术视频</span>
+                                            <span class="topic-status locked">暂未开放</span>
+                                        </div>
+                                        <h3>复杂冠脉介入手术</h3>
+                                        <p>展示 CTO 开通策略、多支血管病变处理、钙化病变处理和复杂分叉病变技术，强调操作复盘和风险控制。</p>
+                                        <div class="topic-academic"><strong>本主题关注</strong>复杂冠脉介入中的路径选择、关键步骤、风险控制和并发症处理。</div>
+                                        <div class="topic-reason">本主题目前仅开放给符合手术视频征集条件的医生。你可以阅读要求，但不能提交作品。</div>
+                                    </div>
+                                    <div class="topic-actions">
+                                        <div class="topic-deadline">
+                                            <strong>可查看</strong>
+                                            暂未开放投稿
+                                        </div>
+                                        <button class="disabled-action" onclick="showLockedReason('复杂冠脉介入手术')">不可投稿</button>
+                                    </div>
+                                </article>
+
+                                <article class="topic-card closed">
+                                    <div>
+                                        <div class="topic-head">
+                                            <span class="topic-type">手术视频</span>
+                                            <span class="topic-status ended">已结束</span>
+                                        </div>
+                                        <h3>心脏起搏器植入</h3>
+                                        <p>介绍起搏器植入手术要点、并发症管理、术后随访和参数调整经验。</p>
+                                        <div class="topic-academic"><strong>本主题关注</strong>起搏器植入过程中的适应证判断、操作要点和术后参数管理。</div>
+                                        <div class="topic-reason">该主题本期征集已结束，仅支持查看主题说明和历史内容。</div>
+                                    </div>
+                                    <div class="topic-actions">
+                                        <div class="topic-deadline">
+                                            <strong>已结束</strong>
+                                            不再接收投稿
+                                        </div>
+                                        <button class="disabled-action" onclick="showLockedReason('心脏起搏器植入')">不可投稿</button>
+                                    </div>
+                                </article>
+                            </div>
+                        </section>
+
+                        <section class="section-card">
+                            <div class="section-head">
+                                <div>
+                                    <h2 class="section-title">我的投稿</h2>
+                                    <p class="section-subtitle">查看已提交作品及当前处理进度。</p>
+                                </div>
+                            </div>
+                            <table class="submission-table">
+                                <thead>
+                                    <tr>
+                                        <th>主题</th>
+                                        <th>作品标题</th>
+                                        <th>提交时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>冠心病诊疗新进展</td>
+                                        <td>冠心病介入治疗案例分析</td>
+                                        <td>2026-05-12</td>
+                                        <td><span class="status-pill reviewing">整理中</span></td>
+                                        <td><a href="podcast-detail.html">查看详情</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>复杂冠脉介入手术</td>
+                                        <td>CTO 病变介入治疗实战分享</td>
+                                        <td>2026-05-08</td>
+                                        <td><span class="status-pill success">已收录</span></td>
+                                        <td><a href="case-detail.html">查看作品</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="section-card">
+                            <div class="section-head">
+                                <div>
+                                    <h2 class="section-title">投稿规范</h2>
+                                    <p class="section-subtitle">这些规则来自平台活动本身，对所有可投稿主题生效。</p>
+                                </div>
+                            </div>
+                            <ul class="rule-list">
+                                <li>作品需基于真实临床经验，病例资料必须完成患者隐私脱敏。</li>
+                                <li>内容需体现明确诊疗思路，包含关键检查、诊断依据、治疗方案和复盘总结。</li>
+                                <li>同一作品只能投稿至一个开放主题，避免同一内容重复提交。</li>
+                                <li>投稿前需完成原创声明与身份确认，平台确认后进入平台学术内容库。</li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <aside class="side-column">
+                        <section class="side-card">
+                            <h3>我的参与概览</h3>
+                            <div class="progress-list">
+                                <div class="progress-item">
+                                    <span>可参与主题</span>
+                                    <strong>2 / 5</strong>
+                                </div>
+                                <div class="progress-item">
+                                    <span>已投稿</span>
+                                    <strong>2 篇</strong>
+                                </div>
+                                <div class="progress-item">
+                                    <span>整理中</span>
+                                    <strong>1 篇</strong>
+                                </div>
+                                <div class="progress-item">
+                                    <span>已收录</span>
+                                    <strong>1 篇</strong>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="side-card">
+                            <h3>你适合参与这些主题</h3>
+                            <div class="match-note">你的专科方向和既往创作内容与本次征集方向匹配。你可以优先选择已开放的主题，围绕真实病例、操作过程或长期管理经验完成创作。</div>
+                        </section>
+
+                    </aside>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

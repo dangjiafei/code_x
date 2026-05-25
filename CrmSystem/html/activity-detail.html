@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活动详情 - 趣学术CRM</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/activity-detail.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-container">
+        <div id="sidebar-placeholder"></div>
+
+        <div class="right-content">
+            <div class="fixed-header-bar">
+                <div class="fixed-header-content">
+                    <div class="header-left">
+                        <button class="btn-back" onclick="goBack()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                            返回列表
+                        </button>
+                    </div>
+                    <div class="header-right">
+
+                        <button class="btn btn-danger btn-disable">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                            停用
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <main class="content-area">
+                <div class="content-section">
+                    <div class="activity-info">
+                        <div class="activity-cover">
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=medical%20cardiovascular%20disease%20conference%20banner&image_size=landscape_16_9" alt="活动封面">
+                        </div>
+                        <div class="activity-basic-info">
+                            <h1 class="activity-title">心血管疾病病例征稿活动<span class="activity-status-badge published">进行中</span></h1>
+                            <div class="activity-meta">
+                                <div class="activity-meta-row">
+                                    <div class="activity-meta-item">
+                                        <span class="meta-label">招募时间</span>
+                                        <span class="meta-value">2025.03.01 - 2025.04.30</span>
+                                    </div>
+                                </div>
+                                <div class="activity-meta-row">
+                                    <div class="activity-meta-item">
+                                        <span class="meta-label">活动类型</span>
+                                        <span class="meta-value">市场活动</span>
+                                    </div>
+                                </div>
+                                <div class="activity-meta-row">
+                                    <div class="activity-meta-item compact">
+                                        <span class="meta-label">创建者</span>
+                                        <span class="meta-value">甘松</span>
+                                        <span class="meta-divider">｜</span>
+                                        <span class="meta-value">2025-02-28 09:00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-bar">
+                        <button class="tab-btn active" data-tab="config">活动信息</button>
+                        <button class="tab-btn" data-tab="enterprise">活动参与明细</button>
+                        <button class="tab-btn" data-tab="submission">医生投稿状态</button>
+                        <button class="tab-btn" data-tab="spread">学术内容传播效果</button>
+                        <button class="tab-btn" data-tab="survey">调研评估看板</button>
+                        <button class="tab-btn" data-tab="logs">操作记录</button>
+                    </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-config">
+                        <div class="tab-content-inner">
+                            <div class="tab-content-left">
+                        <div class="config-section">
+                            <h2 class="section-title">活动详情</h2>
+                            <div class="info-item full-width">
+                                <p class="rich-text">本次心血管疾病病例征稿活动是由北京康辰药业股份有限公司发起的学术交流项目，旨在汇聚全国心血管领域医生的临床经验，推动学科发展和诊疗水平提升。活动面向全国各级医疗机构的心血管内科及相关科室医生开放，鼓励分享在冠心病、心力衰竭、心律失常等领域的典型病例、疑难病例及创新诊疗方案。优秀稿件将有机会在行业学术会议上进行分享，并获得权威专家的点评指导。</p>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h2 class="section-title">征稿主题</h2>
+                            <div class="type-themes-vertical">
+                                <div class="type-theme-card">
+                                    <div class="type-card-header">
+                                        <div class="type-info">
+                                            <span class="type-name">医学播客</span>
+                                            <span class="theme-count-badge">2</span>
+                                        </div>
+                                    </div>
+                                    <div class="type-card-content">
+                                        <div class="theme-list">
+                                            <div class="theme-item">
+                                                <h3>主题一：冠心病诊疗新进展</h3>
+                                                <p>本主题旨在分享冠心病诊断与治疗的最新技术和临床经验。包括冠状动脉造影、支架植入、药物洗脱支架应用等介入治疗技术的创新实践；新型抗血小板药物、他汀类药物的优化使用等药物治疗方案；以及精准医疗在冠心病个体化治疗中的应用案例，如基因检测指导下的用药选择、影像学技术辅助的精准支架植入等。欢迎分享复杂冠心病病例的诊疗经验和创新治疗方案。</p>
+                                                <div class="theme-stats">
+                                                    <div class="theme-stat">
+                                                        <span class="theme-stat-value">156</span>
+                                                        <span class="theme-stat-label">投稿人数</span>
+                                                    </div>
+                                                    <div class="theme-stat">
+                                                        <span class="theme-stat-value">89</span>
+                                                        <span class="theme-stat-label">采购人数</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="theme-item">
+                                                <h3>主题二：心力衰竭管理</h3>
+                                                <p>本主题聚焦心力衰竭患者的综合管理策略。包括ACEI/ARB、β受体阻滞剂、利尿剂等药物的规范化使用与剂量滴定经验；心脏再同步化治疗(CRT)、植入式心律转复除颤器(ICD)等器械治疗的适应症选择与术后管理；以及心衰患者的长期康复护理、生活方式干预和心理支持等方面的实践经验。鼓励分享重症心衰患者的抢救案例和慢性心衰患者的长期管理经验。</p>
+                                                <div class="theme-stats">
+                                                    <div class="theme-stat">
+                                                        <span class="theme-stat-value">124</span>
+                                                        <span class="theme-stat-label">投稿人数</span>
+                                                    </div>
+                                                    <div class="theme-stat">
+                                                        <span class="theme-stat-value">76</span>
+                                                        <span class="theme-stat-label">采购人数</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="type-theme-card">
+                                    <div class="type-card-header">
+                                        <div class="type-info">
+                                            <span class="type-name">在线互动病例</span>
+                                            <span class="theme-count-badge">1</span>
+                                        </div>
+                                    </div>
+                                    <div class="type-card-content">
+                                        <div class="theme-list">
+                                            <div class="theme-item">
+                                                <h3>主题一：心律失常诊治</h3>
+                                                <p>本主题介绍心律失常的诊断方法和治疗技术。包括心电图、动态心电图、电生理检查等诊断手段的应用经验；射频消融、冷冻消融等微创治疗技术在房颤、室上速、室速等复杂心律失常中的应用案例；以及特殊人群如老年人、合并基础疾病患者的心律失常管理策略。欢迎分享复杂心律失常病例的处理经验和新技术的临床应用体会。</p>
+                                                <div class="theme-stats">
+                                                    <div class="theme-stat">
+                                                        <span class="theme-stat-value">98</span>
+                                                        <span class="theme-stat-label">投稿人数</span>
+                                                    </div>
+                                                    <div class="theme-stat">
+                                                        <span class="theme-stat-value">52</span>
+                                                        <span class="theme-stat-label">采购人数</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="type-theme-card">
+                                    <div class="type-card-header">
+                                        <div class="type-info">
+                                            <span class="type-name">手术视频</span>
+                                            <span class="theme-count-badge">0</span>
+                                        </div>
+                                    </div>
+                                    <div class="type-card-content">
+                                        <div class="theme-list">
+                                        </div>
+                                        <p class="no-theme-hint">暂无征稿主题</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h2 class="section-title">内容要求</h2>
+                            <div class="requirement-list">
+                                <div class="requirement-item">
+                                    <span class="requirement-label">内容完整：</span>
+                                    <span class="requirement-text">请确保病例信息完整，包括患者基本情况、病史、诊断过程、治疗方案及随访结果等关键信息。</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <span class="requirement-label">隐私保护：</span>
+                                    <span class="requirement-text">请确保所有患者隐私信息已完全脱敏，如姓名、身份证号、联系方式等个人识别信息。</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <span class="requirement-label">学术价值：</span>
+                                    <span class="requirement-text">病例应具有一定的学术参考价值，能够反映临床诊疗思路或展示特殊病例特点。</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <span class="requirement-label">真实性：</span>
+                                    <span class="requirement-text">投稿内容需真实、准确，严禁虚构或篡改病例数据，确保学术诚信。</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <span class="requirement-label">原创性：</span>
+                                    <span class="requirement-text">投稿病例需为原创内容，未在其他平台发表过，避免重复投稿。</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <span class="requirement-label">格式规范：</span>
+                                    <span class="requirement-text">请按照指定模板填写病例信息，确保格式统一、排版清晰。</span>
+                                </div>
+                            </div>
+                        </div>
+
+                            </div>
+                            <div class="tab-content-right">
+                                <div class="preview-panel">
+                                    <h3 class="preview-title">活动预览</h3>
+                                    <div class="preview-image-container">
+                                        <img src="/img/20260507145431.jpg" alt="活动预览" class="preview-image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="tab-enterprise">
+                        <div class="stats-bar">
+                            <div class="stat-card">
+                                <div class="stat-icon enterprise-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value">12</span>
+                                    <span class="stat-label">参与企业数</span>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon team-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value">45</span>
+                                    <span class="stat-label">参与团队数</span>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon register-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value">679</span>
+                                    <span class="stat-label">总报名人数</span>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon submission-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value">328</span>
+                                    <span class="stat-label">总投稿数</span>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon purchase-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value">186</span>
+                                    <span class="stat-label">总采购数</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="filter-bar">
+                            <div class="filter-item">
+                                <input type="text" placeholder="企业名称（模糊搜索）" class="search-input">
+                            </div>
+                            <div class="filter-item">
+                                <select class="filter-select">
+                                    <option value="all">全部招募状态</option>
+                                    <option value="ongoing">进行中</option>
+                                    <option value="ended">已结束</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary btn-export">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                导出企业使用明细
+                            </button>
+                        </div>
+
+                        <table class="data-table enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>企业名称/层级</th>
+                                    <th>使用时间</th>
+                                    <th>目标采购数</th>
+                                    <th>目标人群条件</th>
+                                    <th>命中医生数</th>
+                                    <th>投稿数</th>
+                                    <th>已采购数</th>
+                                    <th>招募状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="expandable-row">
+                                    <td>XX集团-华南区-广州分公司</td>
+                                    <td>2025-03-02 10:30:00</td>
+                                    <td>50</td>
+                                    <td>
+                                        <span class="tag">广东省</span>
+                                        <span class="tag">三甲医院</span>
+                                        <span class="tag">心内科</span>
+                                    </td>
+                                    <td>156</td>
+                                    <td>45</td>
+                                    <td>32</td>
+                                    <td><span class="status-tag ongoing">进行中</span></td>
+                                    <td><button class="btn-expand">展开</button></td>
+                                </tr>
+                                <tr class="expanded-content">
+                                    <td colspan="9">
+                                        <div class="sub-table-container">
+                                            <div class="sub-table-header">
+                                                <span>该企业投稿列表</span>
+                                                <button class="btn btn-sm btn-export-sub">导出</button>
+                                            </div>
+                                            <table class="sub-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>投稿信息</th>
+                                                        <th>医生匿名信息</th>
+                                                        <th>投稿时间</th>
+                                                        <th>当前状态</th>
+                                                        <th>是否被本企业采购</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="submission-title">冠心病介入治疗案例</div>
+                                                            <div class="submission-id">ID: TG-2025-001</div>
+                                                        </td>
+                                                        <td>广东省 | 三甲 | 主任医师 | 心内科</td>
+                                                        <td>2025-03-05 14:20:00</td>
+                                                        <td><span class="status-tag approved">审核通过</span></td>
+                                                        <td>是</td>
+                                                        <td>
+                                                            <button class="action-btn view">预览</button>
+                                                            <button class="action-btn edit">审核</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="submission-title">心力衰竭药物治疗</div>
+                                                            <div class="submission-id">ID: TG-2025-008</div>
+                                                        </td>
+                                                        <td>广东省 | 三甲 | 副主任医师 | 心内科</td>
+                                                        <td>2025-03-08 09:15:00</td>
+                                                        <td><span class="status-tag pending">待审核</span></td>
+                                                        <td>否</td>
+                                                        <td>
+                                                            <button class="action-btn view">预览</button>
+                                                            <button class="action-btn edit">审核</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="expandable-row">
+                                    <td>XX药业-华东区-上海办事处</td>
+                                    <td>2025-03-05 16:45:00</td>
+                                    <td>30</td>
+                                    <td>
+                                        <span class="tag">上海市</span>
+                                        <span class="tag">三甲医院</span>
+                                        <span class="tag">不限</span>
+                                    </td>
+                                    <td>89</td>
+                                    <td>23</td>
+                                    <td>18</td>
+                                    <td><span class="status-tag ongoing">进行中</span></td>
+                                    <td><button class="btn-expand">展开</button></td>
+                                </tr>
+                                <tr class="expandable-row">
+                                    <td>XX医药集团-北京总部</td>
+                                    <td>2025-02-28 09:00:00</td>
+                                    <td>100</td>
+                                    <td>
+                                        <span class="tag">北京市</span>
+                                        <span class="tag">三甲医院</span>
+                                        <span class="tag">主任医师</span>
+                                        <span class="tag">心内科</span>
+                                    </td>
+                                    <td>234</td>
+                                    <td>89</td>
+                                    <td>67</td>
+                                    <td><span class="status-tag ended">已结束</span></td>
+                                    <td><button class="btn-expand">展开</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane" id="tab-submission">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon contributor-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value">1,234</span>
+                                    <span class="stat-label">投稿医生数</span>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon submission-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value">2,856</span>
+                                    <span class="stat-label">投稿总数</span>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon purchase-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                                    </svg>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value">1,892</span>
+                                    <span class="stat-label">已采购数</span>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon conversion-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 20V10"></path>
+                                        <path d="M18 20V4"></path>
+                                        <path d="M6 20v-6"></path>
+                                    </svg>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value">66.2%</span>
+                                    <span class="stat-label">采购转化率</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-bar">
+                            <div class="filter-item">
+                                <select class="filter-select">
+                                    <option value="all">全部活动类型</option>
+                                    <option value="medical-podcast">医学播客</option>
+                                    <option value="online-case">在线互动病例</option>
+                                    <option value="surgery-video">手术视频</option>
+                                </select>
+                            </div>
+                            <div class="filter-item">
+                                <select class="filter-select">
+                                    <option value="all">全部投稿主题</option>
+                                    <option value="theme1">冠心病诊疗新进展</option>
+                                    <option value="theme2">心力衰竭管理</option>
+                                    <option value="theme3">心律失常诊治</option>
+                                </select>
+                            </div>
+                            <div class="filter-item">
+                                <select class="filter-select">
+                                    <option value="all">全部投稿状态</option>
+                                    <option value="pending">待审核</option>
+                                    <option value="approved">审核通过</option>
+                                    <option value="purchased">已采购</option>
+                                    <option value="rejected">已驳回</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary btn-export">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                导出医生投稿明细
+                            </button>
+                        </div>
+
+                        <table class="data-table submission-table">
+                            <thead>
+                                <tr>
+                                    <th>投稿信息</th>
+                                    <th>医生信息</th>
+                                    <th>投稿时间</th>
+                                    <th>当前状态</th>
+                                    <th>采购企业</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="submission-title">冠心病介入治疗案例</div>
+                                        <div class="submission-id">ID: TG-2025-001</div>
+                                    </td>
+                                    <td>广东省 | 三甲 | 主任医师 | 心内科</td>
+                                    <td>2025-03-05 14:20:00</td>
+                                    <td><span class="status-tag approved">审核通过</span></td>
+                                    <td>XX集团-广州分公司</td>
+                                    <td>
+                                        <button class="action-btn view">预览</button>
+                                        <button class="action-btn edit">审核</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="submission-title">心力衰竭管理经验分享</div>
+                                        <div class="submission-id">ID: TG-2025-002</div>
+                                    </td>
+                                    <td>上海市 | 三甲 | 副主任医师 | 心内科</td>
+                                    <td>2025-03-06 10:15:00</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td>-</td>
+                                    <td>
+                                        <button class="action-btn view">预览</button>
+                                        <button class="action-btn edit">审核</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="submission-title">心律失常射频消融术</div>
+                                        <div class="submission-id">ID: TG-2025-003</div>
+                                    </td>
+                                    <td>北京市 | 三甲 | 主任医师 | 心内科</td>
+                                    <td>2025-03-07 16:30:00</td>
+                                    <td><span class="status-tag purchased">已采购</span></td>
+                                    <td>XX医药集团</td>
+                                    <td>
+                                        <button class="action-btn view">预览</button>
+                                        <button class="action-btn edit">审核</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="submission-title">冠心病药物治疗方案</div>
+                                        <div class="submission-id">ID: TG-2025-004</div>
+                                    </td>
+                                    <td>广东省 | 三甲 | 主治医师 | 心内科</td>
+                                    <td>2025-03-08 09:00:00</td>
+                                    <td><span class="status-tag rejected">已驳回</span></td>
+                                    <td>-</td>
+                                    <td>
+                                        <button class="action-btn view">预览</button>
+                                        <button class="action-btn edit">审核</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane" id="tab-spread">
+                        <div class="tab-content-inner">
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-icon reach-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                    </div>
+                                    <div class="stat-info">
+                                        <span class="stat-value">12,856</span>
+                                        <span class="stat-label">总触达人数</span>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon view-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+                                            <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="stat-info">
+                                        <span class="stat-value">45,321</span>
+                                        <span class="stat-label">总阅读次数</span>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon complete-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="stat-info">
+                                        <span class="stat-value">78.5%</span>
+                                        <span class="stat-label">阅读完成率</span>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon share-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                            <polyline points="16 6 12 2 8 6"></polyline>
+                                            <line x1="12" y1="2" x2="12" y2="15"></line>
+                                        </svg>
+                                    </div>
+                                    <div class="stat-info">
+                                        <span class="stat-value">3,256</span>
+                                        <span class="stat-label">分享次数</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="config-section">
+                                <h2 class="section-title">内容传播趋势</h2>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <div class="chart-tabs">
+                                            <button class="chart-tab active">触达人数</button>
+                                            <button class="chart-tab">阅读次数</button>
+                                        </div>
+                                        <div class="chart-time-filter">
+                                            <select class="filter-select">
+                                                <option>近7天</option>
+                                                <option>近30天</option>
+                                                <option>近90天</option>
+                                                <option>全部时间</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="chart-content">
+                                        <div class="line-chart">
+                                            <div class="chart-y-axis">
+                                                <span>4000</span>
+                                                <span>3000</span>
+                                                <span>2000</span>
+                                                <span>1000</span>
+                                                <span>0</span>
+                                            </div>
+                                            <div class="chart-area">
+                                                <svg class="curve-chart" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                    <defs>
+                                                        <linearGradient id="curveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:0.1" />
+                                                            <stop offset="100%" style="stop-color:#667eea;stop-opacity:0" />
+                                                        </linearGradient>
+                                                    </defs>
+                                                    <g class="grid-lines" stroke="#f5f5f5" stroke-width="0.5">
+                                                        <line x1="0" y1="20" x2="100" y2="20"/>
+                                                        <line x1="0" y1="40" x2="100" y2="40"/>
+                                                        <line x1="0" y1="60" x2="100" y2="60"/>
+                                                        <line x1="0" y1="80" x2="100" y2="80"/>
+                                                    </g>
+                                                    <path d="M0,65 C6,58 11,52 17,50 C23,48 28,56 33,60 C38,64 44,48 50,40 C56,32 61,44 67,50 C73,56 78,38 83,30 C88,22 94,24 100,25 L100,100 L0,100 Z" fill="url(#curveGradient)"/>
+                                                    <path d="M0,65 C6,58 11,52 17,50 C23,48 28,56 33,60 C38,64 44,48 50,40 C56,32 61,44 67,50 C73,56 78,38 83,30 C88,22 94,24 100,25" fill="none" stroke="#667eea" stroke-width="1.2" stroke-linecap="round"/>
+                                                </svg>
+                                                <div class="chart-points">
+                                                    <span class="chart-point" style="left: 0%; top: 65%;"></span>
+                                                    <span class="chart-point" style="left: 17%; top: 50%;"></span>
+                                                    <span class="chart-point" style="left: 33%; top: 60%;"></span>
+                                                    <span class="chart-point" style="left: 50%; top: 40%;"></span>
+                                                    <span class="chart-point" style="left: 67%; top: 50%;"></span>
+                                                    <span class="chart-point" style="left: 83%; top: 30%;"></span>
+                                                    <span class="chart-point" style="left: 100%; top: 25%;"></span>
+                                                </div>
+                                                <div class="chart-x-axis">
+                                                    <span>3/1</span>
+                                                    <span>3/5</span>
+                                                    <span>3/10</span>
+                                                    <span>3/15</span>
+                                                    <span>3/20</span>
+                                                    <span>3/25</span>
+                                                    <span>3/29</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="config-section">
+                                <h2 class="section-title">内容类型传播效果对比</h2>
+                                <div class="type-comparison">
+                                    <div class="type-bar-item">
+                                        <span class="type-label">医学播客</span>
+                                        <div class="type-bar-container">
+                                            <div class="type-bar medical-podcast" style="width: 85%;"></div>
+                                        </div>
+                                        <span class="type-value">8,756 人</span>
+                                    </div>
+                                    <div class="type-bar-item">
+                                        <span class="type-label">在线互动病例</span>
+                                        <div class="type-bar-container">
+                                            <div class="type-bar online-case" style="width: 62%;"></div>
+                                        </div>
+                                        <span class="type-value">6,234 人</span>
+                                    </div>
+                                    <div class="type-bar-item">
+                                        <span class="type-label">手术视频</span>
+                                        <div class="type-bar-container">
+                                            <div class="type-bar surgery-video" style="width: 45%;"></div>
+                                        </div>
+                                        <span class="type-value">4,123 人</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="config-section">
+                                <h2 class="section-title">各类型投稿与采购统计</h2>
+                                <div class="submission-purchase-grid">
+                                    <div class="submission-purchase-card">
+                                        <div class="card-header">
+                                            <span class="card-title">医学播客</span>
+                                            <span class="card-badge">最多投稿</span>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="stat-row">
+                                                <span class="stat-label">投稿数</span>
+                                                <span class="stat-num">1,568</span>
+                                            </div>
+                                            <div class="stat-row">
+                                                <span class="stat-label">采购数</span>
+                                                <span class="stat-num highlight">1,234</span>
+                                            </div>
+                                            <div class="stat-row">
+                                                <span class="stat-label">采购率</span>
+                                                <span class="stat-num">78.7%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="submission-purchase-card">
+                                        <div class="card-header">
+                                            <span class="card-title">在线互动病例</span>
+                                            <span class="card-badge">最高采购率</span>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="stat-row">
+                                                <span class="stat-label">投稿数</span>
+                                                <span class="stat-num">892</span>
+                                            </div>
+                                            <div class="stat-row">
+                                                <span class="stat-label">采购数</span>
+                                                <span class="stat-num highlight">765</span>
+                                            </div>
+                                            <div class="stat-row">
+                                                <span class="stat-label">采购率</span>
+                                                <span class="stat-num">85.8%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="submission-purchase-card">
+                                        <div class="card-header">
+                                            <span class="card-title">手术视频</span>
+                                            <span class="card-badge">潜力类型</span>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="stat-row">
+                                                <span class="stat-label">投稿数</span>
+                                                <span class="stat-num">396</span>
+                                            </div>
+                                            <div class="stat-row">
+                                                <span class="stat-label">采购数</span>
+                                                <span class="stat-num highlight">893</span>
+                                            </div>
+                                            <div class="stat-row">
+                                                <span class="stat-label">采购率</span>
+                                                <span class="stat-num">225.0%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="config-section">
+                                <h2 class="section-title">各主题投稿量排名</h2>
+                                <div class="theme-submission-rank">
+                                    <div class="rank-header">
+                                        <span class="rank-col rank">排名</span>
+                                        <span class="rank-col title">主题名称</span>
+                                        <span class="rank-col count">投稿数量</span>
+                                        <span class="rank-col rate">占比</span>
+                                    </div>
+                                    <div class="rank-item top-item">
+                                        <span class="rank-col rank top1">1</span>
+                                        <span class="rank-col title">冠心病诊疗新进展</span>
+                                        <span class="rank-col count">689</span>
+                                        <span class="rank-col rate">24.1%</span>
+                                    </div>
+                                    <div class="rank-item">
+                                        <span class="rank-col rank top2">2</span>
+                                        <span class="rank-col title">心力衰竭管理</span>
+                                        <span class="rank-col count">523</span>
+                                        <span class="rank-col rate">18.3%</span>
+                                    </div>
+                                    <div class="rank-item">
+                                        <span class="rank-col rank top3">3</span>
+                                        <span class="rank-col title">心律失常诊治</span>
+                                        <span class="rank-col count">412</span>
+                                        <span class="rank-col rate">14.4%</span>
+                                    </div>
+                                    <div class="rank-item">
+                                        <span class="rank-col rank">4</span>
+                                        <span class="rank-col title">高血压药物治疗</span>
+                                        <span class="rank-col count">356</span>
+                                        <span class="rank-col rate">12.5%</span>
+                                    </div>
+                                    <div class="rank-item">
+                                        <span class="rank-col rank">5</span>
+                                        <span class="rank-col title">心血管介入技术</span>
+                                        <span class="rank-col count">287</span>
+                                        <span class="rank-col rate">10.0%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="config-section">
+                                <h2 class="section-title">传播效果TOP10内容</h2>
+                                <div class="content-rank">
+                                    <div class="rank-header">
+                                        <span class="rank-col rank">排名</span>
+                                        <span class="rank-col title">内容标题</span>
+                                        <span class="rank-col type">类型</span>
+                                        <span class="rank-col views">阅读量</span>
+                                        <span class="rank-col shares">分享量</span>
+                                        <span class="rank-col complete">完成率</span>
+                                    </div>
+                                    <div class="rank-item">
+                                        <span class="rank-col rank top1">1</span>
+                                        <span class="rank-col title">冠心病介入治疗新进展</span>
+                                        <span class="rank-col type">医学播客</span>
+                                        <span class="rank-col views">5,623</span>
+                                        <span class="rank-col shares">456</span>
+                                        <span class="rank-col complete">85%</span>
+                                    </div>
+                                    <div class="rank-item">
+                                        <span class="rank-col rank top2">2</span>
+                                        <span class="rank-col title">心力衰竭患者管理策略</span>
+                                        <span class="rank-col type">医学播客</span>
+                                        <span class="rank-col views">4,321</span>
+                                        <span class="rank-col shares">321</span>
+                                        <span class="rank-col complete">78%</span>
+                                    </div>
+                                    <div class="rank-item">
+                                        <span class="rank-col rank top3">3</span>
+                                        <span class="rank-col title">复杂心律失常病例讨论</span>
+                                        <span class="rank-col type">在线互动病例</span>
+                                        <span class="rank-col views">3,876</span>
+                                        <span class="rank-col shares">289</span>
+                                        <span class="rank-col complete">82%</span>
+                                    </div>
+                                    <div class="rank-item">
+                                        <span class="rank-col rank">4</span>
+                                        <span class="rank-col title">PCI手术操作规范</span>
+                                        <span class="rank-col type">手术视频</span>
+                                        <span class="rank-col views">2,956</span>
+                                        <span class="rank-col shares">156</span>
+                                        <span class="rank-col complete">72%</span>
+                                    </div>
+                                    <div class="rank-item">
+                                        <span class="rank-col rank">5</span>
+                                        <span class="rank-col title">高血压药物治疗进展</span>
+                                        <span class="rank-col type">医学播客</span>
+                                        <span class="rank-col views">2,654</span>
+                                        <span class="rank-col shares">143</span>
+                                        <span class="rank-col complete">75%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="config-section">
+                                <h2 class="section-title">触达人群分析</h2>
+                                <div class="people-analysis">
+                                    <div class="analysis-item">
+                                        <h3 class="analysis-title">科室分布</h3>
+                                        <div class="pie-chart-container">
+                                            <div class="pie-chart">
+                                                <div class="pie-slice slice1"></div>
+                                                <div class="pie-slice slice2"></div>
+                                                <div class="pie-slice slice3"></div>
+                                                <div class="pie-slice slice4"></div>
+                                            </div>
+                                            <div class="pie-legend">
+                                                <span class="legend-item"><span class="legend-color" style="background-color: #667eea;"></span>心血管内科 35%</span>
+                                                <span class="legend-item"><span class="legend-color" style="background-color: #10b981;"></span>急诊科 25%</span>
+                                                <span class="legend-item"><span class="legend-color" style="background-color: #f59e0b;"></span>重症医学 20%</span>
+                                                <span class="legend-item"><span class="legend-color" style="background-color: #ec4899;"></span>其他 20%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="analysis-item">
+                                        <h3 class="analysis-title">职称分布</h3>
+                                        <div class="bar-chart-container">
+                                            <div class="bar-item">
+                                                <span class="bar-label">主任医师</span>
+                                                <div class="bar-wrapper">
+                                                    <div class="bar" style="height: 65%;"></div>
+                                                </div>
+                                                <span class="bar-value">65%</span>
+                                            </div>
+                                            <div class="bar-item">
+                                                <span class="bar-label">副主任医师</span>
+                                                <div class="bar-wrapper">
+                                                    <div class="bar" style="height: 85%;"></div>
+                                                </div>
+                                                <span class="bar-value">85%</span>
+                                            </div>
+                                            <div class="bar-item">
+                                                <span class="bar-label">主治医师</span>
+                                                <div class="bar-wrapper">
+                                                    <div class="bar" style="height: 100%;"></div>
+                                                </div>
+                                                <span class="bar-value">100%</span>
+                                            </div>
+                                            <div class="bar-item">
+                                                <span class="bar-label">住院医师</span>
+                                                <div class="bar-wrapper">
+                                                    <div class="bar" style="height: 45%;"></div>
+                                                </div>
+                                                <span class="bar-value">45%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="tab-survey">
+                        <div class="tab-content-inner">
+                            <div class="tab-content-left">
+                            <div class="config-section">
+                                <h2 class="section-title">调研评估看板</h2>
+                                <div class="survey-type-list">
+                                    <div class="survey-type-card">
+                                        <div class="survey-type-header">
+                                            <div class="survey-type-info">
+                                                <span class="survey-type-name">医学播客</span>
+                                                <span class="survey-theme-count">10个主题</span>
+                                            </div>
+                                            <div class="survey-type-stats">
+                                                <div class="survey-stat-item">
+                                                    <span class="survey-stat-value">2,856</span>
+                                                    <span class="survey-stat-label">完成调研</span>
+                                                </div>
+                                                <div class="survey-stat-item">
+                                                    <span class="survey-stat-value">5,000</span>
+                                                    <span class="survey-stat-label">发放调研</span>
+                                                </div>
+                                                <div class="survey-stat-item">
+                                                    <span class="survey-stat-value">1,208</span>
+                                                    <span class="survey-stat-label">回收调研</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="survey-theme-table">
+                                            <table class="data-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>主题名称</th>
+                                                        <th>完成调研</th>
+                                                        <th>发放调研</th>
+                                                        <th>回收调研</th>
+                                                        <th>回收率</th>
+                                                        <th>认知提升率</th>
+                                                        <th>行为改变率</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>冠心病诊疗新进展</td>
+                                                        <td>856</td>
+                                                        <td>1,200</td>
+                                                        <td>508</td>
+                                                        <td><span class="rate-high">42.3%</span></td>
+                                                        <td>87.6%</td>
+                                                        <td>72.1%</td>
+                                                        <td><button class="action-btn view-detail" data-theme="冠心病诊疗新进展">查看详情</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>心力衰竭管理</td>
+                                                        <td>623</td>
+                                                        <td>1,000</td>
+                                                        <td>412</td>
+                                                        <td><span class="rate-high">41.2%</span></td>
+                                                        <td>85.2%</td>
+                                                        <td>68.9%</td>
+                                                        <td><button class="action-btn view-detail" data-theme="心力衰竭管理">查看详情</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>心律失常诊治</td>
+                                                        <td>534</td>
+                                                        <td>900</td>
+                                                        <td>356</td>
+                                                        <td><span class="rate-mid">39.6%</span></td>
+                                                        <td>82.1%</td>
+                                                        <td>65.3%</td>
+                                                        <td><button class="action-btn view-detail" data-theme="心律失常诊治">查看详情</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>高血压药物治疗</td>
+                                                        <td>412</td>
+                                                        <td>800</td>
+                                                        <td>298</td>
+                                                        <td><span class="rate-mid">37.3%</span></td>
+                                                        <td>79.8%</td>
+                                                        <td>61.2%</td>
+                                                        <td><button class="action-btn view-detail" data-theme="高血压药物治疗">查看详情</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>心血管介入技术</td>
+                                                        <td>356</td>
+                                                        <td>700</td>
+                                                        <td>245</td>
+                                                        <td><span class="rate-low">35.0%</span></td>
+                                                        <td>76.5%</td>
+                                                        <td>58.7%</td>
+                                                        <td><button class="action-btn view-detail" data-theme="心血管介入技术">查看详情</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="survey-type-card">
+                                        <div class="survey-type-header">
+                                            <div class="survey-type-info">
+                                                <span class="survey-type-name">手术视频</span>
+                                                <span class="survey-theme-count">8个主题</span>
+                                            </div>
+                                            <div class="survey-type-stats">
+                                                <div class="survey-stat-item">
+                                                    <span class="survey-stat-value">1,892</span>
+                                                    <span class="survey-stat-label">完成调研</span>
+                                                </div>
+                                                <div class="survey-stat-item">
+                                                    <span class="survey-stat-value">3,500</span>
+                                                    <span class="survey-stat-label">发放调研</span>
+                                                </div>
+                                                <div class="survey-stat-item">
+                                                    <span class="survey-stat-value">892</span>
+                                                    <span class="survey-stat-label">回收调研</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="survey-theme-table">
+                                            <table class="data-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>主题名称</th>
+                                                        <th>完成调研</th>
+                                                        <th>发放调研</th>
+                                                        <th>回收调研</th>
+                                                        <th>回收率</th>
+                                                        <th>认知提升率</th>
+                                                        <th>行为改变率</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>PCI手术操作规范</td>
+                                                        <td>423</td>
+                                                        <td>800</td>
+                                                        <td>312</td>
+                                                        <td><span class="rate-high">39.0%</span></td>
+                                                        <td>84.2%</td>
+                                                        <td>70.5%</td>
+                                                        <td><button class="action-btn view-detail" data-theme="PCI手术操作规范">查看详情</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>射频消融技术</td>
+                                                        <td>356</td>
+                                                        <td>700</td>
+                                                        <td>245</td>
+                                                        <td><span class="rate-mid">35.0%</span></td>
+                                                        <td>81.6%</td>
+                                                        <td>65.8%</td>
+                                                        <td><button class="action-btn view-detail" data-theme="射频消融技术">查看详情</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>起搏器植入术</td>
+                                                        <td>289</td>
+                                                        <td>600</td>
+                                                        <td>198</td>
+                                                        <td><span class="rate-mid">33.0%</span></td>
+                                                        <td>78.9%</td>
+                                                        <td>62.3%</td>
+                                                        <td><button class="action-btn view-detail" data-theme="起搏器植入术">查看详情</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="survey-type-card">
+                                        <div class="survey-type-header">
+                                            <div class="survey-type-info">
+                                                <span class="survey-type-name">在线互动病例</span>
+                                                <span class="survey-theme-count">6个主题</span>
+                                            </div>
+                                            <div class="survey-type-stats">
+                                                <div class="survey-stat-item">
+                                                    <span class="survey-stat-value">1,456</span>
+                                                    <span class="survey-stat-label">完成调研</span>
+                                                </div>
+                                                <div class="survey-stat-item">
+                                                    <span class="survey-stat-value">2,800</span>
+                                                    <span class="survey-stat-label">发放调研</span>
+                                                </div>
+                                                <div class="survey-stat-item">
+                                                    <span class="survey-stat-value">678</span>
+                                                    <span class="survey-stat-label">回收调研</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="survey-theme-table">
+                                            <table class="data-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>主题名称</th>
+                                                        <th>完成调研</th>
+                                                        <th>发放调研</th>
+                                                        <th>回收调研</th>
+                                                        <th>回收率</th>
+                                                        <th>认知提升率</th>
+                                                        <th>行为改变率</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>急性心肌梗死病例</td>
+                                                        <td>312</td>
+                                                        <td>600</td>
+                                                        <td>245</td>
+                                                        <td><span class="rate-high">40.8%</span></td>
+                                                        <td>86.5%</td>
+                                                        <td>71.2%</td>
+                                                        <td><button class="action-btn view-detail" data-theme="急性心肌梗死病例">查看详情</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>心衰病例讨论</td>
+                                                        <td>278</td>
+                                                        <td>550</td>
+                                                        <td>198</td>
+                                                        <td><span class="rate-mid">36.0%</span></td>
+                                                        <td>83.2%</td>
+                                                        <td>67.5%</td>
+                                                        <td><button class="action-btn view-detail" data-theme="心衰病例讨论">查看详情</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>复杂心律失常</td>
+                                                        <td>234</td>
+                                                        <td>500</td>
+                                                        <td>167</td>
+                                                        <td><span class="rate-low">33.4%</span></td>
+                                                        <td>79.5%</td>
+                                                        <td>63.8%</td>
+                                                        <td><button class="action-btn view-detail" data-theme="复杂心律失常">查看详情</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="tab-logs">
+                        <table class="data-table logs-table">
+                            <thead>
+                                <tr>
+                                    <th>操作时间</th>
+                                    <th>操作人</th>
+                                    <th>操作类型</th>
+                                    <th>操作内容</th>
+                                    <th>备注</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025-03-10 14:30:00</td>
+                                    <td>管理员</td>
+                                    <td><span class="operation-tag publish">发布</span></td>
+                                    <td>活动发布</td>
+                                    <td>审核通过后发布</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-03-05 10:20:00</td>
+                                    <td>市场专员B</td>
+                                    <td><span class="operation-tag edit">编辑</span></td>
+                                    <td>修改活动配置</td>
+                                    <td>更新征稿主题</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-03-01 09:00:00</td>
+                                    <td>市场专员B</td>
+                                    <td><span class="operation-tag create">创建</span></td>
+                                    <td>创建活动</td>
+                                    <td>心血管疾病病例征稿活动</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="surveyModal">
+        <div class="modal-content survey-modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalThemeTitle">主题名称</h2>
+                <button class="modal-close" onclick="closeSurveyModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="submission-list">
+                    <table class="data-table submission-survey-table">
+                        <thead>
+                            <tr>
+                                <th>投稿标题</th>
+                                <th>医生信息</th>
+                                <th>完成调研</th>
+                                <th>认知提升</th>
+                                <th>行为改变</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="submissionSurveyList">
+                            <tr>
+                                <td>冠心病介入治疗案例分享</td>
+                                <td>广东省 | 三甲 | 主任医师</td>
+                                <td><span class="status-tag completed">已完成</span></td>
+                                <td>92.5%</td>
+                                <td>78.3%</td>
+                                <td><button class="action-btn view">查看详情</button></td>
+                            </tr>
+                            <tr>
+                                <td>急性心梗急诊处理经验</td>
+                                <td>北京市 | 三甲 | 副主任医师</td>
+                                <td><span class="status-tag completed">已完成</span></td>
+                                <td>88.7%</td>
+                                <td>72.1%</td>
+                                <td><button class="action-btn view">查看详情</button></td>
+                            </tr>
+                            <tr>
+                                <td>心衰患者药物治疗方案</td>
+                                <td>上海市 | 三甲 | 主治医师</td>
+                                <td><span class="status-tag pending">待完成</span></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td><button class="action-btn view" disabled>查看详情</button></td>
+                            </tr>
+                            <tr>
+                                <td>冠脉介入术后管理</td>
+                                <td>广东省 | 三甲 | 主任医师</td>
+                                <td><span class="status-tag completed">已完成</span></td>
+                                <td>85.2%</td>
+                                <td>68.9%</td>
+                                <td><button class="action-btn view">查看详情</button></td>
+                            </tr>
+                            <tr>
+                                <td>心律失常药物治疗选择</td>
+                                <td>北京市 | 三甲 | 副主任医师</td>
+                                <td><span class="status-tag completed">已完成</span></td>
+                                <td>90.1%</td>
+                                <td>75.6%</td>
+                                <td><button class="action-btn view">查看详情</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/activity-detail.js"></script>
+</body>
+</html>

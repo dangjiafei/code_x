@@ -1,0 +1,4153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学术活动市场 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/record.css">
+    <link rel="stylesheet" href="../css/table.css">
+    <style>
+        /* 页面容器 */
+        .activity-market-container {
+            padding: 24px;
+        }
+
+        /* 顶部引导区 */
+        .guide-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f1f5f9;
+        }
+
+        .guide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .guide-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-title svg {
+            width: 20px;
+            height: 20px;
+            color: #667eea;
+        }
+
+        .guide-toggle {
+            font-size: 13px;
+            color: #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .guide-toggle:hover {
+            background-color: #f1f5f9;
+            color: #334155;
+        }
+
+        .guide-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: -24px;
+        }
+
+        .guide-item {
+            display: flex;
+            gap: 14px;
+            padding: 16px;
+            background-color: #f8fafc;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .guide-item:hover {
+            background-color: #f1f5f9;
+            transform: translateY(-1px);
+        }
+
+        .guide-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #8b5cf6 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .guide-icon svg {
+            width: 18px;
+            height: 18px;
+            color: white;
+        }
+
+        .guide-text {
+            flex: 1;
+        }
+
+        .guide-text h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 6px 0;
+        }
+
+        .guide-text p {
+            font-size: 13px;
+            color: #64748b;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* 筛选栏 */
+        .filter-section {
+            background-color: var(--background-secondary);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+
+        .filter-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 14px;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .filter-select {
+            padding: 0 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            min-width: 140px;
+            height: 36px;
+            box-sizing: border-box;
+        }
+
+        .filter-input {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 200px;
+        }
+
+        .date-range-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .date-input {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 120px;
+        }
+
+        .filter-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 12px;
+        }
+
+        .filter-btn {
+            padding: 0 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: white;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+            height: 36px;
+            box-sizing: border-box;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-btn:hover {
+            background-color: #f9fafb;
+        }
+
+        .filter-btn.active {
+            background-color: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .market-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .market-toolbar .service-tabs {
+            margin-bottom: 0;
+        }
+
+        .market-toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demand-entry-btn {
+            height: 36px;
+            padding: 0 16px;
+            border: 1px solid #667eea;
+            border-radius: 8px;
+            background-color: #667eea;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .feedback-panel {
+            display: block;
+        }
+
+        .feedback-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .feedback-record {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 16px;
+            background-color: #ffffff;
+        }
+
+        .feedback-record-head {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 120px 88px;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .feedback-record-title {
+            margin: 0 0 6px;
+            color: #1e293b;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .feedback-record-meta {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .feedback-detail-btn {
+            height: 28px;
+            padding: 0 12px;
+            border: 1px solid #dbe4ff;
+            border-radius: 6px;
+            background-color: #ffffff;
+            color: #4f46e5;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            justify-self: end;
+        }
+
+        .feedback-detail-btn:hover {
+            background-color: #f5f7ff;
+        }
+
+        .feedback-detail-view {
+            display: grid;
+            gap: 14px;
+        }
+
+        .feedback-detail-view h3 {
+            margin: 0;
+            color: #1e293b;
+            font-size: 18px;
+        }
+
+        .feedback-detail-view .detail-meta {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .feedback-detail-view .detail-desc {
+            padding: 14px;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            color: #334155;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .feedback-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+            padding: 0 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            justify-self: center;
+        }
+
+        .feedback-status.pending {
+            color: #b45309;
+            background-color: #fffbeb;
+        }
+
+        .feedback-status.accepted {
+            color: #047857;
+            background-color: #ecfdf5;
+        }
+
+        .feedback-status.rejected {
+            color: #dc2626;
+            background-color: #fef2f2;
+        }
+
+        .feedback-modal-form {
+            display: grid;
+            gap: 16px;
+        }
+
+        .feedback-type-switch {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .feedback-type-option {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px;
+            cursor: pointer;
+            background-color: #ffffff;
+        }
+
+        .feedback-type-option.active {
+            border-color: #667eea;
+            background-color: #f5f7ff;
+        }
+
+        .feedback-type-option strong {
+            display: block;
+            color: #1e293b;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .feedback-type-option span {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .feedback-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .feedback-form-item.full {
+            grid-column: 1 / -1;
+        }
+
+        .feedback-form-item label {
+            display: block;
+            margin-bottom: 6px;
+            color: #475569;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .feedback-form-item input,
+        .feedback-form-item select,
+        .feedback-form-item textarea {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 9px 10px;
+            color: #1e293b;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        .feedback-form-item textarea {
+            min-height: 86px;
+            resize: vertical;
+        }
+
+        .feedback-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 4px;
+        }
+
+        .modal-btn-secondary,
+        .modal-btn-primary {
+            height: 36px;
+            padding: 0 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .modal-btn-secondary {
+            border: 1px solid #e2e8f0;
+            background-color: #ffffff;
+            color: #475569;
+        }
+
+        .modal-btn-primary {
+            border: 1px solid #667eea;
+            background-color: #667eea;
+            color: #ffffff;
+        }
+
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sort-option {
+            font-size: 14px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .sort-option.active {
+            color: #667eea;
+            font-weight: 500;
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+
+        /* 活动卡片网格 */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* 活动卡片 */
+        .activity-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .activity-card:hover {
+            border-color: #ddd;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-cover {
+            position: relative;
+            width: 100%;
+            padding-top: 40%;
+            overflow: hidden;
+        }
+
+        .card-cover img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card-badge.ongoing {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .card-badge.upcoming {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .card-badge.ended {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        /* 领域筛选按钮样式 */
+        .discipline-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        /* 广告位 */
+        .activity-banner {
+            background: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #c4b5fd 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .activity-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .activity-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .banner-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+
+        .banner-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .banner-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .banner-text {
+            color: white;
+        }
+
+        .banner-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .banner-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .banner-cta {
+            background: white;
+            color: #6366f1;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        .banner-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .banner-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .banner-desc {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* 我的活动统计概览 */
+        .my-activities-header {
+            margin-bottom: 24px;
+        }
+
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 12px;
+            color: #374151;
+            background-color: white;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat-card svg {
+            width: 20px;
+            height: 20px;
+            stroke: #9ca3af;
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+
+        .stat-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* 我的活动列表 */
+        .my-activities-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .my-workbench-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .my-view-switch {
+            display: inline-flex;
+            padding: 4px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: #f8fafc;
+        }
+
+        .my-view-tab {
+            min-width: 112px;
+            height: 34px;
+            padding: 0 14px;
+            border: none;
+            border-radius: 6px;
+            color: #64748b;
+            background-color: transparent;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .my-view-tab.active {
+            color: #4f46e5;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+        }
+
+        .my-view-panel {
+            display: none;
+        }
+
+        .my-view-panel.active {
+            display: block;
+        }
+
+        .content-summary-strip {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(110px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .content-summary-item {
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: white;
+        }
+
+        .content-summary-value {
+            display: block;
+            color: #1e293b;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .content-summary-label {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .content-filter-section {
+            margin-bottom: 16px;
+        }
+
+        .content-filter-section .filter-row {
+            align-items: stretch;
+        }
+
+        .content-filter-section .filter-input {
+            width: 240px;
+            height: 36px;
+            box-sizing: border-box;
+        }
+
+        .content-table-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 10px;
+        }
+
+        .content-table-toolbar strong {
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        .content-table-toolbar span {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .content-table-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .content-table-container {
+            overflow-x: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background-color: white;
+        }
+
+        .academic-content-table {
+            width: 100%;
+            min-width: 1180px;
+            border-collapse: collapse;
+        }
+
+        .academic-content-table th,
+        .academic-content-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            text-align: left;
+            vertical-align: top;
+            font-size: 13px;
+        }
+
+        .academic-content-table th {
+            color: #475569;
+            background-color: #f8fafc;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .academic-content-table tbody tr:hover {
+            background-color: #fafafa;
+        }
+
+        .academic-content-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .doctor-cell strong,
+        .content-title-cell strong,
+        .activity-topic-cell strong {
+            display: block;
+            color: #1e293b;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .doctor-cell span,
+        .content-title-cell span,
+        .activity-topic-cell span {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .work-type {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 6px;
+            margin-left: 0;
+        }
+
+        .status-tag,
+        .flow-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-tag.pending,
+        .flow-tag.pending {
+            color: #b45309;
+            background-color: #fef3c7;
+        }
+
+        .status-tag.approved,
+        .flow-tag.ready {
+            color: #15803d;
+            background-color: #dcfce7;
+        }
+
+        .status-tag.purchased,
+        .flow-tag.purchased {
+            color: #2563eb;
+            background-color: #dbeafe;
+        }
+
+        .status-tag.rejected,
+        .flow-tag.rejected {
+            color: #dc2626;
+            background-color: #fee2e2;
+        }
+
+        .flow-tag.transfer-pending {
+            color: #7c3aed;
+            background-color: #ede9fe;
+        }
+
+        .flow-tag.transferred {
+            color: #0f766e;
+            background-color: #ccfbf1;
+        }
+
+        .content-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .content-actions .action-btn {
+            flex: 0 0 auto;
+        }
+
+        .content-empty-state {
+            display: none;
+            padding: 32px;
+            text-align: center;
+            color: #64748b;
+            background-color: white;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .content-preview-head {
+            padding: 16px;
+            border-radius: 10px;
+            background-color: #f8fafc;
+            margin-bottom: 16px;
+        }
+
+        .content-preview-head h2 {
+            margin: 8px 0;
+            color: #1e293b;
+            font-size: 20px;
+        }
+
+        .content-preview-head p {
+            margin: 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .content-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .content-preview-item {
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+
+        .content-preview-item span {
+            display: block;
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .content-preview-item strong {
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        .content-preview-section h3 {
+            margin: 0 0 8px;
+            color: #1e293b;
+            font-size: 15px;
+        }
+
+        .content-preview-section p {
+            margin: 0;
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .my-activity-card {
+            background-color: white;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .my-activity-card:hover {
+            border-color: #ddd;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 16px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .card-title-area {
+            flex: 1;
+        }
+
+        .card-title-area .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0 0 8px 0;
+            line-height: 1.4;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .card-tags .field-badge {
+            font-size: 12px;
+            color: #667eea;
+            background-color: rgba(102, 126, 234, 0.1);
+            padding: 3px 10px;
+            border-radius: 4px;
+        }
+
+        .card-time-badge {
+            font-size: 12px;
+            color: #6b7280;
+            padding: 6px 12px;
+            background-color: #f3f4f6;
+            border-radius: 6px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-time-badge.urgent {
+            background-color: #fef2f2;
+            color: #dc2626;
+            font-weight: 500;
+        }
+
+        .card-time-badge.completed {
+            background-color: #dcfce7;
+            color: #16a34a;
+            font-weight: 500;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        .card-stats-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .stat-block {
+            flex: 1;
+            text-align: center;
+            padding: 12px 8px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .stat-num {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .stat-name {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .card-meta {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .card-meta .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 16px;
+            border-top: 1px solid #f5f5f5;
+        }
+
+        .action-btn.btn-outline {
+            border: 1px solid #667eea;
+            color: #667eea;
+            background-color: white;
+        }
+
+        .action-btn.btn-outline:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+
+        .filter-label {
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .discipline-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .discipline-btn {
+            padding: 6px 16px;
+            font-size: 13px;
+            color: #6b7280;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .discipline-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .discipline-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .card-content {
+            padding: 16px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0 0 10px 0;
+            line-height: 1.4;
+        }
+
+        .field-badge {
+            display: inline-block;
+            font-size: 12px;
+            color: #667eea;
+            background-color: rgba(102, 126, 234, 0.1);
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-right: 8px;
+            margin-bottom: 10px;
+        }
+
+        .card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .meta-item {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .meta-item::before {
+            content: '·';
+            margin-right: 8px;
+            color: #ccc;
+        }
+
+        .meta-item:first-child::before {
+            display: none;
+        }
+
+        .card-time {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .card-time svg {
+            color: #999;
+            flex-shrink: 0;
+        }
+
+        .card-time-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+
+
+        .card-stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .stat-item svg {
+            color: #aaa;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #333;
+        }
+
+        .btn-secondary {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #eee;
+        }
+
+        .btn-disabled {
+            background-color: #f5f5f5;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .urgent-badge {
+            background-color: #fef2f2;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .popular-badge {
+            background-color: #fef3c7;
+            color: #d97706;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* 分页 */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 32px;
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pagination-btn {
+            padding: 8px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: white;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background-color: #f9fafb;
+        }
+
+        .pagination-btn.active {
+            background-color: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* 模态框 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 12px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background-color: white;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background-color: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .detail-cover {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .detail-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background-color: rgba(102, 126, 234, 0.9);
+            color: white;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .detail-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .status-badge.ongoing {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+
+        .status-badge.upcoming {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-badge.ended {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .detail-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0 0 16px 0;
+        }
+
+        .detail-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background-color: #667eea;
+            border-radius: 2px;
+        }
+
+        .activity-desc {
+            background-color: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .topics-list {
+            background-color: #f9fafb;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .topic-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topic-item:last-child {
+            border-bottom: none;
+        }
+
+        .topic-name {
+            font-size: 14px;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .topic-count {
+            font-size: 13px;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .requirements-list {
+            background-color: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .requirements-list ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .requirements-list li {
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .requirements-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 申请表单 */
+        .apply-form {
+            background-color: #f9fafb;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-hint {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 6px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkbox-item:hover {
+            border-color: #667eea;
+        }
+
+        .checkbox-item.selected {
+            background-color: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+        }
+
+        .checkbox-item input {
+            display: none;
+        }
+
+        .checkbox-item label {
+            font-size: 14px;
+            color: #4b5563;
+            cursor: pointer;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .submit-btn {
+            padding: 12px 32px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #5a67d8;
+        }
+
+        .cancel-btn {
+            padding: 12px 32px;
+            background-color: #f3f4f6;
+            color: #4b5563;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cancel-btn:hover {
+            background-color: #e5e7eb;
+        }
+
+        .applied-banner {
+            background-color: #dcfce7;
+            padding: 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .applied-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .applied-icon svg {
+            width: 16px;
+            height: 16px;
+            color: white;
+        }
+
+        .applied-content p {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            color: #065f46;
+            font-weight: 500;
+        }
+
+        .applied-content a {
+            font-size: 13px;
+            color: #059669;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #f3f4f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+        }
+
+        .empty-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #9ca3af;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            margin: 0 0 8px 0;
+        }
+
+        .empty-desc {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        #useSettingModal .use-setting-form {
+            padding: 16px;
+        }
+
+        #useSettingModal .use-setting-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        #useSettingModal .use-setting-form .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+
+        #useSettingModal .use-setting-form .form-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: white;
+            box-sizing: border-box;
+        }
+
+        #useSettingModal .use-setting-form .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        #useSettingModal .use-setting-form .form-hint {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+
+        #useSettingModal .use-setting-form .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 12px;
+        }
+
+        #useSettingModal .use-setting-form .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        #useSettingModal .use-setting-form .filter-item label {
+            font-size: 13px;
+            color: #475569;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        #useSettingModal .use-setting-form .filter-item select {
+            padding: 10px 40px 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 10px center;
+            background-repeat: no-repeat;
+            background-size: 14px;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        #useSettingModal .use-setting-form .filter-item select:hover {
+            border-color: #cbd5e1;
+        }
+
+        #useSettingModal .use-setting-form .filter-item select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        #useSettingModal .use-setting-form .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        #useSettingModal .use-setting-form .cancel-btn {
+            padding: 8px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: white;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #useSettingModal .use-setting-form .cancel-btn:hover {
+            background-color: #f8fafc;
+        }
+
+        #useSettingModal .use-setting-form .submit-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            background: linear-gradient(135deg, #667eea 0%, #8b5cf6 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        #useSettingModal .use-setting-form .submit-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 900px) {
+            .my-workbench-head,
+            .content-table-toolbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .my-view-switch {
+                width: 100%;
+            }
+
+            .my-view-tab {
+                flex: 1;
+            }
+
+            .content-summary-strip {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .content-filter-section .filter-input,
+            .content-filter-section .filter-select {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .content-filter-section .filter-group {
+                flex: 1 1 180px;
+            }
+
+            .content-preview-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+        
+                    <!-- Tab切换 -->
+                <div class="market-toolbar">
+                    <div class="service-tabs" style="display: flex; gap: 32px;">
+                        <div class="service-tab active" id="tab-plaza" onclick="switchMarketTab('plaza')">活动广场</div>
+                        <div class="service-tab" id="tab-my-activities" onclick="switchMarketTab('my-activities')">我使用的</div>
+                        <div class="service-tab" id="tab-feedback" onclick="switchMarketTab('feedback')">我的反馈</div>
+                    </div>
+                    <div class="market-toolbar-actions">
+                        <button class="demand-entry-btn" type="button" onclick="openFeedbackModal('activity-request')">提交活动需求</button>
+                    </div>
+                </div>
+
+        <div class="activity-banner">
+            <div class="banner-content">
+                <div class="banner-left">
+                    <div class="banner-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <div class="banner-text">
+                        <div class="banner-title">探索精彩学术活动</div>
+                        <div class="banner-desc">发现优质病例征集、学术讨论，开启您的学术之旅</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+
+            <!-- Tab内容 -->
+            <div class="market-tab-content" id="tab-content-plaza">
+
+                <!-- 筛选栏 -->
+                <div class="filter-section">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <input type="text" class="filter-input" placeholder="搜索活动名称、主题" id="keywordSearch">
+                        </div>
+                        <div class="filter-group">
+                            <select class="filter-select" id="statusFilter">
+                                <option value="all">全部</option>
+                                <option value="ongoing" selected>进行中</option>
+                                <option value="upcoming">即将开始</option>
+                                <option value="ended">已结束</option>
+                            </select>
+                        </div>
+                        <button class="filter-btn active" id="searchBtn">搜索</button>
+                    </div>
+                </div>
+                
+                <!-- 领域筛选（独立一行） -->
+                <div class="discipline-section">
+                    <div class="discipline-buttons">
+                        <button class="discipline-btn active" data-value="all" onclick="selectDiscipline('all')">全部领域</button>
+                        <button class="discipline-btn" data-value="cardiovascular" onclick="selectDiscipline('cardiovascular')">心血管</button>
+                        <button class="discipline-btn" data-value="diabetes" onclick="selectDiscipline('diabetes')">糖尿病</button>
+                        <button class="discipline-btn" data-value="pediatric" onclick="selectDiscipline('pediatric')">儿科</button>
+                        <button class="discipline-btn" data-value="respiratory" onclick="selectDiscipline('respiratory')">呼吸</button>
+                        <button class="discipline-btn" data-value="neurology" onclick="selectDiscipline('neurology')">神经科</button>
+                        <button class="discipline-btn" data-value="oncology" onclick="selectDiscipline('oncology')">肿瘤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 活动列表 -->
+            <div class="activities-grid" id="activitiesGrid">
+                <!-- 活动卡片示例 -->
+                <div class="activity-card" data-activity-id="1">
+                    <div class="card-cover">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=medical%20conference%20cardiovascular%20health%20professional%20medical%20education&image_size=landscape_16_9" alt="活动封面">
+                        <div class="card-badge ended">已结束</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">全国心血管疾病诊疗新进展学术研讨会</h3>
+                        <span class="field-badge">心血管</span>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                5个主题
+                            </div>
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                128 个团队使用
+                            </div>
+                        </div>
+                        <div class="card-time">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span class="card-time-text">招募时间：</span>
+                            <span class="card-time-value">2025-12-01 至 2025-12-31</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-secondary" onclick="openActivityDetail('1')">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-card" data-activity-id="2">
+                    <div class="card-cover">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=diabetes%20treatment%20medical%20education%20healthcare%20professional&image_size=landscape_16_9" alt="活动封面">
+                        <div class="card-badge ended">已结束</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">2025糖尿病规范化治疗病例征集大赛</h3>
+                        <span class="field-badge">糖尿病</span>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                8个主题
+                            </div>
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                89 个团队使用
+                            </div>
+                        </div>
+                        <div class="card-time">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span class="card-time-text">招募时间：</span>
+                            <span class="card-time-value">2026-02-01 至 2026-02-28</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-secondary" onclick="openActivityDetail('2')">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-card" data-activity-id="3">
+                    <div class="card-cover">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=pediatric%20respiratory%20medicine%20healthcare%20children%20hospital&image_size=landscape_16_9" alt="活动封面">
+                        <div class="card-badge ongoing">进行中</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">儿科呼吸系统疾病病例征集</h3>
+                        <span class="field-badge">儿科</span>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                6个主题
+                            </div>
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                25 个团队使用
+                            </div>
+                            <span class="urgent-badge">仅剩5天</span>
+                        </div>
+                        <div class="card-time">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span class="card-time-text">招募时间：</span>
+                            <span class="card-time-value">2026-05-01 至 2026-05-20</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-secondary" onclick="openActivityDetail('3')">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-card" data-activity-id="4">
+                    <div class="card-cover">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=neurology%20brain%20medical%20research%20science%20professional&image_size=landscape_16_9" alt="活动封面">
+                        <div class="card-badge ended">已结束</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">神经科疑难病例讨论沙龙</h3>
+                        <span class="field-badge">神经科</span>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                12个主题
+                            </div>
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                256 个团队使用
+                            </div>
+                        </div>
+                        <div class="card-time">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span class="card-time-text">招募时间：</span>
+                            <span class="card-time-value">2025-11-01 至 2025-11-30</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-secondary" onclick="openActivityDetail('4')">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-card" data-activity-id="5">
+                    <div class="card-cover">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=respiratory%20medicine%20lung%20health%20medical%20conference&image_size=landscape_16_9" alt="活动封面">
+                        <div class="card-badge ended">已结束</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">慢性阻塞性肺疾病病例征集活动</h3>
+                        <span class="field-badge">呼吸</span>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                4个主题
+                            </div>
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                67 个团队使用
+                            </div>
+                        </div>
+                        <div class="card-time">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span class="card-time-text">招募时间：</span>
+                            <span class="card-time-value">2026-01-01 至 2026-01-15</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-secondary" onclick="openActivityDetail('5')">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-card" data-activity-id="6">
+                    <div class="card-cover">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=oncology%20cancer%20treatment%20medical%20research%20healthcare&image_size=landscape_16_9" alt="活动封面">
+                        <div class="card-badge ended">已结束</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">肿瘤精准治疗病例分享大赛</h3>
+                        <span class="field-badge">肿瘤</span>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                7个主题
+                            </div>
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                156 个团队使用
+                            </div>
+                            <span class="urgent-badge">仅剩3天</span>
+                        </div>
+                        <div class="card-time">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span class="card-time-text">招募时间：</span>
+                            <span class="card-time-value">2025-12-15 至 2025-12-18</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-secondary" onclick="openActivityDetail('6')">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-card" data-activity-id="7">
+                    <div class="card-cover">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=dermatology%20skin%20disease%20medical%20conference%20healthcare&image_size=landscape_16_9" alt="活动封面">
+                        <div class="card-badge ended">已结束</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">皮肤科疑难病例讨论专场</h3>
+                        <span class="field-badge">皮肤科</span>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                6个主题
+                            </div>
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                89 个团队使用
+                            </div>
+                        </div>
+                        <div class="card-time">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span class="card-time-text">招募时间：</span>
+                            <span class="card-time-value">2026-05-25 至 2026-06-10</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-secondary" onclick="openActivityDetail('7')">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-card" data-activity-id="8">
+                    <div class="card-cover">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=gastroenterology%20digestive%20health%20medical%20education%20professional&image_size=landscape_16_9" alt="活动封面">
+                        <div class="card-badge upcoming">即将开始</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">消化内科病例征集活动</h3>
+                        <span class="field-badge">消化内科</span>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                8个主题
+                            </div>
+                            <div class="stat-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                67 个团队使用
+                            </div>
+                        </div>
+                        <div class="card-time">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span class="card-time-text">招募时间：</span>
+                            <span class="card-time-value">2026-01-10 至 2026-01-20</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-secondary" onclick="openActivityDetail('8')">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 我的活动 Tab -->
+            <div class="market-tab-content" id="tab-content-my-activities" style="display: none;">
+                <div class="my-workbench-head">
+                    <div class="my-view-switch" role="tablist" aria-label="我使用的视图切换">
+                        <button class="my-view-tab active" type="button" id="my-view-tab-activities" onclick="switchMyActivityView('activities')">按活动查看</button>
+                        <button class="my-view-tab" type="button" id="my-view-tab-contents" onclick="switchMyActivityView('contents')">按内容查看</button>
+                    </div>
+                </div>
+
+                <section class="my-view-panel active" id="myActivitiesView">
+                <div class="filter-section">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <input type="text" class="filter-input" placeholder="搜索活动名称或主题" id="myActivitySearch">
+                        </div>
+                        <div class="filter-group">
+                            <select class="filter-select" id="myActivityStatus">
+                                <option value="all">全部状态</option>
+                                <option value="ongoing">进行中</option>
+                                <option value="ended">已结束</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="my-activities-list" id="myActivitiesList">
+                    <div class="activity-card" data-activity-id="my-1">
+                        <div class="card-cover">
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cardiovascular%20disease%20medical%20conference%20professional&image_size=landscape_16_9" alt="活动封面">
+                            <div class="card-badge ongoing">进行中</div>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">心血管疾病病例征稿活动</h3>
+                            <span class="field-badge">心血管</span>
+                            <div class="card-stats">
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    156 人报名
+                                </div>
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                    </svg>
+                                    89 人投稿
+                                </div>
+                            </div>
+                            <div class="card-time">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span class="card-time-text">招募时间：</span>
+                                <span class="card-time-value">2026-05-01 至 2026-05-20</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="action-btn btn-secondary" onclick="openActivityDetail('1')">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card" data-activity-id="my-2">
+                        <div class="card-cover">
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=diabetes%20treatment%20medical%20education%20healthcare&image_size=landscape_16_9" alt="活动封面">
+                            <div class="card-badge ended">已结束</div>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">糖尿病规范化治疗病例征集大赛</h3>
+                            <span class="field-badge">糖尿病</span>
+                            <div class="card-stats">
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    234 人报名
+                                </div>
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                    </svg>
+                                    156 人投稿
+                                </div>
+                            </div>
+                            <div class="card-time">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span class="card-time-text">招募时间：</span>
+                                <span class="card-time-value">2025-11-01 至 2025-11-30</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="action-btn btn-secondary" onclick="openActivityDetail('my-2')">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card" data-activity-id="my-3">
+                        <div class="card-cover">
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=pediatric%20respiratory%20health%20medical%20education&image_size=landscape_16_9" alt="活动封面">
+                            <div class="card-badge ongoing">进行中</div>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">儿科呼吸系统疾病病例征集</h3>
+                            <span class="field-badge">儿科</span>
+                            <div class="card-stats">
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    89 人报名
+                                </div>
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                    </svg>
+                                    45 人投稿
+                                </div>
+                            </div>
+                            <div class="card-time">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span class="card-time-text">招募时间：</span>
+                                <span class="card-time-value">2026-05-15 至 2026-06-15</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="action-btn btn-secondary" onclick="openActivityDetail('my-3')">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card" data-activity-id="my-4">
+                        <div class="card-cover">
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=neurology%20medical%20conference%20brain%20health%20professional&image_size=landscape_16_9" alt="活动封面">
+                            <div class="card-badge ended">已结束</div>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">神经科疑难病例讨论沙龙</h3>
+                            <span class="field-badge">神经科</span>
+                            <div class="card-stats">
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    312 人报名
+                                </div>
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                    </svg>
+                                    208 人投稿
+                                </div>
+                            </div>
+                            <div class="card-time">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span class="card-time-text">招募时间：</span>
+                                <span class="card-time-value">2025-10-01 至 2025-10-31</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="action-btn btn-secondary" onclick="openActivityDetail('my-4')">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card" data-activity-id="my-5">
+                        <div class="card-cover">
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cardiology%20heart%20disease%20medical%20education&image_size=landscape_16_9" alt="活动封面">
+                            <div class="card-badge upcoming">即将开始</div>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">心血管疾病诊疗新进展学术研讨会</h3>
+                            <span class="field-badge">心血管</span>
+                            <div class="card-stats">
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    128 人报名
+                                </div>
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                    </svg>
+                                    67 人投稿
+                                </div>
+                            </div>
+                            <div class="card-time">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span class="card-time-text">招募时间：</span>
+                                <span class="card-time-value">2026-06-01 至 2026-06-30</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="action-btn btn-secondary" onclick="openActivityDetail('my-5')">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card" data-activity-id="my-6">
+                        <div class="card-cover">
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=orthopedics%20bone%20joint%20surgery%20medical&image_size=landscape_16_9" alt="活动封面">
+                            <div class="card-badge ongoing">进行中</div>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">骨科疾病病例征集活动</h3>
+                            <span class="field-badge">骨科</span>
+                            <div class="card-stats">
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    195 人报名
+                                </div>
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                    </svg>
+                                    102 人投稿
+                                </div>
+                            </div>
+                            <div class="card-time">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span class="card-time-text">招募时间：</span>
+                                <span class="card-time-value">2026-05-20 至 2026-07-10</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="action-btn btn-secondary" onclick="openActivityDetail('my-6')">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card" data-activity-id="my-7">
+                        <div class="card-cover">
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=dermatology%20skin%20health%20medical%20conference&image_size=landscape_16_9" alt="活动封面">
+                            <div class="card-badge ended">已结束</div>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">皮肤科疑难病例讨论沙龙</h3>
+                            <span class="field-badge">皮肤科</span>
+                            <div class="card-stats">
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    167 人报名
+                                </div>
+                                <div class="stat-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                    </svg>
+                                    94 人投稿
+                                </div>
+                            </div>
+                            <div class="card-time">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span class="card-time-text">招募时间：</span>
+                                <span class="card-time-value">2026-03-01 至 2026-04-15</span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="action-btn btn-secondary" onclick="openActivityDetail('my-7')">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pagination-container">
+                    <div class="pagination">
+                        <button class="pagination-btn" disabled>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <button class="pagination-btn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                </section>
+
+                <section class="my-view-panel" id="myContentsView">
+                    <div class="content-summary-strip">
+                        <div class="content-summary-item">
+                            <span class="content-summary-value" id="totalContentCount">0</span>
+                            <span class="content-summary-label">征集内容</span>
+                        </div>
+                        <div class="content-summary-item">
+                            <span class="content-summary-value" id="pendingReviewCount">0</span>
+                            <span class="content-summary-label">待审核</span>
+                        </div>
+                        <div class="content-summary-item">
+                            <span class="content-summary-value" id="purchasedContentCount">0</span>
+                            <span class="content-summary-label">已采购</span>
+                        </div>
+                        <div class="content-summary-item">
+                            <span class="content-summary-value" id="pendingTransferCount">0</span>
+                            <span class="content-summary-label">待传播</span>
+                        </div>
+                        <div class="content-summary-item">
+                            <span class="content-summary-value" id="transferredContentCount">0</span>
+                            <span class="content-summary-label">已传播</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-section content-filter-section">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <input type="text" class="filter-input" placeholder="搜索内容、医生、医院" id="contentSearch">
+                            </div>
+                            <div class="filter-group">
+                                <select class="filter-select" id="contentActivityFilter">
+                                    <option value="all">全部活动</option>
+                                    <option value="cardio">心血管疾病病例征稿活动</option>
+                                    <option value="diabetes">糖尿病规范化治疗病例征集大赛</option>
+                                    <option value="pediatric">儿科呼吸系统疾病病例征集</option>
+                                    <option value="neurology">神经科疑难病例讨论沙龙</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <select class="filter-select" id="contentTypeFilter">
+                                    <option value="all">全部类型</option>
+                                    <option value="medical-podcast">医学播客</option>
+                                    <option value="interactive-case">互动病例</option>
+                                    <option value="surgery-video">手术视频</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <select class="filter-select" id="contentStatusFilter">
+                                    <option value="all">全部内容状态</option>
+                                    <option value="pending">待审核</option>
+                                    <option value="approved">审核通过</option>
+                                    <option value="purchased">已采购</option>
+                                    <option value="rejected">已驳回</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <select class="filter-select" id="contentFlowFilter">
+                                    <option value="all">全部流转状态</option>
+                                    <option value="ready">待采购</option>
+                                    <option value="purchased">已采购</option>
+                                    <option value="transfer-pending">待传播</option>
+                                    <option value="transferred">已传播</option>
+                                    <option value="rejected">已驳回</option>
+                                </select>
+                            </div>
+                            <div class="filter-actions">
+                                <button class="filter-btn" type="button" onclick="resetAcademicContentFilters()">重置</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-table-toolbar">
+                        <div>
+                            <strong>学术内容列表</strong>
+                            <span>当前展示 <b id="visibleContentCount">0</b> 条</span>
+                        </div>
+                        <div class="content-table-actions">
+                            <button class="filter-btn" type="button" onclick="handleContentAction('已导出当前筛选结果')">导出</button>
+                            <button class="filter-btn active" type="button" onclick="handleContentAction('已进入批量采购确认')">批量采购</button>
+                        </div>
+                    </div>
+
+                    <div class="content-table-container">
+                        <table class="academic-content-table">
+                            <thead>
+                                <tr>
+                                    <th>医生信息</th>
+                                    <th>报名时间</th>
+                                    <th>作品名称</th>
+                                    <th>所属活动 / 主题</th>
+                                    <th>投稿时间</th>
+                                    <th>作品状态</th>
+                                    <th>流转状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="academicContentTableBody">
+                                <tr data-content-row data-content-id="work-cardio-1" data-activity="cardio" data-type="medical-podcast" data-status="approved" data-flow="ready">
+                                    <td class="doctor-cell">
+                                        <strong>张明</strong>
+                                        <span>主任医师｜心内科</span>
+                                        <span>广州XX医院</span>
+                                    </td>
+                                    <td>2026-05-02 10:35</td>
+                                    <td class="content-title-cell">
+                                        <strong>冠心病精准介入治疗实践</strong>
+                                        <span>ID: aafb60dab292a8d2dc00ca843283f543</span>
+                                        <span class="work-type medical-podcast">医学播客</span>
+                                    </td>
+                                    <td class="activity-topic-cell">
+                                        <strong>心血管疾病病例征稿活动</strong>
+                                        <span>冠心病诊疗新进展</span>
+                                    </td>
+                                    <td>2026-05-05 14:20</td>
+                                    <td><span class="status-tag approved">审核通过</span></td>
+                                    <td><span class="flow-tag ready">待采购</span></td>
+                                    <td>
+                                        <div class="content-actions">
+                                            <button class="action-btn view" type="button" onclick="openAcademicContentPreview('work-cardio-1')">详情</button>
+                                            <button class="action-btn transfer" type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                                            <button class="action-btn more" type="button" onclick="handleContentAction('已打开更多操作')">更多</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-content-row data-content-id="work-cardio-2" data-activity="cardio" data-type="interactive-case" data-status="pending" data-flow="pending">
+                                    <td class="doctor-cell">
+                                        <strong>李华</strong>
+                                        <span>副主任医师｜心内科</span>
+                                        <span>广州XX医院</span>
+                                    </td>
+                                    <td>2026-05-03 11:20</td>
+                                    <td class="content-title-cell">
+                                        <strong>心力衰竭长期随访管理病例</strong>
+                                        <span>ID: b2c8e1f3a4d5c6b7a8e9f0a1b2c3d4e5</span>
+                                        <span class="work-type interactive-case">互动病例</span>
+                                    </td>
+                                    <td class="activity-topic-cell">
+                                        <strong>心血管疾病病例征稿活动</strong>
+                                        <span>心力衰竭管理</span>
+                                    </td>
+                                    <td>2026-05-06 10:15</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td><span class="flow-tag pending">待审核</span></td>
+                                    <td>
+                                        <div class="content-actions">
+                                            <button class="action-btn view" type="button" onclick="openAcademicContentPreview('work-cardio-2')">详情</button>
+                                            <button class="action-btn transfer" type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                                            <button class="action-btn more" type="button" onclick="handleContentAction('已打开更多操作')">更多</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-content-row data-content-id="work-cardio-3" data-activity="cardio" data-type="surgery-video" data-status="purchased" data-flow="transfer-pending">
+                                    <td class="doctor-cell">
+                                        <strong>王强</strong>
+                                        <span>主任医师｜心内科</span>
+                                        <span>北京XX医院</span>
+                                    </td>
+                                    <td>2026-05-04 09:30</td>
+                                    <td class="content-title-cell">
+                                        <strong>房颤射频消融关键步骤</strong>
+                                        <span>ID: c3d9f2e4b5a6c7d8e9f0a1b2c3d4e5f6</span>
+                                        <span class="work-type surgery-video">手术视频</span>
+                                    </td>
+                                    <td class="activity-topic-cell">
+                                        <strong>心血管疾病病例征稿活动</strong>
+                                        <span>心律失常诊治</span>
+                                    </td>
+                                    <td>2026-05-07 16:30</td>
+                                    <td><span class="status-tag purchased">已采购</span></td>
+                                    <td><span class="flow-tag transfer-pending">待传播</span></td>
+                                    <td>
+                                        <div class="content-actions">
+                                            <button class="action-btn view" type="button" onclick="openAcademicContentPreview('work-cardio-3')">详情</button>
+                                            <button class="action-btn transfer" type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                                            <button class="action-btn more" type="button" onclick="handleContentAction('已打开更多操作')">更多</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-content-row data-content-id="work-diabetes-1" data-activity="diabetes" data-type="medical-podcast" data-status="approved" data-flow="purchased">
+                                    <td class="doctor-cell">
+                                        <strong>刘洋</strong>
+                                        <span>副主任医师｜内分泌科</span>
+                                        <span>上海XX医院</span>
+                                    </td>
+                                    <td>2025-11-03 15:10</td>
+                                    <td class="content-title-cell">
+                                        <strong>糖尿病诊治指南解读</strong>
+                                        <span>ID: d4e0f3a5b6c7d8e9f0a1b2c3d4e5f6a7</span>
+                                        <span class="work-type medical-podcast">医学播客</span>
+                                    </td>
+                                    <td class="activity-topic-cell">
+                                        <strong>糖尿病规范化治疗病例征集大赛</strong>
+                                        <span>血糖监测与药物优化</span>
+                                    </td>
+                                    <td>2025-11-06 10:00</td>
+                                    <td><span class="status-tag approved">审核通过</span></td>
+                                    <td><span class="flow-tag purchased">已采购</span></td>
+                                    <td>
+                                        <div class="content-actions">
+                                            <button class="action-btn view" type="button" onclick="openAcademicContentPreview('work-diabetes-1')">详情</button>
+                                            <button class="action-btn transfer" type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                                            <button class="action-btn more" type="button" onclick="handleContentAction('已打开更多操作')">更多</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-content-row data-content-id="work-pediatric-1" data-activity="pediatric" data-type="interactive-case" data-status="rejected" data-flow="rejected">
+                                    <td class="doctor-cell">
+                                        <strong>陈雪</strong>
+                                        <span>主治医师｜儿科</span>
+                                        <span>杭州XX儿童医院</span>
+                                    </td>
+                                    <td>2026-05-16 13:45</td>
+                                    <td class="content-title-cell">
+                                        <strong>儿童哮喘急性发作处置病例</strong>
+                                        <span>ID: e5f1a4b6c7d8e9f0a1b2c3d4e5f6a7b8</span>
+                                        <span class="work-type interactive-case">互动病例</span>
+                                    </td>
+                                    <td class="activity-topic-cell">
+                                        <strong>儿科呼吸系统疾病病例征集</strong>
+                                        <span>儿童哮喘诊治</span>
+                                    </td>
+                                    <td>2026-05-18 09:20</td>
+                                    <td><span class="status-tag rejected">已驳回</span></td>
+                                    <td><span class="flow-tag rejected">已驳回</span></td>
+                                    <td>
+                                        <div class="content-actions">
+                                            <button class="action-btn view" type="button" onclick="openAcademicContentPreview('work-pediatric-1')">详情</button>
+                                            <button class="action-btn transfer" type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                                            <button class="action-btn more" type="button" onclick="handleContentAction('已打开更多操作')">更多</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-content-row data-content-id="work-neurology-1" data-activity="neurology" data-type="surgery-video" data-status="purchased" data-flow="transferred">
+                                    <td class="doctor-cell">
+                                        <strong>赵强</strong>
+                                        <span>主任医师｜神经内科</span>
+                                        <span>北京XX医院</span>
+                                    </td>
+                                    <td>2025-10-08 08:50</td>
+                                    <td class="content-title-cell">
+                                        <strong>疑难癫痫病例诊疗复盘</strong>
+                                        <span>ID: f6a2b5c7d8e9f0a1b2c3d4e5f6a7b8c9</span>
+                                        <span class="work-type surgery-video">手术视频</span>
+                                    </td>
+                                    <td class="activity-topic-cell">
+                                        <strong>神经科疑难病例讨论沙龙</strong>
+                                        <span>癫痫诊治</span>
+                                    </td>
+                                    <td>2025-10-12 17:10</td>
+                                    <td><span class="status-tag purchased">已采购</span></td>
+                                    <td><span class="flow-tag transferred">已传播</span></td>
+                                    <td>
+                                        <div class="content-actions">
+                                            <button class="action-btn view" type="button" onclick="openAcademicContentPreview('work-neurology-1')">详情</button>
+                                            <button class="action-btn transfer" type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                                            <button class="action-btn more" type="button" onclick="handleContentAction('已打开更多操作')">更多</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="content-empty-state" id="contentEmptyState">没有符合筛选条件的学术内容</div>
+                </section>
+            </div>
+
+            <!-- 我的反馈 Tab -->
+            <div class="market-tab-content" id="tab-content-feedback" style="display: none;">
+                <div class="feedback-panel">
+                    <div class="feedback-list" id="myFeedbackList">
+                        <div class="feedback-record" data-description="希望在心血管疾病病例征稿活动中补充心衰长期随访管理方向，重点关注出院后复诊节奏、药物调整依据、患者教育和风险预警。当前活动主题更偏诊疗进展，希望增加更贴近日常管理场景的内容。">
+                            <div class="feedback-record-head">
+                                <div>
+                                    <h3 class="feedback-record-title">建议增加心衰长期随访管理主题</h3>
+                                    <div class="feedback-record-meta">活动建议｜关联活动：心血管疾病病例征稿活动｜提交时间：2026-05-22 14:30</div>
+                                </div>
+                                <span class="feedback-status pending">待处理</span>
+                                <button class="feedback-detail-btn" type="button" onclick="openFeedbackRecordDetail(this)">查看详情</button>
+                            </div>
+                        </div>
+                        <div class="feedback-record" data-description="希望平台创建基层慢病长期管理病例征集活动，面向高血压、糖尿病、血脂异常等慢病管理场景，征集基层医生在复诊随访、用药依从性、患者教育和转诊判断方面的真实经验。">
+                            <div class="feedback-record-head">
+                                <div>
+                                    <h3 class="feedback-record-title">希望平台创建基层慢病长期管理病例征集活动</h3>
+                                    <div class="feedback-record-meta">新活动需求｜关联活动：无｜提交时间：2026-05-18 09:12</div>
+                                </div>
+                                <span class="feedback-status accepted">已采纳</span>
+                                <button class="feedback-detail-btn" type="button" onclick="openFeedbackRecordDetail(this)">查看详情</button>
+                            </div>
+                        </div>
+                        <div class="feedback-record" data-description="建议在骨科疾病病例征集活动中新增围手术期用药风险管理主题，覆盖术前用药评估、抗凝药调整、镇痛方案选择、感染风险管理和术后复诊注意事项。">
+                            <div class="feedback-record-head">
+                                <div>
+                                    <h3 class="feedback-record-title">建议新增围手术期用药风险管理主题</h3>
+                                    <div class="feedback-record-meta">活动建议｜关联活动：骨科疾病病例征集活动｜提交时间：2026-05-10 16:05</div>
+                                </div>
+                                <span class="feedback-status rejected">未采纳</span>
+                                <button class="feedback-detail-btn" type="button" onclick="openFeedbackRecordDetail(this)">查看详情</button>
+                            </div>
+                        </div>
+                        <div class="feedback-record" data-description="希望平台创建医学影像 AI 辅助诊断案例征集活动，征集医生在影像初筛、AI 提示结果复核、误判识别和最终诊断决策中的真实案例，帮助企业了解临床使用边界。">
+                            <div class="feedback-record-head">
+                                <div>
+                                    <h3 class="feedback-record-title">希望创建医学影像 AI 辅助诊断案例征集活动</h3>
+                                    <div class="feedback-record-meta">新活动需求｜关联活动：无｜提交时间：2026-05-16 11:20</div>
+                                </div>
+                                <span class="feedback-status pending">待处理</span>
+                                <button class="feedback-detail-btn" type="button" onclick="openFeedbackRecordDetail(this)">查看详情</button>
+                            </div>
+                        </div>
+                        <div class="feedback-record" data-description="建议在糖尿病规范化治疗病例征集大赛中增加糖尿病足风险筛查主题，关注早期筛查、伤口风险判断、转诊时机和患者日常护理教育。">
+                            <div class="feedback-record-head">
+                                <div>
+                                    <h3 class="feedback-record-title">建议增加糖尿病足风险筛查主题</h3>
+                                    <div class="feedback-record-meta">活动建议｜关联活动：糖尿病规范化治疗病例征集大赛｜提交时间：2026-05-14 15:48</div>
+                                </div>
+                                <span class="feedback-status accepted">已采纳</span>
+                                <button class="feedback-detail-btn" type="button" onclick="openFeedbackRecordDetail(this)">查看详情</button>
+                            </div>
+                        </div>
+                        <div class="feedback-record" data-description="建议在儿科呼吸系统疾病病例征集中补充儿童哮喘长期管理主题，重点关注用药依从性、家长教育、急性发作预警和复诊管理。">
+                            <div class="feedback-record-head">
+                                <div>
+                                    <h3 class="feedback-record-title">建议补充儿童哮喘长期管理主题</h3>
+                                    <div class="feedback-record-meta">活动建议｜关联活动：儿科呼吸系统疾病病例征集｜提交时间：2026-05-12 10:26</div>
+                                </div>
+                                <span class="feedback-status pending">待处理</span>
+                                <button class="feedback-detail-btn" type="button" onclick="openFeedbackRecordDetail(this)">查看详情</button>
+                            </div>
+                        </div>
+                        <div class="feedback-record" data-description="希望平台创建肿瘤免疫治疗真实病例征集活动，征集医生在适应症判断、疗效评估、不良反应管理和患者随访方面的真实经验。">
+                            <div class="feedback-record-head">
+                                <div>
+                                    <h3 class="feedback-record-title">希望平台创建肿瘤免疫治疗真实病例征集活动</h3>
+                                    <div class="feedback-record-meta">新活动需求｜关联活动：无｜提交时间：2026-05-09 17:05</div>
+                                </div>
+                                <span class="feedback-status rejected">未采纳</span>
+                                <button class="feedback-detail-btn" type="button" onclick="openFeedbackRecordDetail(this)">查看详情</button>
+                            </div>
+                        </div>
+                        <div class="feedback-record" data-description="建议在慢性阻塞性肺疾病病例征集活动中增加急性加重处理主题，关注患者识别、急诊处置、用药调整和出院后的随访管理。">
+                            <div class="feedback-record-head">
+                                <div>
+                                    <h3 class="feedback-record-title">建议增加慢阻肺急性加重处理主题</h3>
+                                    <div class="feedback-record-meta">活动建议｜关联活动：慢性阻塞性肺疾病病例征集活动｜提交时间：2026-05-06 13:40</div>
+                                </div>
+                                <span class="feedback-status accepted">已采纳</span>
+                                <button class="feedback-detail-btn" type="button" onclick="openFeedbackRecordDetail(this)">查看详情</button>
+                            </div>
+                        </div>
+                        <div class="feedback-record" data-description="希望平台创建老年多病共存用药管理活动，征集医生在多病共存患者中进行用药梳理、风险判断、药物相互作用处理和长期随访的经验。">
+                            <div class="feedback-record-head">
+                                <div>
+                                    <h3 class="feedback-record-title">希望平台创建老年多病共存用药管理活动</h3>
+                                    <div class="feedback-record-meta">新活动需求｜关联活动：无｜提交时间：2026-05-03 09:30</div>
+                                </div>
+                                <span class="feedback-status pending">待处理</span>
+                                <button class="feedback-detail-btn" type="button" onclick="openFeedbackRecordDetail(this)">查看详情</button>
+                            </div>
+                        </div>
+                        <div class="feedback-record" data-description="建议在神经科疑难病例讨论沙龙中增加用药依从性管理主题，关注慢病患者长期用药中断、剂量调整、复诊提醒和家庭支持等问题。">
+                            <div class="feedback-record-head">
+                                <div>
+                                    <h3 class="feedback-record-title">建议增加神经科用药依从性管理主题</h3>
+                                    <div class="feedback-record-meta">活动建议｜关联活动：神经科疑难病例讨论沙龙｜提交时间：2026-04-28 16:12</div>
+                                </div>
+                                <span class="feedback-status rejected">未采纳</span>
+                                <button class="feedback-detail-btn" type="button" onclick="openFeedbackRecordDetail(this)">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+            </div>
+    </main>
+    </div>
+
+    <!-- 活动详情模态框 -->
+    <div class="modal-overlay" id="activityModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">活动详情</h2>
+                <button class="modal-close" id="modalClose">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <!-- 活动详情内容 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 企业活动需求反馈弹窗 -->
+    <div class="modal-overlay" id="feedbackModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="feedbackModalTitle">提交活动需求</h2>
+                <button class="modal-close" type="button" onclick="closeFeedbackModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="feedback-modal-form" onsubmit="submitFeedback(event)">
+                    <div class="feedback-type-switch">
+                        <div class="feedback-type-option active" id="feedbackTypeActivity" onclick="setFeedbackType('activity')">
+                            <strong>针对已有活动</strong>
+                            <span>主题补充、主题方向建议、投稿要求建议等。</span>
+                        </div>
+                        <div class="feedback-type-option" id="feedbackTypeRequest" onclick="setFeedbackType('request')">
+                            <strong>希望平台创建新活动</strong>
+                            <span>提交新的学术征集方向，平台评估后创建活动。</span>
+                        </div>
+                    </div>
+
+                    <div class="feedback-form-grid">
+                        <div class="feedback-form-item full" id="relatedActivityField">
+                            <label>关联活动</label>
+                            <select id="feedbackActivityName">
+                                <option value="心血管疾病病例征稿活动">心血管疾病病例征稿活动</option>
+                                <option value="糖尿病规范化治疗病例征集大赛">糖尿病规范化治疗病例征集大赛</option>
+                                <option value="儿科呼吸系统疾病病例征集">儿科呼吸系统疾病病例征集</option>
+                                <option value="神经科疑难病例讨论沙龙">神经科疑难病例讨论沙龙</option>
+                                <option value="骨科疾病病例征集活动">骨科疾病病例征集活动</option>
+                            </select>
+                        </div>
+                        <div class="feedback-form-item full">
+                            <label>需求描述</label>
+                            <textarea id="feedbackContent" placeholder="请描述为什么需要补充这个主题，或希望平台创建什么样的活动。"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="feedback-modal-actions">
+                        <button class="modal-btn-secondary" type="button" onclick="closeFeedbackModal()">取消</button>
+                        <button class="modal-btn-primary" type="submit">提交给平台</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 选择使用统一跳转到活动详情页，按主题配置企业招募任务。 -->
+
+        <!-- 加载动画 -->
+    <div class="loading" id="loading" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>AI正在思考...</p>
+    </div>
+
+    <script src="../js/script.js?v=1"></script>
+    <script src="../js/menu.js?v=1"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // 加载顶部导航栏
+                const headerResponse = await fetch('components/header.html');
+                const headerHtml = await headerResponse.text();
+                document.getElementById('header-placeholder').innerHTML = headerHtml;
+                
+                // 加载左侧侧边栏
+                const sidebarResponse = await fetch('components/sidebar.html');
+                const sidebarHtml = await sidebarResponse.text();
+                document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+                
+                // 初始化菜单
+                initializeMenu();
+            } catch (error) {
+                console.error('加载组件失败:', error);
+            }
+
+            // 引导区折叠/展开
+            const guideToggle = document.getElementById('guideToggle');
+            const guideContent = document.getElementById('guideContent');
+            
+            if (guideToggle && guideContent) {
+                guideToggle.addEventListener('click', function() {
+                if (guideContent.style.display === 'none') {
+                    guideContent.style.display = 'grid';
+                    guideToggle.innerHTML = `
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                        收起
+                    `;
+                } else {
+                    guideContent.style.display = 'none';
+                    guideToggle.innerHTML = `
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="18 15 12 9 6 15"></polyline>
+                        </svg>
+                        展开
+                    `;
+                }
+                });
+            }
+
+            // 排序选项切换
+            const sortOptions = document.querySelectorAll('.sort-option');
+            sortOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    sortOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 重置按钮
+            const resetBtn = document.getElementById('resetBtn');
+            if (resetBtn) {
+                resetBtn.addEventListener('click', function() {
+                document.getElementById('statusFilter').value = 'ongoing';
+                document.getElementById('disciplineFilter').value = 'all';
+                document.getElementById('startDate').value = '';
+                document.getElementById('endDate').value = '';
+                document.getElementById('keywordSearch').value = '';
+                });
+            }
+
+            // 关闭模态框
+            document.getElementById('modalClose').addEventListener('click', function() {
+                document.getElementById('activityModal').classList.remove('active');
+            });
+
+            // 点击模态框外部关闭
+            document.getElementById('activityModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+
+            const feedbackModal = document.getElementById('feedbackModal');
+            if (feedbackModal) {
+                feedbackModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeFeedbackModal();
+                    }
+                });
+            }
+
+            renderStoredMyActivities();
+            const pendingFeedbackTitle = sessionStorage.getItem('pendingActivityFeedbackTitle');
+            if (pendingFeedbackTitle) {
+                sessionStorage.removeItem('pendingActivityFeedbackTitle');
+                openFeedbackModal('activity', pendingFeedbackTitle);
+            } else if (window.location.hash === '#feedback') {
+                switchMarketTab('feedback');
+            }
+
+            const myActivitySearch = document.getElementById('myActivitySearch');
+            const myActivityStatus = document.getElementById('myActivityStatus');
+            if (myActivitySearch) {
+                myActivitySearch.addEventListener('input', filterMyActivities);
+            }
+            if (myActivityStatus) {
+                myActivityStatus.addEventListener('change', filterMyActivities);
+            }
+
+            ['contentSearch', 'contentActivityFilter', 'contentTypeFilter', 'contentStatusFilter', 'contentFlowFilter'].forEach(id => {
+                const filter = document.getElementById(id);
+                if (!filter) return;
+                filter.addEventListener(filter.tagName === 'INPUT' ? 'input' : 'change', filterAcademicContents);
+            });
+            updateAcademicContentStats();
+            filterAcademicContents();
+        });
+
+        // Tab切换函数
+        function setFeedbackType(type) {
+            const isRequest = type === 'request';
+            document.getElementById('feedbackTypeActivity')?.classList.toggle('active', !isRequest);
+            document.getElementById('feedbackTypeRequest')?.classList.toggle('active', isRequest);
+
+            const relatedActivityField = document.getElementById('relatedActivityField');
+            const modalTitle = document.getElementById('feedbackModalTitle');
+            const content = document.getElementById('feedbackContent');
+
+            if (relatedActivityField) {
+                relatedActivityField.style.display = isRequest ? 'none' : 'block';
+            }
+            if (modalTitle) {
+                modalTitle.textContent = isRequest ? '提交活动需求' : '提交活动建议';
+            }
+            if (content) {
+                content.placeholder = isRequest ? '请描述希望平台创建什么活动、面向什么医生、解决什么业务需求。' : '请描述当前活动哪里需要补充，或为什么希望新增这个主题。';
+            }
+        }
+
+        function openFeedbackModal(type = 'activity', activityTitle = '') {
+            const modal = document.getElementById('feedbackModal');
+            if (!modal) return;
+
+            setFeedbackType(type === 'activity-request' ? 'request' : type);
+            const activityInput = document.getElementById('feedbackActivityName');
+            if (activityInput && activityTitle) {
+                activityInput.value = activityTitle;
+            }
+            modal.classList.add('active');
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedbackModal')?.classList.remove('active');
+        }
+
+        function submitFeedback(event) {
+            event.preventDefault();
+            const modalTitle = document.getElementById('feedbackModalTitle')?.textContent || '提交活动建议';
+            const description = document.getElementById('feedbackContent')?.value.trim() || '新的活动需求';
+            const isRequest = modalTitle.includes('活动需求');
+            const summary = description.length > 24 ? `${description.slice(0, 24)}...` : description;
+            const recordTitle = isRequest ? `希望平台创建：${summary}` : `活动建议：${summary}`;
+            const relatedActivity = document.getElementById('feedbackActivityName')?.value.trim() || '无';
+
+            const list = document.getElementById('myFeedbackList');
+            if (list) {
+                const record = document.createElement('div');
+                record.className = 'feedback-record';
+                record.dataset.description = description;
+                record.innerHTML = `
+                    <div class="feedback-record-head">
+                        <div>
+                            <h3 class="feedback-record-title">${escapeHtml(recordTitle)}</h3>
+                            <div class="feedback-record-meta">${isRequest ? '新活动需求' : '活动建议'}｜关联活动：${escapeHtml(isRequest ? '无' : relatedActivity)}｜提交时间：刚刚</div>
+                        </div>
+                        <span class="feedback-status pending">待处理</span>
+                        <button class="feedback-detail-btn" type="button" onclick="openFeedbackRecordDetail(this)">查看详情</button>
+                    </div>
+                `;
+                list.prepend(record);
+            }
+
+            closeFeedbackModal();
+            switchMarketTab('feedback');
+        }
+
+        function openFeedbackRecordDetail(button) {
+            const record = button.closest('.feedback-record');
+            if (!record) return;
+
+            const title = record.querySelector('.feedback-record-title')?.textContent || '反馈详情';
+            const meta = record.querySelector('.feedback-record-meta')?.textContent || '';
+            const status = record.querySelector('.feedback-status')?.textContent || '';
+            const description = record.dataset.description || title;
+            const modal = document.getElementById('activityModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+
+            if (!modal || !modalTitle || !modalContent) return;
+
+            modalTitle.textContent = '反馈详情';
+            modalContent.innerHTML = `
+                <div class="feedback-detail-view">
+                    <h3>${escapeHtml(title)}</h3>
+                    <div class="detail-meta">${escapeHtml(meta)}｜状态：${escapeHtml(status)}</div>
+                    <div class="detail-desc">${escapeHtml(description)}</div>
+                </div>
+            `;
+            modal.classList.add('active');
+        }
+
+        function switchMarketTab(tabName) {
+            // 切换Tab按钮状态
+            const tabs = document.querySelectorAll('.service-tabs .service-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+            
+            // 切换活动广场banner显示
+            const banner = document.querySelector('.activity-banner');
+            if (banner) {
+                banner.style.display = tabName === 'plaza' ? 'block' : 'none';
+            }
+            
+            // 切换活动广场卡片列表（在tab-content外面的元素）
+            const activitiesGrid = document.getElementById('activitiesGrid');
+            if (activitiesGrid) {
+                activitiesGrid.style.display = tabName === 'plaza' ? 'grid' : 'none';
+            }
+            
+            // 切换Tab内容
+            const contents = document.querySelectorAll('.market-tab-content');
+            contents.forEach(content => content.style.display = 'none');
+            document.getElementById('tab-content-' + tabName).style.display = 'block';
+        }
+
+        function switchMyActivityView(viewName) {
+            document.querySelectorAll('.my-view-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.my-view-panel').forEach(panel => panel.classList.remove('active'));
+
+            const activeTab = document.getElementById(`my-view-tab-${viewName}`);
+            const activePanel = document.getElementById(viewName === 'contents' ? 'myContentsView' : 'myActivitiesView');
+
+            if (activeTab) activeTab.classList.add('active');
+            if (activePanel) activePanel.classList.add('active');
+
+            if (viewName === 'contents') {
+                filterAcademicContents();
+            } else {
+                filterMyActivities();
+            }
+        }
+
+        // 领域筛选函数
+        function selectDiscipline(discipline) {
+            const buttons = document.querySelectorAll('.discipline-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.discipline-btn[data-value="' + discipline + '"]').classList.add('active');
+        }
+
+        // 打开活动详情
+        function openActivityDetail(activityId, scrollToApply = false) {
+            window.location.href = 'activity-detail.html?id=' + activityId;
+            return;
+            
+            const modal = document.getElementById('activityModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            const activities = {
+                '1': {
+                    title: '全国心血管疾病诊疗新进展学术研讨会',
+                    status: '进行中',
+                    statusClass: 'tag-status',
+                    deadline: '2025-12-31',
+                    activityTypes: [
+                        {
+                            type: '医学播客',
+                            icon: '🎙️',
+                            topics: [
+                                {
+                                    name: '冠心病诊疗新进展',
+                                    description: '本主题旨在分享冠心病诊断与治疗的最新技术和临床经验。包括冠状动脉造影、支架植入、药物洗脱支架应用等介入治疗技术的创新实践；新型抗血小板药物、他汀类药物的优化使用等药物治疗方案；以及精准医疗在冠心病个体化治疗中的应用案例。',
+                                    submissions: 156,
+                                    purchases: 89
+                                },
+                                {
+                                    name: '心力衰竭管理',
+                                    description: '本主题聚焦心力衰竭患者的综合管理策略。包括ACEI/ARB、β受体阻滞剂、利尿剂等药物的规范化使用与剂量滴定经验；心脏再同步化治疗(CRT)、植入式心律转复除颤器(ICD)等器械治疗的适应症选择与术后管理。',
+                                    submissions: 124,
+                                    purchases: 76
+                                }
+                            ]
+                        },
+                        {
+                            type: '在线互动病例',
+                            icon: '💬',
+                            topics: [
+                                {
+                                    name: '心律失常诊治',
+                                    description: '本主题介绍心律失常的诊断方法和治疗技术。包括心电图、动态心电图、电生理检查等诊断手段的应用经验；射频消融、冷冻消融等微创治疗技术在房颤、室上速、室速等复杂心律失常中的应用案例。',
+                                    submissions: 98,
+                                    purchases: 52
+                                }
+                            ]
+                        },
+                        {
+                            type: '手术视频',
+                            icon: '🎬',
+                            topics: [
+                                {
+                                    name: '复杂冠脉介入手术',
+                                    description: '本主题展示复杂冠状动脉介入手术的操作技巧和经验分享。包括慢性完全闭塞病变(CTO)的开通策略、多支血管病变的介入治疗顺序选择、钙化病变的处理方法等。',
+                                    submissions: 67,
+                                    purchases: 43
+                                },
+                                {
+                                    name: '心脏起搏器植入',
+                                    description: '本主题介绍心脏起搏器植入手术的技术要点和并发症管理。包括单腔、双腔起搏器的选择原则，植入部位的选择，术后随访和参数调整等方面的经验分享。',
+                                    submissions: 45,
+                                    purchases: 31
+                                }
+                            ]
+                        }
+                    ],
+                    description: '本次学术研讨会旨在促进全国心血管领域医生之间的交流与合作，分享最新的诊疗技术和研究成果。活动将邀请国内知名专家进行专题讲座，并通过病例征集的方式收集优秀临床案例进行分享讨论。',
+                    requirements: [
+                        '投稿病例需为近一年内的临床真实案例',
+                        '病例需具有一定的代表性和教学意义',
+                        '需提供完整的病例资料，包括病史、检查报告、诊疗过程等',
+                        '病例报告需符合医学伦理规范'
+                    ],
+                    applied: false
+                },
+                '2': {
+                    title: '2025糖尿病规范化治疗病例征集大赛',
+                    status: '即将开始',
+                    statusClass: 'tag-status upcoming',
+                    deadline: '2026-02-28',
+                    topics: ['糖尿病分型诊断', '血糖监测技术', '胰岛素治疗方案', '并发症管理', '糖尿病教育'],
+                    description: '本次大赛旨在推动糖尿病规范化治疗，提升临床医生的诊疗水平。通过征集优秀病例，分享糖尿病诊疗经验，促进学术交流。',
+                    requirements: [
+                        '投稿病例需为糖尿病患者的完整诊疗记录',
+                        '需包含患者基本信息、诊疗过程、治疗效果等',
+                        '鼓励提交具有创新性治疗方案的病例',
+                        '病例报告需真实可靠'
+                    ],
+                    applied: false
+                },
+                '3': {
+                    title: '儿科呼吸系统疾病病例征集',
+                    status: '进行中',
+                    statusClass: 'tag-status',
+                    deadline: '2025-12-20',
+                    topics: ['儿童哮喘诊治', '肺炎支原体感染', '小儿支气管炎', '过敏性鼻炎', '儿童睡眠呼吸障碍'],
+                    description: '聚焦儿童呼吸系统疾病，征集临床优秀病例，促进儿科医生之间的经验分享与交流，提升儿童呼吸系统疾病的诊疗水平。',
+                    requirements: [
+                        '投稿病例需为14岁以下儿童患者',
+                        '需提供详细的病史和检查资料',
+                        '病例需具有一定的典型性或复杂性',
+                        '需获得患者家属的知情同意'
+                    ],
+                    applied: true
+                },
+                '4': {
+                    title: '神经科疑难病例讨论沙龙',
+                    status: '已结束',
+                    statusClass: 'tag-status ended',
+                    deadline: '2025-11-30',
+                    topics: ['脑血管疾病', '帕金森病', '癫痫诊治', '多发性硬化', '周围神经病变'],
+                    description: '本次沙龙汇集了全国神经科领域的专家，共同探讨疑难病例的诊断与治疗，分享临床经验和最新研究进展。',
+                    requirements: [],
+                    applied: false
+                },
+                '5': {
+                    title: '慢性阻塞性肺疾病病例征集活动',
+                    status: '进行中',
+                    statusClass: 'tag-status',
+                    deadline: '2026-01-15',
+                    topics: ['COPD诊断与评估', '急性加重期管理', '稳定期治疗', '康复治疗', '并发症防治'],
+                    description: '针对慢性阻塞性肺疾病开展病例征集活动，旨在提高临床医生对COPD的认识和诊疗水平，分享优秀的临床经验。',
+                    requirements: [
+                        '投稿病例需为COPD确诊患者',
+                        '需提供完整的诊疗记录',
+                        '病例需体现规范的诊疗流程',
+                        '鼓励提交有特殊治疗效果的病例'
+                    ],
+                    applied: false
+                },
+                '6': {
+                    title: '肿瘤精准治疗病例分享大赛',
+                    status: '进行中',
+                    statusClass: 'tag-status',
+                    deadline: '2025-12-18',
+                    topics: ['肿瘤基因检测', '靶向治疗', '免疫治疗', '个体化治疗方案', '疗效评估'],
+                    description: '本次大赛旨在推动肿瘤精准治疗的发展，通过分享优秀病例，促进肿瘤治疗的个体化和精准化，提高肿瘤患者的治疗效果。',
+                    requirements: [
+                        '投稿病例需为肿瘤患者的完整诊疗记录',
+                        '需包含基因检测结果和治疗方案',
+                        '病例需体现精准治疗的理念',
+                        '需提供治疗效果评估数据'
+                    ],
+                    applied: false
+                }
+            };
+
+            const activity = activities[activityId];
+            if (!activity) return;
+
+            let content = `
+                <div class="detail-cover">
+                </div>
+                
+                <span class="detail-status" style="background-color: ${activity.status === '进行中' ? '#dcfce7' : activity.status === '即将开始' ? '#fef3c7' : '#f3f4f6'}; color: ${activity.status === '进行中' ? '#16a34a' : activity.status === '即将开始' ? '#d97706' : '#6b7280'};">
+                    ${activity.status}
+                </span>
+                
+                <h2 class="detail-title">${activity.title}</h2>
+                
+                <div class="detail-info">
+                    <div>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 8px;">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        招募截止：${activity.deadline}
+                    </div>
+                    <div>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 8px;">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        ${activity.topics.length}个主题
+                    </div>
+                    <div>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 8px;">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        已有多家企业使用
+                    </div>
+                </div>
+
+                <h3 class="section-title">活动介绍</h3>
+                <div class="activity-desc">${activity.description}</div>
+
+                <h3 class="section-title">征稿主题</h3>
+                <div class="topics-list">
+            `;
+
+            activity.topics.forEach((topic, index) => {
+                content += `
+                    <div class="topic-item">
+                        <span class="topic-name">${topic}</span>
+                        <span class="topic-count">主题${index + 1}</span>
+                    </div>
+                `;
+            });
+
+            content += `</div>`;
+
+            if (activity.requirements.length > 0) {
+                content += `
+                    <h3 class="section-title">投稿要求</h3>
+                    <div class="requirements-list">
+                        <ul>
+                `;
+                activity.requirements.forEach(req => {
+                    content += `<li>${req}</li>`;
+                });
+                content += `</ul></div>`;
+            }
+
+            if (activity.status === '进行中') {
+                if (activity.applied) {
+                    content += `
+                        <div class="applied-banner">
+                            <div class="applied-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="applied-content">
+                                <p>您已申请使用此活动</p>
+                                <a href="activities.html">点击查看申请进度</a>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    content += `
+                        <h3 class="section-title">申请使用</h3>
+                        <div class="apply-form">
+                            <div class="form-group">
+                                <label class="form-label">采购数量 <span style="color: #ef4444;">*</span></label>
+                                <input type="number" class="form-input" id="purchaseCount" min="1" max="500" placeholder="请输入采购数量">
+                                <div class="form-hint">单次采购数量范围：1-500份</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">目标医生条件</label>
+                                
+                                <div style="margin-bottom: 12px;">
+                                    <span style="font-size: 13px; color: #6b7280; font-weight: 500;">省份</span>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="province1" checked>
+                                            <label for="province1">全部省份</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="province2">
+                                            <label for="province2">北京</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="province3">
+                                            <label for="province3">上海</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="province4">
+                                            <label for="province4">广东</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="province5">
+                                            <label for="province5">浙江</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-bottom: 12px;">
+                                    <span style="font-size: 13px; color: #6b7280; font-weight: 500;">医院等级</span>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="hospital1" checked>
+                                            <label for="hospital1">全部等级</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="hospital2">
+                                            <label for="hospital2">三级甲等</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="hospital3">
+                                            <label for="hospital3">三级乙等</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="hospital4">
+                                            <label for="hospital4">二级医院</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <span style="font-size: 13px; color: #6b7280; font-weight: 500;">医生身份</span>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="doctor1" checked>
+                                            <label for="doctor1">全部身份</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="doctor2">
+                                            <label for="doctor2">主任医师</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="doctor3">
+                                            <label for="doctor3">副主任医师</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="doctor4">
+                                            <label for="doctor4">主治医师</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button class="cancel-btn" onclick="document.getElementById('activityModal').classList.remove('active')">取消</button>
+                                <button class="submit-btn" onclick="submitApplication()">提交申请</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            modalContent.innerHTML = content;
+            modal.classList.add('active');
+
+            // 如果需要滚动到申请表单
+            if (scrollToApply && !activity.applied) {
+                setTimeout(() => {
+                    const applyForm = document.querySelector('.apply-form');
+                    if (applyForm) {
+                        applyForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 300);
+            }
+        }
+
+        const ACTIVITY_USE_STORAGE_KEY = 'selectedMarketActivities';
+
+        function escapeHtml(value) {
+            return String(value || '').replace(/[&<>"']/g, function(char) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[char];
+            });
+        }
+
+        const academicContentDetails = {
+            'work-cardio-1': {
+                title: '冠心病精准介入治疗实践',
+                type: '医学播客',
+                typeClass: 'medical-podcast',
+                activity: '心血管疾病病例征稿活动',
+                theme: '冠心病诊疗新进展',
+                doctor: '张明｜主任医师｜心内科',
+                hospital: '广州XX医院',
+                submitTime: '2026-05-05 14:20',
+                status: '审核通过',
+                flow: '待采购',
+                summary: '内容围绕冠心病介入治疗中的影像评估、支架策略和术后药物管理展开，包含一个完整病例路径，适合用于产品学术沟通前的临床场景铺垫。'
+            },
+            'work-cardio-2': {
+                title: '心力衰竭长期随访管理病例',
+                type: '互动病例',
+                typeClass: 'interactive-case',
+                activity: '心血管疾病病例征稿活动',
+                theme: '心力衰竭管理',
+                doctor: '李华｜副主任医师｜心内科',
+                hospital: '广州XX医院',
+                submitTime: '2026-05-06 10:15',
+                status: '待审核',
+                flow: '待审核',
+                summary: '内容以心衰患者从入院评估到出院随访为主线，包含用药调整、依从性管理和复诊指标观察，目前等待企业侧确认内容适配度。'
+            },
+            'work-cardio-3': {
+                title: '房颤射频消融关键步骤',
+                type: '手术视频',
+                typeClass: 'surgery-video',
+                activity: '心血管疾病病例征稿活动',
+                theme: '心律失常诊治',
+                doctor: '王强｜主任医师｜心内科',
+                hospital: '北京XX医院',
+                submitTime: '2026-05-07 16:30',
+                status: '已采购',
+                flow: '待传播',
+                summary: '视频拆解房颤射频消融术前评估、建模、消融路径和术后观察要点，已经完成采购，可进入下载、学术传递或二次内容整理流程。'
+            },
+            'work-diabetes-1': {
+                title: '糖尿病诊治指南解读',
+                type: '医学播客',
+                typeClass: 'medical-podcast',
+                activity: '糖尿病规范化治疗病例征集大赛',
+                theme: '血糖监测与药物优化',
+                doctor: '刘洋｜副主任医师｜内分泌科',
+                hospital: '上海XX医院',
+                submitTime: '2025-11-06 10:00',
+                status: '审核通过',
+                flow: '已采购',
+                summary: '内容结合真实门诊病例讲解血糖监测策略和药物调整逻辑，适合用于销售团队理解规范化治疗路径。'
+            },
+            'work-pediatric-1': {
+                title: '儿童哮喘急性发作处置病例',
+                type: '互动病例',
+                typeClass: 'interactive-case',
+                activity: '儿科呼吸系统疾病病例征集',
+                theme: '儿童哮喘诊治',
+                doctor: '陈雪｜主治医师｜儿科',
+                hospital: '杭州XX儿童医院',
+                submitTime: '2026-05-18 09:20',
+                status: '已驳回',
+                flow: '已驳回',
+                summary: '病例结构完整，但部分检查资料缺失，当前不建议采购。可保留复核记录，等待医生补充材料后再次评估。'
+            },
+            'work-neurology-1': {
+                title: '疑难癫痫病例诊疗复盘',
+                type: '手术视频',
+                typeClass: 'surgery-video',
+                activity: '神经科疑难病例讨论沙龙',
+                theme: '癫痫诊治',
+                doctor: '赵强｜主任医师｜神经内科',
+                hospital: '北京XX医院',
+                submitTime: '2025-10-12 17:10',
+                status: '已采购',
+                flow: '已传播',
+                summary: '内容以疑难癫痫患者的诊疗复盘为核心，呈现多学科讨论和关键诊疗节点，已经采购并可用于内部学术培训。'
+            }
+        };
+
+        function updateAcademicContentStats() {
+            const rows = Array.from(document.querySelectorAll('#academicContentTableBody tr[data-content-row]'));
+            const total = rows.length;
+            const pending = rows.filter(row => row.dataset.status === 'pending').length;
+            const purchased = rows.filter(row => ['purchased', 'transfer-pending', 'transferred'].includes(row.dataset.flow)).length;
+            const pendingTransfer = rows.filter(row => row.dataset.flow === 'transfer-pending').length;
+            const transferred = rows.filter(row => row.dataset.flow === 'transferred').length;
+
+            const setText = (id, value) => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = value;
+            };
+
+            setText('totalContentCount', total);
+            setText('pendingReviewCount', pending);
+            setText('purchasedContentCount', purchased);
+            setText('pendingTransferCount', pendingTransfer);
+            setText('transferredContentCount', transferred);
+        }
+
+        function filterAcademicContents() {
+            const keyword = (document.getElementById('contentSearch')?.value || '').trim().toLowerCase();
+            const activity = document.getElementById('contentActivityFilter')?.value || 'all';
+            const type = document.getElementById('contentTypeFilter')?.value || 'all';
+            const status = document.getElementById('contentStatusFilter')?.value || 'all';
+            const flow = document.getElementById('contentFlowFilter')?.value || 'all';
+            const rows = document.querySelectorAll('#academicContentTableBody tr[data-content-row]');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const matchedKeyword = !keyword || text.includes(keyword);
+                const matchedActivity = activity === 'all' || row.dataset.activity === activity;
+                const matchedType = type === 'all' || row.dataset.type === type;
+                const matchedStatus = status === 'all' || row.dataset.status === status;
+                const matchedFlow = flow === 'all' || row.dataset.flow === flow;
+                const visible = matchedKeyword && matchedActivity && matchedType && matchedStatus && matchedFlow;
+                row.style.display = visible ? '' : 'none';
+                if (visible) visibleCount += 1;
+            });
+
+            const countEl = document.getElementById('visibleContentCount');
+            if (countEl) countEl.textContent = visibleCount;
+
+            const emptyState = document.getElementById('contentEmptyState');
+            if (emptyState) emptyState.style.display = visibleCount ? 'none' : 'block';
+        }
+
+        function resetAcademicContentFilters() {
+            const fields = {
+                contentSearch: '',
+                contentActivityFilter: 'all',
+                contentTypeFilter: 'all',
+                contentStatusFilter: 'all',
+                contentFlowFilter: 'all'
+            };
+
+            Object.entries(fields).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) element.value = value;
+            });
+            filterAcademicContents();
+        }
+
+        function openAcademicContentPreview(contentId) {
+            const content = academicContentDetails[contentId];
+            if (!content) return;
+
+            const modal = document.getElementById('activityModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            if (!modal || !modalContent) return;
+
+            if (modalTitle) modalTitle.textContent = '学术内容详情';
+            modalContent.innerHTML = `
+                <div class="content-preview-head">
+                    <span class="work-type ${escapeHtml(content.typeClass)}">${escapeHtml(content.type)}</span>
+                    <h2>${escapeHtml(content.title)}</h2>
+                    <p>${escapeHtml(content.activity)} / ${escapeHtml(content.theme)}</p>
+                </div>
+                <div class="content-preview-grid">
+                    <div class="content-preview-item">
+                        <span>投稿医生</span>
+                        <strong>${escapeHtml(content.doctor)}</strong>
+                    </div>
+                    <div class="content-preview-item">
+                        <span>所在医院</span>
+                        <strong>${escapeHtml(content.hospital)}</strong>
+                    </div>
+                    <div class="content-preview-item">
+                        <span>投稿时间</span>
+                        <strong>${escapeHtml(content.submitTime)}</strong>
+                    </div>
+                    <div class="content-preview-item">
+                        <span>状态</span>
+                        <strong>${escapeHtml(content.status)} / ${escapeHtml(content.flow)}</strong>
+                    </div>
+                </div>
+                <div class="content-preview-section">
+                    <h3>内容摘要</h3>
+                    <p>${escapeHtml(content.summary)}</p>
+                </div>
+            `;
+            modal.classList.add('active');
+        }
+
+        function handleContentAction(message) {
+            alert(message);
+        }
+
+        function getStoredUsedActivities() {
+            try {
+                return JSON.parse(localStorage.getItem(ACTIVITY_USE_STORAGE_KEY)) || [];
+            } catch (error) {
+                console.warn('读取已选择活动失败:', error);
+                return [];
+            }
+        }
+
+        function normalizeSelectedThemes(activity) {
+            if (!activity) return [];
+            if (Array.isArray(activity.selectedThemes)) return activity.selectedThemes;
+            if (activity.selectedTheme || activity.selectedThemeName) {
+                return [{
+                    id: activity.selectedTheme || 'legacy_theme',
+                    name: activity.selectedThemeName || '已选主题',
+                    type: activity.selectedThemeType || '主题任务',
+                    purchaseCount: Number(activity.purchaseCount) || 0,
+                    province: activity.province || '全部省份',
+                    hospital: activity.hospital || '全部等级',
+                    doctor: activity.doctor || '全部身份',
+                    dept: activity.dept || '全部科室',
+                    taskId: activity.taskId || '历史任务'
+                }];
+            }
+            return [];
+        }
+
+        function saveUsedActivity(activity) {
+            const activities = getStoredUsedActivities();
+            const existingIndex = activities.findIndex(item => item.activityId === activity.activityId);
+
+            if (existingIndex >= 0) {
+                const existingThemes = normalizeSelectedThemes(activities[existingIndex]);
+                const mergedThemes = [...existingThemes];
+                (activity.selectedThemes || []).forEach(theme => {
+                    const themeIndex = mergedThemes.findIndex(item => item.id === theme.id);
+                    if (themeIndex >= 0) {
+                        mergedThemes[themeIndex] = {
+                            ...mergedThemes[themeIndex],
+                            ...theme
+                        };
+                    } else {
+                        mergedThemes.push(theme);
+                    }
+                });
+
+                const totalPurchaseCount = mergedThemes.reduce((sum, theme) => sum + (Number(theme.purchaseCount) || 0), 0);
+                activities[existingIndex] = {
+                    ...activities[existingIndex],
+                    ...activity,
+                    selectedThemes: mergedThemes,
+                    selectedThemeName: mergedThemes.map(theme => theme.name).join('、'),
+                    purchaseCount: totalPurchaseCount,
+                    totalPurchaseCount
+                };
+            } else {
+                activities.unshift(activity);
+            }
+
+            localStorage.setItem(ACTIVITY_USE_STORAGE_KEY, JSON.stringify(activities));
+        }
+
+        function renderStoredMyActivities() {
+            const list = document.getElementById('myActivitiesList');
+            if (!list) return;
+
+            list.querySelectorAll('.activity-card[data-source="local-use"]').forEach(card => card.remove());
+
+            const activities = getStoredUsedActivities();
+            activities.forEach(activity => {
+                const status = activity.activityStatus || '进行中';
+                const statusClass = status === '已结束' ? 'ended' : 'ongoing';
+                const selectedThemes = normalizeSelectedThemes(activity);
+                const themeNames = selectedThemes.map(theme => theme.name).join('、') || '已选主题';
+                const totalPurchaseCount = selectedThemes.reduce((sum, theme) => sum + (Number(theme.purchaseCount) || 0), 0) || activity.purchaseCount || 0;
+                const conditionSummary = selectedThemes.length
+                    ? selectedThemes.map(theme => `${theme.name}：${theme.province}/${theme.hospital}/${theme.doctor}/${theme.dept}`).join('；')
+                    : `${activity.province || '全部省份'} / ${activity.hospital || '全部等级'} / ${activity.doctor || '全部身份'} / ${activity.dept || '全部科室'}`;
+                const card = document.createElement('div');
+                card.className = 'activity-card';
+                card.dataset.activityId = activity.activityId;
+                card.dataset.source = 'local-use';
+                card.dataset.status = statusClass;
+                card.innerHTML = `
+                    <div class="card-cover">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=medical%20academic%20activity%20professional%20conference&image_size=landscape_16_9" alt="活动封面">
+                        <div class="card-badge ${statusClass}">${escapeHtml(status)}</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${escapeHtml(activity.activityTitle || '活动详情')}</h3>
+                        <span class="field-badge">${escapeHtml(activity.productTagName || '产品标签')}</span>
+                        <div class="card-stats">
+	                            <div class="stat-item">
+	                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+	                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+	                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+	                                </svg>
+	                                目标合计 ${escapeHtml(totalPurchaseCount)} 份
+	                            </div>
+	                            <div class="stat-item">
+	                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+	                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+	                                    <circle cx="9" cy="7" r="4"></circle>
+	                                </svg>
+	                                ${escapeHtml(selectedThemes.length ? `${selectedThemes.length}个主题任务` : themeNames)}
+	                            </div>
+	                        </div>
+	                        <div class="card-time">
+	                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+	                                <path d="M9 11l3 3L22 4"></path>
+	                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+	                            </svg>
+	                            <span class="card-time-text">开放主题：</span>
+	                            <span class="card-time-value">${escapeHtml(themeNames)}</span>
+	                        </div>
+	                        <div class="card-time">
+	                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+	                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+	                            </svg>
+	                            <span class="card-time-text">使用条件：</span>
+	                            <span class="card-time-value">${escapeHtml(conditionSummary)}</span>
+	                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-secondary" onclick="openActivityDetail('${escapeHtml(activity.activityId)}')">查看详情</button>
+                        </div>
+                    </div>
+                `;
+                list.prepend(card);
+            });
+
+            filterMyActivities();
+        }
+
+        function filterMyActivities() {
+            const keyword = (document.getElementById('myActivitySearch')?.value || '').trim().toLowerCase();
+            const status = document.getElementById('myActivityStatus')?.value || 'all';
+            const cards = document.querySelectorAll('#myActivitiesList .activity-card');
+
+            cards.forEach(card => {
+                const searchableText = card.textContent.toLowerCase();
+                const cardStatus = card.dataset.status || (card.querySelector('.card-badge')?.classList.contains('ended') ? 'ended' : 'ongoing');
+                const matchedKeyword = !keyword || searchableText.includes(keyword);
+                const matchedStatus = status === 'all' || status === cardStatus;
+                card.style.display = matchedKeyword && matchedStatus ? '' : 'none';
+            });
+        }
+
+        // 提交申请
+        function submitApplication() {
+            const purchaseCount = document.getElementById('purchaseCount').value;
+            if (!purchaseCount || purchaseCount < 1 || purchaseCount > 500) {
+                alert('请输入有效的采购数量（1-500）');
+                return;
+            }
+
+            alert('申请成功，平台将开始招募医生。您可以在"我的活动"中查看招募进度。');
+            document.getElementById('activityModal').classList.remove('active');
+        }
+
+        // 打开使用设置弹窗
+        function openUseSettingModal(activityId) {
+            window.location.href = 'activity-detail.html?id=' + activityId;
+            return;
+
+            document.getElementById('useSettingActivityId').value = activityId;
+            document.getElementById('useSettingModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            document.getElementById('useSettingPurchaseCount').value = '';
+            document.getElementById('useSettingProductTag').value = 'all';
+            document.getElementById('useSettingProvince').value = 'all';
+            document.getElementById('useSettingHospital').value = 'all';
+            document.getElementById('useSettingDoctor').value = 'all';
+            document.getElementById('useSettingDept').value = 'all';
+        }
+
+        // 关闭使用设置弹窗
+        function closeUseSettingModal() {
+            const modal = document.getElementById('useSettingModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+            document.body.style.overflow = '';
+        }
+
+        // 确认使用设置
+        function confirmUseSetting() {
+            const activityId = document.getElementById('useSettingActivityId')?.value;
+            if (activityId) {
+                window.location.href = 'activity-detail.html?id=' + activityId;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('useSettingModal');
+            if (!modal) return;
+
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeUseSettingModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

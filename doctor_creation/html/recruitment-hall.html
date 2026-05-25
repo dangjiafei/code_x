@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>招募大厅 - 创作者中心</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js"></script>
+</head>
+<body>
+    <script>
+        async function loadComponents() {
+            const headerResponse = await fetch('components/header.html');
+            const headerContent = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerContent;
+
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarContent = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarContent;
+
+            if (typeof initializeMenu === 'function') {
+                initializeMenu();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+
+    <div id="header-placeholder"></div>
+
+    <div class="main-container">
+        <div id="sidebar-placeholder"></div>
+
+        <main class="content-area recruitment-page">
+            <div class="content-card recruitment-content-card">
+                <section class="recruitment-featured">
+                    <div class="featured-copy">
+                        <span>本期重点</span>
+                        <h2>心血管真实世界诊疗经验专题征集</h2>
+                        <p>围绕冠心病、心衰、心律失常和复杂介入等临床场景，征集可复盘、可交流的真实诊疗经验。</p>
+                        <div class="content-type-tags">
+                            <span>医学播客</span>
+                            <span>在线互动病例</span>
+                            <span>手术/操作视频</span>
+                        </div>
+                    </div>
+                    <div class="featured-metrics">
+                        <div><strong>2/5</strong><span>可参与主题</span></div>
+                        <div><strong>5天</strong><span>剩余时间</span></div>
+                        <div><strong class="field-value">心血管</strong><span>医学领域</span></div>
+                    </div>
+                    <a class="action-btn primary" href="marketing-detail.html">查看活动</a>
+                </section>
+
+                <section class="recruitment-filter-panel">
+                    <div class="filter-items-container">
+                        <div class="filter-item">
+                            <input id="activityNameSearch" type="text" placeholder="搜索活动名称" style="width: 260px;">
+                        </div>
+                        <div class="filter-item">
+                            <select>
+                                <option>全部医学领域</option>
+                                <option>心血管</option>
+                                <option>内分泌</option>
+                                <option>儿科</option>
+                                <option>骨科</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="quick-filter-chips">
+                        <button type="button">全部活动</button>
+                        <button type="button">即将截止</button>
+                        <button type="button">最新开放</button>
+                        <button class="active" type="button">我关注的</button>
+                    </div>
+                </section>
+
+                <div class="recruitment-card-grid">
+                    <article class="recruitment-card">
+                        <div class="activity-card-cover cover-cardiovascular" data-meta="心血管 · 2/5主题" data-status="招募中">
+                            <button class="favorite-btn active" type="button" onclick="toggleFavorite(this)" title="已收藏" data-favorite="true">★</button>
+                        </div>
+                        <h3>心血管真实世界诊疗经验专题征集</h3>
+                        <p>适合围绕真实病例、操作要点和长期管理经验展开创作。</p>
+                        <div class="content-type-tags">
+                            <span>医学播客</span>
+                            <span>在线互动病例</span>
+                            <span>手术/操作视频</span>
+                        </div>
+                        <div class="recruitment-card-info">
+                            <div><strong>2/5</strong><span>可参与主题</span></div>
+                            <div><strong>5天</strong><span>剩余时间</span></div>
+                            <div><strong class="field-value">心血管</strong><span>医学领域</span></div>
+                        </div>
+                        <div class="recruitment-card-actions">
+                            <a class="action-btn primary" href="marketing-detail.html">查看活动</a>
+                            <a class="action-btn secondary" href="marketing-detail.html">去参与</a>
+                        </div>
+                    </article>
+
+                    <article class="recruitment-card">
+                        <div class="activity-card-cover cover-endocrine" data-meta="内分泌 · 1/4主题" data-status="招募中">
+                            <button class="favorite-btn active" type="button" onclick="toggleFavorite(this)" title="已收藏" data-favorite="true">★</button>
+                        </div>
+                        <h3>糖尿病规范化治疗病例征集</h3>
+                        <p>聚焦糖尿病长期管理、并发症干预和患者教育经验。</p>
+                        <div class="content-type-tags">
+                            <span>在线互动病例</span>
+                            <span>医学播客</span>
+                        </div>
+                        <div class="recruitment-card-info">
+                            <div><strong>1/4</strong><span>可参与主题</span></div>
+                            <div><strong>12天</strong><span>剩余时间</span></div>
+                            <div><strong class="field-value">内分泌</strong><span>医学领域</span></div>
+                        </div>
+                        <div class="recruitment-card-actions">
+                            <a class="action-btn primary" href="marketing-detail.html">查看活动</a>
+                            <a class="action-btn secondary" href="marketing-detail.html">去参与</a>
+                        </div>
+                    </article>
+
+                    <article class="recruitment-card">
+                        <div class="activity-card-cover cover-neurology" data-meta="神经科 · 2天截止" data-status="即将截止">
+                            <button class="favorite-btn" type="button" onclick="toggleFavorite(this)" title="收藏" data-favorite="false">☆</button>
+                        </div>
+                        <h3>神经系统疑难诊疗经验征集</h3>
+                        <p>面向疑难诊断路径、治疗选择和康复管理复盘内容。</p>
+                        <div class="content-type-tags">
+                            <span>医学播客</span>
+                            <span>在线互动病例</span>
+                        </div>
+                        <div class="recruitment-card-info">
+                            <div><strong>1/3</strong><span>可参与主题</span></div>
+                            <div><strong>2天</strong><span>剩余时间</span></div>
+                            <div><strong class="field-value">神经科</strong><span>医学领域</span></div>
+                        </div>
+                        <div class="recruitment-card-actions">
+                            <a class="action-btn primary" href="marketing-detail.html">查看活动</a>
+                            <a class="action-btn secondary" href="marketing-detail.html">去参与</a>
+                        </div>
+                    </article>
+
+                    <article class="recruitment-card">
+                        <div class="activity-card-cover cover-orthopedics" data-meta="骨科 · 即将开放" data-status="即将开放">
+                            <button class="favorite-btn" type="button" onclick="toggleFavorite(this)" title="收藏" data-favorite="false">☆</button>
+                        </div>
+                        <h3>骨科围术期管理经验征集</h3>
+                        <p>关注术前评估、术后康复和并发症处理等真实实践经验。</p>
+                        <div class="content-type-tags">
+                            <span>手术/操作视频</span>
+                            <span>医学播客</span>
+                        </div>
+                        <div class="recruitment-card-info">
+                            <div><strong>0/4</strong><span>当前开放</span></div>
+                            <div><strong>6月开放</strong><span>开始时间</span></div>
+                            <div><strong class="field-value">骨科</strong><span>医学领域</span></div>
+                        </div>
+                        <div class="recruitment-card-actions">
+                            <a class="action-btn primary" href="marketing-detail.html">查看活动</a>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="pagination">
+                    <div class="pagination-info">共 12 个活动</div>
+                    <div class="pagination-buttons">
+                        <button class="page-btn" disabled>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeMenu();
+            initializeRecruitmentSearch();
+        });
+
+        function initializeRecruitmentSearch() {
+            const searchInput = document.getElementById('activityNameSearch');
+            const activityCards = Array.from(document.querySelectorAll('.recruitment-card'));
+            const paginationInfo = document.querySelector('.pagination-info');
+            const filterButtons = Array.from(document.querySelectorAll('.quick-filter-chips button'));
+            let activeFilter = '我关注的';
+
+            if (!searchInput || activityCards.length === 0) {
+                return;
+            }
+
+            function applyFilters() {
+                const keyword = searchInput.value.trim().toLowerCase();
+                let visibleCount = 0;
+
+                activityCards.forEach(function(card) {
+                    const title = card.querySelector('h3')?.textContent.trim().toLowerCase() || '';
+                    const favoriteButton = card.querySelector('.favorite-btn');
+                    const isFavorite = favoriteButton?.getAttribute('data-favorite') === 'true';
+                    const shouldShowByKeyword = keyword === '' || title.includes(keyword);
+                    const shouldShowByFilter = activeFilter !== '我关注的' || isFavorite;
+                    const shouldShow = shouldShowByKeyword && shouldShowByFilter;
+                    card.style.display = shouldShow ? '' : 'none';
+                    if (shouldShow) {
+                        visibleCount += 1;
+                    }
+                });
+
+                if (paginationInfo) {
+                    paginationInfo.textContent = keyword ? `找到 ${visibleCount} 个活动` : `共 ${visibleCount} 个活动`;
+                }
+            }
+
+            searchInput.addEventListener('input', applyFilters);
+
+            filterButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(function(item) {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    activeFilter = this.textContent.trim();
+                    applyFilters();
+                });
+            });
+
+            applyFilters();
+        }
+
+        function toggleFavorite(element) {
+            const isFavorite = element.getAttribute('data-favorite') === 'true';
+            element.setAttribute('data-favorite', isFavorite ? 'false' : 'true');
+            element.setAttribute('title', isFavorite ? '收藏' : '已收藏');
+            element.classList.toggle('active', !isFavorite);
+            element.textContent = isFavorite ? '☆' : '★';
+            document.getElementById('activityNameSearch')?.dispatchEvent(new Event('input'));
+        }
+    </script>
+</body>
+</html>

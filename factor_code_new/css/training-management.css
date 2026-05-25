@@ -1,0 +1,531 @@
+/* 培训管理页面特有样式 */
+
+/* 卡片容器样式 */
+.content-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+/* 服务类型标签 - 更高层级 */
+.service-tabs {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 20px;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+}
+
+.service-tab {
+    position: relative;
+    padding: 12px 0;
+    font-size: 0.95rem;
+    color: #808080;
+    cursor: pointer;
+    border-bottom: none;
+    transition: all 0.3s ease;
+    font-weight: normal;
+    background: none;
+    border-radius: 0;
+}
+
+.service-tab:hover {
+    color: #667eea;
+    background: none;
+}
+
+.service-tab.active {
+    color: #4a4a4a;
+    font-weight: normal;
+    background: none;
+}
+
+.service-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 66.67%;
+    height: 3px;
+    background-color: #667eea;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* 记录类型标签 - 次级分类 */
+.record-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    background-color: #f8fafc;
+    padding: 6px;
+    border-radius: 12px;
+}
+
+.record-tab {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    color: #64748b;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.record-tab:hover {
+    background-color: rgba(102, 126, 234, 0.05);
+    color: #667eea;
+}
+
+.record-tab.active {
+    background-color: white;
+    color: #667eea;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+}
+
+/* 筛选栏 */
+.filter-bar {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    padding: 16px;
+    background-color: #f8fafc;
+    border-radius: 12px;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-item input,
+.filter-item select {
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    min-width: 140px;
+    transition: all 0.3s ease;
+    background-color: white;
+    height: 36px;
+}
+
+.filter-item input:focus,
+.filter-item select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+}
+
+.filter-item input::placeholder {
+    color: #94a3b8;
+}
+
+/* 日期范围 */
+.date-range {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.date-range span {
+    color: #64748b;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* 隐藏类 */
+.hidden {
+    display: none;
+}
+
+/* 标签内容样式 */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 操作按钮组 */
+.action-buttons {
+    margin-left: auto;
+    display: flex;
+    gap: 12px;
+}
+
+.search-btn,
+.external-btn,
+.batch-btn,
+.advanced-filter-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+}
+
+.batch-btn,
+.advanced-filter-btn {
+    background-color: white;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+.batch-btn:hover,
+.advanced-filter-btn:hover {
+    background-color: #f8fafc;
+    color: #667eea;
+    border-color: #667eea;
+    transform: translateY(-1px);
+}
+
+.search-btn {
+    background-color: #667eea;
+    color: white;
+}
+
+.search-btn:hover {
+    background-color: #5a6fd8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.external-btn {
+    background-color: #f1f5f9;
+    color: #334155;
+}
+
+.external-btn:hover {
+    background-color: #e2e8f0;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 培训卡片容器 */
+.training-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+/* 培训卡片 */
+.training-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.training-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 培训卡片头部 */
+.training-card-header {
+    position: relative;
+    height: 150px;
+    overflow: hidden;
+}
+
+.training-card-header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.training-card:hover .training-card-header img {
+    transform: scale(1.05);
+}
+
+/* 培训卡片标签 */
+.training-card-tags {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.training-card-tag {
+    background: rgba(255, 255, 255, 0.9);
+    color: #667eea;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.training-card-tag.new {
+    background: rgba(255, 107, 107, 0.9);
+    color: white;
+}
+
+/* 培训卡片内容 */
+.training-card-content {
+    padding: 16px;
+}
+
+/* 培训卡片日期 */
+.training-card-date {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* 培训卡片标题 */
+.training-card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1e293b;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+/* 培训卡片进度 */
+.training-card-progress {
+    margin-bottom: 12px;
+}
+
+.training-card-progress-bar {
+    height: 4px;
+    background: #f1f5f9;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.training-card-progress-fill {
+    height: 100%;
+    background: #667eea;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* 培训卡片状态 */
+.training-card-status {
+    color: #64748b;
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+}
+
+/* 培训卡片操作 */
+.training-card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.training-card-action-btn {
+    padding: 4px 12px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #64748b;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.training-card-action-btn:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+/* 批量操作栏 */
+.batch-actions {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.batch-actions.visible {
+    display: flex;
+}
+
+.batch-btn {
+    padding: 6px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: white;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+.batch-btn:hover {
+    background-color: #f1f5f9;
+    color: #667eea;
+    border-color: #667eea;
+}
+
+.batch-btn.delete {
+    color: #ef4444;
+    border-color: #fecaca;
+}
+
+.batch-btn.delete:hover {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-color: #dc2626;
+}
+
+.selected-count {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* 分页样式 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+    padding: 20px 0;
+    gap: 40px;
+}
+
+.pagination-info {
+    font-size: 0.9rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.pagination-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.page-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #64748b;
+}
+
+.page-btn:hover:not(:disabled) {
+    background-color: rgba(102, 126, 234, 0.05);
+    color: #667eea;
+    transform: translateY(-1px);
+}
+
+.page-btn.active {
+    background-color: #667eea;
+    color: white;
+    border-color: #667eea;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 表格底部信息 */
+.table-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding: 12px 16px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.table-footer-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.table-footer-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.check-all {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.check-all input {
+    accent-color: #667eea;
+    cursor: pointer;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+    
+    .action-buttons {
+        margin-left: 0;
+        justify-content: center;
+    }
+    
+    .record-tabs {
+        overflow-x: auto;
+        padding-bottom: 8px;
+    }
+    
+    .training-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .pagination {
+        flex-direction: column;
+        gap: 16px;
+    }
+}

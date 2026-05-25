@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专家申请详情 - 趣学术CRM</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <style>
+        /* 专家申请详情页面样式 */
+        .application-detail {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .detail-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+        }
+        .detail-section-title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .detail-label {
+            font-weight: 500;
+            color: #666;
+            font-size: 14px;
+        }
+        .detail-value {
+            font-size: 16px;
+            color: #333;
+        }
+        /* 专长领域标签 */
+        .specialty-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .specialty-tag {
+            padding: 6px 12px;
+            background-color: #e0f2fe;
+            color: #0284c7;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        /* 资质证明列表 */
+        .qualification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .qualification-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        .qualification-name {
+            flex: 1;
+            font-size: 14px;
+        }
+        .qualification-size {
+            font-size: 12px;
+            color: #666;
+        }
+        .qualification-actions {
+            display: flex;
+            gap: 10px;
+        }
+        /* 审核意见区域 */
+        .review-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+        .review-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .review-form-row {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .review-form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .review-form-group label {
+            font-weight: 500;
+            color: #333;
+        }
+        .review-form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        /* 审核结果选择 */
+        .review-result {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .result-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        /* 操作按钮 */
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+        /* 申请状态 */
+        .application-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .status-label {
+            font-weight: 500;
+            color: #666;
+        }
+        .status-value {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        .status-value.pending {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+        .status-value.approved {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+        .status-value.rejected {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <!-- 组件加载已移至script.js模块化管理 -->
+
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+            <!-- 页面标题和返回按钮 -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1 class="page-title">专家申请详情</h1>
+                <button class="btn btn-secondary" onclick="history.back()">返回列表</button>
+            </div>
+            
+            <!-- 白色背景容器，包含所有内容 -->
+            <div class="white-content-container">
+                <div class="application-detail">
+                    <!-- 申请状态 -->
+                    <div class="application-status">
+                        <div class="status-label">申请状态：</div>
+                        <div class="status-value pending">待审核</div>
+                    </div>
+
+                    <!-- 基本信息区域 -->
+                    <div class="detail-section">
+                        <div class="detail-section-title">医生基本信息</div>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">姓名</div>
+                                <div class="detail-value">杨医生</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">医院</div>
+                                <div class="detail-value">广州南方医院</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">科室</div>
+                                <div class="detail-value">呼吸内科</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">职称</div>
+                                <div class="detail-value">副主任医师</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">申请时间</div>
+                                <div class="detail-value">2025-12-27 14:30:00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 申请信息区域 -->
+                    <div class="detail-section">
+                        <div class="detail-section-title">申请信息</div>
+                        
+                        <!-- 专长领域 -->
+                        <div class="detail-item">
+                            <div class="detail-label">专长领域</div>
+                            <div class="specialty-tags">
+                                <span class="specialty-tag">慢性阻塞性肺疾病</span>
+                                <span class="specialty-tag">哮喘</span>
+                                <span class="specialty-tag">肺炎</span>
+                            </div>
+                        </div>
+
+                        <!-- 申请理由 -->
+                        <div class="detail-item" style="margin-top: 20px;">
+                            <div class="detail-label">申请理由</div>
+                            <div class="detail-value" style="white-space: pre-line; line-height: 1.6;">
+我是广州南方医院呼吸内科的副主任医师，从事呼吸内科临床工作15年，具有丰富的临床经验和学术背景。我在慢性阻塞性肺疾病、哮喘和肺炎等领域有深入的研究，发表过多篇学术论文，并参与过多个国家级科研项目。
+
+我希望能够成为贵平台的评审专家，利用我的专业知识和经验，为医学内容的质量把关，同时也希望通过这个平台，与更多的同行交流学习，共同推动医学教育事业的发展。
+
+我承诺将认真履行评审专家的职责，客观、公正地评价每一份提交的内容，为平台提供高质量的评审服务。
+                            </div>
+                        </div>
+
+                        <!-- 资质证明 -->
+                        <div class="detail-item" style="margin-top: 20px;">
+                            <div class="detail-label">资质证明</div>
+                            <div class="qualification-list">
+                                <div class="qualification-item">
+                                    <div class="qualification-name">副主任医师证书.pdf</div>
+                                    <div class="qualification-size">2.5 MB</div>
+                                    <div class="qualification-actions">
+                                        <button class="btn btn-sm btn-primary">预览</button>
+                                        <button class="btn btn-sm btn-secondary">下载</button>
+                                    </div>
+                                </div>
+                                <div class="qualification-item">
+                                    <div class="qualification-name">学术论文目录.pdf</div>
+                                    <div class="qualification-size">1.8 MB</div>
+                                    <div class="qualification-actions">
+                                        <button class="btn btn-sm btn-primary">预览</button>
+                                        <button class="btn btn-sm btn-secondary">下载</button>
+                                    </div>
+                                </div>
+                                <div class="qualification-item">
+                                    <div class="qualification-name">科研项目证明.pdf</div>
+                                    <div class="qualification-size">1.2 MB</div>
+                                    <div class="qualification-actions">
+                                        <button class="btn btn-sm btn-primary">预览</button>
+                                        <button class="btn btn-sm btn-secondary">下载</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 审核意见区域 -->
+                    <div class="review-section">
+                        <h3 style="margin-bottom: 20px;">审核意见</h3>
+                        <form id="reviewForm" class="review-form">
+                            <div class="review-form-row">
+                                <div class="review-form-group">
+                                    <label>审核结果</label>
+                                    <div class="review-result">
+                                        <div class="result-option">
+                                            <input type="radio" id="approve" name="reviewResult" value="approved">
+                                            <label for="approve">通过</label>
+                                        </div>
+                                        <div class="result-option">
+                                            <input type="radio" id="reject" name="reviewResult" value="rejected">
+                                            <label for="reject">拒绝</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review-form-row">
+                                <div class="review-form-group">
+                                    <label for="reviewComment">审核意见 <span style="color: #ef4444;">*</span></label>
+                                    <textarea id="reviewComment" placeholder="请输入审核意见" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="history.back()">取消</button>
+                                <button type="submit" class="btn btn-primary">提交审核</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script>
+        // 表单提交处理
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 表单验证
+            const reviewResult = document.querySelector('input[name="reviewResult"]:checked');
+            const reviewComment = document.getElementById('reviewComment').value.trim();
+            
+            if (!reviewResult) {
+                alert('请选择审核结果');
+                return;
+            }
+            
+            if (!reviewComment) {
+                alert('请输入审核意见');
+                return;
+            }
+            
+            // 这里可以添加审核提交逻辑
+            alert('审核提交成功！');
+            history.back();
+        });
+    </script>
+</body>
+</html>

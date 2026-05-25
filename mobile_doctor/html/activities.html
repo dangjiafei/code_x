@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>活动 - 医生端</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/activities.css">
+</head>
+<body>
+  <!-- 手机屏幕模拟容器 -->
+  <div class="phone-container">
+    <!-- 屏幕内容容器 -->
+    <div class="screen-content">
+      <!-- 状态栏容器 -->
+      <div id="status-bar-container"></div>
+      
+      <!-- 头部组件 -->
+      <div id="header-container"></div>
+      
+      <!-- 内容区 -->
+      <main class="content">
+        <!-- 首页内容 -->
+        <div id="home-content" class="module-content active">
+          <!-- 标签页和搜索框容器 -->
+          <div class="tab-search-container">
+            <!-- 标签页 -->
+            <div class="tab-bar">
+              <button class="tab-btn active">推荐</button>
+              <button class="tab-btn">活动</button>
+              <button class="tab-btn">调研</button>
+            </div>
+            
+            <!-- 搜索框 -->
+            <div class="search-bar">
+              <input type="text" class="search-input" placeholder="搜索更多内容">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="8" stroke="#999" stroke-width="2"/>
+                <path d="M21 21l-4.35-4.35" stroke="#999" stroke-width="2" stroke-linecap="round"/>
+                <path d="M16 16l-2 2" stroke="#999" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          
+          <!-- 标签内容 -->
+          <div class="tab-content">
+          <!-- 推荐内容 -->
+          <div id="recommend-content" class="tab-panel active">
+            <!-- 推荐筛选标签 -->
+            <div class="filter-bar recommend-filter">
+              <button class="filter-btn active">全部</button>
+              <button class="filter-btn">线上科室会</button>
+              <button class="filter-btn">病例互动</button>
+              <button class="filter-btn">医学播客</button>
+              <button class="filter-btn">学术拜访</button>
+            </div>
+            
+            <!-- 推荐活动列表 -->
+            <div class="activity-list">
+              
+              <!-- 病例互动活动项1 -->
+              <div class="activity-item" onclick="window.location.href='case-detail.html'">
+                <div class="activity-left">
+                  <div class="activity-cover">
+                    <img src="../img/bl.png" alt="活动图片" class="activity-image">
+                    <div class="activity-type-badge case">病例互动</div>
+                  </div>
+                </div>
+                <div class="activity-right">
+                  <h3 class="activity-title">疑难病例互动讨论：罕见肺部感染</h3>
+                  <p class="activity-desc">通过真实病例分析，提升临床思维能力和疑难病例处理水平，适合呼吸科、感染科医生学习</p>
+                  <div class="activity-meta">
+                    <div class="meta-row">
+                      <span class="meta-item date">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                          <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="meta-value">2026.01.28</span>
+                      </span>
+                      <span class="meta-item views">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="meta-value">856</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 学术调研卡片 -->
+              <div class="survey-card-compact">
+                <div class="survey-card-header">
+                  <div class="survey-title-container">
+                    <svg class="survey-title-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#1890ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M2 17L12 22L22 17" stroke="#1890ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M2 12L12 17L22 12" stroke="#1890ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h3 class="survey-card-title">学术调研</h3>
+                  </div>
+                  <button class="survey-more-btn" onclick="window.location.href='case-detail.html'">查看更多</button>
+                </div>
+                <div class="survey-scroll-container">
+                  <!-- 调研问卷1 -->
+                  <div class="survey-scroll-item">
+                    <h4 class="survey-scroll-title">2026年糖尿病治疗新药物临床应用调研</h4>
+                    <div class="survey-meta-container">
+                      <span class="survey-scroll-status ongoing">进行中</span>
+                      <span class="survey-deadline">2026.02.28截止</span>
+                    </div>
+                  </div>
+                  
+                  <!-- 调研问卷2 -->
+                  <div class="survey-scroll-item">
+                    <h4 class="survey-scroll-title">高血压患者用药依从性影响因素分析</h4>
+                    <div class="survey-meta-container">
+                      <span class="survey-scroll-status ongoing">进行中</span>
+                      <span class="survey-deadline">2026.03.15截止</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 模拟病例互动 -->
+              <div class="activity-item" onclick="window.location.href='case2-detail.html'">
+                <div class="activity-left">
+                  <div class="activity-cover">
+                    <img src="../img/bl.png" alt="活动图片" class="activity-image">
+                    <div class="activity-type-badge case">病例互动</div>
+                  </div>
+                </div>
+                <div class="activity-right">
+                  <h3 class="activity-title">糖尿病并发症诊疗案例讨论</h3>
+                  <p class="activity-desc">针对糖尿病患者常见并发症的诊断与治疗策略，分享临床经验和最新研究进展</p>
+                  <div class="activity-meta">
+                    <div class="meta-row">
+                      <span class="meta-item date">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                          <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="meta-value">2026.03.10</span>
+                      </span>
+                      <span class="meta-item views">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="meta-value">624</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 线上科室会活动项1 -->
+              <div class="activity-item" onclick="window.location.href='online-meeting-detail.html'">
+                <div class="activity-left">
+                  <div class="activity-cover">
+                    <img src="../img/bl.png" alt="活动图片" class="activity-image">
+                    <div class="activity-type-badge online">线上科室会</div>
+                    <div class="video-duration">08:35</div>
+                  </div>
+                </div>
+                <div class="activity-right">
+                  <h3 class="activity-title">2026年最新心血管疾病诊疗进展</h3>
+                  <p class="activity-desc">详细讲解心血管疾病的最新诊疗技术和药物应用，适合心内科医生学习</p>
+                  <div class="activity-tags">
+                    <span class="activity-tag">心血管</span>
+                    <span class="activity-tag">诊疗进展</span>
+                    <span class="activity-tag">药物应用</span>
+                    <span class="activity-tag">药物应用</span>
+                  </div>
+                  <div class="activity-meta">
+                    <div class="meta-row">
+                      <span class="meta-item date">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                          <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="meta-value">2026.01.25</span>
+                      </span>
+                      <span class="meta-item views">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="meta-value">1234</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 医学播客活动项1 -->
+              <div class="activity-item" onclick="window.location.href='podcast-detail.html'">
+                <div class="activity-left">
+                  <div class="activity-cover">
+                    <img src="../img/bk.png" alt="活动图片" class="activity-image">
+                    <div class="activity-type-badge podcast">医学播客</div>
+                  </div>
+                </div>
+                <div class="activity-right">
+                  <h3 class="activity-title">心脏疾病诊疗新进展医学播客征集</h3>
+                  <p class="activity-desc">分享心脏疾病诊疗的最新研究成果和临床经验，欢迎参与录制</p>
+                  <div class="activity-meta">
+                    <div class="meta-row">
+                      <span class="meta-item date">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                          <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="meta-value">2026.02.01 - 2026.02.28</span>
+                      </span>
+                      <span class="meta-item views">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="meta-value">328</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 学术拜访活动项1 -->
+              <div class="activity-item" onclick="window.location.href='case-detail.html'">
+                <div class="activity-left">
+                  <div class="activity-cover">
+                    <img src="../img/bl.png" alt="活动图片" class="activity-image">
+                    <div class="activity-type-badge expert">学术拜访</div>
+                  </div>
+                </div>
+                <div class="activity-right">
+                  <h3 class="activity-title">专家面对面：肿瘤免疫治疗新进展</h3>
+                  <p class="activity-desc">与肿瘤免疫治疗领域专家面对面交流，探讨最新研究成果和临床应用</p>
+                  <div class="activity-meta">
+                    <div class="meta-row">
+                      <span class="meta-item date">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                          <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="meta-value">2026.02.15</span>
+                      </span>
+                      <span class="meta-item views">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="meta-value">567</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 活动内容 -->
+          <div id="activity-content" class="tab-panel">
+            <!-- 活动筛选标签 -->
+            <div class="filter-bar activity-filter">
+              <button class="filter-btn active">已关注</button>
+              <button class="filter-btn">已报名</button>
+              <button class="filter-btn">未报名</button>
+              <button class="filter-btn">已过期</button>
+              <button class="filter-btn">全部</button>
+            </div>
+            
+            <!-- 活动列表 -->
+            <div class="activity-list">
+              <!-- 医学播客活动项1 -->
+              <div class="activity-item" onclick="window.location.href='podcast-detail.html'">
+                <div class="activity-left">
+                  <div class="activity-cover">
+                    <img src="../img/bk.png" alt="活动图片" class="activity-image">
+                    <div class="activity-type-badge podcast">医学播客</div>
+                  </div>
+                </div>
+                <div class="activity-right">
+                  <h3 class="activity-title">心脏疾病诊疗新进展医学播客征集</h3>
+                  <div class="activity-meta">
+                    <span class="meta-item date">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span class="meta-value">2026.02.01 - 2026.02.28</span>
+                    </span>
+                    <div class="meta-row">
+                      <span class="meta-item status not-registered">未报名</span>
+                      <span class="meta-separator">·</span>
+                      <span class="meta-item views">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="meta-value">328</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 医学播客活动项2 -->
+              <div class="activity-item" onclick="window.location.href='podcast-detail.html'">
+                <div class="activity-left">
+                  <div class="activity-cover">
+                    <img src="../img/bk.png" alt="活动图片" class="activity-image">
+                    <div class="activity-type-badge podcast">医学播客</div>
+                  </div>
+                </div>
+                <div class="activity-right">
+                  <h3 class="activity-title">内分泌疾病管理策略专题</h3>
+                  <div class="activity-meta">
+                    <span class="meta-item date">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span class="meta-value">2026.01.15 - 2026.02.15</span>
+                    </span>
+                    <div class="meta-row">
+                      <span class="meta-item status registered">已报名</span>
+                      <span class="meta-separator">·</span>
+                      <span class="meta-item views">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="meta-value">456</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 在线互动病例活动项 -->
+              <div class="activity-item" onclick="window.location.href='case-detail.html'">
+                <div class="activity-left">
+                  <div class="activity-cover">
+                    <img src="../img/bl.png" alt="活动图片" class="activity-image">
+                    <div class="activity-type-badge case">在线互动病例</div>
+                  </div>
+                </div>
+                <div class="activity-right">
+                  <h3 class="activity-title">疑难病例讨论：罕见肺部感染</h3>
+                  <div class="activity-meta">
+                    <span class="meta-item date">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span class="meta-value">2026.01.20 - 2026.02.20</span>
+                    </span>
+                    <div class="meta-row">
+                      <span class="meta-item status registered">已报名</span>
+                      <span class="meta-separator">·</span>
+                      <span class="meta-item views">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="meta-value">578</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 专家评审活动项 -->
+              <div class="activity-item" onclick="window.location.href='podcast-detail.html'">
+                <div class="activity-left">
+                  <div class="activity-cover">
+                    <img src="../img/zj.png" alt="活动图片" class="activity-image">
+                    <div class="activity-type-badge expert">专家评审</div>
+                  </div>
+                </div>
+                <div class="activity-right">
+                  <h3 class="activity-title">2026年度医学论文评审</h3>
+                  <div class="activity-meta">
+                    <span class="meta-item date">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span class="meta-value">2026.03.01 - 2026.03.31</span>
+                    </span>
+                    <div class="meta-row">
+                      <span class="meta-item status not-registered">未报名</span>
+                      <span class="meta-separator">·</span>
+                      <span class="meta-item views">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="meta-value">216</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 医学播客活动项3 -->
+              <div class="activity-item" onclick="window.location.href='podcast-detail.html'">
+                <div class="activity-left">
+                  <div class="activity-cover">
+                    <img src="../img/bk.png" alt="活动图片" class="activity-image">
+                    <div class="activity-type-badge podcast">医学播客</div>
+                  </div>
+                </div>
+                <div class="activity-right">
+                  <h3 class="activity-title">神经系统疾病诊断与治疗新进展</h3>
+                  <div class="activity-meta">
+                    <span class="meta-item date">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span class="meta-value">2026.02.15 - 2026.03.15</span>
+                    </span>
+                    <div class="meta-row">
+                      <span class="meta-item status registered">已报名</span>
+                      <span class="meta-separator">·</span>
+                      <span class="meta-item views">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="meta-value">678</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 在线互动病例活动项2 -->
+              <div class="activity-item" onclick="window.location.href='case-detail.html'">
+                <div class="activity-left">
+                  <div class="activity-cover">
+                    <img src="../img/bl.png" alt="活动图片" class="activity-image">
+                    <div class="activity-type-badge case">在线互动病例</div>
+                  </div>
+                </div>
+                <div class="activity-right">
+                  <h3 class="activity-title">急性心肌梗死急诊处理案例讨论</h3>
+                  <div class="activity-meta">
+                    <span class="meta-item date">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span class="meta-value">2026.01.10 - 2026.02.10</span>
+                    </span>
+                    <div class="meta-row">
+                      <span class="meta-item status expired">已过期</span>
+                      <span class="meta-separator">·</span>
+                      <span class="meta-item views">
+                        <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="meta-value">892</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 调研内容 -->
+          <div id="survey-content" class="tab-panel">
+            <!-- 调研筛选标签 -->
+            <div class="filter-bar survey-filter">
+              <button class="filter-btn active">全部</button>
+              <button class="filter-btn">未参与</button>
+              <button class="filter-btn">进行中</button>
+              <button class="filter-btn">已完成</button>
+              <button class="filter-btn">已过期</button>
+            </div>
+            
+            <!-- 调研列表 -->
+            <div class="survey-list">
+              <!-- 调研项1 - 进行中 -->
+              <div class="survey-item">
+                <div class="survey-left">
+                  <div class="survey-icon">
+                    <img src="../img/survey.png" alt="调研图标" class="survey-image">
+                  </div>
+                  <div class="survey-status-badge ongoing">进行中</div>
+                </div>
+                <div class="survey-right">
+                  <div class="survey-header">
+                    <h3 class="survey-title">2025年心血管疾病治疗药物使用情况调研</h3>
+                  </div>
+                  <p class="survey-description">了解临床医生对心血管疾病治疗药物的使用偏好、疗效评估及不良反应监测情况</p>
+                  <div class="survey-meta">
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>10题</span>
+                    </span>
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>截止时间：2025.12.31</span>
+                    </span>
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>80</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 调研项2 - 进行中 -->
+              <div class="survey-item">
+                <div class="survey-left">
+                  <div class="survey-icon">
+                    <img src="../img/survey.png" alt="调研图标" class="survey-image">
+                  </div>
+                  <div class="survey-status-badge ongoing">进行中</div>
+                </div>
+                <div class="survey-right">
+                  <div class="survey-header">
+                    <h3 class="survey-title">糖尿病患者用药依从性影响因素分析</h3>
+                  </div>
+                  <p class="survey-description">探讨影响糖尿病患者用药依从性的主要因素，为提高患者治疗效果提供参考依据</p>
+                  <div class="survey-meta">
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>15题</span>
+                    </span>
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>截止时间：2025.12.31</span>
+                    </span>
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>140</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 调研项3 - 未参与 -->
+              <div class="survey-item">
+                <div class="survey-left">
+                  <div class="survey-icon">
+                    <img src="../img/survey.png" alt="调研图标" class="survey-image">
+                  </div>
+                  <div class="survey-status-badge not-participated">未参与</div>
+                </div>
+                <div class="survey-right">
+                  <div class="survey-header">
+                    <h3 class="survey-title">抗生素合理使用现状调研</h3>
+                  </div>
+                  <p class="survey-description">调查临床抗生素使用情况，评估抗生素耐药性认知及合理用药措施执行情况</p>
+                  <div class="survey-meta">
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>12题</span>
+                    </span>
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>截止时间：2025.11.30</span>
+                    </span>
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>80</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 调研项4 - 已完成 -->
+              <div class="survey-item completed">
+                <div class="survey-left">
+                  <div class="survey-icon">
+                    <img src="../img/survey.png" alt="调研图标" class="survey-image">
+                  </div>
+                  <div class="survey-status-badge completed">已完成</div>
+                </div>
+                <div class="survey-right">
+                  <div class="survey-header">
+                    <h3 class="survey-title">高血压患者临床路径实施效果评估</h3>
+                  </div>
+                  <p class="survey-description">评估高血压患者临床路径实施对治疗效果、医疗费用及患者满意度的影响</p>
+                  <div class="survey-meta">
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>18题</span>
+                    </span>
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>截止时间：2025.06.30</span>
+                    </span>
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>60</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 调研项5 - 已完成 -->
+              <div class="survey-item completed">
+                <div class="survey-left">
+                  <div class="survey-icon">
+                    <img src="../img/survey.png" alt="调研图标" class="survey-image">
+                  </div>
+                  <div class="survey-status-badge completed">已完成</div>
+                </div>
+                <div class="survey-right">
+                  <div class="survey-header">
+                    <h3 class="survey-title">肿瘤患者疼痛管理现状调研</h3>
+                  </div>
+                  <p class="survey-description">了解肿瘤患者疼痛管理的临床实践，评估镇痛药物使用情况及疼痛评估工具应用现状</p>
+                  <div class="survey-meta">
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>20题</span>
+                    </span>
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>截止时间：2025.07.15</span>
+                    </span>
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>40</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 调研项6 - 已过期 -->
+              <div class="survey-item expired">
+                <div class="survey-left">
+                  <div class="survey-icon">
+                    <img src="../img/survey.png" alt="调研图标" class="survey-image">
+                  </div>
+                  <div class="survey-status-badge expired">已过期</div>
+                </div>
+                <div class="survey-right">
+                  <div class="survey-header">
+                    <h3 class="survey-title">儿科用药安全性调研</h3>
+                  </div>
+                  <p class="survey-description">调查儿科用药安全性现状，评估儿童专用药物可及性及超说明书用药情况</p>
+                  <div class="survey-meta">
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>15题</span>
+                    </span>
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>截止时间：2025.05.31</span>
+                    </span>
+                    <span class="survey-meta-item">
+                      <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 16V16.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>70</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </main>
+      <!-- 底部组件 -->
+      <div id="footer-container"></div>
+    </div>
+  </div>
+  
+  <!-- 脚本文件 -->
+  <script src="../js/scripts.js"></script>
+  <script>
+    // 页面加载完成后初始化组件，传递页面标题
+    document.addEventListener('DOMContentLoaded', function() {
+      initPageComponents({ title: '活动' });
+    });
+  </script>
+  <script src="../js/activities.js"></script>
+</body>
+</html>

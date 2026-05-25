@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活动详情 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/record.css">
+    <link rel="stylesheet" href="../css/activity-detail.css">
+</head>
+<body>
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <div class="right-content">
+            <div class="fixed-header-bar">
+                <div class="fixed-header-content">
+                    <div class="header-left">
+                        <button class="btn-back" onclick="goBack()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                            返回列表
+                        </button>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn-back" onclick="goToFeedbackForCurrentActivity()">
+                            反馈建议
+                        </button>
+                        <button class="btn-use" id="chooseUseBtn" onclick="openUseSettingModal()">
+                            选择使用
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <main class="content-area">
+                <div class="content-section">
+                    <div class="activity-info">
+                        <div class="activity-cover">
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=medical%20cardiovascular%20disease%20conference%20banner&image_size=landscape_16_9" alt="活动封面">
+                        </div>
+                        <div class="activity-basic-info">
+                            <h1 class="activity-title">心血管疾病病例征稿活动<span class="activity-status-badge published">进行中</span></h1>
+                            <div class="activity-meta">
+                                <div class="activity-meta-row">
+                                    <div class="activity-meta-item">
+                                        <span class="meta-label">招募时间</span>
+                                        <span class="meta-value">2025.03.01 - 2025.04.30</span>
+                                    </div>
+                                </div>
+                                <div class="activity-meta-row">
+                                    <div class="activity-meta-item">
+                                        <span class="meta-label">活动类型</span>
+                                        <span class="meta-value">市场活动</span>
+                                        <span class="meta-tooltip-wrapper">
+                                            <svg t="1779074553754" class="meta-tooltip-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="63518" width="16" height="16"><path d="M512 0a512 512 0 1 1 0 1024A512 512 0 0 1 512 0z m0 861.888a68.288 68.288 0 1 0 0-136.576 68.288 68.288 0 0 0 0 136.576z m186.56-379.648c29.952-43.904 41.088-82.304 40.96-136.192-0.128-84.864-80.256-174.976-200.96-174.976-128.64 0-253.696 63.744-253.696 227.2l113.28 0.384c0-55.808 36.032-114.944 113.024-114.944 46.08 0 112.64 18.624 112.64 86.72 0 62.656-20.48 75.456-81.92 120.32-59.328 40.32-89.6 92.992-87.424 158.08v33.664h115.584c0-102.912 72.768-115.392 128.512-200.32z" fill="#bfbfbf" p-id="63519"></path></svg>
+                                            <span class="meta-tooltip-content">市场活动包含所有活动类型：医学播客、在线互动病例、手术视频</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="activity-meta-row">
+                                    <div class="activity-meta-item compact">
+                                        <span class="meta-label">产品标签</span>
+                                        <span class="meta-value">盖笛欣</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数据报表 -->
+                <div style="margin-bottom: 24px; background-color: white; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                        <div style="font-weight: 600; color: #1e293b; font-size: 1rem;">数据报表</div>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <button onclick="" style="padding: 8px 20px; background-color: transparent; color: #3b82f6; border: 1px solid #3b82f6; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.2s ease; font-weight: 500; min-width: 100px; text-align: center;">执行报表</button>
+                            <button onclick="" style="padding: 8px 20px; background-color: transparent; color: #3b82f6; border: 1px solid #3b82f6; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.2s ease; font-weight: 500; min-width: 100px; text-align: center;">代表数据报表</button>
+                            <button onclick="" style="padding: 8px 20px; background-color: transparent; color: #3b82f6; border: 1px solid #3b82f6; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.2s ease; font-weight: 500; min-width: 100px; text-align: center;">医生数据报表</button>
+                            <button onclick="" style="padding: 8px 20px; background-color: transparent; color: #3b82f6; border: 1px solid #3b82f6; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.2s ease; font-weight: 500; min-width: 100px; text-align: center;">任务数据报表</button>
+                            <button onclick="" style="padding: 8px 20px; background-color: transparent; color: #3b82f6; border: 1px solid #3b82f6; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.2s ease; font-weight: 500; min-width: 100px; text-align: center;">答题数据报表</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-bar">
+                        <button class="tab-btn active" data-tab="config" onclick="switchTab('config')">活动信息</button>
+                        <button class="tab-btn" data-tab="usage" onclick="switchTab('usage')">使用明细</button>
+                        <button class="tab-btn" data-tab="submission" onclick="switchTab('submission')">作品管理</button>
+                    </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-config">
+                        <div class="tab-content-inner">
+                            <div class="tab-content-left">
+                        <div class="config-section">
+                            <h2 class="section-title">活动详情</h2>
+                            <p class="rich-text">本次心血管疾病病例征稿活动是由北京康辰药业股份有限公司发起的学术交流项目，旨在汇聚全国心血管领域医生的临床经验，推动学科发展和诊疗水平提升。活动面向全国各级医疗机构的心血管内科及相关科室医生开放，鼓励分享在冠心病、心力衰竭、心律失常等领域的典型病例、疑难病例及创新诊疗方案。优秀稿件将有机会在行业学术会议上进行分享，并获得权威专家的点评指导。</p>
+                        </div>
+
+                        <div class="config-section">
+                            <h2 class="section-title">征稿主题</h2>
+                            
+                            <div class="activity-type-section">
+                                <div class="type-header">
+                                    <span class="type-name">医学播客</span>
+                                    <span class="type-count">2</span>
+                                </div>
+                                <div class="type-themes">
+                                    <div class="theme-item">
+                                        <h3>主题一：冠心病诊疗新进展</h3>
+                                        <p>本主题旨在分享冠心病诊断与治疗的最新技术和临床经验。包括冠状动脉造影、支架植入、药物洗脱支架应用等介入治疗技术的创新实践；新型抗血小板药物、他汀类药物的优化使用等药物治疗方案；以及精准医疗在冠心病个体化治疗中的应用案例。</p>
+                                        <div class="theme-stats-row">
+                                            <div class="theme-stat-item">
+                                                <span class="stat-value">156</span>
+                                                <span class="stat-label">投稿人数</span>
+                                            </div>
+                                            <div class="theme-stat-item">
+                                                <span class="stat-value">89</span>
+                                                <span class="stat-label">采购人数</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="theme-item">
+                                        <h3>主题二：心力衰竭管理</h3>
+                                        <p>本主题聚焦心力衰竭患者的综合管理策略。包括ACEI/ARB、β受体阻滞剂、利尿剂等药物的规范化使用与剂量滴定经验；心脏再同步化治疗(CRT)、植入式心律转复除颤器(ICD)等器械治疗的适应症选择与术后管理。</p>
+                                        <div class="theme-stats-row">
+                                            <div class="theme-stat-item">
+                                                <span class="stat-value">124</span>
+                                                <span class="stat-label">投稿人数</span>
+                                            </div>
+                                            <div class="theme-stat-item">
+                                                <span class="stat-value">76</span>
+                                                <span class="stat-label">采购人数</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="activity-type-section">
+                                <div class="type-header">
+                                    <span class="type-name">在线互动病例</span>
+                                    <span class="type-count">1</span>
+                                </div>
+                                <div class="type-themes">
+                                    <div class="theme-item">
+                                        <h3>主题一：心律失常诊治</h3>
+                                        <p>本主题介绍心律失常的诊断方法和治疗技术。包括心电图、动态心电图、电生理检查等诊断手段的应用经验；射频消融、冷冻消融等微创治疗技术在房颤、室上速、室速等复杂心律失常中的应用案例。</p>
+                                        <div class="theme-stats-row">
+                                            <div class="theme-stat-item">
+                                                <span class="stat-value">98</span>
+                                                <span class="stat-label">投稿人数</span>
+                                            </div>
+                                            <div class="theme-stat-item">
+                                                <span class="stat-value">52</span>
+                                                <span class="stat-label">采购人数</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="activity-type-section">
+                                <div class="type-header">
+                                    <span class="type-name">手术视频</span>
+                                    <span class="type-count">2</span>
+                                </div>
+                                <div class="type-themes">
+                                    <div class="theme-item">
+                                        <h3>主题一：复杂冠脉介入手术</h3>
+                                        <p>本主题展示复杂冠状动脉介入手术的操作技巧和经验分享。包括慢性完全闭塞病变(CTO)的开通策略、多支血管病变的介入治疗顺序选择、钙化病变的处理方法等。</p>
+                                        <div class="theme-stats-row">
+                                            <div class="theme-stat-item">
+                                                <span class="stat-value">67</span>
+                                                <span class="stat-label">投稿人数</span>
+                                            </div>
+                                            <div class="theme-stat-item">
+                                                <span class="stat-value">43</span>
+                                                <span class="stat-label">采购人数</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="theme-item">
+                                        <h3>主题二：心脏起搏器植入</h3>
+                                        <p>本主题介绍心脏起搏器植入手术的技术要点和并发症管理。包括单腔、双腔起搏器的选择原则，植入部位的选择，术后随访和参数调整等方面的经验分享。</p>
+                                        <div class="theme-stats-row">
+                                            <div class="theme-stat-item">
+                                                <span class="stat-value">45</span>
+                                                <span class="stat-label">投稿人数</span>
+                                            </div>
+                                            <div class="theme-stat-item">
+                                                <span class="stat-value">31</span>
+                                                <span class="stat-label">采购人数</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h2 class="section-title">平台建议匹配范围</h2>
+                            <p class="rich-text" style="margin-bottom: 12px;">以下为平台创建活动时给出的推荐范围，实际招募会以企业使用计划中每个主题配置的条件为准。</p>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 12px;">
+                                <div style="background-color: #f8fafc; border-radius: 8px; padding: 12px;">
+                                    <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">省市</div>
+                                    <div style="font-size: 13px; color: #1e293b;">全国</div>
+                                </div>
+                                <div style="background-color: #f8fafc; border-radius: 8px; padding: 12px;">
+                                    <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">机构名称</div>
+                                    <div style="font-size: 13px; color: #1e293b;">三级甲等医院</div>
+                                </div>
+                                <div style="background-color: #f8fafc; border-radius: 8px; padding: 12px;">
+                                    <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">身份职称</div>
+                                    <div style="font-size: 13px; color: #1e293b;">主任医师、副主任医师</div>
+                                </div>
+                                <div style="background-color: #f8fafc; border-radius: 8px; padding: 12px;">
+                                    <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">科室</div>
+                                    <div style="font-size: 13px; color: #1e293b;">心血管内科、心脏外科</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h2 class="section-title">内容要求</h2>
+                            <div class="requirement-list">
+                                <div class="requirement-item">
+                                    <span class="requirement-label">内容完整：</span>
+                                    <span class="requirement-text">请确保病例信息完整，包括患者基本情况、病史、诊断过程、治疗方案及随访结果等关键信息。</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <span class="requirement-label">隐私保护：</span>
+                                    <span class="requirement-text">请确保所有患者隐私信息已完全脱敏，如姓名、身份证号、联系方式等个人识别信息。</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <span class="requirement-label">学术价值：</span>
+                                    <span class="requirement-text">病例应具有一定的学术参考价值，能够反映临床诊疗思路或展示特殊病例特点。</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <span class="requirement-label">真实性：</span>
+                                    <span class="requirement-text">投稿内容需真实、准确，严禁虚构或篡改病例数据，确保学术诚信。</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <span class="requirement-label">原创性：</span>
+                                    <span class="requirement-text">投稿病例需为原创内容，未在其他平台发表过，避免重复投稿。</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <span class="requirement-label">格式规范：</span>
+                                    <span class="requirement-text">请按照指定模板填写病例信息，确保格式统一、排版清晰。</span>
+                                </div>
+                            </div>
+                        </div>
+
+                            </div>
+                            <div class="tab-content-right">
+                                <div class="preview-panel">
+                                    <h3 class="preview-title">活动预览</h3>
+                                    <div class="preview-image-container">
+                                        <img src="/img/20260507145431.jpg" alt="活动预览" class="preview-image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="tab-usage">
+                        <div style="overflow-x: auto;">
+                            <table class="usage-table">
+                                <thead>
+                                    <tr>
+                                        <th>使用时间</th>
+                                        <th>使用主题 / 任务归属</th>
+                                        <th>目标采购数</th>
+                                        <th>目标人群条件</th>
+                                        <th>命中医生数</th>
+                                        <th>投稿数</th>
+                                        <th>已采购数</th>
+                                        <th>招募状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="data-row">
+                                        <td>2025-03-02 10:30:00</td>
+                                        <td>
+                                            <div>冠心病诊疗新进展</div>
+                                            <div class="work-id">任务：ENT-A-冠心病-001</div>
+                                        </td>
+                                        <td>50</td>
+                                        <td>
+                                            <span class="filter-tag">广东省</span>
+                                            <span class="filter-tag">三甲医院</span>
+                                            <span class="filter-tag">心内科</span>
+                                        </td>
+                                        <td>156</td>
+                                        <td>45</td>
+                                        <td>32</td>
+                                        <td><span class="status-badge ongoing">进行中</span></td>
+                                        <td><button class="action-btn expand-btn" onclick="toggleExpand(1)">展开</button></td>
+                                    </tr>
+                                    <tr class="expand-row" id="expand-1" style="display: none;">
+                                        <td colspan="9">
+                                            <div class="expand-content">
+                                                <div class="expand-section">
+                                                    <h4>报名医生及投稿状态</h4>
+                                                    <table class="detail-table">
+                                                        <tr><th>医生信息</th><th>医院</th><th>报名时间</th><th>投稿标题</th><th>投稿状态</th><th>投稿时间</th><th>操作</th></tr>
+                                                        <tr><td>张明｜主任医师｜心内科</td><td>广州XX医院</td><td>2025-03-02 10:35:00</td><td>冠心病治疗新进展<span class="work-type medical-podcast">医学播客</span></td><td><span class="sub-status approved">审核通过</span></td><td>2025-03-03 09:15:00</td><td><button class="view-btn">查看详情</button></td></tr>
+                                                        <tr><td>李华｜副主任医师｜心内科</td><td>广州XX医院</td><td>2025-03-02 11:20:00</td><td>心力衰竭管理经验<span class="work-type interactive-case">互动病例</span></td><td><span class="sub-status pending">待审核</span></td><td>2025-03-03 15:30:00</td><td><button class="view-btn">查看详情</button></td></tr>
+                                                        <tr><td>王芳｜主任医师｜心血管内科</td><td>深圳XX医院</td><td>2025-03-02 14:45:00</td><td>-</td><td><span class="sub-status no-submit">未投稿</span></td><td>-</td><td>-</td></tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="data-row">
+                                        <td>2025-03-05 16:45:00</td>
+                                        <td>
+                                            <div>心力衰竭管理</div>
+                                            <div class="work-id">任务：ENT-A-心衰-002</div>
+                                        </td>
+                                        <td>30</td>
+                                        <td>
+                                            <span class="filter-tag">上海市</span>
+                                            <span class="filter-tag">三甲医院</span>
+                                            <span class="filter-tag">不限</span>
+                                        </td>
+                                        <td>89</td>
+                                        <td>23</td>
+                                        <td>18</td>
+                                        <td><span class="status-badge ongoing">进行中</span></td>
+                                        <td><button class="action-btn expand-btn" onclick="toggleExpand(2)">展开</button></td>
+                                    </tr>
+                                    <tr class="expand-row" id="expand-2" style="display: none;">
+                                        <td colspan="9">
+                                            <div class="expand-content">
+                                                <div class="expand-section">
+                                                    <h4>报名医生及投稿状态</h4>
+                                                    <table class="detail-table">
+                                                        <tr><th>医生信息</th><th>医院</th><th>报名时间</th><th>投稿标题</th><th>投稿状态</th><th>投稿时间</th><th>操作</th></tr>
+                                                        <tr><td>陈伟｜主任医师｜心内科</td><td>上海XX医院</td><td>2025-03-05 17:00:00</td><td>-</td><td><span class="sub-status no-submit">未投稿</span></td><td>-</td><td>-</td></tr>
+                                                        <tr><td>刘洋｜副主任医师｜内分泌科</td><td>上海XX医院</td><td>2025-03-05 18:30:00</td><td>糖尿病诊治指南解读<span class="work-type surgery-video">手术视频</span></td><td><span class="sub-status rejected">审核未通过</span></td><td>2025-03-06 10:00:00</td><td><button class="view-btn">查看详情</button></td></tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="data-row">
+                                        <td>2025-02-28 09:00:00</td>
+                                        <td>
+                                            <div>心律失常诊治</div>
+                                            <div class="work-id">任务：ENT-B-心律-001</div>
+                                        </td>
+                                        <td>100</td>
+                                        <td>
+                                            <span class="filter-tag">北京市</span>
+                                            <span class="filter-tag">三甲医院</span>
+                                            <span class="filter-tag">主任医师</span>
+                                            <span class="filter-tag">心内科</span>
+                                        </td>
+                                        <td>234</td>
+                                        <td>89</td>
+                                        <td>67</td>
+                                        <td><span class="status-badge ended">已结束</span></td>
+                                        <td><button class="action-btn expand-btn" onclick="toggleExpand(3)">展开</button></td>
+                                    </tr>
+                                    <tr class="expand-row" id="expand-3" style="display: none;">
+                                        <td colspan="9">
+                                            <div class="expand-content">
+                                                <div class="expand-section">
+                                                    <h4>报名医生及投稿状态</h4>
+                                                    <table class="detail-table">
+                                                        <tr><th>医生信息</th><th>医院</th><th>报名时间</th><th>投稿标题</th><th>投稿状态</th><th>投稿时间</th><th>操作</th></tr>
+                                                        <tr><td>赵强｜主任医师｜心内科</td><td>北京XX医院</td><td>2025-02-28 09:30:00</td><td>心律失常治疗策略<span class="work-type medical-podcast">医学播客</span></td><td><span class="sub-status approved">审核通过</span></td><td>2025-03-01 08:00:00</td><td><button class="view-btn">查看详情</button></td></tr>
+                                                        <tr><td>孙丽｜主任医师｜心血管内科</td><td>北京XX医院</td><td>2025-02-28 10:15:00</td><td>心脏介入手术进展<span class="work-type surgery-video">手术视频</span></td><td><span class="sub-status approved">审核通过</span></td><td>2025-03-01 09:30:00</td><td><button class="view-btn">查看详情</button></td></tr>
+                                                        <tr><td>周杰｜主任医师｜心内科</td><td>北京XX医院</td><td>2025-02-28 11:00:00</td><td>高血压管理新观点<span class="work-type interactive-case">互动病例</span></td><td><span class="sub-status pending">待审核</span></td><td>2025-03-01 10:00:00</td><td><button class="view-btn">查看详情</button></td></tr>
+                                                        <tr><td>吴敏｜副主任医师｜心内科</td><td>北京XX医院</td><td>2025-02-28 14:00:00</td><td>-</td><td><span class="sub-status no-submit">未投稿</span></td><td>-</td><td>-</td></tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="tab-submission">
+                        <div class="filter-bar">
+                            <div class="filter-item">
+                                <select class="filter-select">
+                                    <option value="all">全部主题类型</option>
+                                    <option value="type1">医学播客</option>
+                                    <option value="type2">互动病例</option>
+                                    <option value="type3">手术视频</option>
+                                </select>
+                            </div>
+                            <div class="filter-item">
+                                <select class="filter-select">
+                                    <option value="all">全部投稿主题</option>
+                                    <option value="theme1">冠心病诊疗新进展</option>
+                                    <option value="theme2">心力衰竭管理</option>
+                                    <option value="theme3">心律失常诊治</option>
+                                </select>
+                            </div>
+                            <div class="filter-item">
+                                <select class="filter-select">
+                                    <option value="all">全部投稿状态</option>
+                                    <option value="pending">待审核</option>
+                                    <option value="approved">审核通过</option>
+                                    <option value="purchased">已采购</option>
+                                    <option value="rejected">已驳回</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <table class="data-table submission-table">
+                            <thead>
+                                <tr>
+                                    <th>医生信息</th>
+                                    <th>报名时间</th>
+                                    <th>作品名称</th>
+                                    <th>投稿主题</th>
+                                    <th>投稿时间</th>
+                                    <th>作品状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>张三｜主任医师｜心内科</td>
+                                    <td>2025-03-01 09:30:00</td>
+                                    <td>
+                                        <div class="work-name">VR 各顾各<span class="work-type medical-podcast">医学播客</span></div>
+                                        <div class="work-id">ID: aafb60dab292a8d2dc00ca843283f543</div>
+                                    </td>
+                                    <td>冠心病介入治疗案例</td>
+                                    <td>2025-03-05 14:20:00</td>
+                                    <td><span class="status-tag approved">审核通过</span></td>
+                                    <td>
+                                        <button class="action-btn view">详情</button>
+                                        <button class="action-btn transfer">学术传递</button>
+                                        <div class="action-dropdown">
+                                            <button class="action-btn more">更多</button>
+                                            <div class="dropdown-menu">
+                                                <a href="#">内容合适</a>
+                                                <a href="#">内容不合适</a>
+                                                <a href="#">分享作品</a>
+                                                <a href="#">撤回任务</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>李四｜副主任医师｜心内科</td>
+                                    <td>2025-03-02 10:15:00</td>
+                                    <td>
+                                        <div class="work-name">心血管疾病研究<span class="work-type interactive-case">互动病例</span></div>
+                                        <div class="work-id">ID: b2c8e1f3a4d5c6b7a8e9f0a1b2c3d4e5</div>
+                                    </td>
+                                    <td>心力衰竭管理经验分享</td>
+                                    <td>2025-03-06 10:15:00</td>
+                                    <td><span class="status-tag pending">待审核</span></td>
+                                    <td>
+                                        <button class="action-btn view">详情</button>
+                                        <button class="action-btn transfer">学术传递</button>
+                                        <div class="action-dropdown">
+                                            <button class="action-btn more">更多</button>
+                                            <div class="dropdown-menu">
+                                                <a href="#">内容合适</a>
+                                                <a href="#">内容不合适</a>
+                                                <a href="#">分享作品</a>
+                                                <a href="#">撤回任务</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>王五｜主任医师｜心内科</td>
+                                    <td>2025-03-03 14:20:00</td>
+                                    <td>
+                                        <div class="work-name">房颤治疗新策略<span class="work-type surgery-video">手术视频</span></div>
+                                        <div class="work-id">ID: c3d9f2e4b5a6c7d8e9f0a1b2c3d4e5f6</div>
+                                    </td>
+                                    <td>心律失常射频消融术</td>
+                                    <td>2025-03-07 16:30:00</td>
+                                    <td><span class="status-tag purchased">已采购</span></td>
+                                    <td>
+                                        <button class="action-btn view">详情</button>
+                                        <button class="action-btn transfer">学术传递</button>
+                                        <div class="action-dropdown">
+                                            <button class="action-btn more">更多</button>
+                                            <div class="dropdown-menu">
+                                                <a href="#">内容合适</a>
+                                                <a href="#">内容不合适</a>
+                                                <a href="#">分享作品</a>
+                                                <a href="#">撤回任务</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>赵六｜主治医师｜心内科</td>
+                                    <td>2025-03-04 11:00:00</td>
+                                    <td>
+                                        <div class="work-name">他汀类药物应用<span class="work-type medical-podcast">医学播客</span></div>
+                                        <div class="work-id">ID: d4e0f3a5b6c7d8e9f0a1b2c3d4e5f6a7</div>
+                                    </td>
+                                    <td>冠心病药物治疗方案</td>
+                                    <td>2025-03-08 09:00:00</td>
+                                    <td><span class="status-tag rejected">已驳回</span></td>
+                                    <td>
+                                        <button class="action-btn view">详情</button>
+                                        <button class="action-btn transfer">学术传递</button>
+                                        <div class="action-dropdown">
+                                            <button class="action-btn more">更多</button>
+                                            <div class="dropdown-menu">
+                                                <a href="#">内容合适</a>
+                                                <a href="#">内容不合适</a>
+                                                <a href="#">分享作品</a>
+                                                <a href="#">撤回任务</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>孙七｜副主任医师｜心内科</td>
+                                    <td>2025-03-09 08:45:00</td>
+                                    <td>
+                                        <div class="work-name">-</div>
+                                        <div class="work-id">未投稿</div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td><span class="status-tag pending">已报名</span></td>
+                                    <td>
+                                        <button class="action-btn view">详情</button>
+                                        <button class="action-btn transfer">学术传递</button>
+                                        <div class="action-dropdown">
+                                            <button class="action-btn more">更多</button>
+                                            <div class="dropdown-menu">
+                                                <a href="#">催稿</a>
+                                                <a href="#">分享作品</a>
+                                                <a href="#">撤回任务</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>周八｜主任医师｜心内科</td>
+                                    <td>2025-03-10 15:30:00</td>
+                                    <td>
+                                        <div class="work-name">-</div>
+                                        <div class="work-id">未投稿</div>
+                                    </td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td><span class="status-tag pending">已报名</span></td>
+                                    <td>
+                                        <button class="action-btn view">详情</button>
+                                        <button class="action-btn transfer">学术传递</button>
+                                        <div class="action-dropdown">
+                                            <button class="action-btn more">更多</button>
+                                            <div class="dropdown-menu">
+                                                <a href="#">催稿</a>
+                                                <a href="#">分享作品</a>
+                                                <a href="#">撤回任务</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/menu.js"></script>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        function switchTab(tabId) {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-pane');
+            
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            const activeButton = document.querySelector(`[data-tab="${tabId}"]`);
+            const activeContent = document.getElementById('tab-' + tabId);
+            
+            if (activeButton) activeButton.classList.add('active');
+            if (activeContent) activeContent.classList.add('active');
+        }
+
+        function toggleExpand(id) {
+            const expandRow = document.getElementById('expand-' + id);
+            const button = document.querySelector(`[onclick="toggleExpand(${id})"]`);
+            
+            if (expandRow.style.display === 'none' || expandRow.style.display === '') {
+                expandRow.style.display = 'table-row';
+                button.textContent = '收起';
+            } else {
+                expandRow.style.display = 'none';
+                button.textContent = '展开';
+            }
+        }
+
+        function goToFeedbackForCurrentActivity() {
+            const activityTitle = getTextContent('.activity-title', '活动详情').replace('进行中', '').trim();
+            sessionStorage.setItem('pendingActivityFeedbackTitle', activityTitle);
+            window.location.href = 'academic-activity-market.html';
+        }
+
+        async function loadComponents() {
+            try {
+                const headerResponse = await fetch('components/header.html');
+                const headerHtml = await headerResponse.text();
+                document.getElementById('header-placeholder').innerHTML = headerHtml;
+
+                const sidebarResponse = await fetch('components/sidebar.html');
+                const sidebarHtml = await sidebarResponse.text();
+                document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+
+                console.log('Sidebar loaded, checking for initializeMenu...');
+                console.log('initializeMenu type:', typeof initializeMenu);
+                if (typeof initializeMenu === 'function') {
+                    console.log('Calling initializeMenu...');
+                    initializeMenu();
+                } else {
+                    console.error('initializeMenu not found!');
+                }
+            } catch (error) {
+                console.error('加载组件失败:', error);
+            }
+        }
+
+        const ACTIVITY_USE_STORAGE_KEY = 'selectedMarketActivities';
+        const themeFieldOptions = {
+            province: [
+                ['all', '全部省份'],
+                ['beijing', '北京'],
+                ['shanghai', '上海'],
+                ['guangdong', '广东'],
+                ['zhejiang', '浙江'],
+                ['jiangsu', '江苏']
+            ],
+            hospital: [
+                ['all', '全部等级'],
+                ['level3a', '三级甲等'],
+                ['level3b', '三级乙等'],
+                ['level2', '二级医院']
+            ],
+            doctor: [
+                ['all', '全部身份'],
+                ['chief', '主任医师'],
+                ['deputy', '副主任医师'],
+                ['attending', '主治医师'],
+                ['resident', '住院医师']
+            ],
+            dept: [
+                ['all', '全部科室'],
+                ['cardiovascular', '心血管科'],
+                ['endocrinology', '内分泌科'],
+                ['respiratory', '呼吸科'],
+                ['pediatric', '儿科'],
+                ['neurology', '神经科']
+            ]
+        };
+
+        function getCurrentActivityId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id') || '1';
+        }
+
+        function getTextContent(selector, fallback = '') {
+            const element = document.querySelector(selector);
+            return element ? element.textContent.trim() : fallback;
+        }
+
+        function getSelectedOptionText(selectOrId) {
+            const select = typeof selectOrId === 'string' ? document.getElementById(selectOrId) : selectOrId;
+            return select ? select.options[select.selectedIndex].text : '';
+        }
+
+        function getStoredUsedActivities() {
+            try {
+                return JSON.parse(localStorage.getItem(ACTIVITY_USE_STORAGE_KEY)) || [];
+            } catch (error) {
+                console.warn('读取已选择活动失败:', error);
+                return [];
+            }
+        }
+
+        function normalizeSelectedThemes(activity) {
+            if (!activity) return [];
+            if (Array.isArray(activity.selectedThemes)) return activity.selectedThemes;
+            if (activity.selectedTheme || activity.selectedThemeName) {
+                return [{
+                    id: activity.selectedTheme || 'legacy_theme',
+                    name: activity.selectedThemeName || '已选主题',
+                    type: activity.selectedThemeType || '主题任务',
+                    purchaseCount: Number(activity.purchaseCount) || 0,
+                    province: activity.province || '全部省份',
+                    hospital: activity.hospital || '全部等级',
+                    doctor: activity.doctor || '全部身份',
+                    dept: activity.dept || '全部科室',
+                    taskId: activity.taskId || '历史任务'
+                }];
+            }
+            return [];
+        }
+
+        function saveUsedActivity(activity) {
+            const activities = getStoredUsedActivities();
+            const existingIndex = activities.findIndex(item => item.activityId === activity.activityId);
+
+            if (existingIndex >= 0) {
+                const existingThemes = normalizeSelectedThemes(activities[existingIndex]);
+                const mergedThemes = [...existingThemes];
+                (activity.selectedThemes || []).forEach(theme => {
+                    const themeIndex = mergedThemes.findIndex(item => item.id === theme.id);
+                    if (themeIndex >= 0) {
+                        mergedThemes[themeIndex] = {
+                            ...mergedThemes[themeIndex],
+                            ...theme
+                        };
+                    } else {
+                        mergedThemes.push(theme);
+                    }
+                });
+
+                const totalPurchaseCount = mergedThemes.reduce((sum, theme) => sum + (Number(theme.purchaseCount) || 0), 0);
+                activities[existingIndex] = {
+                    ...activities[existingIndex],
+                    ...activity,
+                    selectedThemes: mergedThemes,
+                    selectedThemeName: mergedThemes.map(theme => theme.name).join('、'),
+                    purchaseCount: totalPurchaseCount,
+                    totalPurchaseCount
+                };
+            } else {
+                activities.unshift(activity);
+            }
+
+            localStorage.setItem(ACTIVITY_USE_STORAGE_KEY, JSON.stringify(activities));
+        }
+
+        function getUsedThemeIds(activityId) {
+            const activity = getStoredUsedActivities().find(item => item.activityId === activityId);
+            return new Set(normalizeSelectedThemes(activity).map(theme => theme.id));
+        }
+
+        function updateChooseUseButton() {
+            const chooseUseBtn = document.getElementById('chooseUseBtn');
+            if (!chooseUseBtn) return;
+
+            const usedThemeCount = getUsedThemeIds(getCurrentActivityId()).size;
+            chooseUseBtn.textContent = usedThemeCount ? `${usedThemeCount}个主题已使用，继续配置` : '选择使用';
+            chooseUseBtn.disabled = false;
+            chooseUseBtn.style.opacity = '';
+            chooseUseBtn.style.cursor = 'pointer';
+        }
+
+        function buildOptionList(field, selectedValue = 'all') {
+            return themeFieldOptions[field]
+                .map(([value, text]) => `<option value="${value}"${value === selectedValue ? ' selected' : ''}>${text}</option>`)
+                .join('');
+        }
+
+        function buildSelect(themeId, field, label, selectedValue = 'all') {
+            return `
+                <label>
+                    <span>${label}</span>
+                    <select class="theme-config-select" data-theme-id="${themeId}" data-theme-field="${field}">
+                        ${buildOptionList(field, selectedValue)}
+                    </select>
+                </label>
+            `;
+        }
+
+        function setThemeOptionVisualState(input) {
+            const option = input.closest('.theme-option');
+            if (!option) return;
+            option.classList.toggle('is-selected', input.checked);
+            option.classList.toggle('is-disabled', input.disabled);
+        }
+
+        function initializeThemeCategoryCounts() {
+            document.querySelectorAll('.theme-category').forEach(category => {
+                const countBadge = category.querySelector('.theme-category-count');
+                if (!countBadge) return;
+                const themeCount = category.querySelectorAll('.theme-option').length;
+                countBadge.textContent = `${themeCount}个主题`;
+            });
+        }
+
+        function setThemeCategoryCollapsed(category, collapsed) {
+            if (!category) return;
+            category.classList.toggle('is-collapsed', collapsed);
+            const header = category.querySelector('.theme-category-header');
+            if (header) header.setAttribute('aria-expanded', String(!collapsed));
+        }
+
+        function resetThemeCategoryState() {
+            document.querySelectorAll('.theme-category').forEach(category => {
+                setThemeCategoryCollapsed(category, false);
+            });
+        }
+
+        function toggleThemeCategory(header) {
+            const category = header.closest('.theme-category');
+            if (!category) return;
+            setThemeCategoryCollapsed(category, !category.classList.contains('is-collapsed'));
+        }
+
+        function resetThemeSelectionState(activityId) {
+            const usedThemeIds = getUsedThemeIds(activityId);
+            document.querySelectorAll('.theme-checkbox').forEach(input => {
+                input.checked = false;
+                input.disabled = usedThemeIds.has(input.value);
+                setThemeOptionVisualState(input);
+            });
+            updateSelectedThemeConfigs();
+        }
+
+        function getSelectedThemeInputs() {
+            return Array.from(document.querySelectorAll('.theme-checkbox:checked:not(:disabled)'));
+        }
+
+        function getThemeConfigValues(themeId) {
+            const purchaseInput = document.querySelector(`.theme-purchase-input[data-theme-id="${themeId}"]`);
+            const getValue = field => document.querySelector(`[data-theme-id="${themeId}"][data-theme-field="${field}"]`)?.value || 'all';
+
+            return {
+                purchaseCount: purchaseInput ? purchaseInput.value : '',
+                province: getValue('province'),
+                hospital: getValue('hospital'),
+                doctor: getValue('doctor'),
+                dept: getValue('dept')
+            };
+        }
+
+        function getUnifiedThemeConfig() {
+            return {
+                purchaseCount: document.getElementById('batchPurchaseCount')?.value || '',
+                province: document.getElementById('batch-province')?.value || 'all',
+                hospital: document.getElementById('batch-hospital')?.value || 'all',
+                doctor: document.getElementById('batch-doctor')?.value || 'all',
+                dept: document.getElementById('batch-dept')?.value || 'all'
+            };
+        }
+
+        function updateSelectedThemeConfigs() {
+            const container = document.getElementById('selectedThemeConfigs');
+            const countBadge = document.getElementById('selectedThemeCount');
+            if (!container) return;
+
+            const previousValues = {};
+            document.querySelectorAll('.theme-config-card').forEach(card => {
+                const themeId = card.dataset.themeConfig;
+                previousValues[themeId] = getThemeConfigValues(themeId);
+            });
+
+            const selectedThemes = getSelectedThemeInputs();
+            if (countBadge) countBadge.textContent = selectedThemes.length;
+
+            document.querySelectorAll('.theme-checkbox').forEach(setThemeOptionVisualState);
+
+            if (!selectedThemes.length) {
+                container.innerHTML = '<div class="theme-config-empty">从左侧选择主题后，主题会自动使用上方统一设置；需要特殊配置时可单独修改。</div>';
+                return;
+            }
+
+            container.innerHTML = selectedThemes.map(input => {
+                const themeId = input.value;
+                const themeName = input.dataset.themeName;
+                const themeType = input.dataset.themeType;
+                const values = previousValues[themeId] || getUnifiedThemeConfig();
+                return `
+                    <div class="theme-config-card" data-theme-config="${themeId}">
+                        <div class="theme-config-title">
+                            <span>${themeType}</span>
+                            <strong>${themeName}</strong>
+                        </div>
+                        <div class="theme-config-grid">
+                            <label>
+                                <span>目标采购数</span>
+                                <input class="theme-purchase-input" type="number" min="1" max="500" placeholder="1-500" value="${values.purchaseCount || ''}" data-theme-id="${themeId}">
+                            </label>
+                            ${buildSelect(themeId, 'province', '省份/城市', values.province)}
+                            ${buildSelect(themeId, 'hospital', '医院等级', values.hospital)}
+                            ${buildSelect(themeId, 'doctor', '身份/职称', values.doctor)}
+                            ${buildSelect(themeId, 'dept', '科室', values.dept)}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function syncUnifiedConfigToThemeCards() {
+            const unifiedConfig = getUnifiedThemeConfig();
+            document.querySelectorAll('.theme-config-card').forEach(card => {
+                const themeId = card.dataset.themeConfig;
+                const purchaseInput = card.querySelector(`.theme-purchase-input[data-theme-id="${themeId}"]`);
+                if (purchaseInput && purchaseInput.dataset.customized !== 'true') {
+                    purchaseInput.value = unifiedConfig.purchaseCount;
+                }
+
+                ['province', 'hospital', 'doctor', 'dept'].forEach(field => {
+                    const target = card.querySelector(`[data-theme-id="${themeId}"][data-theme-field="${field}"]`);
+                    if (target && target.dataset.customized !== 'true') {
+                        target.value = unifiedConfig[field];
+                    }
+                });
+            });
+        }
+
+        function filterThemeOptions() {
+            const keyword = (document.getElementById('themeSearchInput')?.value || '').trim().toLowerCase();
+
+            document.querySelectorAll('.theme-category').forEach(category => {
+                let visibleCount = 0;
+                category.querySelectorAll('.theme-option').forEach(option => {
+                    const input = option.querySelector('.theme-checkbox');
+                    const text = [
+                        option.textContent,
+                        input?.dataset.themeType,
+                        input?.dataset.themeName
+                    ].join(' ').toLowerCase();
+                    const matched = !keyword || text.includes(keyword);
+                    option.style.display = matched ? '' : 'none';
+                    if (matched) visibleCount += 1;
+                });
+                category.style.display = visibleCount ? '' : 'none';
+                if (keyword && visibleCount) {
+                    setThemeCategoryCollapsed(category, false);
+                }
+            });
+        }
+
+        function getThemeFieldText(themeId, field) {
+            const select = document.querySelector(`[data-theme-id="${themeId}"][data-theme-field="${field}"]`);
+            return getSelectedOptionText(select);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadComponents();
+            updateChooseUseButton();
+            initializeThemeCategoryCounts();
+
+            const useSettingModal = document.getElementById('useSettingModal');
+            if (useSettingModal) {
+                useSettingModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeUseSettingModal();
+                    }
+                });
+            }
+
+            document.querySelectorAll('.theme-checkbox').forEach(input => {
+                input.addEventListener('change', updateSelectedThemeConfigs);
+            });
+
+            document.querySelectorAll('.theme-category-header').forEach(header => {
+                header.addEventListener('click', function() {
+                    toggleThemeCategory(this);
+                });
+            });
+
+            const themeSearchInput = document.getElementById('themeSearchInput');
+            if (themeSearchInput) {
+                themeSearchInput.addEventListener('input', filterThemeOptions);
+            }
+
+            ['batchPurchaseCount', 'batch-province', 'batch-hospital', 'batch-doctor', 'batch-dept'].forEach(id => {
+                const field = document.getElementById(id);
+                if (!field) return;
+                field.addEventListener(field.tagName === 'INPUT' ? 'input' : 'change', syncUnifiedConfigToThemeCards);
+            });
+
+            const selectedThemeConfigs = document.getElementById('selectedThemeConfigs');
+            if (selectedThemeConfigs) {
+                selectedThemeConfigs.addEventListener('input', function(e) {
+                    if (e.target.matches('.theme-purchase-input')) {
+                        e.target.dataset.customized = 'true';
+                    }
+                });
+                selectedThemeConfigs.addEventListener('change', function(e) {
+                    if (e.target.matches('.theme-config-select')) {
+                        e.target.dataset.customized = 'true';
+                    }
+                });
+            }
+        });
+
+        function openUseSettingModal(activityId) {
+            const currentActivityId = activityId || getCurrentActivityId();
+            document.getElementById('useSettingActivityId').value = currentActivityId;
+            document.getElementById('useSettingModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            document.getElementById('useSettingProductTag').value = 'all';
+            document.getElementById('themeSearchInput').value = '';
+            document.getElementById('batchPurchaseCount').value = '';
+            ['province', 'hospital', 'doctor', 'dept'].forEach(field => {
+                const select = document.getElementById(`batch-${field}`);
+                if (select) select.value = 'all';
+            });
+            resetThemeCategoryState();
+            resetThemeSelectionState(currentActivityId);
+            filterThemeOptions();
+        }
+
+        function closeUseSettingModal() {
+            document.getElementById('useSettingModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function confirmUseSetting() {
+            const activityId = document.getElementById('useSettingActivityId').value;
+            const productTag = document.getElementById('useSettingProductTag').value;
+            const selectedThemeInputs = getSelectedThemeInputs();
+            
+            if (!selectedThemeInputs.length) {
+                alert('请至少选择一个活动主题');
+                return;
+            }
+
+            if (productTag === 'all') {
+                alert('请选择产品标签');
+                return;
+            }
+
+            const timestamp = Date.now().toString(36);
+            const selectedThemes = selectedThemeInputs.map(input => {
+                const countInput = document.querySelector(`.theme-purchase-input[data-theme-id="${input.value}"]`);
+                const purchaseCount = Number(countInput ? countInput.value : 0);
+                return {
+                    id: input.value,
+                    name: input.dataset.themeName,
+                    type: input.dataset.themeType,
+                    purchaseCount,
+                    province: getThemeFieldText(input.value, 'province'),
+                    hospital: getThemeFieldText(input.value, 'hospital'),
+                    doctor: getThemeFieldText(input.value, 'doctor'),
+                    dept: getThemeFieldText(input.value, 'dept'),
+                    taskId: `${activityId}-${input.value}-${timestamp}`
+                };
+            });
+
+            const invalidTheme = selectedThemes.find(theme => !theme.purchaseCount || theme.purchaseCount < 1 || theme.purchaseCount > 500);
+            if (invalidTheme) {
+                alert(`请为「${invalidTheme.name}」输入有效的采购数量（1-500份）`);
+                return;
+            }
+
+            const activityTitle = getTextContent('.activity-title', '活动详情').replace('进行中', '').trim();
+            const activityStatus = getTextContent('.activity-status-badge', '进行中');
+            const totalPurchaseCount = selectedThemes.reduce((sum, theme) => sum + theme.purchaseCount, 0);
+
+            saveUsedActivity({
+                activityId,
+                activityTitle,
+                activityStatus,
+                selectedThemes,
+                selectedThemeName: selectedThemes.map(theme => theme.name).join('、'),
+                purchaseCount: totalPurchaseCount,
+                totalPurchaseCount,
+                productTag,
+                productTagName: getSelectedOptionText('useSettingProductTag'),
+                usedAt: new Date().toISOString()
+            });
+
+            alert(`使用设置已提交，平台将按主题生成招募任务。\n选择主题：${selectedThemes.map(theme => theme.name).join('、')}\n目标采购合计：${totalPurchaseCount}份\n医生投稿时会被绑定到明确的主题任务，避免一稿多卖。`);
+            closeUseSettingModal();
+            updateChooseUseButton();
+        }
+    </script>
+
+    <!-- 使用设置弹窗 -->
+    <div id="useSettingModal" class="use-setting-modal">
+        <div class="use-setting-dialog">
+            <div class="use-setting-header">
+                <div>
+                    <h2>配置企业使用计划</h2>
+                    <p>先选主题，再在右侧完成采购数和招募条件配置。</p>
+                </div>
+                <button class="use-setting-close" onclick="closeUseSettingModal()" aria-label="关闭">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="use-setting-body">
+                <input type="hidden" id="useSettingActivityId">
+
+                <div class="use-form-grid">
+                    <label class="use-form-field">
+                        <span>产品标签 <em>*</em></span>
+                        <select id="useSettingProductTag">
+                            <option value="all">请选择产品标签</option>
+                            <option value="medical">医疗设备</option>
+                            <option value="pharmaceutical">药品</option>
+                            <option value="consumables">耗材</option>
+                            <option value="service">服务</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="use-setting-layout">
+                    <section class="theme-picker-panel">
+                        <div class="panel-head">
+                            <div>
+                                <h3>选择主题 <em>*</em></h3>
+                                <p>主题支持多选，滑动可查看全部主题内容。</p>
+                            </div>
+                            <strong>已选 <b id="selectedThemeCount">0</b></strong>
+                        </div>
+                        <input class="theme-search-input" id="themeSearchInput" type="text" placeholder="搜索主题名称或类型">
+
+                        <div class="theme-picker-scroll">
+                            <div class="theme-picker">
+                                <div class="theme-category">
+                                    <button class="theme-category-header medical" type="button" aria-expanded="true">
+                                        <span class="theme-category-title">
+                                            医学播客
+                                            <em class="theme-category-count">2个主题</em>
+                                        </span>
+                                        <svg class="theme-category-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </button>
+                                    <label class="theme-option">
+                                        <input class="theme-checkbox" type="checkbox" name="theme" value="theme_medical_1" data-theme-type="医学播客" data-theme-name="冠心病诊疗新进展">
+                                        <span>
+                                            <strong>冠心病诊疗新进展</strong>
+                                            <small>分享冠心病诊断与治疗的最新技术和临床经验，覆盖介入治疗、药物方案和精准医疗案例。</small>
+                                        </span>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input class="theme-checkbox" type="checkbox" name="theme" value="theme_medical_2" data-theme-type="医学播客" data-theme-name="心力衰竭管理">
+                                        <span>
+                                            <strong>心力衰竭管理</strong>
+                                            <small>聚焦心衰患者综合管理策略，包含药物规范化使用、器械治疗选择和长期随访方案。</small>
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <div class="theme-category">
+                                    <button class="theme-category-header case" type="button" aria-expanded="true">
+                                        <span class="theme-category-title">
+                                            在线互动病例
+                                            <em class="theme-category-count">1个主题</em>
+                                        </span>
+                                        <svg class="theme-category-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </button>
+                                    <label class="theme-option">
+                                        <input class="theme-checkbox" type="checkbox" name="theme" value="theme_interactive_1" data-theme-type="在线互动病例" data-theme-name="心律失常诊治">
+                                        <span>
+                                            <strong>心律失常诊治</strong>
+                                            <small>介绍心律失常诊断方法和治疗技术，覆盖电生理检查、射频消融和药物选择。</small>
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <div class="theme-category">
+                                    <button class="theme-category-header video" type="button" aria-expanded="true">
+                                        <span class="theme-category-title">
+                                            手术视频
+                                            <em class="theme-category-count">2个主题</em>
+                                        </span>
+                                        <svg class="theme-category-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </button>
+                                    <label class="theme-option">
+                                        <input class="theme-checkbox" type="checkbox" name="theme" value="theme_surgery_1" data-theme-type="手术视频" data-theme-name="复杂冠脉介入手术">
+                                        <span>
+                                            <strong>复杂冠脉介入手术</strong>
+                                            <small>展示 CTO 开通策略、多支血管病变处理、钙化病变处理和复杂分叉病变技术。</small>
+                                        </span>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input class="theme-checkbox" type="checkbox" name="theme" value="theme_surgery_2" data-theme-type="手术视频" data-theme-name="心脏起搏器植入">
+                                        <span>
+                                            <strong>心脏起搏器植入</strong>
+                                            <small>介绍起搏器植入手术要点、并发症管理、术后随访和参数调整经验。</small>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="theme-config-panel">
+                        <div class="panel-head">
+                            <div>
+                                <h3>设置采购与招募条件</h3>
+                                <p>先设置统一规则，选中的主题会默认使用；如某个主题不同，可在下方单独调整。</p>
+                            </div>
+                        </div>
+
+                        <div class="batch-config">
+                            <div class="batch-config-title">
+                                <strong>统一设置</strong>
+                                <span>适用于本次选中的全部主题，修改后会同步到未单独调整的主题。</span>
+                            </div>
+                            <div class="batch-config-grid">
+                                <label>
+                                    <span>目标采购数</span>
+                                    <input id="batchPurchaseCount" type="number" min="1" max="500" placeholder="可选">
+                                </label>
+                                <label>
+                                    <span>省份/城市</span>
+                                    <select id="batch-province">
+                                        <option value="all">全部省份</option>
+                                        <option value="beijing">北京</option>
+                                        <option value="shanghai">上海</option>
+                                        <option value="guangdong">广东</option>
+                                        <option value="zhejiang">浙江</option>
+                                        <option value="jiangsu">江苏</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    <span>医院等级</span>
+                                    <select id="batch-hospital">
+                                        <option value="all">全部等级</option>
+                                        <option value="level3a">三级甲等</option>
+                                        <option value="level3b">三级乙等</option>
+                                        <option value="level2">二级医院</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    <span>身份/职称</span>
+                                    <select id="batch-doctor">
+                                        <option value="all">全部身份</option>
+                                        <option value="chief">主任医师</option>
+                                        <option value="deputy">副主任医师</option>
+                                        <option value="attending">主治医师</option>
+                                        <option value="resident">住院医师</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    <span>科室</span>
+                                    <select id="batch-dept">
+                                        <option value="all">全部科室</option>
+                                        <option value="cardiovascular">心血管科</option>
+                                        <option value="endocrinology">内分泌科</option>
+                                        <option value="respiratory">呼吸科</option>
+                                        <option value="pediatric">儿科</option>
+                                        <option value="neurology">神经科</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="selectedThemeConfigs" class="selected-theme-configs">
+                            <div class="theme-config-empty">从左侧选择主题后，主题会自动使用上方统一设置；需要特殊配置时可单独修改。</div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+                </div>
+            </div>
+
+            <div class="use-setting-footer">
+                <button class="btn-modal-secondary" onclick="closeUseSettingModal()">取消</button>
+                <button class="btn-modal-primary" onclick="confirmUseSetting()">确定使用</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

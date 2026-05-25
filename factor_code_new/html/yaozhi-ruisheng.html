@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>药智睿生 - 调研工作台 (Tab版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .scroll-hidden::-webkit-scrollbar { width: 4px; }
+        .scroll-hidden::-webkit-scrollbar-thumb { background-color: #e5e7eb; border-radius: 4px; }
+        .tab-active { color: #2563eb; border-bottom: 2px solid #2563eb; font-weight: 600; }
+        .tab-inactive { color: #64748b; border-bottom: 2px solid transparent; }
+        .tab-inactive:hover { color: #334155; border-bottom: 2px solid #cbd5e1; }
+        
+        /* 保持之前的 AI 动画效果 */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+        .ai-pulse { animation: pulse-ring 2s infinite; }
+        
+        /* 查看模式样式 - 完全禁用编辑功能 */
+        .edit-text {
+            outline: none;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            position: relative;
+            cursor: default !important;
+            user-select: text;
+        }
+        
+        /* 完全禁用内容可编辑 */
+        [contenteditable="true"] {
+            pointer-events: none !important;
+            pointer-events: none !important;
+        }
+        
+        /* 移除所有编辑相关样式 */
+        .edit-text:focus {
+            background-color: #ffffff !important;
+            border: none !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+        }
+        
+        /* 隐藏编辑按钮 */
+        .edit-toggle {
+            display: none !important;
+        }
+        
+        /* 移除选项后的正确标识 */
+        .correct-option-indicator {
+            display: none !important;
+        }
+        
+        /* 题目项样式 */
+        .question-item {
+            transition: all 0.2s ease;
+        }
+        
+        .question-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 正确选项样式 */
+        input[name^="correct-"] {
+            cursor: pointer;
+        }
+        
+        /* 问卷预览标题样式 */
+        .question-item h1.edit-text {
+            font-size: 1.125rem;
+        }
+        
+        /* 防止编辑区域溢出 */
+        .edit-text {
+            word-break: break-word;
+        }
+        
+        /* 弹窗预览区域优化 */
+        #questionnairePreviewModal {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        /* 弹窗头部样式 */
+        #questionnairePreviewModal .modal-header {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 1.5rem;
+            background: white;
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+        
+        /* 弹窗底部样式 */
+        #questionnairePreviewModal .modal-footer {
+            border-top: 1px solid #e2e8f0;
+            padding: 1rem 1.5rem;
+            background: white;
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+        
+        /* 左侧信息区样式 */
+        #questionnairePreviewModal .left-section {
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            overflow-y: auto;
+        }
+        
+        /* 右侧题目列表样式 */
+        #questionnairePreviewModal .right-section {
+            background: #f8fafc;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+        
+        /* 题目卡片样式优化 */
+        .q-card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            transition: all 0.2s ease;
+        }
+        
+        .q-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            border-color: #d1d5db;
+        }
+        
+        /* 题目标题行样式 */
+        .q-title-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* 题目文本样式 */
+        .q-text {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: #1f2937;
+        }
+        
+        /* 题目类型标签样式 */
+        .type-tag {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            flex-shrink: 0;
+        }
+        
+        .tag-single {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .tag-multi {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        /* AI建议样式优化 */
+        .ai-suggestion {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border: 1px solid #fde68a;
+            border-radius: 0.5rem;
+            padding: 0.875rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+        
+        .ai-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #92400e;
+            flex-shrink: 0;
+        }
+        
+        .ai-content {
+            flex: 1;
+            font-size: 13px;
+            color: #78350f;
+            line-height: 1.5;
+        }
+        
+        /* 选项网格布局 */
+        .options-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+        
+        /* 选项样式优化 */
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            color: #374151;
+        }
+        
+        .option-item:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+        
+        /* 选项输入框样式 */
+        .option-item input[type="radio"],
+        .option-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        
+        /* 隐藏选项中的正确选项指示器 */
+        .correct-option-indicator {
+            display: none !important;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            #questionnairePreviewModal .flex-col md\:flex-row {
+                flex-direction: column;
+            }
+            
+            #questionnairePreviewModal .left-section {
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            
+            /* 移动端选项布局 */
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 上传文件弹窗样式 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+            position: relative;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            color: #6b7280;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-close:hover {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+        
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        
+        /* 上传弹窗标签页样式 */
+        .upload-tabs {
+            display: flex;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+        
+        .upload-tab {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        .upload-tab:hover {
+            color: #374151;
+        }
+        
+        .upload-tab.active {
+            color: #2563eb;
+        }
+        
+        .upload-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #2563eb;
+        }
+        
+        .upload-tab-content {
+            display: none;
+        }
+        
+        .upload-tab-content.active {
+            display: block;
+        }
+        
+        /* 上传区域样式 */
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 32px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f9fafb;
+        }
+        
+        .upload-area:hover {
+            border-color: #93c5fd;
+            background: #eff6ff;
+        }
+        
+        .upload-area.dragover {
+            border-color: #3b82f6;
+            background: #dbeafe;
+        }
+        
+        .upload-icon {
+            color: #9ca3af;
+            margin-bottom: 12px;
+        }
+        
+        .upload-area p {
+            color: #4b5563;
+            margin: 0;
+        }
+        
+        .upload-area .text-xs {
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+        
+        /* 素材项样式 */
+        .material-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .material-item:hover {
+            border-color: #93c5fd;
+            background: #eff6ff;
+        }
+        
+        .material-item.selected {
+            border-color: #3b82f6;
+            background: #dbeafe;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background: #1d4ed8;
+        }
+        
+        .btn-primary:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
+        
+        .btn-secondary:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen flex text-slate-700 overflow-hidden">
+
+    <aside class="w-80 bg-white border-r border-gray-200 flex flex-col z-20 shadow-sm flex-shrink-0">
+        
+        <div class="px-5 pt-5 pb-3">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md shadow-blue-200">
+                    <i class="fa-solid fa-dna"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-bold text-lg text-slate-800 leading-tight">药智睿生</span>
+                    <span class="text-[10px] text-slate-400">智能调研问卷专家</span>
+                </div>
+            </div>
+
+            <button class="w-full py-2.5 bg-blue-50 text-blue-700 border border-blue-100 hover:bg-blue-100 hover:border-blue-200 rounded-lg flex items-center justify-center gap-2 transition-all font-medium text-sm group shadow-sm">
+                <i class="fa-solid fa-plus group-hover:rotate-90 transition-transform duration-300"></i> 新建会话
+            </button>
+        </div>
+
+        <div class="px-5 mb-5">
+            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 px-1">当前产品对象</h3>
+            <div class="bg-white border border-gray-200 rounded-xl p-3 shadow-sm relative group hover:border-blue-300 transition-colors cursor-pointer">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center border border-slate-100 text-blue-600 text-lg">
+                        <i class="fa-solid fa-capsules"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-bold text-sm text-slate-800 truncate">伊可新</div>
+                        <div class="text-[10px] text-gray-500 truncate">维生素AD滴剂 (胶囊型)</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-5 flex border-b border-gray-100">
+            <button class="flex-1 py-3 text-sm text-center tab-active">
+                <i class="fa-solid fa-layer-group mr-1.5"></i>资料库
+            </button>
+            <button class="flex-1 py-3 text-sm text-center tab-inactive">
+                <i class="fa-solid fa-clock-rotate-left mr-1.5"></i>历史记录
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 scroll-hidden space-y-6">
+            
+            
+            <div>
+                <div class="flex items-center justify-between mb-2 px-1">
+                    <h3 class="text-xs font-bold text-amber-600 uppercase tracking-wider flex items-center gap-1">
+                        <i class="fa-solid fa-crown text-[10px]"></i> 核心智库
+                    </h3>
+                    <span class="text-[10px] bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded border border-amber-100">平台推荐</span>
+                </div>
+                
+                <div class="space-y-2">
+                    <div class="group relative p-3 bg-gradient-to-r from-amber-50/50 to-white border border-amber-100/80 rounded-lg hover:shadow-md hover:border-amber-300 transition-all cursor-pointer">
+                        <div class="flex items-start gap-2.5">
+                            <div class="mt-0.5 text-amber-500"><i class="fa-solid fa-book-medical"></i></div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-700 leading-tight mb-1">儿科AD缺乏临床诊疗指南(2024版)</h4>
+                                <p class="text-[10px] text-slate-500">已解析关键知识点：诊断标准、用药时长建议...</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 text-blue-600"><i class="fa-solid fa-circle-check"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 px-1 flex items-center gap-1 cursor-help group">
+                    对话素材
+                </h3>
+                <div class="space-y-2">
+                    <div class="p-2.5 flex items-center gap-2 bg-white border border-gray-100 rounded-lg hover:bg-gray-50 cursor-pointer">
+                        <i class="fa-regular fa-file-pdf text-red-400 ml-1"></i>
+                        <span class="text-xs text-slate-600 truncate">2025市场推广方案初稿.pdf</span>
+                    </div>
+                    
+                    <button id="openUploadModalBtn" class="w-full py-2 border border-dashed border-gray-300 rounded-lg text-xs text-gray-400 hover:text-blue-500 hover:border-blue-300 hover:bg-blue-50 transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> 上传文件
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4 border-t border-gray-200">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-white text-xs font-bold">DR</div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-xs font-bold text-slate-700">Dr. User</div>
+                    <div class="text-[10px] text-slate-400">趣学术</div>
+                </div>
+                <i class="fa-solid fa-gear text-gray-400 cursor-pointer hover:text-gray-600"></i>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col relative overflow-hidden">
+        <div class="flex-1 overflow-y-auto p-8 space-y-6 scroll-hidden bg-slate-50">
+            <div class="flex gap-4 max-w-3xl mx-auto">
+                <div class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white shrink-0 shadow-md text-sm"><i class="fa-solid fa-robot"></i></div>
+                <div class="p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-gray-700 max-w-xl">
+                    <p class="mb-2">你好！我是药智睿生。已为您配置好 <strong>“伊可新”</strong> 的调研环境。</p>
+                    <p>我注意到左侧智库中有最新的《临床指南》，是否需要我以此为基准，生成一份关于 <span class="text-blue-600 font-bold bg-blue-50 px-1 rounded cursor-pointer">医生处方习惯</span> 的调研问卷？</p>
+                </div>
+            </div>
+
+            <div class="flex gap-4 max-w-3xl mx-auto flex-row-reverse">
+                <div class="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 text-xs shrink-0 font-bold">用户</div>
+                <div class="bg-blue-600 p-4 rounded-2xl rounded-tr-none shadow-md text-sm text-white max-w-xl">
+                    是的，除了指南，请结合我上传的推广方案，重点问一下医生对3岁以上儿童继续使用的看法。
+                </div>
+            </div>
+
+            <div class="max-w-3xl mx-auto mt-6">
+                <div class="rounded-xl shadow-lg border border-green-100 overflow-hidden">
+                    <div class="bg-green-50/50 px-4 py-3 border-b border-green-100 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                            <span class="text-sm font-bold text-green-700">AI 问卷生成完成</span>
+                        </div>
+                        <button id="previewQuestionnaire" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition-all flex items-center gap-2 font-medium text-sm">
+                    <i class="fa-solid fa-eye"></i> 预览问卷
+                </button>
+                    </div>
+                    <div class="p-5 space-y-4">
+                        <div class="flex items-start gap-4">
+                            <i class="fa-solid fa-check-circle text-green-500 mt-1"></i>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-800">解析用户意图</h4>
+                                <p class="text-xs text-gray-500">关注点：3岁+依从性、推广方案结合</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <i class="fa-solid fa-check-circle text-green-500 mt-1"></i>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-800">提取智库关键信息</h4>
+                                <div class="flex gap-2 mt-1">
+                                    <span class="text-[10px] bg-amber-50 text-amber-700 border border-amber-200 px-1.5 rounded">临床指南 P.12</span>
+                                    <span class="text-[10px] bg-gray-100 text-gray-600 px-1.5 rounded">推广方案 P.05</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <i class="fa-solid fa-check-circle text-green-500 mt-1"></i>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-800">生成问卷题目</h4>
+                                <p class="text-xs text-gray-500">已生成10道题目，包含单选题和多选题</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AI生成内容警示区域 -->
+                <div class="mt-4 bg-gradient-to-r from-amber-50 to-amber-100 border-2 border-amber-300 rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600 text-xl animate-pulse"></i>
+                        <div>
+                            <h4 class="text-sm font-bold text-amber-800">内容由 AI 生成，请仔细甄别，题目仅供参考，您可在导入时自行修改</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pb-10 px-4">
+            <div class="max-w-3xl mx-auto">
+                <div class="rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200 transition-all focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-500 overflow-hidden relative">
+                    <div class="flex items-end gap-2 p-3">
+                        <textarea placeholder="在这里输入您的问题..." class="w-full max-h-40 bg-transparent border-none focus:ring-0 text-slate-700 placeholder-slate-400 text-[15px] resize-none py-2.5 h-[52px] leading-relaxed" style="min-height: 52px; outline: none;"></textarea>
+                        <button class="p-2.5 bg-slate-900 text-white rounded-xl hover:bg-blue-600 disabled:opacity-50 transition-all shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
+                        </button>
+                    </div>
+                    <div class="px-4 pb-2 flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <label class="flex items-center cursor-pointer select-none group">
+                                <input type="checkbox" class="peer sr-only">
+                                <div class="text-[10px] font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 peer-checked:bg-blue-100 peer-checked:text-blue-600 peer-checked:border-blue-200 transition-all flex items-center gap-1 group-hover:text-blue-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"></path><path d="M9 13a4.5 4.5 0 0 0 3-4"></path><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"></path><path d="M3.477 10.896a4 4 0 0 1 .585-.396"></path><path d="M6 18a4 4 0 0 1-1.967-.516"></path><path d="M12 13h4"></path><path d="M12 18h6a2 2 0 0 1 2 2v1"></path><path d="M12 8h8"></path><path d="M16 8V5a2 2 0 0 1 2-2"></path><circle cx="16" cy="13" r=".5"></circle><circle cx="18" cy="3" r=".5"></circle><circle cx="20" cy="21" r=".5"></circle><circle cx="20" cy="8" r=".5"></circle></svg>
+                                    深度思考 (R1)
+                                </div>
+                            </label>
+                        </div>
+                        <span class="text-[10px] text-slate-300">Enter 发送</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 上传文件弹窗 -->
+    <div class="modal" id="uploadFileModal" style="display: none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-content" style="width: 600px; max-width: 90vw;">
+            <div class="modal-header">
+                <h3>上传文件</h3>
+                <button class="modal-close" id="closeUploadModal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 上传方式选项卡 -->
+                <div class="upload-tabs flex border-b border-gray-200 mb-4">
+                    <button class="upload-tab active px-4 py-2 mr-2" data-tab="upload-new">上传新文件</button>
+                    <button class="upload-tab px-4 py-2" data-tab="select-existing">选择现有素材</button>
+                </div>
+                
+                <!-- 上传新文件内容 -->
+                <div class="upload-tab-content active" id="upload-new">
+                    <div class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-300 hover:bg-blue-50 transition-all cursor-pointer mb-4">
+                        <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.xlsx,.xls,.pptx,.ppt" style="display: none;">
+                        <div class="upload-icon mb-2 text-gray-400">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </div>
+                        <p class="text-gray-600 mb-2">点击或拖拽文件到此处上传</p>
+                        <p class="text-xs text-gray-400">支持 PDF、DOC、DOCX、XLS、XLSX、PPT、PPTX 格式</p>
+                    </div>
+                    <div id="filePreview" style="display: none;" class="bg-white border border-gray-200 rounded-lg p-4 mb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i class="fa-regular fa-file-pdf text-red-400 text-xl"></i>
+                                <div>
+                                    <div class="font-medium" id="previewFileName"></div>
+                                    <div class="text-xs text-gray-500" id="previewFileSize"></div>
+                                </div>
+                            </div>
+                            <button id="removeFileBtn" class="text-red-500 hover:text-red-700">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 选择现有素材内容 -->
+                <div class="upload-tab-content" id="select-existing" style="display: none;">
+                    <div class="mb-4">
+                        <input type="text" id="materialSearch" placeholder="搜索素材" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div class="material-library grid grid-cols-2 gap-3 max-h-60 overflow-y-auto">
+                        <!-- 素材项示例 -->
+                        <div class="material-item bg-white border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-video text-purple-500"></i>
+                                <div class="font-medium text-sm truncate">心血管疾病防治新进展</div>
+                            </div>
+                            <div class="text-xs text-gray-500 mb-2">视频 · 15:30 · 120MB</div>
+                            <div class="flex items-center gap-1">
+                                <span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded-full">荆防颗粒</span>
+                                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">医学教育</span>
+                            </div>
+                        </div>
+                        <div class="material-item bg-white border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-file-lines text-blue-500"></i>
+                                <div class="font-medium text-sm truncate">阿司匹林临床研究</div>
+                            </div>
+                            <div class="text-xs text-gray-500 mb-2">PDF · 医学研究</div>
+                            <div class="flex items-center gap-1">
+                                <span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded-full">荆防颗粒</span>
+                                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">医学研究</span>
+                            </div>
+                        </div>
+                        <div class="material-item bg-white border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-file-lines text-blue-500"></i>
+                                <div class="font-medium text-sm truncate">糖尿病患者管理优化</div>
+                            </div>
+                            <div class="text-xs text-gray-500 mb-2">PDF · 慢病管理</div>
+                            <div class="flex items-center gap-1">
+                                <span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded-full">盖笛欣</span>
+                                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">慢病管理</span>
+                            </div>
+                        </div>
+                        <div class="material-item bg-white border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-video text-purple-500"></i>
+                                <div class="font-medium text-sm truncate">儿科常见疾病诊疗</div>
+                            </div>
+                            <div class="text-xs text-gray-500 mb-2">视频 · 12:45 · 95MB</div>
+                            <div class="flex items-center gap-1">
+                                <span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded-full">砂糖产品</span>
+                                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">儿科医学</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-btn" id="cancelUploadBtn">取消</button>
+                <button type="button" class="confirm-btn" id="confirmUploadBtn" disabled>确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧问卷预览区域 -->
+    <aside id="right-sidebar" class="w-[600px] bg-white border-l border-gray-200 flex flex-col shadow-xl z-10 hidden transform transition-transform duration-300">
+        <div class="h-16 border-b border-gray-200 flex items-center justify-between px-6 bg-white">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-file-lines text-blue-600"></i>
+                <h2 class="font-bold text-gray-800">问卷预览</h2>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="fullscreenBtn" class="px-3 py-1.5 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-sm rounded-lg font-medium transition-colors">
+                    <i class="fa-solid fa-expand mr-1"></i> 全屏
+                </button>
+                <button id="importQuestionnaireBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                    <i class="fa-solid fa-upload mr-1"></i> 导入问卷
+                </button>
+            </div>
+        </div>
+        <div class="flex-1 bg-gray-50 p-6">
+            <div class="bg-white rounded-xl shadow-sm p-6 relative overflow-y-auto max-h-full">
+                <!-- 问卷标题 -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-sm font-medium text-gray-500">问卷标题</h2>
+                        <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                            <i class="fa-solid fa-pen-to-square text-xs"></i>
+                            编辑
+                        </button>
+                    </div>
+                    <h1 class="text-lg font-bold text-gray-900 bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 edit-text cursor-pointer transition-all duration-200" data-field="title" contenteditable="true">儿童维生素AD使用习惯调研</h1>
+                </div>
+                
+                <!-- 调研简介 -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-sm font-medium text-gray-500">调研简介</h2>
+                        <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                            <i class="fa-solid fa-pen-to-square text-xs"></i>
+                            编辑
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-700 leading-relaxed bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 edit-text cursor-pointer transition-all duration-200" data-field="introduction" contenteditable="true">
+                        本调研旨在了解儿科医生对3岁以上儿童继续使用维生素AD滴剂（伊可新）的看法和处方习惯，结合最新临床指南和市场推广方案，为产品优化和市场策略提供数据支持。
+                    </p>
+                </div>
+                
+                <!-- 调研目的及方向 -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-sm font-medium text-gray-500">调研目的及方向</h2>
+                        <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                            <i class="fa-solid fa-pen-to-square text-xs"></i>
+                            编辑
+                        </button>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <span class="text-sm font-medium text-gray-600 mt-0.5">1.</span>
+                            <p class="text-sm text-gray-700 flex-1 bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 edit-text cursor-pointer transition-all duration-200" data-field="purpose-1" contenteditable="true">了解医生对3岁以上儿童继续使用维生素AD的认知和态度</p>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-sm font-medium text-gray-600 mt-0.5">2.</span>
+                            <p class="text-sm text-gray-700 flex-1 bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 edit-text cursor-pointer transition-all duration-200" data-field="purpose-2" contenteditable="true">探究医生处方维生素AD的决策因素</p>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-sm font-medium text-gray-600 mt-0.5">3.</span>
+                            <p class="text-sm text-gray-700 flex-1 bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 edit-text cursor-pointer transition-all duration-200" data-field="purpose-3" contenteditable="true">评估推广方案对医生处方行为的影响</p>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-sm font-medium text-gray-600 mt-0.5">4.</span>
+                            <p class="text-sm text-gray-700 flex-1 bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 edit-text cursor-pointer transition-all duration-200" data-field="purpose-4" contenteditable="true">收集医生对产品改进的建议和反馈</p>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 问卷题目 -->
+                <div class="space-y-8">
+                    <!-- 题目1：单选题 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                        <!-- 题目头部 -->
+                        <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-bold text-gray-700">1.</span>
+                                <div class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">单选题</div>
+                            </div>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        
+                        <!-- 题目内容 -->
+                        <div class="p-5">
+                            <!-- 题目文本 -->
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-1" contenteditable="true">您是否了解《儿科维生素AD缺乏临床诊疗指南(2024版)》中关于3岁以上儿童使用维生素AD的建议？</p>
+                            </div>
+                            
+                            <!-- 正确选项设置 -->
+                            <div class="mb-5 bg-blue-50 border border-blue-100 rounded-lg p-3">
+                                <h3 class="text-xs font-medium text-blue-700 mb-2 flex items-center gap-1">
+                                    <i class="fa-solid fa-check-circle text-blue-600"></i>
+                                    正确选项设置
+                                </h3>
+                                <div class="flex items-center gap-4 text-sm">
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q1" value="A" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">A</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q1" value="B" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">B</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q1" value="C" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">C</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q1" value="D" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">D</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q1" value="E" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">E</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 选项列表 -->
+                            <div class="space-y-3">
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q1" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-1A" contenteditable="true">A. 非常了解</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q1" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-1B" contenteditable="true">B. 比较了解</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q1" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-1C" contenteditable="true">C. 一般了解</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q1" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-1D" contenteditable="true">D. 不太了解</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q1" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-1E" contenteditable="true">E. 完全不了解</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 题目2：多选题 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                        <!-- 题目头部 -->
+                        <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-bold text-gray-700">2.</span>
+                                <div class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">多选题</div>
+                            </div>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        
+                        <!-- 题目内容 -->
+                        <div class="p-5">
+                            <!-- 题目文本 -->
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-2" contenteditable="true">您认为3岁以上儿童继续补充维生素AD的主要获益是什么？（可多选）</p>
+                            </div>
+                            
+                            <!-- 正确选项设置 -->
+                            <div class="mb-5 bg-blue-50 border border-blue-100 rounded-lg p-3">
+                                <h3 class="text-xs font-medium text-blue-700 mb-2 flex items-center gap-1">
+                                    <i class="fa-solid fa-check-circle text-blue-600"></i>
+                                    正确选项设置
+                                </h3>
+                                <div class="flex items-center gap-4 text-sm">
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q2" value="A" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">A</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q2" value="B" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">B</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q2" value="C" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">C</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q2" value="D" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">D</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q2" value="E" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">E</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 选项列表 -->
+                            <div class="space-y-3">
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q2" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-2A" contenteditable="true">A. 促进骨骼发育</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q2" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-2B" contenteditable="true">B. 增强免疫力</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q2" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-2C" contenteditable="true">C. 改善视力发育</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q2" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-2D" contenteditable="true">D. 促进神经系统发育</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q2" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-2E" contenteditable="true">E. 其他</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 题目3：单选题 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                        <!-- 题目头部 -->
+                        <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-bold text-gray-700">3.</span>
+                                <div class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">单选题</div>
+                            </div>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        
+                        <!-- 题目内容 -->
+                        <div class="p-5">
+                            <!-- 题目文本 -->
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-3" contenteditable="true">您在临床实践中，对3岁以上儿童使用维生素AD的处方频率如何？</p>
+                            </div>
+                            
+                            <!-- 正确选项设置 -->
+                            <div class="mb-5 bg-blue-50 border border-blue-100 rounded-lg p-3">
+                                <h3 class="text-xs font-medium text-blue-700 mb-2 flex items-center gap-1">
+                                    <i class="fa-solid fa-check-circle text-blue-600"></i>
+                                    正确选项设置
+                                </h3>
+                                <div class="flex items-center gap-4 text-sm">
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q3" value="A" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">A</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q3" value="B" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">B</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q3" value="C" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">C</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q3" value="D" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">D</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 选项列表 -->
+                            <div class="space-y-3">
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q3" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-3A" contenteditable="true">A. 经常处方（>70%的符合条件患儿）</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q3" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-3B" contenteditable="true">B. 有时处方（30%-70%的符合条件患儿）</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q3" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-3C" contenteditable="true">C. 偶尔处方（<30%的符合条件患儿）</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q3" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-3D" contenteditable="true">D. 几乎不处方</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 题目4：单选题 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                        <!-- 题目头部 -->
+                        <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-bold text-gray-700">4.</span>
+                                <div class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">单选题</div>
+                            </div>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        
+                        <!-- 题目内容 -->
+                        <div class="p-5">
+                            <!-- 题目文本 -->
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-4" contenteditable="true">您认为3岁以上儿童继续使用维生素AD的适宜剂量是多少？</p>
+                            </div>
+                            
+                            <!-- 正确选项设置 -->
+                            <div class="mb-5 bg-blue-50 border border-blue-100 rounded-lg p-3">
+                                <h3 class="text-xs font-medium text-blue-700 mb-2 flex items-center gap-1">
+                                    <i class="fa-solid fa-check-circle text-blue-600"></i>
+                                    正确选项设置
+                                </h3>
+                                <div class="flex items-center gap-4 text-sm">
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q4" value="A" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">A</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q4" value="B" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">B</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q4" value="C" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">C</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q4" value="D" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">D</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 选项列表 -->
+                            <div class="space-y-3">
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q4" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-4A" contenteditable="true">A. 每日1粒（维生素A 1500IU+维生素D 500IU）</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q4" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-4B" contenteditable="true">B. 每日1粒（维生素A 2000IU+维生素D 700IU）</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q4" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-4C" contenteditable="true">C. 隔日1粒</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q4" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-4D" contenteditable="true">D. 根据临床情况调整</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 题目5：多选题 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                        <!-- 题目头部 -->
+                        <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-bold text-gray-700">5.</span>
+                                <div class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">多选题</div>
+                            </div>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        
+                        <!-- 题目内容 -->
+                        <div class="p-5">
+                            <!-- 题目文本 -->
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-5" contenteditable="true">影响您为3岁以上儿童处方维生素AD的主要因素有哪些？（可多选）</p>
+                            </div>
+                            
+                            <!-- 正确选项设置 -->
+                            <div class="mb-5 bg-blue-50 border border-blue-100 rounded-lg p-3">
+                                <h3 class="text-xs font-medium text-blue-700 mb-2 flex items-center gap-1">
+                                    <i class="fa-solid fa-check-circle text-blue-600"></i>
+                                    正确选项设置
+                                </h3>
+                                <div class="flex items-center gap-4 text-sm">
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q5" value="A" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">A</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q5" value="B" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">B</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q5" value="C" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">C</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q5" value="D" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">D</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q5" value="E" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">E</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 选项列表 -->
+                            <div class="space-y-3">
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q5" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-5A" contenteditable="true">A. 临床指南推荐</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q5" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-5B" contenteditable="true">B. 产品安全性</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q5" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-5C" contenteditable="true">C. 家长依从性</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q5" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-5D" contenteditable="true">D. 产品性价比</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q5" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-5E" contenteditable="true">E. 同行推荐</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 题目6：单选题 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                        <!-- 题目头部 -->
+                        <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-bold text-gray-700">6.</span>
+                                <div class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">单选题</div>
+                            </div>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        
+                        <!-- 题目内容 -->
+                        <div class="p-5">
+                            <!-- 题目文本 -->
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-6" contenteditable="true">您对伊可新维生素AD滴剂的了解程度如何？</p>
+                            </div>
+                            
+                            <!-- 正确选项设置 -->
+                            <div class="mb-5 bg-blue-50 border border-blue-100 rounded-lg p-3">
+                                <h3 class="text-xs font-medium text-blue-700 mb-2 flex items-center gap-1">
+                                    <i class="fa-solid fa-check-circle text-blue-600"></i>
+                                    正确选项设置
+                                </h3>
+                                <div class="flex items-center gap-4 text-sm">
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q6" value="A" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">A</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q6" value="B" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">B</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q6" value="C" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">C</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q6" value="D" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">D</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q6" value="E" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">E</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 选项列表 -->
+                            <div class="space-y-3">
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q6" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-6A" contenteditable="true">A. 非常了解</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q6" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-6B" contenteditable="true">B. 比较了解</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q6" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-6C" contenteditable="true">C. 一般了解</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q6" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-6D" contenteditable="true">D. 不太了解</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q6" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-6E" contenteditable="true">E. 完全不了解</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 题目7：单选题 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                        <!-- 题目头部 -->
+                        <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-bold text-gray-700">7.</span>
+                                <div class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">单选题</div>
+                            </div>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        
+                        <!-- 题目内容 -->
+                        <div class="p-5">
+                            <!-- 题目文本 -->
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-7" contenteditable="true">您认为伊可新与其他维生素AD产品相比，其优势在于？</p>
+                            </div>
+                            
+                            <!-- 正确选项设置 -->
+                            <div class="mb-5 bg-blue-50 border border-blue-100 rounded-lg p-3">
+                                <h3 class="text-xs font-medium text-blue-700 mb-2 flex items-center gap-1">
+                                    <i class="fa-solid fa-check-circle text-blue-600"></i>
+                                    正确选项设置
+                                </h3>
+                                <div class="flex items-center gap-4 text-sm">
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q7" value="A" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">A</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q7" value="B" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">B</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q7" value="C" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">C</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q7" value="D" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">D</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q7" value="E" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">E</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 选项列表 -->
+                            <div class="space-y-3">
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q7" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-7A" contenteditable="true">A. 剂量科学合理</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q7" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-7B" contenteditable="true">B. 品牌知名度高</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q7" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-7C" contenteditable="true">C. 剂型方便使用</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q7" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-7D" contenteditable="true">D. 临床数据充分</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q7" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-7E" contenteditable="true">E. 性价比高</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 题目8：多选题 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                        <!-- 题目头部 -->
+                        <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-bold text-gray-700">8.</span>
+                                <div class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">多选题</div>
+                            </div>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        
+                        <!-- 题目内容 -->
+                        <div class="p-5">
+                            <!-- 题目文本 -->
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-8" contenteditable="true">基于我们提供的推广方案，您认为哪些内容最能影响您对3岁以上儿童处方伊可新的决策？（可多选）</p>
+                            </div>
+                            
+                            <!-- 正确选项设置 -->
+                            <div class="mb-5 bg-blue-50 border border-blue-100 rounded-lg p-3">
+                                <h3 class="text-xs font-medium text-blue-700 mb-2 flex items-center gap-1">
+                                    <i class="fa-solid fa-check-circle text-blue-600"></i>
+                                    正确选项设置
+                                </h3>
+                                <div class="flex items-center gap-4 text-sm">
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q8" value="A" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">A</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q8" value="B" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">B</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q8" value="C" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">C</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q8" value="D" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">D</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" name="correct-q8" value="E" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">E</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 选项列表 -->
+                            <div class="space-y-3">
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q8" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-8A" contenteditable="true">A. 最新临床研究数据</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q8" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-8B" contenteditable="true">B. 专家共识推荐</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q8" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-8C" contenteditable="true">C. 患者教育材料</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q8" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-8D" contenteditable="true">D. 学术活动支持</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="checkbox" name="q8" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-8E" contenteditable="true">E. 其他推广资源</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 题目9：单选题 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                        <!-- 题目头部 -->
+                        <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-bold text-gray-700">9.</span>
+                                <div class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">单选题</div>
+                            </div>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        
+                        <!-- 题目内容 -->
+                        <div class="p-5">
+                            <!-- 题目文本 -->
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-9" contenteditable="true">您认为伊可新针对3岁以上儿童的推广重点应放在哪些方面？</p>
+                            </div>
+                            
+                            <!-- 正确选项设置 -->
+                            <div class="mb-5 bg-blue-50 border border-blue-100 rounded-lg p-3">
+                                <h3 class="text-xs font-medium text-blue-700 mb-2 flex items-center gap-1">
+                                    <i class="fa-solid fa-check-circle text-blue-600"></i>
+                                    正确选项设置
+                                </h3>
+                                <div class="flex items-center gap-4 text-sm">
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q9" value="A" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">A</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q9" value="B" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">B</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q9" value="C" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">C</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q9" value="D" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">D</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 选项列表 -->
+                            <div class="space-y-3">
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q9" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-9A" contenteditable="true">A. 临床指南解读</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q9" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-9B" contenteditable="true">B. 产品优势宣传</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q9" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-9C" contenteditable="true">C. 家长教育支持</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q9" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-9D" contenteditable="true">D. 学术证据更新</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 题目10：单选题 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                        <!-- 题目头部 -->
+                        <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-bold text-gray-700">10.</span>
+                                <div class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">单选题</div>
+                            </div>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        
+                        <!-- 题目内容 -->
+                        <div class="p-5">
+                            <!-- 题目文本 -->
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-10" contenteditable="true">基于本次调研和推广方案，您对3岁以上儿童继续使用伊可新的处方意愿如何？</p>
+                            </div>
+                            
+                            <!-- 正确选项设置 -->
+                            <div class="mb-5 bg-blue-50 border border-blue-100 rounded-lg p-3">
+                                <h3 class="text-xs font-medium text-blue-700 mb-2 flex items-center gap-1">
+                                    <i class="fa-solid fa-check-circle text-blue-600"></i>
+                                    正确选项设置
+                                </h3>
+                                <div class="flex items-center gap-4 text-sm">
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q10" value="A" class="h-3 w-3 text-blue-600" checked>
+                                        <span class="text-gray-700">A</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q10" value="B" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">B</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q10" value="C" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">C</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q10" value="D" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">D</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-2 py-1 rounded transition-colors">
+                                        <input type="radio" name="correct-q10" value="E" class="h-3 w-3 text-blue-600">
+                                        <span class="text-gray-700">E</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 选项列表 -->
+                            <div class="space-y-3">
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q10" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-10A" contenteditable="true">A. 非常愿意，会积极处方</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q10" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-10B" contenteditable="true">B. 比较愿意，会增加处方</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q10" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-10C" contenteditable="true">C. 一般，维持现状</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q10" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-10D" contenteditable="true">D. 不太愿意，可能减少处方</span>
+                                </label>
+                                <label class="flex items-start gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <input type="radio" name="q10" class="h-4 w-4 text-blue-600 mt-0.5">
+                                    <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-10E" contenteditable="true">E. 完全不愿意，停止处方</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 审核确认模态框 -->
+    <div id="reviewModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <!-- 模态框头部 -->
+            <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
+                <h2 class="text-lg font-bold text-gray-800">
+                    <i class="fa-solid fa-check-circle text-blue-600 mr-2"></i>问卷审核确认
+                </h2>
+                <button id="closeReviewModal" class="text-gray-500 hover:text-gray-700 transition-colors">
+                    <i class="fa-solid fa-times text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- 模态框内容 -->
+            <div class="px-6 py-5 space-y-6">
+                <!-- 提示信息 -->
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <div class="flex items-start gap-3">
+                        <i class="fa-solid fa-circle-info text-yellow-600 mt-0.5"></i>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold text-yellow-800 mb-1">审核提示</h3>
+                            <p class="text-sm text-yellow-700 leading-relaxed">
+                                请仔细审核AI生成的问卷内容，确保所有题目和选项的准确性。医药领域专业性强，
+                                错误的问卷内容可能影响医生的临床判断。导入后产生的问题将由您负责，
+                                感谢您的谨慎审核！
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 问卷基本信息 -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-gray-700">问卷基本信息</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1">问卷标题</label>
+                            <input type="text" value="儿童维生素AD使用习惯调研" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1">题目数量</label>
+                            <input type="text" value="10道" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" disabled>
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-xs text-gray-500 mb-1">调研简介</label>
+                            <textarea class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 h-24 resize-none">
+本调研旨在了解儿科医生对3岁以上儿童继续使用维生素AD滴剂（伊可新）的看法和处方习惯，结合最新临床指南和市场推广方案，为产品优化和市场策略提供数据支持。
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 审核选项 -->
+                <div class="space-y-3">
+                    <h3 class="text-sm font-bold text-gray-700">审核确认</h3>
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" id="confirmReview" class="h-4 w-4 text-blue-600 mt-0.5">
+                        <label for="confirmReview" class="text-sm text-gray-700 leading-relaxed">
+                            我已仔细审核了AI生成的问卷内容，确认所有题目和选项准确无误，符合医药专业标准。
+                            我理解并同意，导入后问卷内容的准确性由我负责。
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 模态框底部 -->
+            <div class="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex items-center justify-between">
+                <div class="text-xs text-gray-500">
+                    <i class="fa-solid fa-shield-alt mr-1"></i>
+                    药智睿生智能调研问卷专家系统
+                </div>
+                <div class="flex gap-3">
+                    <button id="cancelImport" class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                        取消
+                    </button>
+                    <button id="confirmImport" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                        <i class="fa-solid fa-upload mr-1"></i> 导入问卷库
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 问卷预览弹窗 -->
+    <div id="questionnairePreviewModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+        <div class="bg-white rounded-xl shadow-2xl w-[90vw] max-w-5xl max-h-[90vh] overflow-hidden">
+            <!-- 弹窗头部 -->
+            <div class="h-16 border-b border-gray-200 flex items-center justify-between px-6 bg-white">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-file-lines text-blue-600"></i>
+                    <h2 class="font-bold text-gray-800">问卷预览</h2>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="fullscreenBtn" class="px-3 py-1.5 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-sm rounded-lg font-medium transition-colors">
+                        <i class="fa-solid fa-expand mr-1"></i> 全屏
+                    </button>
+                    <button id="importQuestionnaireBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-upload mr-1"></i> 导入问卷
+                    </button>
+                    <button id="closePreviewModal" class="text-gray-500 hover:text-gray-700 transition-colors p-1.5 rounded-full hover:bg-gray-100">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 弹窗内容：左右分栏 -->
+            <div class="flex h-[calc(90vh-4rem)] overflow-hidden">
+                <!-- 左侧：调研信息 -->
+                <div class="w-1/3 bg-gray-50 p-6 border-r border-gray-200 overflow-y-auto">
+                    <!-- 问卷标题 -->
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-sm font-medium text-gray-500">问卷标题</h2>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        <h1 class="text-lg font-bold text-gray-900 bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 edit-text cursor-pointer transition-all duration-200" data-field="title" contenteditable="true">儿童维生素AD使用习惯调研</h1>
+                    </div>
+                    
+                    <!-- 调研简介 -->
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-sm font-medium text-gray-500">调研简介</h2>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-700 leading-relaxed bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 edit-text cursor-pointer transition-all duration-200" data-field="introduction" contenteditable="true">
+                            本调研旨在了解儿科医生对3岁以上儿童继续使用维生素AD滴剂（伊可新）的看法和处方习惯，结合最新临床指南和市场推广方案，为产品优化和市场策略提供数据支持。
+                        </p>
+                    </div>
+                    
+                    <!-- 调研目的及方向 -->
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="text-sm font-medium text-gray-500">调研目的及方向</h2>
+                            <button class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 edit-toggle">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                编辑
+                            </button>
+                        </div>
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-3">
+                                <span class="text-sm font-medium text-gray-600 mt-0.5">1.</span>
+                                <p class="text-sm text-gray-700 flex-1 bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 edit-text cursor-pointer transition-all duration-200" data-field="purpose-1" contenteditable="true">了解医生对3岁以上儿童继续使用维生素AD的认知和态度</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-sm font-medium text-gray-600 mt-0.5">2.</span>
+                                <p class="text-sm text-gray-700 flex-1 bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 edit-text cursor-pointer transition-all duration-200" data-field="purpose-2" contenteditable="true">探究医生处方维生素AD的决策因素</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-sm font-medium text-gray-600 mt-0.5">3.</span>
+                                <p class="text-sm text-gray-700 flex-1 bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 edit-text cursor-pointer transition-all duration-200" data-field="purpose-3" contenteditable="true">评估推广方案对医生处方行为的影响</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-sm font-medium text-gray-600 mt-0.5">4.</span>
+                                <p class="text-sm text-gray-700 flex-1 bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 edit-text cursor-pointer transition-all duration-200" data-field="purpose-4" contenteditable="true">收集医生对产品改进的建议和反馈</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 右侧：题目列表 -->
+                <div class="w-2/3 bg-white p-6 overflow-y-auto">
+                    <!-- 问卷题目 -->
+                    <div class="space-y-8" id="questionsList">
+                        <!-- 题目1：单选题 -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                            <!-- 题目头部 -->
+                            <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm font-bold text-gray-700">1.</span>
+                                    <div class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">单选题</div>
+                                </div>
+
+                            </div>
+                            
+                            <!-- 题目内容 -->
+                            <div class="p-5">
+                                <!-- 题目文本 -->
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-1" contenteditable="true">您是否了解《儿科维生素AD缺乏临床诊疗指南(2024版)》中关于3岁以上儿童使用维生素AD的建议？</p>
+                                    
+                                    <!-- AI 建议选项 - 紧凑样式 -->
+                                    <div class="flex items-center gap-3 mt-2">
+                                        <div class="flex items-center gap-1 text-amber-700 text-xs font-medium">
+                                            <i class="fa-solid fa-lightbulb text-amber-600"></i>
+                                            <span>AI 建议：</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-xs font-medium">A</span>
+                                            <span class="text-xs text-amber-700">符合临床指南推荐</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 选项列表 -->
+                                <div class="space-y-2">
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="radio" name="q1" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-1A" contenteditable="true">A. 非常了解</span>
+                                        <span class="ml-auto text-blue-600 text-xs flex items-center gap-1 correct-option-indicator" title="正确选项">
+                                            <i class="fa-solid fa-check-circle"></i>
+                                            <span class="hidden sm:inline">正确</span>
+                                        </span>
+                                    </label>
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="radio" name="q1" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-1B" contenteditable="true">B. 比较了解</span>
+                                    </label>
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="radio" name="q1" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-1C" contenteditable="true">C. 一般了解</span>
+                                    </label>
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="radio" name="q1" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-1D" contenteditable="true">D. 不太了解</span>
+                                    </label>
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="radio" name="q1" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-1E" contenteditable="true">E. 完全不了解</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 题目2：多选题 -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                            <!-- 题目头部 -->
+                            <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm font-bold text-gray-700">2.</span>
+                                    <div class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">多选题</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 题目内容 -->
+                            <div class="p-5">
+                                <!-- 题目文本 -->
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-2" contenteditable="true">您认为3岁以上儿童继续补充维生素AD的主要获益是什么？（可多选）</p>
+                                    
+                                    <!-- AI 建议选项 -->
+                                    <div class="flex items-center gap-3 mt-2">
+                                        <div class="flex items-center gap-1 text-amber-700 text-xs font-medium">
+                                            <i class="fa-solid fa-lightbulb text-amber-600"></i>
+                                            <span>AI 建议：</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-xs font-medium">A, B</span>
+                                            <span class="text-xs text-amber-700">临床研究支持</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 选项列表 -->
+                                <div class="space-y-2">
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="checkbox" name="q2" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-2A" contenteditable="true">A. 促进骨骼发育</span>
+                                        <span class="ml-auto text-blue-600 text-xs flex items-center gap-1 correct-option-indicator" title="正确选项">
+                                            <i class="fa-solid fa-check-circle"></i>
+                                            <span class="hidden sm:inline">正确</span>
+                                        </span>
+                                    </label>
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="checkbox" name="q2" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-2B" contenteditable="true">B. 增强免疫力</span>
+                                        <span class="ml-auto text-blue-600 text-xs flex items-center gap-1 correct-option-indicator" title="正确选项">
+                                            <i class="fa-solid fa-check-circle"></i>
+                                            <span class="hidden sm:inline">正确</span>
+                                        </span>
+                                    </label>
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="checkbox" name="q2" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-2C" contenteditable="true">C. 改善视力发育</span>
+                                    </label>
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="checkbox" name="q2" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-2D" contenteditable="true">D. 促进神经系统发育</span>
+                                    </label>
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="checkbox" name="q2" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-2E" contenteditable="true">E. 其他</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 题目3：单选题 -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+                            <!-- 题目头部 -->
+                            <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm font-bold text-gray-700">3.</span>
+                                    <div class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">单选题</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 题目内容 -->
+                            <div class="p-5">
+                                <!-- 题目文本 -->
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-800 leading-relaxed edit-text bg-white border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-3 cursor-pointer transition-all duration-200" data-field="question-3" contenteditable="true">您在临床实践中，对3岁以上儿童使用维生素AD的处方频率如何？</p>
+                                    
+                                    <!-- AI 建议选项 -->
+                                    <div class="flex items-center gap-3 mt-2">
+                                        <div class="flex items-center gap-1 text-amber-700 text-xs font-medium">
+                                            <i class="fa-solid fa-lightbulb text-amber-600"></i>
+                                            <span>AI 建议：</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-xs font-medium">A</span>
+                                            <span class="text-xs text-amber-700">符合临床实践</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 选项列表 -->
+                                <div class="space-y-2">
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="radio" name="q3" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-3A" contenteditable="true">A. 经常处方（>70%的符合条件患儿）</span>
+                                        <span class="ml-auto text-blue-600 text-xs flex items-center gap-1 correct-option-indicator" title="正确选项">
+                                            <i class="fa-solid fa-check-circle"></i>
+                                            <span class="hidden sm:inline">正确</span>
+                                        </span>
+                                    </label>
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="radio" name="q3" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-3B" contenteditable="true">B. 有时处方（30%-70%的符合条件患儿）</span>
+                                    </label>
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="radio" name="q3" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-3C" contenteditable="true">C. 偶尔处方（<30%的符合条件患儿）</span>
+                                    </label>
+                                    <label class="flex items-start gap-2 cursor-pointer p-1.5 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <input type="radio" name="q3" class="h-4 w-4 text-blue-600 mt-0.25">
+                                        <span class="text-sm text-gray-700 flex-1 edit-text cursor-pointer" data-field="option-3D" contenteditable="true">D. 几乎不处方</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导入成功提示 -->
+    <div id="importSuccessModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 text-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-check text-2xl text-green-600"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-800 mb-2">导入成功！</h3>
+            <p class="text-sm text-gray-600 mb-6">
+                问卷已成功导入到问卷库中，您可以在问卷管理中查看和使用该问卷。
+            </p>
+            <button id="closeSuccessModal" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                <i class="fa-solid fa-check mr-1"></i> 确定
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 简单直接的实现方式，使用ID选择器
+        function initPreview功能() {
+            // 获取预览按钮
+            const previewBtn = document.getElementById('previewQuestionnaire');
+            
+            // 获取弹窗预览区域
+            const previewModal = document.getElementById('questionnairePreviewModal');
+            
+            // 为预览按钮添加点击事件
+            if (previewBtn && previewModal) {
+                previewBtn.onclick = function() {
+                    previewModal.style.display = 'flex';
+                };
+            }
+        }
+        
+        // 关闭预览弹窗功能
+        function initClosePreview功能() {
+            // 获取关闭按钮
+            const closePreviewBtn = document.getElementById('closePreviewModal');
+            const previewModal = document.getElementById('questionnairePreviewModal');
+            
+            // 为关闭按钮添加点击事件
+            if (closePreviewBtn && previewModal) {
+                closePreviewBtn.onclick = function() {
+                    previewModal.style.display = 'none';
+                };
+            }
+        }
+        
+        // 获取导入问卷按钮
+        function initImport功能() {
+            const importBtn = document.getElementById('importQuestionnaireBtn');
+            const reviewModal = document.getElementById('reviewModal');
+            
+            if (importBtn && reviewModal) {
+                importBtn.onclick = function() {
+                    reviewModal.style.display = 'flex';
+                };
+            }
+        }
+        
+        // 编辑切换功能
+        function initEditToggle功能() {
+            const editToggles = document.querySelectorAll('.edit-toggle');
+            
+            editToggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    // 查找最近的题目容器
+                    const questionContainer = this.closest('.bg-white.rounded-xl');
+                    if (questionContainer) {
+                        // 查找该容器内的可编辑元素
+                        const editableElement = questionContainer.querySelector('.edit-text');
+                        if (editableElement) {
+                            // 聚焦到可编辑元素
+                            editableElement.focus();
+                            
+                            // 添加视觉提示
+                            editableElement.classList.add('ring-2', 'ring-blue-300', 'ring-offset-1');
+                            
+                            // 3秒后移除视觉提示
+                            setTimeout(() => {
+                                editableElement.classList.remove('ring-2', 'ring-blue-300', 'ring-offset-1');
+                            }, 3000);
+                        }
+                    }
+                });
+            });
+        }
+        
+        // 全屏功能
+        function initFullscreen功能() {
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const previewModal = document.getElementById('questionnairePreviewModal');
+            const modalContent = previewModal ? previewModal.querySelector('.bg-white') : null;
+            
+            if (fullscreenBtn && previewModal && modalContent) {
+                fullscreenBtn.addEventListener('click', function() {
+                    if (modalContent.classList.contains('fullscreen')) {
+                        // 退出全屏
+                        modalContent.classList.remove('fullscreen');
+                        modalContent.style.width = '90vw';
+                        modalContent.style.height = '90vh';
+                        this.innerHTML = '<i class="fa-solid fa-expand mr-1"></i> 全屏';
+                    } else {
+                        // 进入全屏
+                        modalContent.classList.add('fullscreen');
+                        modalContent.style.width = '95vw';
+                        modalContent.style.height = '95vh';
+                        this.innerHTML = '<i class="fa-solid fa-compress mr-1"></i> 退出全屏';
+                    }
+                });
+            }
+        }
+        
+        // 可编辑元素用户体验优化
+        function initEditableElements() {
+            const editableElements = document.querySelectorAll('.edit-text');
+            
+            editableElements.forEach(el => {
+                // 聚焦效果
+                el.addEventListener('focus', function() {
+                    this.classList.add('bg-blue-50', 'border-blue-300', 'ring-2', 'ring-blue-300', 'ring-offset-1');
+                });
+                
+                // 失焦效果
+                el.addEventListener('blur', function() {
+                    this.classList.remove('bg-blue-50', 'border-blue-300', 'ring-2', 'ring-blue-300', 'ring-offset-1');
+                });
+                
+                // 鼠标悬停效果
+                el.addEventListener('mouseenter', function() {
+                    if (!this.matches(':focus')) {
+                        this.classList.add('bg-gray-50', 'border-blue-200');
+                    }
+                });
+                
+                // 鼠标离开效果
+                el.addEventListener('mouseleave', function() {
+                    if (!this.matches(':focus')) {
+                        this.classList.remove('bg-gray-50', 'border-blue-200');
+                    }
+                });
+            });
+        }
+        
+        // 关闭模态框功能
+        function initClose功能() {
+            // 关闭审核模态框
+            const closeReviewBtn = document.getElementById('closeReviewModal');
+            const cancelBtn = document.getElementById('cancelImport');
+            const reviewModal = document.getElementById('reviewModal');
+            
+            // 关闭预览模态框
+            const closePreviewBtn = document.getElementById('closePreviewModal');
+            const previewModal = document.getElementById('questionnairePreviewModal');
+            
+            function closeReviewModal() {
+                if (reviewModal) {
+                    reviewModal.style.display = 'none';
+                    // 重置复选框
+                    const checkbox = document.getElementById('confirmReview');
+                    const confirmBtn = document.getElementById('confirmImport');
+                    if (checkbox) checkbox.checked = false;
+                    if (confirmBtn) confirmBtn.disabled = true;
+                }
+            }
+            
+            function closePreviewModal() {
+                if (previewModal) {
+                    previewModal.style.display = 'none';
+                }
+            }
+            
+            // 绑定审核模态框关闭事件
+            if (closeReviewBtn) closeReviewBtn.onclick = closeReviewModal;
+            if (cancelBtn) cancelBtn.onclick = closeReviewModal;
+            
+            // 绑定预览模态框关闭事件
+            if (closePreviewBtn) closePreviewBtn.onclick = closePreviewModal;
+            
+            // 点击模态框外部关闭
+            if (reviewModal) {
+                reviewModal.onclick = function(e) {
+                    if (e.target === reviewModal) closeReviewModal();
+                };
+            }
+            
+            if (previewModal) {
+                previewModal.onclick = function(e) {
+                    if (e.target === previewModal) closePreviewModal();
+                };
+            }
+        }
+        
+        // 导入成功功能
+        function initSuccess功能() {
+            const confirmBtn = document.getElementById('confirmImport');
+            const successModal = document.getElementById('importSuccessModal');
+            const closeSuccessBtn = document.getElementById('closeSuccessModal');
+            
+            if (confirmBtn && successModal) {
+                confirmBtn.onclick = function() {
+                    const checkbox = document.getElementById('confirmReview');
+                    if (checkbox && checkbox.checked) {
+                        // 关闭审核模态框
+                        document.getElementById('reviewModal').style.display = 'none';
+                        // 显示成功模态框
+                        setTimeout(() => {
+                            successModal.style.display = 'flex';
+                        }, 300);
+                    }
+                };
+            }
+            
+            if (closeSuccessBtn && successModal) {
+                closeSuccessBtn.onclick = function() {
+                    successModal.style.display = 'none';
+                };
+            }
+            
+            // 点击成功模态框外部关闭
+            if (successModal) {
+                successModal.onclick = function(e) {
+                    if (e.target === successModal) {
+                        successModal.style.display = 'none';
+                    }
+                };
+            }
+        }
+        
+        // 复选框功能
+        function initCheckbox功能() {
+            const checkbox = document.getElementById('confirmReview');
+            const confirmBtn = document.getElementById('confirmImport');
+            
+            if (checkbox && confirmBtn) {
+                checkbox.onchange = function() {
+                    confirmBtn.disabled = !this.checked;
+                };
+            }
+        }
+        
+        // 页面加载完成后初始化所有功能
+        window.onload = function() {
+            // 初始化所有功能
+            initPreview功能();
+            initClosePreview功能();
+            initImport功能();
+            initEditToggle功能();
+            initFullscreen功能();
+            initEditableElements();
+            initClose功能();
+            initSuccess功能();
+            initCheckbox功能();
+            // 初始化上传文件弹窗功能
+            if (typeof initUploadModal === 'function') {
+                initUploadModal();
+            }
+        };
+    </script>
+    <script src="../js/script.js?v=1"></script>
+</body>
+</html>

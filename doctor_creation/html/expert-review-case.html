@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线互动病例评审 - 专家评审</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* 页面标题和返回按钮容器 */
+        .page-title {
+            background-color: white;
+            padding: 16px 20px;
+            margin: 0;
+            box-shadow: none;
+            border-bottom: 1px solid #e2e8f0;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+        
+        /* 完全自定义的返回按钮样式，覆盖所有!important */
+        .custom-back-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 8px 16px !important;
+            border: none !important;
+            border-radius: 8px !important;
+            background-color: #f8fafc !important;
+            color: #4a5568 !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            text-decoration: none !important;
+            transition: all 0.3s ease !important;
+            height: auto !important;
+            width: auto !important;
+            margin: 0 !important;
+            line-height: 1.5 !important;
+            white-space: nowrap !important;
+            box-sizing: border-box !important;
+        }
+        
+        .custom-back-btn:hover {
+            background-color: #edf2f7 !important;
+            color: #2d3748 !important;
+        }
+        
+        .custom-back-btn svg {
+            width: 16px !important;
+            height: 16px !important;
+            stroke: currentColor !important;
+            stroke-width: 2 !important;
+            stroke-linecap: round !important;
+            stroke-linejoin: round !important;
+        }
+        
+        /* 评审流程步骤指示器 */
+        .review-steps {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 20px;
+            background-color: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .review-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #94a3b8;
+            background-color: #f1f5f9;
+            transition: all 0.3s ease;
+        }
+        
+        .review-step.active {
+            color: #667eea;
+            background-color: #eef2ff;
+        }
+        
+        .review-step.completed {
+            color: #22c55e;
+            background-color: #ecfdf5;
+        }
+        
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #e2e8f0;
+            color: #64748b;
+        }
+        
+        .review-step.active .step-number {
+            background-color: #667eea;
+            color: white;
+        }
+        
+        .review-step.completed .step-number {
+            background-color: #22c55e;
+            color: white;
+        }
+        
+        /* 病例详情样式 */
+        .case-detail-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .case-detail-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .case-detail-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        
+        .case-detail-meta {
+            display: flex;
+            gap: 24px;
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .case-section {
+            margin-bottom: 24px;
+        }
+        
+        .case-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .case-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .case-info-item {
+            background-color: #f8fafc;
+            padding: 12px;
+            border-radius: 6px;
+        }
+        
+        .case-info-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .case-info-value {
+            font-size: 0.9rem;
+            color: #1e293b;
+            font-weight: 500;
+        }
+        
+        /* 互动题目样式 */
+        .interaction-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .question-card {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .question-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .question-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .question-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+        
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-left: 40px;
+        }
+        
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option-item:hover {
+            border-color: #667eea;
+            background-color: #f8fafc;
+        }
+        
+        .option-item.selected {
+            border-color: #667eea;
+            background-color: #eef2ff;
+        }
+        
+        .option-item.correct {
+            border-color: #22c55e;
+            background-color: #ecfdf5;
+        }
+        
+        .option-item.incorrect {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+        
+        .option-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .option-item.selected .option-radio {
+            border-color: #667eea;
+        }
+        
+        .option-item.selected .option-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #667eea;
+        }
+        
+        .option-text {
+            font-size: 0.9rem;
+            color: #334155;
+            flex: 1;
+        }
+        
+        .option-feedback {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .option-item.correct .option-feedback {
+            display: block;
+            background-color: #22c55e;
+            color: white;
+        }
+        
+        .option-item.incorrect .option-feedback {
+            display: block;
+            background-color: #ef4444;
+            color: white;
+        }
+        
+        /* 解析区域 */
+        .explanation-box {
+            margin-top: 16px;
+            padding: 16px;
+            background-color: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .explanation-box.show {
+            display: block;
+        }
+        
+        .explanation-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+        
+        .explanation-content {
+            font-size: 0.85rem;
+            color: #78350f;
+            line-height: 1.6;
+        }
+        
+        /* 评审维度评分 */
+        .dimension-score-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .dimension-item {
+            padding: 16px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .dimension-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .dimension-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .dimension-score {
+            font-size: 0.875rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .score-slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #e2e8f0;
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .score-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* 操作按钮 */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            padding: 24px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #5a6fd8;
+        }
+        
+        .btn-secondary {
+            background-color: #f1f5f9;
+            color: #64748b;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .btn-success {
+            background-color: #22c55e;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #16a34a;
+        }
+        
+        /* 活动要求卡片 */
+        .activity-requirements {
+            background-color: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .requirements-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .requirements-title svg {
+            width: 20px;
+            height: 20px;
+            color: #667eea;
+        }
+        
+        .requirement-list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .requirement-list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .requirement-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #ecfdf5;
+            color: #22c55e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .requirement-text {
+            font-size: 0.875rem;
+            color: #475569;
+            line-height: 1.6;
+        }
+        
+        .requirement-text strong {
+            color: #1e293b;
+        }
+    </style>
+</head>
+<body>
+    <!-- 组件加载脚本 -->
+    <script>
+        async function loadComponents() {
+            // 加载顶部导航栏
+            const headerResponse = await fetch('components/header.html');
+            const headerContent = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerContent;
+            
+            // 加载左侧侧边栏
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarContent = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarContent;
+            
+            // 在侧边栏加载完成后初始化菜单
+            if (typeof initializeMenu === 'function') {
+                initializeMenu();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <div class="right-content">
+            <!-- 页面标题和返回按钮容器 -->
+            <div class="page-title">
+                <button class="custom-back-btn" onclick="window.location.href='expert-review-detail.html'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    返回活动详情
+                </button>
+            </div>
+
+            <!-- 评审流程步骤指示器 -->
+            <div class="review-steps">
+                <div class="review-step active" id="step-1">
+                    <span class="step-number">1</span>
+                    <span>活动要求</span>
+                </div>
+                <div class="review-step" id="step-2">
+                    <span class="step-number">2</span>
+                    <span>互动评审</span>
+                </div>
+                <div class="review-step" id="step-3">
+                    <span class="step-number">3</span>
+                    <span>评审结果</span>
+                </div>
+            </div>
+
+            <!-- 主要内容区域 -->
+            <main class="content-area">
+                <!-- 活动要求卡片 -->
+                <div class="activity-requirements" id="activity-requirements">
+                    <div class="requirements-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                        活动要求与评审标准
+                    </div>
+                    <div class="requirement-list-item">
+                        <div class="requirement-icon">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="requirement-text">
+                            <strong>内容完整：</strong>病例信息完整，包括患者基本情况、诊断过程、治疗方案及随访结果等关键信息
+                        </div>
+                    </div>
+                    <div class="requirement-list-item">
+                        <div class="requirement-icon">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="requirement-text">
+                            <strong>真实可靠：</strong>所有病例信息必须真实有效，不得虚构或篡改临床数据
+                        </div>
+                    </div>
+                    <div class="requirement-list-item">
+                        <div class="requirement-icon">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="requirement-text">
+                            <strong>隐私保护：</strong>所有患者隐私信息已完全脱敏，如姓名、身份证号、联系方式等
+                        </div>
+                    </div>
+                    <div class="requirement-list-item">
+                        <div class="requirement-icon">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="requirement-text">
+                            <strong>学术价值：</strong>病例应具有一定的学术参考价值，能够反映临床诊疗思路或展示特殊病例特点
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 病例详情 -->
+                <div class="case-detail-container" id="case-detail">
+                    <div class="case-detail-header">
+                        <h2 class="case-detail-title">2型糖尿病患者合并肾病的综合治疗</h2>
+                        <div class="case-detail-meta">
+                            <div class="meta-item">
+                                <span class="status-badge" style="background-color: #e6f7ee; color: #22c55e; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem;">待评审</span>
+                            </div>
+                            <div class="meta-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                提交时间：2025-12-10
+                            </div>
+                            <div class="meta-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                作者：张医生
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 病例内容 -->
+                    <div class="case-section">
+                        <h3>1. 病例基本信息</h3>
+                        <div class="case-info-grid">
+                            <div class="case-info-item">
+                                <div class="case-info-label">性别</div>
+                                <div class="case-info-value">男</div>
+                            </div>
+                            <div class="case-info-item">
+                                <div class="case-info-label">年龄</div>
+                                <div class="case-info-value">58岁</div>
+                            </div>
+                            <div class="case-info-item">
+                                <div class="case-info-label">BMI</div>
+                                <div class="case-info-value">28.5 kg/m²</div>
+                            </div>
+                        </div>
+                        <div class="case-info-grid">
+                            <div class="case-info-item" style="grid-column: span 2;">
+                                <div class="case-info-label">主诉</div>
+                                <div class="case-info-value">多饮、多尿、多食伴乏力10年，双下肢水肿1月</div>
+                            </div>
+                        </div>
+                        <div class="case-info-grid">
+                            <div class="case-info-item" style="grid-column: span 3;">
+                                <div class="case-info-label">现病史</div>
+                                <div class="case-info-value">患者10年前诊断为2型糖尿病，一直口服降糖药物治疗，血糖控制不佳。1月前出现双下肢水肿，伴泡沫尿，遂来我院就诊。</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 检查与诊断 -->
+                    <div class="case-section">
+                        <h3>2. 检查与诊断</h3>
+                        <h4 style="font-size: 0.9rem; font-weight: 600; color: #475569; margin-bottom: 12px;">实验室检查</h4>
+                        <div class="case-info-grid">
+                            <div class="case-info-item">
+                                <div class="case-info-label">血糖（空腹）</div>
+                                <div class="case-info-value">12.5 mmol/L</div>
+                            </div>
+                            <div class="case-info-item">
+                                <div class="case-info-label">血糖（餐后2h）</div>
+                                <div class="case-info-value">18.3 mmol/L</div>
+                            </div>
+                            <div class="case-info-item">
+                                <div class="case-info-label">HbA1c</div>
+                                <div class="case-info-value">9.8%</div>
+                            </div>
+                            <div class="case-info-item">
+                                <div class="case-info-label">肌酐</div>
+                                <div class="case-info-value">185 μmol/L</div>
+                            </div>
+                            <div class="case-info-item">
+                                <div class="case-info-label">尿素氮</div>
+                                <div class="case-info-value">12.3 mmol/L</div>
+                            </div>
+                            <div class="case-info-item">
+                                <div class="case-info-label">尿蛋白</div>
+                                <div class="case-info-value">+++</div>
+                            </div>
+                        </div>
+                        <h4 style="font-size: 0.9rem; font-weight: 600; color: #475569; margin: 16px 0 12px 0;">诊断结果</h4>
+                        <ul style="padding-left: 20px; color: #475569; line-height: 1.8;">
+                            <li>2型糖尿病</li>
+                            <li>糖尿病肾病（Ⅳ期）</li>
+                            <li>高血压病（2级，很高危）</li>
+                            <li>肥胖症</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 治疗方案 -->
+                    <div class="case-section">
+                        <h3>3. 治疗方案</h3>
+                        <h4 style="font-size: 0.9rem; font-weight: 600; color: #475569; margin-bottom: 12px;">药物治疗</h4>
+                        <ul style="padding-left: 20px; color: #475569; line-height: 1.8;">
+                            <li>胰岛素泵强化治疗，血糖控制目标：空腹6-7 mmol/L，餐后2h 8-10 mmol/L</li>
+                            <li>ACEI类药物：依那普利 10mg bid，控制血压</li>
+                            <li>利尿剂：呋塞米 20mg qd，减轻水肿</li>
+                            <li>他汀类药物：阿托伐他汀 20mg qn，调脂治疗</li>
+                        </ul>
+                        <h4 style="font-size: 0.9rem; font-weight: 600; color: #475569; margin: 16px 0 12px 0;">生活方式干预</h4>
+                        <ul style="padding-left: 20px; color: #475569; line-height: 1.8;">
+                            <li>低盐低脂糖尿病饮食，每日摄入盐<5g</li>
+                            <li>适量运动，每周至少150分钟中等强度有氧运动</li>
+                            <li>戒烟限酒</li>
+                            <li>定期监测血糖、血压、肾功能</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 随访结果 -->
+                    <div class="case-section">
+                        <h3>4. 随访结果</h3>
+                        <div class="case-info-grid">
+                            <div class="case-info-item">
+                                <div class="case-info-label">随访时间</div>
+                                <div class="case-info-value">治疗后3个月</div>
+                            </div>
+                            <div class="case-info-item">
+                                <div class="case-info-label">空腹血糖</div>
+                                <div class="case-info-value">6.8 mmol/L</div>
+                            </div>
+                            <div class="case-info-item">
+                                <div class="case-info-label">餐后2h血糖</div>
+                                <div class="case-info-value">9.2 mmol/L</div>
+                            </div>
+                            <div class="case-info-item">
+                                <div class="case-info-label">HbA1c</div>
+                                <div class="case-info-value">7.5%</div>
+                            </div>
+                            <div class="case-info-item">
+                                <div class="case-info-label">肌酐</div>
+                                <div class="case-info-value">162 μmol/L</div>
+                            </div>
+                            <div class="case-info-item">
+                                <div class="case-info-label">血压</div>
+                                <div class="case-info-value">135/85 mmHg</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 病例总结 -->
+                    <div class="case-section">
+                        <h3>5. 病例总结</h3>
+                        <p style="color: #475569; line-height: 1.8;">本病例为2型糖尿病合并糖尿病肾病患者，通过胰岛素泵强化治疗、ACEI类药物降压、利尿剂减轻水肿、他汀类药物调脂等综合治疗，患者血糖、血压、肾功能均得到明显改善，临床症状缓解。该病例提示，对于糖尿病肾病患者，早期干预、综合治疗、定期随访是延缓疾病进展的关键。</p>
+                    </div>
+                </div>
+
+                <!-- 互动评审区 -->
+                <div class="interaction-container" id="interaction-container" style="display: none;">
+                    <div class="question-card">
+                        <div class="question-header">
+                            <span class="question-number">1</span>
+                            <span class="question-title">根据病例内容，该患者最可能的诊断是什么？</span>
+                        </div>
+                        <div class="options-list">
+                            <div class="option-item" onclick="selectOption(this, 0, 'correct')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">2型糖尿病、糖尿病肾病（Ⅳ期）、高血压病（2级，很高危）、肥胖症</span>
+                                <span class="option-feedback">正确</span>
+                            </div>
+                            <div class="option-item" onclick="selectOption(this, 0, 'incorrect')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">1型糖尿病、糖尿病肾病（Ⅲ期）、高血压病（1级，中危）</span>
+                                <span class="option-feedback">错误</span>
+                            </div>
+                            <div class="option-item" onclick="selectOption(this, 0, 'incorrect')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">2型糖尿病、糖尿病肾病（Ⅱ期）、高血压病（3级，极高危）</span>
+                                <span class="option-feedback">错误</span>
+                            </div>
+                            <div class="option-item" onclick="selectOption(this, 0, 'incorrect')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">妊娠糖尿病、糖尿病肾病（Ⅳ期）、高血压病（2级，高危）</span>
+                                <span class="option-feedback">错误</span>
+                            </div>
+                        </div>
+                        <div class="explanation-box show">
+                            <div class="explanation-title">解析</div>
+                            <div class="explanation-content">
+                                根据病例中的实验室检查结果：空腹血糖12.5 mmol/L、HbA1c 9.8%、尿蛋白+++、肌酐185 μmol/L，结合病史和临床表现，最符合的诊断是2型糖尿病合并糖尿病肾病（Ⅳ期）、高血压病（2级，很高危）和肥胖症。糖尿病肾病的分期主要根据尿白蛋白排泄率和肾小球滤过率来确定，Ⅳ期通常表现为显性蛋白尿（尿蛋白>0.5g/24h）和肾功能进行性下降。
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-card">
+                        <div class="question-header">
+                            <span class="question-number">2</span>
+                            <span class="question-title">该患者的首选降糖治疗方案是什么？</span>
+                        </div>
+                        <div class="options-list">
+                            <div class="option-item" onclick="selectOption(this, 1, 'correct')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">胰岛素泵强化治疗</span>
+                                <span class="option-feedback">正确</span>
+                            </div>
+                            <div class="option-item" onclick="selectOption(this, 1, 'incorrect')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">二甲双胍单药治疗</span>
+                                <span class="option-feedback">错误</span>
+                            </div>
+                            <div class="option-item" onclick="selectOption(this, 1, 'incorrect')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">磺脲类药物</span>
+                                <span class="option-feedback">错误</span>
+                            </div>
+                            <div class="option-item" onclick="selectOption(this, 1, 'incorrect')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">饮食控制联合运动疗法</span>
+                                <span class="option-feedback">错误</span>
+                            </div>
+                        </div>
+                        <div class="explanation-box show">
+                            <div class="explanation-title">解析</div>
+                            <div class="explanation-content">
+                                该患者血糖控制不佳（空腹血糖12.5 mmol/L，HbA1c 9.8%），合并糖尿病肾病和肥胖。对于这种血糖明显升高、合并并发症的患者，胰岛素泵强化治疗是首选方案，可以更好地控制血糖，延缓并发症进展。口服降糖药在肾功能不全患者中使用受限，且难以达到血糖控制目标。
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-card">
+                        <div class="question-header">
+                            <span class="question-number">3</span>
+                            <span class="question-title">该病例中提到的ACEI类药物的作用是什么？</span>
+                        </div>
+                        <div class="options-list">
+                            <div class="option-item" onclick="selectOption(this, 2, 'correct')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">控制血压、减少尿蛋白、延缓肾病进展</span>
+                                <span class="option-feedback">正确</span>
+                            </div>
+                            <div class="option-item" onclick="selectOption(this, 2, 'incorrect')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">降低血糖、改善胰岛素抵抗</span>
+                                <span class="option-feedback">错误</span>
+                            </div>
+                            <div class="option-item" onclick="selectOption(this, 2, 'incorrect')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">降低血脂、预防心血管事件</span>
+                                <span class="option-feedback">错误</span>
+                            </div>
+                            <div class="option-item" onclick="selectOption(this, 2, 'incorrect')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">利尿消肿、改善水肿症状</span>
+                                <span class="option-feedback">错误</span>
+                            </div>
+                        </div>
+                        <div class="explanation-box show">
+                            <div class="explanation-title">解析</div>
+                            <div class="explanation-content">
+                                ACEI类药物（如依那普利）在糖尿病肾病治疗中具有重要作用：①降低血压，控制高血压；②减少尿蛋白排泄，保护肾功能；③延缓糖尿病肾病的进展。ACEI是糖尿病合并高血压患者的一线降压药物选择，尤其适用于伴有蛋白尿的患者。
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-card">
+                        <div class="question-header">
+                            <span class="question-number">4</span>
+                            <span class="question-title">该病例的治疗方案中，哪项最能体现循证医学证据？</span>
+                        </div>
+                        <div class="options-list">
+                            <div class="option-item" onclick="selectOption(this, 3, 'incorrect')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">使用利尿剂减轻水肿</span>
+                                <span class="option-feedback">错误</span>
+                            </div>
+                            <div class="option-item" onclick="selectOption(this, 3, 'correct')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">ACEI类药物用于糖尿病肾病的治疗</span>
+                                <span class="option-feedback">正确</span>
+                            </div>
+                            <div class="option-item" onclick="selectOption(this, 3, 'incorrect')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">他汀类药物调脂治疗</span>
+                                <span class="option-feedback">错误</span>
+                            </div>
+                            <div class="option-item" onclick="selectOption(this, 3, 'incorrect')">
+                                <span class="option-radio"></span>
+                                <span class="option-text">胰岛素泵强化治疗</span>
+                                <span class="option-feedback">错误</span>
+                            </div>
+                        </div>
+                        <div class="explanation-box show">
+                            <div class="explanation-title">解析</div>
+                            <div class="explanation-content">
+                                ACEI类药物用于糖尿病肾病的治疗有充分的循证医学证据支持。多个大型临床试验（如IDNT、REIN研究）证实，ACEI可以显著减少糖尿病肾病患者的尿蛋白，延缓肾功能下降的速度，是糖尿病合并蛋白尿患者的一线治疗药物。该病例选择依那普利10mg bid正是基于这些证据。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 评审评分区 -->
+                <div class="dimension-score-container" id="dimension-container" style="display: none;">
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: #1e293b; margin-bottom: 20px;">专家评审评分</h3>
+                    
+                    <div class="dimension-item">
+                        <div class="dimension-header">
+                            <span class="dimension-name">病例完整性</span>
+                            <span class="dimension-score" id="dimension-score-1">5分</span>
+                        </div>
+                        <input type="range" class="score-slider" min="1" max="5" value="5" oninput="updateScore(1, this.value)">
+                    </div>
+                    
+                    <div class="dimension-item">
+                        <div class="dimension-header">
+                            <span class="dimension-name">学术价值</span>
+                            <span class="dimension-score" id="dimension-score-2">5分</span>
+                        </div>
+                        <input type="range" class="score-slider" min="1" max="5" value="5" oninput="updateScore(2, this.value)">
+                    </div>
+                    
+                    <div class="dimension-item">
+                        <div class="dimension-header">
+                            <span class="dimension-name">诊断准确性</span>
+                            <span class="dimension-score" id="dimension-score-3">5分</span>
+                        </div>
+                        <input type="range" class="score-slider" min="1" max="5" value="5" oninput="updateScore(3, this.value)">
+                    </div>
+                    
+                    <div class="dimension-item">
+                        <div class="dimension-header">
+                            <span class="dimension-name">治疗合理性</span>
+                            <span class="dimension-score" id="dimension-score-4">5分</span>
+                        </div>
+                        <input type="range" class="score-slider" min="1" max="5" value="5" oninput="updateScore(4, this.value)">
+                    </div>
+                    
+                    <div class="dimension-item">
+                        <div class="dimension-header">
+                            <span class="dimension-name">随访完整性</span>
+                            <span class="dimension-score" id="dimension-score-5">5分</span>
+                        </div>
+                        <input type="range" class="score-slider" min="1" max="5" value="5" oninput="updateScore(5, this.value)">
+                    </div>
+                    
+                    <div class="dimension-item">
+                        <div class="dimension-header">
+                            <span class="dimension-name">隐私保护</span>
+                            <span class="dimension-score" id="dimension-score-6">5分</span>
+                        </div>
+                        <input type="range" class="score-slider" min="1" max="5" value="5" oninput="updateScore(6, this.value)">
+                    </div>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="prev-btn" onclick="prevStep()" style="display: none;">上一步</button>
+                    <button class="btn btn-primary" id="next-btn" onclick="nextStep()">开始互动评审</button>
+                    <button class="btn btn-success" id="submit-btn" onclick="submitReview()" style="display: none;">提交评审</button>
+                </div>
+            </main>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script>
+        // 交互式评审工作流程状态
+        let currentStep = 1;
+        const totalSteps = 3;
+        const answers = {};
+        const scores = {
+            1: 5, 2: 5, 3: 5, 4: 5, 5: 5, 6: 5
+        };
+
+        // 选择答案选项
+        function selectOption(element, questionIndex, type) {
+            const questionCard = element.closest('.question-card');
+            const options = questionCard.querySelectorAll('.option-item');
+
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            element.classList.add('selected');
+
+            answers[questionIndex] = type;
+
+            const explanationBox = questionCard.querySelector('.explanation-box');
+            explanationBox.classList.add('show');
+        }
+
+        // 更新评分
+        function updateScore(dimension, value) {
+            document.getElementById(`dimension-score-${dimension}`).textContent = `${value}分`;
+            scores[dimension] = parseInt(value);
+        }
+
+        // 下一步
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateStepDisplay();
+            }
+        }
+
+        // 上一步
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepDisplay();
+            }
+        }
+
+        // 更新步骤显示
+        function updateStepDisplay() {
+            const step1 = document.getElementById('step-1');
+            const step2 = document.getElementById('step-2');
+            const step3 = document.getElementById('step-3');
+            const activityRequirements = document.getElementById('activity-requirements');
+            const caseDetail = document.getElementById('case-detail');
+            const interactionContainer = document.getElementById('interaction-container');
+            const dimensionContainer = document.getElementById('dimension-container');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const submitBtn = document.getElementById('submit-btn');
+
+            step1.classList.remove('active', 'completed');
+            step2.classList.remove('active', 'completed');
+            step3.classList.remove('active', 'completed');
+
+            if (currentStep === 1) {
+                step1.classList.add('active');
+                activityRequirements.style.display = 'block';
+                caseDetail.style.display = 'block';
+                interactionContainer.style.display = 'none';
+                dimensionContainer.style.display = 'none';
+                nextBtn.textContent = '开始互动评审';
+                prevBtn.style.display = 'none';
+                submitBtn.style.display = 'none';
+            } else if (currentStep === 2) {
+                step1.classList.add('completed');
+                step2.classList.add('active');
+                activityRequirements.style.display = 'block';
+                caseDetail.style.display = 'block';
+                interactionContainer.style.display = 'block';
+                dimensionContainer.style.display = 'none';
+                nextBtn.textContent = '进入评分';
+                prevBtn.style.display = 'inline-flex';
+                submitBtn.style.display = 'none';
+            } else if (currentStep === 3) {
+                step1.classList.add('completed');
+                step2.classList.add('completed');
+                step3.classList.add('active');
+                activityRequirements.style.display = 'block';
+                caseDetail.style.display = 'block';
+                interactionContainer.style.display = 'block';
+                dimensionContainer.style.display = 'block';
+                nextBtn.style.display = 'none';
+                prevBtn.style.display = 'inline-flex';
+                submitBtn.style.display = 'inline-flex';
+            }
+        }
+
+        // 提交评审
+        function submitReview() {
+            let totalScore = 0;
+            for (let i = 1; i <= 6; i++) {
+                totalScore += scores[i];
+            }
+
+            if (confirm(`确定要提交评审吗？\n\n您的评分：${totalScore}/30分\n\n提交后将无法修改。`)) {
+                alert('评审已提交，感谢您的参与！');
+                window.location.href = 'expert-review.html';
+            }
+        }
+    </script>
+</body>
+</html>

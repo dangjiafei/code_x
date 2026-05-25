@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>委托记录 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/record.css">
+    <link rel="stylesheet" href="../css/table.css">
+</head>
+<body>
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+
+            <!-- 服务类型标签 -->
+            <div class="service-tabs">
+                <div class="service-tab active">学术调研委托服务</div>
+                <div class="service-tab">视频委托采购服务</div>
+            </div>
+
+            <!-- 功能区和列表内容区合并卡片 -->
+            <div class="content-card">
+                <!-- 记录类型标签 -->
+                <div class="record-tabs">
+                    <div class="record-tab active">委托记录列表</div>
+                    <div class="record-tab">委托计划列表</div>
+                </div>
+                
+                <!-- 筛选栏 -->
+                <div class="filter-bars">
+                    <!-- 委托记录列表筛选栏 -->
+                    <div class="filter-bar record-filter active">
+                        <div class="filter-item">
+                            <input type="text" placeholder="请输入调研名称">
+                        </div>
+                        <div class="filter-item">
+                            <select>
+                                <option>所有状态</option>
+                                <option>已结束</option>
+                                <option>进行中</option>
+                                <option>已取消</option>
+                                <option>审核中</option>
+                                <option>审核失败</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <select>
+                                <option>我创建的</option>
+                                <option>所有</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <select>
+                                <option>所有产品</option>
+                                <option>荆防颗粒</option>
+                                <option>砂糖测试产品</option>
+                                <option>test1</option>
+                            </select>
+                        </div>
+                        <div class="filter-item date-range">
+                            <input type="date" value="2025-08-27">
+                            <span>至</span>
+                            <input type="date" value="2025-11-27">
+                        </div>
+                        <div class="action-buttons">
+                            <button class="batch-btn">批量操作</button>
+                            <button class="download-btn">下载数据</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 委托计划列表筛选栏 -->
+                    <div class="filter-bar plan-filter">
+                        <div class="filter-item">
+                            <input type="text" placeholder="请输入调研名称">
+                        </div>
+                        <div class="filter-item">
+                            <select>
+                                <option>计划状态</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <select>
+                                <option>我预约的</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <select>
+                                <option>所有产品</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <input type="text" placeholder="按医院名称搜索...">
+                        </div>
+                        <div class="action-buttons">
+                            <button class="create-plan-btn">+ 新建委托计划</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 记录表格容器 -->
+                <div class="table-containers">
+                    <!-- 委托记录列表 -->
+                    <div class="table-container record-list active">
+                        <table class="record-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-name">调研名称</th>
+                                    <th class="col-scene">活动场景</th>
+                                    <th class="col-product">产品</th>
+                                    <th class="col-stats">问卷统计</th>
+                                    <th class="col-status">状态</th>
+                                    <th class="col-creator">创建者</th>
+                                    <th class="col-time">创建时间</th>
+                                    <th class="col-action">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+
+                                    <td class="col-name">
+                                        <div class="research-name">测试关系</div>
+                                        <div class="research-id">ID: RT20251119001</div>
+                                    </td>
+                                    <td class="col-scene">病例互动</td>
+                                    <td class="col-product">荆防颗粒</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">0</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-status"><span class="status ended">已结束</span></td>
+                                    <td class="col-creator">长期测试公司</td>
+                                    <td class="col-time">2025-11-19 17:12:45</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看详情">
+                                                查看
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">123冲剂冲刺销售错...</div>
+                                        <div class="research-id">ID: RT20251113002</div>
+                                    </td>
+                                    <td class="col-scene">病例互动</td>
+                                    <td class="col-product">砂糖测试产品</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">2</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">1</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-status"><span class="status ended">已结束</span></td>
+                                    <td class="col-creator">长期测试公司</td>
+                                    <td class="col-time">2025-11-13 17:18:12</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看详情">
+                                                查看
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">12312322323</div>
+                                        <div class="research-id">ID: RT20251113001</div>
+                                    </td>
+                                    <td class="col-scene">病例互动</td>
+                                    <td class="col-product">荆防颗粒</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">2</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">2</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-status"><span class="status cancelled">已取消</span></td>
+                                    <td class="col-creator">长期测试公司</td>
+                                    <td class="col-time">2025-11-13 17:17:32</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn delete" title="删除">
+                                                删除
+                                            </button>
+                                            <button class="action-btn restart" title="重新发起">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M21.5 2v6h-6M2.5 22v-6h6"></path>
+                                                    <path d="M2 12a10 10 0 0 0 20 0 10 10 0 0 0-20 0z"></path>
+                                                </svg>
+                                                重新发起
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">tests</div>
+                                        <div class="research-id">ID: RT20251111005</div>
+                                    </td>
+                                    <td class="col-scene">线上科室会</td>
+                                    <td class="col-product">test1</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">0</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-status"><span class="status in-progress">进行中</span></td>
+                                    <td class="col-creator">长期测试公司</td>
+                                    <td class="col-time">2025-11-11 13:54:44</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看详情">
+                                                查看
+                                            </button>
+                                            <button class="action-btn terminate" title="结束委托">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </svg>
+                                                结束委托
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">tests</div>
+                                        <div class="research-id">ID: RT20251111004</div>
+                                    </td>
+                                    <td class="col-scene">线上科室会</td>
+                                    <td class="col-product">test1</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">0</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-status"><span class="status in-progress">进行中</span></td>
+                                    <td class="col-creator">长期测试公司</td>
+                                    <td class="col-time">2025-11-11 13:54:44</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看详情">
+                                                查看
+                                            </button>
+                                            <button class="action-btn terminate" title="结束委托">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </svg>
+                                                结束委托
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">tests</div>
+                                        <div class="research-id">ID: RT20251111003</div>
+                                    </td>
+                                    <td class="col-scene">线上科室会</td>
+                                    <td class="col-product">test1</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">0</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-status"><span class="status in-progress">进行中</span></td>
+                                    <td class="col-creator">长期测试公司</td>
+                                    <td class="col-time">2025-11-11 13:50:26</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看详情">
+                                                查看
+                                            </button>
+                                            <button class="action-btn terminate" title="结束委托">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </svg>
+                                                结束委托
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">tests</div>
+                                        <div class="research-id">ID: RT20251111002</div>
+                                    </td>
+                                    <td class="col-scene">线上科室会</td>
+                                    <td class="col-product">test1</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">0</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-status"><span class="status in-progress">进行中</span></td>
+                                    <td class="col-creator">长期测试公司</td>
+                                    <td class="col-time">2025-11-11 13:50:16</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看详情">
+                                                查看
+                                            </button>
+                                            <button class="action-btn terminate" title="结束委托">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </svg>
+                                                结束委托
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">tests</div>
+                                        <div class="research-id">ID: RT20251111001</div>
+                                    </td>
+                                    <td class="col-scene">线上科室会</td>
+                                    <td class="col-product">test1</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">1</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">0</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-status"><span class="status in-progress">进行中</span></td>
+                                    <td class="col-creator">长期测试公司</td>
+                                    <td class="col-time">2025-11-11 13:49:45</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看详情">
+                                                查看
+                                            </button>
+                                            <button class="action-btn terminate" title="结束委托">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </svg>
+                                                结束委托
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- 委托计划列表 -->
+                    <div class="table-container plan-list">
+                        <table class="record-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-name">调研名称</th>
+                                    <th class="col-product">产品标签</th>
+                                    <th class="col-plan-status">计划状态</th>
+                                    <th class="col-stats">问卷统计</th>
+                                    <th class="col-mode">发送模式</th>
+                                    <th class="col-last-send">最近发送时间</th>
+                                    <th class="col-team">创建组织</th>
+                                    <th class="col-action">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">从研究药金量看新...</div>
+                                    </td>
+
+                                    <td class="col-product">美怡利斯</td>
+                                    <td class="col-plan-status">--</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">0</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-mode">即时响应模式</td>
+
+                                    <td class="col-last-send">2025-08-30 11:59:40</td>
+                                    <td class="col-team">甘松测试药业</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看">
+                                                查看
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">颈肩腰腿痛</div>
+                                    </td>
+
+                                    <td class="col-product">赛诺达</td>
+                                    <td class="col-plan-status">--</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">0</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-mode">即时响应模式</td>
+
+                                    <td class="col-last-send">2025-08-10 10:36:11</td>
+                                    <td class="col-team">甘松测试药业</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看">
+                                                查看
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">托莫西汀口腔崩...</div>
+                                    </td>
+
+                                    <td class="col-product">伊可新</td>
+                                    <td class="col-plan-status">--</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">85</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">5</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">830</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-mode">即时响应模式</td>
+
+                                    <td class="col-last-send">2025-05-29 22:30:15</td>
+                                    <td class="col-team">甘松测试药业</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看">
+                                                查看
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">从研究药金量看全...</div>
+                                    </td>
+
+                                    <td class="col-product">美怡利斯</td>
+                                    <td class="col-plan-status">--</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">2</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">0</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-mode">即时响应模式</td>
+
+                                    <td class="col-last-send">2025-05-29 23:26:20</td>
+                                    <td class="col-team">甘松测试药业</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看">
+                                                查看
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">背痛膝痛的准确研...</div>
+                                    </td>
+
+                                    <td class="col-product">赛诺达</td>
+                                    <td class="col-plan-status">--</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">0</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-mode">即时响应模式</td>
+
+                                    <td class="col-last-send">2025-05-29 16:15:17</td>
+                                    <td class="col-team">甘松测试药业</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看">
+                                                查看
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">维生索AD的清晰研...</div>
+                                    </td>
+
+                                    <td class="col-product">伊可新</td>
+                                    <td class="col-plan-status">--</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">92</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">14</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">88</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-mode">即时响应模式</td>
+
+                                    <td class="col-last-send">2025-05-29 15:56:39</td>
+                                    <td class="col-team">甘松测试药业</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看">
+                                                查看
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">骨龄超前性的预防...</div>
+                                    </td>
+
+                                    <td class="col-product">赛诺达</td>
+                                    <td class="col-plan-status">--</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">78</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">14</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">72</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-mode">即时响应模式</td>
+
+                                    <td class="col-last-send">2025-05-29 15:35:52</td>
+                                    <td class="col-team">甘松测试药业</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看">
+                                                查看
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">PAPR治疗选择群</div>
+                                    </td>
+
+                                    <td class="col-product">美怡利斯</td>
+                                    <td class="col-plan-status">--</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">65</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">6</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">58</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-mode">即时响应模式</td>
+
+                                    <td class="col-last-send">2025-05-29 15:13:38</td>
+                                    <td class="col-team">甘松测试药业</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看">
+                                                查看
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">从研究药金量看全...</div>
+                                    </td>
+
+                                    <td class="col-product">美怡利斯</td>
+                                    <td class="col-plan-status">--</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">1550</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">4</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">59</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-mode">即时响应模式</td>
+
+                                    <td class="col-last-send">2025-05-29 14:20:57</td>
+                                    <td class="col-team">甘松测试药业</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看">
+                                                查看
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-name">
+                                        <div class="research-name">美阿利格列汀片互...</div>
+                                    </td>
+
+                                    <td class="col-product">美怡利斯</td>
+                                    <td class="col-plan-status">--</td>
+                                    <td class="col-stats">
+                                        <div class="stats-bar">
+                                            <div class="stats-item">
+                                                <span class="stats-label">总问卷</span>
+                                                <span class="stats-value">1550</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已回收</span>
+                                                <span class="stats-value recovered">9</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">未开始</span>
+                                                <span class="stats-value pending">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">执行中</span>
+                                                <span class="stats-value in-progress">0</span>
+                                            </div>
+                                            <div class="stats-item">
+                                                <span class="stats-label">已失败</span>
+                                                <span class="stats-value failed">56</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-mode">即时响应模式</td>
+
+                                    <td class="col-last-send">2025-05-28 13:26:29</td>
+                                    <td class="col-team">甘松测试药业</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看">
+                                                查看
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- 分页 -->
+                <div class="pagination">
+                    <div class="pagination-info">
+                        共 8 条记录
+                    </div>
+                    <div class="pagination-buttons">
+                        <button class="page-btn" disabled>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn" disabled>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/script.js?v=1"></script>
+    <script src="../js/menu.js?v=1"></script>
+    <script>
+        async function loadComponents() {
+            const headerResponse = await fetch('components/header.html');
+            const headerHtml = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerHtml;
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarHtml = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+            initializeMenu();
+        }
+        window.addEventListener('DOMContentLoaded', loadComponents);
+        
+        // 标签切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有记录标签
+            const recordTabs = document.querySelectorAll('.record-tab');
+            // 获取所有筛选栏
+            const filterBars = document.querySelectorAll('.filter-bar');
+            // 获取所有表格容器
+            const tableContainers = document.querySelectorAll('.table-container');
+            
+            // 为每个标签添加点击事件
+            recordTabs.forEach((tab, index) => {
+                tab.addEventListener('click', function() {
+                    // 移除所有标签的active类
+                    recordTabs.forEach(t => t.classList.remove('active'));
+                    // 为当前点击的标签添加active类
+                    this.classList.add('active');
+                    
+                    // 移除所有筛选栏的active类
+                    filterBars.forEach(bar => bar.classList.remove('active'));
+                    // 为对应筛选栏添加active类
+                    if (this.textContent === '委托记录列表') {
+                        document.querySelector('.record-filter').classList.add('active');
+                        document.querySelector('.record-list').classList.add('active');
+                        document.querySelector('.plan-filter').classList.remove('active');
+                        document.querySelector('.plan-list').classList.remove('active');
+                    } else {
+                        document.querySelector('.plan-filter').classList.add('active');
+                        document.querySelector('.plan-list').classList.add('active');
+                        document.querySelector('.record-filter').classList.remove('active');
+                        document.querySelector('.record-list').classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

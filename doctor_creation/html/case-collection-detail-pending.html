@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活动详情 - 在线互动病例征集</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/case-collection-detail.css">
+    <script src="../js/script.js"></script>
+    <style>
+        /* 完全自定义的返回按钮样式，覆盖所有!important */
+        .custom-back-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 8px 16px !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 8px !important;
+            background-color: #f8fafc !important;
+            color: #4a5568 !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            text-decoration: none !important;
+            transition: all 0.3s ease !important;
+            height: auto !important;
+            width: auto !important;
+            margin: 0 !important;
+            line-height: 1.5 !important;
+            white-space: nowrap !important;
+            box-sizing: border-box !important;
+        }
+        
+        .custom-back-btn:hover {
+            background-color: #edf2f7 !important;
+            border-color: #cbd5e0 !important;
+            color: #2d3748 !important;
+        }
+        
+        .custom-back-btn svg {
+            width: 16px !important;
+            height: 16px !important;
+            stroke: currentColor !important;
+            stroke-width: 2 !important;
+            stroke-linecap: round !important;
+            stroke-linejoin: round !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- 组件加载脚本 -->
+    <script>
+        async function loadComponents() {
+            // 加载顶部导航栏
+            const headerResponse = await fetch('components/header.html');
+            const headerContent = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerContent;
+            
+            // 加载左侧侧边栏
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarContent = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarContent;
+            
+            // 在侧边栏加载完成后初始化菜单
+            if (typeof initializeMenu === 'function') {
+                initializeMenu();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <div class="right-content">
+            <!-- 页面标题和返回按钮容器 -->
+            <div class="page-title">
+                <button class="custom-back-btn" onclick="window.location.href='activity-management.html'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    返回列表
+                </button>
+            </div>
+            
+            <!-- 主要内容区域 -->
+            <main class="content-area">
+                <!-- 活动详情容器 -->
+                <div class="detail-container">
+                <!-- 活动头部 -->
+                <div class="detail-header">
+                    <div class="header-top">
+                        <img src="https://images.unsplash.com/photo-1517999144091-3d9dca6d1e43?w=200&h=120&fit=crop" alt="糖尿病并发症管理病例征集活动封面" class="activity-cover">
+                        <div class="activity-info">
+                            <h1 class="activity-title">糖尿病并发症管理病例征集</h1>
+                            <div class="activity-meta">
+                                <div class="meta-item">
+                                    <span class="status-badge">待报名</span>
+                                </div>
+                                <div class="meta-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    <span>2025-12-01 至 2025-12-31</span>
+                                </div>
+                                <div class="meta-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                    <span>ID: CASE001</span>
+                                </div>
+                            </div>
+                            <div class="detail-actions">
+                                <button class="action-btn primary" onclick="window.location.href='create-case.html?activityId=CASE001'" style="background-color: #52c41a; color: white; font-size: 14px; padding: 10px 20px; cursor: pointer;">去创作</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 活动详情内容 -->
+                <div class="detail-content">
+                    <!-- 活动详情 -->
+                    <section>
+                        <h2 class="section-title">活动详情</h2>
+                        <div class="section-content content-rich">尊敬的老师，您好！
+
+在这个知识如繁星般璀璨的时代，医学领域的每一次探索与突破，都如同夜空中最亮的星，引领着我们前行的方向。您，作为医学界那颗最为耀眼的星辰，不仅在临床的舞台上救死扶伤，更在学术的海洋中乘风破浪，不断拓展着医学的边界。我们深知，您的智慧与经验是医学界宝贵的财富。因此，我们特地向您发出这份诚挚的邀请，希望能与您携手，共同参与到这次意义非凡的活动中来，一同见证医学知识的力量，共同书写医学发展的新篇章。
+
+征稿内容主题
+
+本次活动聚焦于“糖尿病并发症管理”这一核心主题，我们诚挚邀请您分享您在临床实践中的宝贵经验与独到见解。具体征稿方向包括但不限于：
+
+1. 糖尿病足的早期诊断与治疗策略
+2. 糖尿病肾病的综合管理
+3. 糖尿病视网膜病变的防治新进展
+4. 糖尿病神经病变的诊断与处理
+5. 糖尿病心血管并发症的预防与治疗
+6. 糖尿病并发症的多学科协作管理模式
+
+参与方式
+
+1. 请您围绕上述主题，精心准备一份完整的病例报告。
+2. 病例需包含：病例介绍、诊疗过程、治疗效果、经验总结四个部分。
+3. 请确保病例真实可靠，数据准确，具有一定的代表性和教学意义。
+4. 投稿截止日期：2025-12-31。
+5. 投稿方式：请将病例报告及相关资料发送至指定邮箱。
+
+活动权益
+
+1. 专业认可：您的病例报告将获得行业权威认可，提升个人学术影响力。
+2. 广泛传播：优秀病例将通过多个平台进行推广，触达全国范围内的医学同仁。
+3. 交流机会：您将有机会与来自全国各地的医学专家进行深入交流与探讨。
+4. 激励机制：我们为参与活动的老师准备了丰厚的参与奖励。
+
+我们相信，您的加入将为本次活动增添无限光彩。期待您的积极参与，共同推动医学事业的繁荣发展！
+
+如有任何疑问，请随时与我们联系。
+
+联系方式：
+邮箱：[具体邮箱]
+电话：[具体电话] 联系人：[具体联系人]  
+
+此致
+
+敬礼！
+
+糖尿病并发症管理病例征集活动组委会
+[具体日期]                        </div>
+                    </section>
+
+                    <!-- 素材要求 -->
+                    <section>
+                        <h2 class="section-title">素材要求</h2>
+                        <div class="section-content">
+                            <h3>1. 内容要求</h3>
+                            <ul>
+                                <li>病例真实可靠，数据准确</li>
+                                <li>主题明确，重点突出</li>
+                                <li>结构清晰，逻辑严谨</li>
+                                <li>结合临床实践，具有实用性和指导性</li>
+                            </ul>
+                            <h3>2. 格式要求</h3>
+                            <ul>
+                                <li>字数要求：3000-5000字</li>
+                                <li>文件格式：Word文档</li>
+                                <li>图片要求：清晰、标注明确</li>
+                                <li>参考文献：引用规范，至少5篇</li>
+                            </ul>
+                            <h3>3. 其他要求</h3>
+                            <ul>
+                                <li>请提供个人简介（不超过200字）</li>
+                                <li>请提供个人照片（高清，尺寸：200x200像素）</li>
+                                <li>请签署病例使用授权书</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- 建议评审维度 -->
+                    <section>
+                        <h2 class="section-title">建议评审维度</h2>
+                        <div class="section-content">
+                            <table class="review-dimensions-table">
+                                <thead>
+                                    <tr>
+                                        <th>评审维度</th>
+                                        <th>权重</th>
+                                        <th>评审标准</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>病例真实性</td>
+                                        <td>20%</td>
+                                        <td>病例真实可靠，数据准确完整</td>
+                                    </tr>
+                                    <tr>
+                                        <td>内容科学性</td>
+                                        <td>25%</td>
+                                        <td>诊疗方案科学合理，符合最新指南</td>
+                                    </tr>
+                                    <tr>
+                                        <td>创新性</td>
+                                        <td>20%</td>
+                                        <td>治疗方案或思路具有创新性</td>
+                                    </tr>
+                                    <tr>
+                                        <td>实用性</td>
+                                        <td>20%</td>
+                                        <td>具有较强的临床指导意义</td>
+                                    </tr>
+                                    <tr>
+                                        <td>表述清晰度</td>
+                                        <td>15%</td>
+                                        <td>结构清晰，逻辑严谨，语言流畅</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                
+                <!-- 邀约对象规则 - 独立模块 -->
+                <div style="margin-top: 24px; background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <h3 style="font-size: 1.2rem; font-weight: 600; color: #1e293b; margin-bottom: 16px;">邀约对象规则</h3>
+                    <div style="display: flex; gap: 8px;">
+                        <!-- 城市卡片 -->
+                        <div style="flex: 1; padding: 12px 16px; background-color: #f8fafc; border-radius: 6px;">
+                            <div style="font-weight: 600; color: #1e293b; margin-bottom: 8px;">城市</div>
+                            <div style="color: #64748b;">全国</div>
+                        </div>
+                        <!-- 机构名称卡片 -->
+                        <div style="flex: 1; padding: 12px 16px; background-color: #f8fafc; border-radius: 6px;">
+                            <div style="font-weight: 600; color: #1e293b; margin-bottom: 8px;">机构名称</div>
+                            <div style="color: #64748b;">三级甲等医院</div>
+                        </div>
+                        <!-- 身份职称卡片 -->
+                        <div style="flex: 1; padding: 12px 16px; background-color: #f8fafc; border-radius: 6px;">
+                            <div style="font-weight: 600; color: #1e293b; margin-bottom: 8px;">身份职称</div>
+                            <div style="color: #64748b;">主任医师、副主任医师</div>
+                        </div>
+                        <!-- 科室卡片 -->
+                        <div style="flex: 1; padding: 12px 16px; background-color: #f8fafc; border-radius: 6px;">
+                            <div style="font-weight: 600; color: #1e293b; margin-bottom: 8px;">科室</div>
+                            <div style="color: #64748b;">外科相关科室</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

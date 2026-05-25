@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>线上科室会 - 医生端</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/online-meeting-detail.css">
+  <style>
+    /* 悬浮评论输入框容器样式 */
+    .comment-input-container {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      background-color: #fff;
+      padding: 16px;
+      border-top: 1px solid #f0f0f0;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+      z-index: 1000;
+      width: 100%;
+      box-sizing: border-box;
+      display: none;
+    }
+    
+    /* 评论输入框样式 */
+    .comment-input {
+      width: 100%;
+      min-height: 30px;
+      height: 30px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.4;
+      color: #333;
+      resize: none;
+      box-sizing: border-box;
+      font-family: inherit;
+      background-color: #fafafa;
+    }
+    
+    /* 评论输入框聚焦样式 */
+    .comment-input:focus {
+      outline: none;
+      border-color: #4096ff;
+      box-shadow: 0 0 0 2px rgba(64, 150, 255, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- 手机屏幕模拟容器 -->
+  <div class="phone-container">
+    <!-- 屏幕内容容器 -->
+    <div class="screen-content">
+      <!-- 状态栏容器 -->
+      <div id="status-bar-container"></div>
+      
+      <!-- 头部组件 -->
+      <div id="header-container"></div>
+      
+      <!-- 内容区 -->
+      <main class="content">
+        <!-- 线上科室会详情内容 -->
+        <div id="meeting-content" class="module-content active">
+          <!-- 视频播放区域 -->
+          <div class="video-player-container">
+            <video class="video-player" controls poster="https://picsum.photos/800/450">
+              <source src="#" type="video/mp4">
+              您的浏览器不支持HTML5视频播放。
+            </video>
+            <div class="video-overlay">
+              <div class="play-button"></div>
+            </div>
+          </div>
+          
+          <!-- 内容区容器 -->
+          <div class="video-content-container">
+            <!-- 标签页导航 -->
+            <div class="tabs-nav">
+              <button class="tab-btn active" data-tab="intro">简介</button>
+              <button class="tab-btn" data-tab="key-points">要点回顾</button>
+              <button class="tab-btn" data-tab="comments">评论(15)</button>
+            </div>
+            
+            <!-- 标签页内容 -->
+            <div class="tabs-content">
+              <!-- 简介 -->
+              <div class="tab-content active" id="intro">
+                <!-- 讲师信息 -->
+                <div class="lecturer-info">
+                  <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="讲师头像" class="lecturer-avatar">
+                  <div class="lecturer-details">
+                    <div class="lecturer-name">党佳飞</div>
+                    <div class="lecturer-stats">主任医师 | 内分泌科 | 北京协和医院</div>
+                  </div>
+                </div>
+                
+                <!-- 视频标题 -->
+                <div class="video-title">高血压患者用药依从性影响因素分析高血压...</div>
+                
+                <!-- 视频互动区 -->
+                <div class="video-interaction">
+                  <div class="video-stats">
+                    <div class="stat-item">
+                      <span class="status-badge">未完成</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                      <span style="margin-left: 4px;">截止日期：2026-01-30</span>
+                    </div>
+                    
+                    <!-- 互动按钮 -->
+                    <div class="interaction-buttons">
+                      <button class="interaction-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                        </svg>
+                      </button>
+                      
+                      <button class="interaction-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 视频简介 -->
+                <div class="intro-content">
+                  <p class="intro-text">本视频主要分析了高血压患者用药依从性的影响因素，包括患者自身因素、药物因素、医疗服务因素等，并提出了相应的改善策略。通过本视频的学习，医生可以更好地了解高血压患者用药依从性的问题，提高临床治疗效果。
+
+                  视频内容涵盖了高血压的基本概念、用药依从性的定义、影响因素的详细分析以及改善策略的具体建议。通过案例分析和数据支持，帮助医生更全面地理解这个问题。
+
+                  本视频适合内科医生、全科医生以及相关医疗专业人员观看，有助于提高他们对高血压患者的管理能力。</p>
+                </div>
+                
+                <!-- AI内容解析 -->
+                <div class="ai-analysis-content">
+                  <div class="ai-note">智能内容由AI模型生成，我们不对内容准确性和完整性做任何保证，亦不代表我们的观点或态度</div>
+                  
+                  <!-- 关键词 -->
+                  <div class="keywords-section">
+                    <h4 class="keywords-title">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle; margin-top: -2px;">
+                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                        <line x1="7" y1="7" x2="7" y2="7"></line>
+                      </svg>
+                      关键词
+                    </h4>
+                    <div class="keywords-list">
+                      <span class="keyword-tag">高血压</span>
+                      <span class="keyword-tag">用药依从性</span>
+                      <span class="keyword-tag">影响因素</span>
+                      <span class="keyword-tag">治疗方案</span>
+                      <span class="keyword-tag">血压监测</span>
+                      <span class="keyword-tag">生活方式干预</span>
+                      <span class="keyword-tag">药物治疗</span>
+                      <span class="keyword-tag">患者教育</span>
+                      <span class="keyword-tag">血压控制目标</span>
+                      <span class="keyword-tag">个体化治疗</span>
+                      <span class="keyword-tag">并发症预防</span>
+                      <span class="keyword-tag">长期管理</span>
+                    </div>
+                  </div>
+                  
+                  <!-- 内容概要 -->
+                  <div class="content-summary">
+                    <h4 class="summary-title">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle; margin-top: -2px;">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                      </svg>
+                      内容概要
+                    </h4>
+                    <p class="summary-text">本视频主要分析了高血压患者用药依从性的影响因素，包括患者自身因素、药物因素、医疗服务因素等，并提出了相应的改善策略。</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 要点回顾 -->
+              <div class="tab-content" id="key-points">
+                <div class="key-points-content">
+                  <div class="key-points-list">
+                    <div class="ai-note">智能内容由AI模型生成，我们不对内容准确性和完整性做任何保证，亦不代表我们的观点或态度</div>
+                    <div class="key-point-item">
+                      <div class="point-header">
+                        <h4 class="point-title">儿童矮小症和性早熟的诊疗工作在您工作中占据怎样的位置？您将从哪些方面分享生长激素激发症治疗的身高管理经验？</h4>
+                      </div>
+                      <p class="point-text">我在宜都市妇幼保健院儿童保健科主要从事儿童生长发育的专业工作，特别是针对儿童矮小症和性早熟的诊疗。这些疾病的治疗和管理是我在工作中非常重视的内容，尤其是通过良好的管理来提高治疗的依从性。我将从五个方面进行介绍：一是生长激素治疗的基本概念；二是过渡期生长激素缺乏症的诊断和治疗；三是过渡期生长激素缺乏症的疗效评估及最佳治疗时长探讨；四是成人期生长激素缺乏症的诊断标准与治疗目标；五是生长激素治疗的安全性和有效性。</p>
+                    </div>
+                    <div class="key-point-item">
+                      <div class="point-header">
+                        <h4 class="point-title">过渡期生长激素缺乏症是如何定义的，以及其诊断方法是什么？生长激素缺乏症患者成年后可能出现哪些表现及并发症？</h4>
+                      </div>
+                      <p class="point-text">过渡期生长激素缺乏症是指儿童期发病并接受重组人生长激素治疗，达到成年最终身高的青少年。诊断主要依据是胰岛素激发试验峰值小于5微克每升。成年后，约30%到50%的GHD患儿仍持续存在生长激素缺乏状态，表现为生长技术水平低、IGF-1水平低、骨密度降低、骨折风险增加、体重降低、内脏脂肪增多、血脂异常、心脏功能受损、肌肉力量和运动能力下降、认知功能下降等。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 评论 -->
+              <div class="tab-content" id="comments">
+                <div class="comments-content">
+                  <div class="case-section">
+
+                    <!-- 评论主体 - 使用flex布局 -->
+                    <div class="comment-body">
+                      <!-- 头像 - flex布局 -->
+                      <div class="comment-avatar" style="background-image: url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
+                      
+                      <!-- 评论内容区域 - 占据剩余空间 -->
+                      <div class="comment-content-area">
+                        <!-- 评论头部 -->
+                        <div class="comment-header">
+                          <div class="comment-author-info">
+                            <div class="comment-author-details">
+                              <div class="comment-author-name">张教授 <span class="comment-author-title">主任医师 | 内分泌科 | 北京协和医院</span></div>
+                            </div>
+                          </div>
+                          <div class="comment-time">2025-12-15 16:30</div>
+                        </div>
+                        
+                        <!-- 评论内容 -->
+                        <div class="comment-content">
+                          这个病例非常典型，展示了糖尿病合并多种并发症的综合管理。尤其是在胰岛素强化治疗和联合调脂方面，提供了很好的临床参考。
+                        </div>
+                        
+                        <!-- 评论操作 -->
+                        <div class="comment-actions">
+                          <button class="comment-action-btn like-btn" onclick="toggleLike(this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            <span class="like-count">12</span>
+                          </button>
+                          <button class="comment-action-btn reply-btn" onclick="showReplyInput(this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            回复
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- 评论主体 - 使用flex布局 -->
+                    <div class="comment-body">
+                      <!-- 头像 - flex布局 -->
+                      <div class="comment-avatar" style="background-image: url('https://randomuser.me/api/portraits/men/45.jpg');"></div>
+                      
+                      <!-- 评论内容区域 - 占据剩余空间 -->
+                      <div class="comment-content-area">
+                        <!-- 评论头部 -->
+                        <div class="comment-header">
+                          <div class="comment-author-info">
+                            <div class="comment-author-details">
+                              <div class="comment-author-name">李医生 <span class="comment-author-title">副主任医师 | 内分泌科 | 上海瑞金医院</span></div>
+                            </div>
+                          </div>
+                          <div class="comment-time">2025-12-15 17:45</div>
+                        </div>
+                        
+                        <!-- 评论内容 -->
+                        <div class="comment-content">
+                          张教授的分享非常精彩，特别是关于综合管理的部分。我在临床中也遇到过类似的病例，使用类似的治疗方案取得了不错的效果。
+                        </div>
+                        
+                        <!-- 评论操作 -->
+                        <div class="comment-actions">
+                          <button class="comment-action-btn like-btn" onclick="toggleLike(this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            <span class="like-count">8</span>
+                          </button>
+                          <button class="comment-action-btn reply-btn" onclick="showReplyInput(this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            回复
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- 评论主体 - 使用flex布局 -->
+                    <div class="comment-body">
+                      <!-- 头像 - flex布局 -->
+                      <div class="comment-avatar" style="background-image: url('https://randomuser.me/api/portraits/women/22.jpg');"></div>
+                      
+                      <!-- 评论内容区域 - 占据剩余空间 -->
+                      <div class="comment-content-area">
+                        <!-- 评论头部 -->
+                        <div class="comment-header">
+                          <div class="comment-author-info">
+                            <div class="comment-author-details">
+                              <div class="comment-author-name">王医生 <span class="comment-author-title">主治医师 | 心内科 | 广州中山医院</span></div>
+                            </div>
+                          </div>
+                          <div class="comment-time">2025-12-16 09:15</div>
+                        </div>
+                        
+                        <!-- 评论内容 -->
+                        <div class="comment-content">
+                          这个病例的治疗方案非常有参考价值，我在临床中也遇到过类似的情况，使用类似的治疗方案取得了不错的效果。请问张教授，在患者血糖控制稳定后，胰岛素的调整策略是怎样的？
+                        </div>
+                        
+                        <!-- 评论操作 -->
+                        <div class="comment-actions">
+                          <button class="comment-action-btn like-btn" onclick="toggleLike(this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            <span class="like-count">5</span>
+                          </button>
+                          <button class="comment-action-btn reply-btn" onclick="showReplyInput(this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            回复
+                          </button>
+                        </div>
+                        
+                        <!-- 回复内容 -->
+                        <div class="reply-content">
+                          <div class="comment-body">
+                            <!-- 头像 - flex布局 -->
+                            <div class="comment-avatar" style="background-image: url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
+                            
+                            <!-- 评论内容区域 - 占据剩余空间 -->
+                            <div class="comment-content-area">
+                              <!-- 评论头部 -->
+                              <div class="comment-header">
+                                <div class="comment-author-info">
+                                  <div class="comment-author-details">
+                                    <div class="comment-author-name">张教授 <span class="comment-author-title">主任医师 | 内分泌科 | 北京协和医院</span></div>
+                                  </div>
+                                </div>
+                                <div class="comment-time">2025-12-16 10:30</div>
+                              </div>
+                              
+                              <!-- 评论内容 -->
+                              <div class="comment-content">
+                                感谢王医生的提问。在患者血糖控制稳定后，胰岛素的调整策略主要根据患者的血糖监测结果、饮食和运动情况进行个体化调整。
+                              </div>
+                              
+                              <!-- 评论操作 -->
+                              <div class="comment-actions">
+                                <button class="comment-action-btn like-btn" onclick="toggleLike(this)">
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                  </svg>
+                                  <span class="like-count">3</span>
+                                </button>
+                                <button class="comment-action-btn reply-btn" onclick="showReplyInput(this)">
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                  </svg>
+                                  回复
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      
+      <!-- 悬浮评论输入框 -->
+      <div class="comment-input-container">
+        <textarea class="comment-input" placeholder="分享您的专业见解..."></textarea>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 脚本文件 -->
+  <script src="../js/scripts.js"></script>
+  <script>
+    // 页面加载完成后初始化组件，传递页面标题
+    document.addEventListener('DOMContentLoaded', function() {
+      initPageComponents({ title: '线上科室会' });
+      
+      // 初始化标签页功能
+      initTabs();
+      
+      // 初始化视频播放器
+      initVideoPlayer();
+      
+      // 初始化展开/收起功能
+      initExpandFunction();
+    });
+    
+    // 标签页功能
+    function initTabs() {
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // 处理弹幕开关
+          if (btn.classList.contains('danmu-toggle')) {
+            btn.classList.toggle('active');
+            return;
+          }
+          
+          const targetTab = btn.getAttribute('data-tab');
+          
+          // 移除所有激活状态
+          tabBtns.forEach(b => {
+            if (!b.classList.contains('danmu-toggle')) {
+              b.classList.remove('active');
+            }
+          });
+          tabContents.forEach(c => c.classList.remove('active'));
+          
+          // 添加当前激活状态
+          btn.classList.add('active');
+          document.getElementById(targetTab).classList.add('active');
+          
+          // 控制评论输入框的显示/隐藏
+          const commentInputContainer = document.querySelector('.comment-input-container');
+          if (targetTab === 'comments') {
+            commentInputContainer.style.display = 'block';
+          } else {
+            commentInputContainer.style.display = 'none';
+          }
+        });
+      });
+    }
+    
+    // 视频播放器功能
+    function initVideoPlayer() {
+      const video = document.querySelector('.video-player');
+      const playButton = document.querySelector('.play-button');
+      const videoOverlay = document.querySelector('.video-overlay');
+      const progressBar = document.querySelector('.progress-bar');
+      const progressBarFill = document.querySelector('.progress-bar-fill');
+      const currentTimeEl = document.querySelector('.current-time');
+      const totalTimeEl = document.querySelector('.total-time');
+      
+      // 模拟视频时长
+      const totalTime = 23 * 60 + 38;
+      totalTimeEl.textContent = formatTime(totalTime);
+      
+      // 播放/暂停控制
+      playButton.addEventListener('click', () => {
+        if (video.paused) {
+          video.play();
+          videoOverlay.style.display = 'none';
+        } else {
+          video.pause();
+          videoOverlay.style.display = 'flex';
+        }
+      });
+      
+      video.addEventListener('play', () => {
+        videoOverlay.style.display = 'none';
+      });
+      
+      video.addEventListener('pause', () => {
+        videoOverlay.style.display = 'flex';
+      });
+      
+      // 格式化时间
+      function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      }
+    }
+    
+    // 展开/收起功能
+    function initExpandFunction() {
+      const expandBtns = document.querySelectorAll('.expand-btn');
+      
+      expandBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const parent = btn.parentElement;
+          const textElement = parent.querySelector('.intro-text') || parent.querySelector('.comment-text');
+          
+          if (textElement.classList.contains('expanded')) {
+            textElement.classList.remove('expanded');
+            btn.textContent = '展开';
+          } else {
+            textElement.classList.add('expanded');
+            btn.textContent = '收起';
+          }
+        });
+      });
+    }
+    
+    // 点赞功能
+    function toggleLike(btn) {
+      btn.classList.toggle('active');
+      const likeCount = btn.querySelector('.like-count');
+      let count = parseInt(likeCount.textContent);
+      if (btn.classList.contains('active')) {
+        count++;
+      } else {
+        count--;
+      }
+      likeCount.textContent = count;
+    }
+    
+    // 显示回复输入框
+    function showReplyInput(btn) {
+      alert('回复功能开发中...');
+    }
+    
+    // 简单评论提交功能
+    document.addEventListener('DOMContentLoaded', function() {
+      const submitBtn = document.querySelector('.submit-simple-comment');
+      const commentInput = document.querySelector('.simple-comment-input');
+      
+      if (submitBtn && commentInput) {
+        submitBtn.addEventListener('click', function() {
+          const commentText = commentInput.value.trim();
+          if (commentText) {
+            alert('评论提交成功！\n\n您的评论：' + commentText);
+            commentInput.value = ''; // 清空输入框
+          } else {
+            alert('请输入评论内容');
+          }
+        });
+        
+        // 支持回车键提交评论
+        commentInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            submitBtn.click();
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

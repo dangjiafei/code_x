@@ -1,0 +1,251 @@
+/* 统一表格样式 - 适用于所有模块 */
+.record-table, .product-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: none;
+}
+
+/* 统一表格单元格样式 */
+.record-table th,
+.record-table td,
+.product-table th,
+.product-table td,
+.material-table th,
+.material-table td,
+.table th,
+.table td {
+    padding: 12px !important;
+    text-align: left !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid #f0f2f5 !important;
+    box-sizing: border-box !important;
+    height: auto !important;
+    min-height: 50px !important;
+    line-height: 1.2 !important;
+    display: table-cell !important;
+}
+
+/* 禁止表头使用flex布局 */
+th.col-action {
+    display: table-cell !important;
+    flex: none !important;
+    justify-content: flex-start !important;
+}
+
+/* 统一表头样式 */
+.record-table th,
+.product-table th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* 统一表格行样式 */
+.record-table tbody tr, .product-table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.record-table tbody tr:hover, .product-table tbody tr:hover,
+.record-table tbody tr:active, .product-table tbody tr:active {
+    background-color: #f8fafc;
+}
+
+/* 统一表格数据单元格样式 */
+.record-table td,
+.product-table td {
+    font-size: 0.9rem !important;
+    color: #4a5568;
+    line-height: 1.5;
+}
+
+/* 产品信息样式 */
+.product-name {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.product-code {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* 调研名称样式 */
+.research-name {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.research-id {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* 素材标题和ID样式 */
+.material-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.material-id {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin: 4px 0 0 0;
+    line-height: 1.3;
+}
+
+/* 统一操作按钮单元格样式 */
+td.action-buttons-cell,
+td.col-action {
+    display: flex !important;
+    gap: 10px !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    height: 100% !important;
+    min-height: 50px !important;
+    vertical-align: middle !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+    line-height: 1.2 !important;
+}
+
+/* 嵌套的操作按钮容器样式 */
+td .action-buttons-cell {
+    display: flex !important;
+    gap: 10px !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    height: auto !important;
+    min-height: auto !important;
+    vertical-align: middle !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    line-height: 1.2 !important;
+}
+
+/* 确保表头和表内容对齐 */
+th.col-action {
+    display: table-cell !important;
+    padding: 16px !important;
+    text-align: left !important;
+    vertical-align: middle !important;
+    min-height: 60px !important;
+}
+
+/* 统一操作按钮样式 */
+.action-btn {
+    padding: 6px 12px !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 0.85rem !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    height: 30px !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+    vertical-align: middle !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+}
+
+/* 统一按钮类型样式 */
+.action-btn.view {
+    color: #667eea !important;
+    background-color: rgba(102, 126, 234, 0.1) !important;
+}
+
+.action-btn.view:hover {
+    background-color: rgba(102, 126, 234, 0.2) !important;
+}
+
+.action-btn.edit {
+    color: #10b981 !important;
+    background-color: rgba(16, 185, 129, 0.1) !important;
+}
+
+.action-btn.edit:hover {
+    background-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+.action-btn.delete {
+    color: #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+.action-btn.delete:hover {
+    background-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+.action-btn.restart {
+    color: #22c55e !important;
+    background-color: rgba(34, 197, 94, 0.1) !important;
+}
+
+.action-btn.restart:hover {
+    background-color: rgba(34, 197, 94, 0.2) !important;
+}
+
+.action-btn.terminate {
+    color: #f59e0b !important;
+    background-color: rgba(245, 158, 11, 0.1) !important;
+}
+
+.action-btn.terminate:hover {
+    background-color: rgba(245, 158, 11, 0.2) !important;
+}
+
+.action-btn.more {
+    color: #64748b !important;
+    background-color: rgba(100, 116, 139, 0.1) !important;
+}
+
+.action-btn.more:hover {
+    background-color: rgba(100, 116, 139, 0.2) !important;
+}
+
+/* 复选框样式 */
+.select-all,
+.select-row {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+/* 确保所有单元格内容垂直居中 */
+.record-table td > *,
+.product-table td > * {
+    vertical-align: middle;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .action-buttons-cell,
+    .col-action {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+    }
+}

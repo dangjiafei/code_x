@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活动详情 - 在线互动病例征集</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/case-collection-detail.css">
+    <script src="../js/script.js"></script>
+    <style>
+        /* 完全自定义的返回按钮样式，覆盖所有!important */
+        .custom-back-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 8px 16px !important;
+            border: none !important;
+            border-radius: 8px !important;
+            background-color: #f8fafc !important;
+            color: #4a5568 !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            text-decoration: none !important;
+            transition: all 0.3s ease !important;
+            height: auto !important;
+            width: auto !important;
+            margin: 0 !important;
+            line-height: 1.5 !important;
+            white-space: nowrap !important;
+            box-sizing: border-box !important;
+        }
+        
+        .custom-back-btn:hover {
+            background-color: #edf2f7 !important;
+            color: #2d3748 !important;
+        }
+        
+        .custom-back-btn svg {
+            width: 16px !important;
+            height: 16px !important;
+            stroke: currentColor !important;
+            stroke-width: 2 !important;
+            stroke-linecap: round !important;
+            stroke-linejoin: round !important;
+        }
+        
+        /* 内容区主布局 */
+        .content-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            padding: 0;
+            width: 100%;
+            margin: 0;
+        }
+        
+        /* 确保content-left充分利用空间 */
+        .content-left {
+            flex: 1;
+            min-width: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- 组件加载脚本 -->
+    <script>
+        async function loadComponents() {
+            // 加载顶部导航栏
+            const headerResponse = await fetch('components/header.html');
+            const headerContent = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerContent;
+            
+            // 加载左侧侧边栏
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarContent = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarContent;
+            
+            // 在侧边栏加载完成后初始化菜单
+            if (typeof initializeMenu === 'function') {
+                initializeMenu();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <div class="right-content">
+            <!-- 页面标题和返回按钮容器 -->
+            <div class="page-title">
+                <button class="custom-back-btn" onclick="window.location.href='activity-management.html'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    返回列表
+                </button>
+            </div>
+            
+            <!-- 主要内容区域 -->
+            <main class="content-area" style="padding: var(--spacing-lg) 20px;">
+                <!-- 内容区主布局 -->
+                <div class="content-wrapper">
+                    <!-- 左侧主要内容 -->
+                    <div class="content-left" style="flex: 1; min-width: 0;">
+                        <!-- 活动头部 -->
+                        <div class="detail-header">
+                            <div class="header-top">
+                                <img src="https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?w=200&h=120&fit=crop" alt="糖尿病并发症管理病例征集活动封面" class="activity-cover">
+                                <div class="activity-info">
+                                    <h1 class="activity-title">糖尿病并发症管理病例征集</h1>
+                                    <div class="activity-meta">
+                                        <div class="meta-item">
+                                            <span class="status-badge">待投稿</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                                            </svg>
+                                            <span>2025-12-01 至 2025-12-31</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="detail-actions">
+                                        <button class="action-btn primary" onclick="window.location.href='create-case.html?activityId=CASE001'" style="background-color: #52c41a; color: white; font-size: 14px; padding: 10px 20px; cursor: pointer;">去创作</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 征稿主题要求 -->
+                        <div style="margin-bottom: 24px; background-color: white; padding: 20px; border-radius: 8px;">
+                            <h3 style="font-size: 1.1rem; font-weight: 600; color: #1e293b; margin-bottom: 16px; padding-bottom: 0;">征稿主题要求</h3>
+                            <div style="line-height: 1.6; color: #4a5568;">
+                                <p style="margin-bottom: 8px;">本次活动，我们精心策划了两个前沿医学主题，期待您能根据自己的兴趣与研究专长，选择其中一个进行深入探讨</p>
+                                <p style="margin-bottom: 8px; color: #000000;">① 主题1：围手术期出渗血防治管理</p>
+                                <p style="margin-bottom: 8px; color: #000000;">② 主题2：围手术期出渗血防治管理</p>
+                                <p style="margin-bottom: 8px;">您可以根据自己的兴趣和研究专长，任选其一进行深入探讨。</p>
+                            </div>
+                        </div>
+
+                        <!-- 活动详情内容 -->
+                        <div style="margin-bottom: 24px; background-color: white; padding: 20px; border-radius: 8px;">
+                            <h3 style="font-size: 1.1rem; font-weight: 600; color: #1e293b; margin-bottom: 16px; padding-bottom: 0;">活动介绍与内容要求</h3>
+                            <div style="margin-bottom: 20px; line-height: 1.6; color: #4a5568;">
+                                <p style="margin-bottom: 12px;">本次活动旨在收集临床中特定疾病的真实案例。通过对患者情况评估、治疗前后效果对比，探讨相关治疗方案的学术价值。诚邀相关科室同仁分享经验，共同构建规范化诊疗智库，期待您的积极参与！</p>
+                            </div>
+                            <!-- 内容要求 -->
+                            <div style="margin-bottom: 24px;">
+                                <br>
+                                <h4 style="font-size: 1.1rem; font-weight: 500; color: #2d3748; margin-bottom: 12px;">内容要求</h4>
+                                <div style="line-height: 1.6; color: #4a5568;">
+                                    <p style="margin-bottom: 8px;">1. 内容完整：请确保病例信息完整，包括患者基本情况、诊断过程、治疗方案及随访结果等关键信息。</p>
+                                    <p style="margin-bottom: 8px;">2. 真实可靠：所有病例信息必须真实有效，不得虚构或篡改临床数据。</p>
+                                    <p style="margin-bottom: 8px;">3. 隐私保护：请确保所有患者隐私信息已完全脱敏，如姓名、身份证号、联系方式等。</p>
+                                    <p style="margin-bottom: 8px;">4. 学术价值：病例应具有一定的学术参考价值，能够反映临床诊疗思路或展示特殊病例特点。</p>
+                                </div>
+                            </div>
+                            
+                            <!-- 目标采购医学内容数 -->
+                            <div style="margin-bottom: 24px;">
+                                <br>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                    <h4 style="font-size: 1.1rem; font-weight: 500; color: #2d3748; margin: 0;">此次活动医学内容目标征集数</h4>
+                                </div>
+                                <div style="line-height: 1.6; color: #4a5568;">
+                                    <div style="display: inline-flex; align-items: center; padding: 6px 12px; background-color: #f0fdf4; color: #15803d; border-radius: 16px; font-size: 13px; font-weight: 500;">共征集 10 份</div>
+                                </div>
+                            </div>
+
+                            <!-- 互动题目要求 -->
+                            <div style="margin-bottom: 24px;">
+                                <br>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                    <h4 style="font-size: 1.1rem; font-weight: 500; color: #2d3748; margin: 0;">互动题目要求</h4>
+                                </div>
+                                <!-- 题目数量总览 -->
+                                <div style="margin-bottom: 16px;">
+                                    <div style="display: inline-flex; align-items: center; padding: 6px 12px; background-color: #f0fdf4; color: #15803d; border-radius: 16px; font-size: 13px; font-weight: 500;">
+
+                                        共 10 道题目
+                                    </div>
+                                </div>
+                                <!-- 题目列表 -->
+                                <div class="questions-list" id="activity-questions" style="margin-top: 16px; display: flex; flex-direction: column; gap: 16px;">
+                                    <!-- 题目将通过JavaScript动态添加 -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 邀约对象规则 - 独立模块 -->
+                        <div style="margin-top: 24px; background: white; border-radius: 12px; padding: 24px;">
+                            <h3 style="font-size: 1.1rem; font-weight: 600; color: #1e293b; margin-bottom: 16px;">邀约对象规则</h3>
+                            <div style="display: flex; gap: 8px;">
+                                <!-- 城市卡片 -->
+                                <div style="flex: 1; padding: 12px 16px; background-color: #f8fafc; border-radius: 6px;">
+                                    <div style="font-weight: 600; color: #1e293b; margin-bottom: 8px;">城市</div>
+                                    <div style="color: #64748b;">全国</div>
+                                </div>
+                                <!-- 机构名称卡片 -->
+                                <div style="flex: 1; padding: 12px 16px; background-color: #f8fafc; border-radius: 6px;">
+                                    <div style="font-weight: 600; color: #1e293b; margin-bottom: 8px;">机构名称</div>
+                                    <div style="color: #64748b;">三级甲等医院</div>
+                                </div>
+                                <!-- 身份职称卡片 -->
+                                <div style="flex: 1; padding: 12px 16px; background-color: #f8fafc; border-radius: 6px;">
+                                    <div style="font-weight: 600; color: #1e293b; margin-bottom: 8px;">身份职称</div>
+                                    <div style="color: #64748b;">主任医师、副主任医师</div>
+                                </div>
+                                <!-- 科室卡片 -->
+                                <div style="flex: 1; padding: 12px 16px; background-color: #f8fafc; border-radius: 6px;">
+                                    <div style="font-weight: 600; color: #1e293b; margin-bottom: 8px;">科室</div>
+                                    <div style="color: #64748b;">外科相关科室</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 我的作品信息 - 独立模块 -->
+                        <div style="margin-top: 24px; background: white; border-radius: 12px; padding: 24px;">
+                            <h3 style="font-size: 1.1rem; font-weight: 600; color: #1e293b; margin-bottom: 16px;">我的作品信息</h3>
+                            <!-- 用户创建的病例列表 -->
+                            <div class="content-section" style="background-color: white; padding: 0; border-radius: 8px; box-shadow: none;">
+                                <!-- 病例列表表格 -->
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="record-table" style="width: 100%; border-collapse: collapse;">
+                                        <thead>
+                                            <tr>
+                                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #f0f0f0; font-weight: 600; color: #1e293b;">病例标题</th>
+                                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #f0f0f0; font-weight: 600; color: #1e293b;">创建时间</th>
+                                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #f0f0f0; font-weight: 600; color: #1e293b;">当前状态</th>
+                                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #f0f0f0; font-weight: 600; color: #1e293b;">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- 已有病例示例 -->
+                                            <tr>
+                                                <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">
+                                                    <div style="font-weight: 500; color: #2d3748;">2型糖尿病合并高血压病例</div>
+                                                    <div style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">ID: CASE-001</div>
+                                                </td>
+                                                <td style="padding: 12px; border-bottom: 1px solid #f0f0f0; color: #64748b;">2025-12-15</td>
+                                                <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">
+                                                    <span class="status-badge draft" style="background-color: #e8f0ff; color: #667eea; border-color: #bae6fd; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 500;">草稿</span>
+                                                </td>
+                                                <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">
+                                                    <div style="display: flex; gap: 8px;">
+                                                        <button class="action-btn" onclick="window.location.href='case-detail.html?id=CASE-001'" style="background-color: #10b981; color: white; padding: 6px 12px; border: none; border-radius: 6px; font-size: 12px; cursor: pointer;">详情</button>
+                                                        <button class="action-btn" onclick="window.location.href='create-case.html?id=CASE-001'" style="background-color: #667eea; color: white; padding: 6px 12px; border: none; border-radius: 6px; font-size: 12px; cursor: pointer;">编辑</button>
+                                                        <button class="action-btn" onclick="showSubmitModal('CASE-001')" style="background-color: #ff7d00; color: white; padding: 6px 12px; border: none; border-radius: 6px; font-size: 12px; cursor: pointer;">去投稿</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- 投稿说明 -->
+                            <div style="margin-top: 20px; padding: 16px; background-color: #f0f9ff; border-radius: 8px; border: 1px solid #bae6fd;">
+                                <h4 style="font-size: 1.1rem; font-weight: 600; color: #0369a1; margin-bottom: 12px;">投稿规则说明</h4>
+                                <ul style="margin-left: 20px; line-height: 1.5; color: #0c4a6e;">
+                                    <li style="margin-bottom: 8px;">如果投稿的作品被拒绝，您可以进行编辑修改后重新提交作品</li>
+                                    <li style="margin-bottom: 0;">请确保您的作品符合活动要求，否则可能会被拒绝</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- 学习记录区域 - 新增模块 -->
+                        <div style="margin-top: 24px; background: white; border-radius: 12px; padding: 24px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h3 style="font-size: 1.1rem; font-weight: 600; color: #1e293b; margin: 0;">作品学习记录</h3>
+                                <button class="action-btn primary" onclick="exportLearningData()" style="background-color: #1890ff; color: white; font-size: 14px; padding: 10px 20px; cursor: pointer;">导出数据</button>
+                            </div>
+                            <div style="overflow-x: auto;">
+                                <table class="record-table" style="width: 100%; border-collapse: collapse;">
+                                    <thead>
+                                        <tr>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #f0f0f0; font-weight: 600; color: #1e293b;">姓名</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #f0f0f0; font-weight: 600; color: #1e293b;">职称</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #f0f0f0; font-weight: 600; color: #1e293b;">科室</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #f0f0f0; font-weight: 600; color: #1e293b;">机构名称</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #f0f0f0; font-weight: 600; color: #1e293b;">学习时间</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #f0f0f0; font-weight: 600; color: #1e293b;">认证状态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">张三</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">主任医师</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">内分泌科</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">北京协和医院</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0; color: #64748b;">2025-12-10 14:30</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">
+                                                <span class="status-badge success" style="background-color: #f6ffed; color: #52c41a; border-color: #b7eb8f; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 500;">已认证</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">李四</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">副主任医师</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">心血管内科</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">上海瑞金医院</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0; color: #64748b;">2025-12-11 09:15</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">
+                                                <span class="status-badge success" style="background-color: #f6ffed; color: #52c41a; border-color: #b7eb8f; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 500;">已认证</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">王五</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">主治医师</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">糖尿病科</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">广州中山医院</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0; color: #64748b;">2025-12-12 16:45</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">
+                                                <span class="status-badge pending" style="background-color: #fff7e6; color: #ff7d00; border-color: #ffd591; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 500;">待认证</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">赵六</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">副主任医师</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">老年病科</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">成都华西医院</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0; color: #64748b;">2025-12-13 11:20</td>
+                                            <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;">
+                                                <span class="status-badge success" style="background-color: #f6ffed; color: #52c41a; border-color: #b7eb8f; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 500;">已认证</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <!-- 投稿确认弹窗 -->
+            <div id="submitModal" class="modal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);">
+                <div style="background-color: white; margin: 5% auto; padding: 0; border-radius: 12px; width: 90%; max-width: 600px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                    <!-- 弹窗头部 -->
+                    <div style="padding: 24px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="font-size: 1.25rem; font-weight: 600; color: #1e293b; margin: 0;">作品投稿确认</h3>
+                        <button onclick="closeSubmitModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: all 0.2s ease;">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <!-- 弹窗内容 -->
+                    <div style="padding: 24px;">
+                        <!-- 说明文字 -->
+                        <div style="margin-bottom: 24px;">
+                            <p style="font-size: 14px; color: #6b7280; line-height: 1.6; margin-bottom: 16px;">
+                                <strong style="color: #1e293b;">为什么需要扫码人脸验证？</strong><br>
+                                为了确保作品的真实性和原创性，保护您的知识产权，同时符合学术活动的规范要求，我们需要通过人脸验证来确认您的身份。这是对您作品的尊重和保护，也是对学术严谨性的保障。
+                            </p>
+                            <div style="background-color: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                                <p style="font-size: 13px; color: #92400e; margin: 0; line-height: 1.5;">
+                                    <strong>🔒 隐私保护说明：</strong>我们严格遵守数据隐私保护法规，人脸验证数据仅用于身份确认，不会被存储或用于其他目的。验证过程全程加密，确保您的个人信息安全。我们致力于保护您的隐私，让您可以放心完成验证。
+                                </p>
+                            </div>
+
+                        </div>
+                        <!-- 协议确认 -->
+                        <div style="margin-bottom: 24px;">
+                            <h4 style="font-size: 16px; font-weight: 600; color: #1e293b; margin-bottom: 16px;">协议确认</h4>
+                            <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; max-height: 200px; overflow-y: auto;">
+                                <p style="font-size: 13px; color: #6b7280; line-height: 1.6;">
+                                    <strong>作品原创声明</strong><br>
+                                    1. 本人确认所提交的作品（病例ID：<span id="modalCaseId">CASE-001</span>）系本人独立创作，未侵犯任何第三方的知识产权。<br>
+                                    2. 本人保证作品内容真实、准确，无虚假信息和夸大宣传。<br>
+                                    3. 本人同意将作品授权给活动主办方用于学术交流和宣传推广。<br>
+                                    4. 如违反上述声明，本人愿意承担相应的法律责任。
+                                </p>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-top: 12px;">
+                                <input type="checkbox" id="agreeProtocol" style="width: 16px; height: 16px; cursor: pointer;">
+                                <label for="agreeProtocol" style="font-size: 13px; color: #6b7280; cursor: pointer;">我已阅读并同意上述协议</label>
+                            </div>
+                        </div>
+                        <!-- 二维码区域 -->
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <h4 style="font-size: 16px; font-weight: 600; color: #1e293b; margin-bottom: 16px;">扫码人脸验证</h4>
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
+                                <!-- 二维码容器 -->
+                                <div style="width: 200px; height: 200px; background-color: white; border: 2px solid #e5e7eb; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <!-- 真实二维码 -->
+                                    <img id="qrcodeImage" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://example.com/activity/preview" alt="人脸验证二维码" style="width: 180px; height: 180px; border-radius: 8px;">
+                                </div>
+                                <!-- 二维码说明 -->
+                                <p style="font-size: 13px; color: #6b7280; text-align: center; margin: 0 0 12px 0;">
+                                    请使用手机扫描上方二维码，完成人脸验证后，作品将自动提交
+                                </p>
+                                <!-- 刷新二维码按钮 -->
+                                <button onclick="refreshQRCode()" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background-color: white; color: #6b7280; font-size: 12px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 4px;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"></path></svg>
+                                    刷新二维码
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 弹窗底部 -->
+                    <div style="padding: 20px 24px; border-top: 1px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 12px;">
+                        <button onclick="closeSubmitModal()" style="padding: 10px 20px; border: 1px solid #d1d5db; border-radius: 6px; background-color: white; color: #6b7280; font-size: 14px; cursor: pointer; transition: all 0.2s ease;">取消</button>
+                        <button id="confirmSubmit" onclick="confirmSubmit()" disabled style="padding: 10px 20px; border: none; border-radius: 6px; background-color: #9ca3af; color: white; font-size: 14px; cursor: pointer; transition: all 0.2s ease;">确认投稿</button>
+                    </div>
+                </div>
+            </div>
+            
+            <script>
+                // 投稿函数
+                function submitCase(caseId) {
+                    // 模拟检查当前活动是否已有审核中或已通过的投稿
+                    const hasActiveSubmission = true; // 假设已有审核中的投稿
+                    
+                    if (hasActiveSubmission) {
+                        alert('您已经有一个审核中的投稿，无法再次投稿。请等待审核结果后再操作。');
+                        return;
+                    }
+                    
+                    // 模拟投稿操作
+                    alert('病例投稿成功！');
+                    // 刷新页面或更新状态
+                    window.location.reload();
+                }
+                
+                // 显示题目类型菜单
+                function showQuestionMenu(button) {
+                    const menu = button.nextElementSibling;
+                    if (menu && menu.classList.contains('question-type-menu')) {
+                        menu.style.display = 'block';
+                    }
+                }
+
+                // 隐藏题目类型菜单
+                function hideQuestionMenu(button) {
+                    const menu = button.nextElementSibling;
+                    if (menu && menu.classList.contains('question-type-menu')) {
+                        setTimeout(() => {
+                            if (!menu.matches(':hover')) {
+                                menu.style.display = 'none';
+                            }
+                        }, 200);
+                    }
+                }
+
+                // 添加题目函数
+                function addQuestion(section, questionType) {
+                    const questionsContainer = document.getElementById(`${section}-questions`);
+                    if (!questionsContainer) {
+                        console.error(`Questions container not found for section: ${section}`);
+                        return;
+                    }
+                    
+                    // 生成唯一的题目ID
+                    const questionId = `${section}-question-${Date.now()}`;
+                    
+                    // 题目类型中文名称映射
+                    const questionTypeNames = {
+                        'single': '单选题',
+                        'multiple': '多选题',
+                        'fill': '填空题',
+                        'essay': '问答题',
+                        'sort': '排序题',
+                        'scale': '量表题'
+                    };
+                    
+                    // 创建题目项元素
+                    const questionItem = document.createElement('div');
+                    questionItem.className = 'question-item';
+                    questionItem.id = questionId;
+                    
+                    // 设置题目项内容
+                    questionItem.innerHTML = `
+                        <div class="question-item-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <div class="question-item-title" style="font-weight: 600; color: #1f2937; font-size: 14px;">
+                                ${questionTypeNames[questionType]} - ${questionsContainer.children.length + 1}
+                            </div>
+                            <div class="question-item-actions" style="display: flex; gap: 8px;">
+                                <button class="action-btn" onclick="editQuestion('${questionId}')" style="padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px; background-color: white; color: #6b7280; font-size: 12px; cursor: pointer; transition: all 0.2s ease;">
+                                    编辑
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteQuestion('${questionId}')" style="padding: 4px 8px; border: 1px solid #fecaca; border-radius: 4px; background-color: white; color: #ef4444; font-size: 12px; cursor: pointer; transition: all 0.2s ease;">
+                                    删除
+                                </button>
+                            </div>
+                        </div>
+                        <div class="question-item-content" style="padding: 12px; background-color: white; border: 1px solid #e5e7eb; border-radius: 4px;">
+                            <div class="form-field" style="margin-bottom: 12px;">
+                                <label style="font-size: 13px; font-weight: 500; color: #374151; display: block; margin-bottom: 6px;">题目内容</label>
+                                <input type="text" placeholder="请输入题目内容" style="width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px; transition: all 0.2s ease;">
+                            </div>
+                            ${questionType === 'single' ? `
+                                <div class="form-field" style="margin-bottom: 12px;">
+                                    <label style="font-size: 13px; font-weight: 500; color: #374151; display: block; margin-bottom: 6px;">选项</label>
+                                    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+                                        <div class="option-item" style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="radio" name="${questionId}-option" style="margin: 0;">
+                                            <input type="text" placeholder="选项内容" style="flex: 1; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                        </div>
+                                        <div class="option-item" style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="radio" name="${questionId}-option" style="margin: 0;">
+                                            <input type="text" placeholder="选项内容" style="flex: 1; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            ` : ''}
+                            ${questionType === 'multiple' ? `
+                                <div class="form-field" style="margin-bottom: 12px;">
+                                    <label style="font-size: 13px; font-weight: 500; color: #374151; display: block; margin-bottom: 6px;">选项</label>
+                                    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+                                        <div class="option-item" style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" name="${questionId}-option" style="margin: 0;">
+                                            <input type="text" placeholder="选项内容" style="flex: 1; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                        </div>
+                                        <div class="option-item" style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" name="${questionId}-option" style="margin: 0;">
+                                            <input type="text" placeholder="选项内容" style="flex: 1; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            ` : ''}
+                            ${questionType === 'scale' ? `
+                                <div class="form-field" style="margin-bottom: 12px;">
+                                    <label style="font-size: 13px; font-weight: 500; color: #374151; display: block; margin-bottom: 6px;">量表范围</label>
+                                    <div style="display: flex; gap: 12px; align-items: center;">
+                                        <input type="number" placeholder="最小值" min="1" style="width: 80px; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                        <span style="color: #6b7280;">至</span>
+                                        <input type="number" placeholder="最大值" min="2" style="width: 80px; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                    
+                    // 添加题目项到容器
+                    questionsContainer.appendChild(questionItem);
+                }
+
+                // 编辑题目函数
+                function editQuestion(questionId) {
+                    // 模拟编辑功能
+                    alert('编辑题目功能待实现');
+                }
+
+                // 删除题目函数
+                function deleteQuestion(questionId) {
+                    const questionItem = document.getElementById(questionId);
+                    if (questionItem) {
+                        questionItem.remove();
+                    }
+                }
+
+                // 导出学习数据函数
+                function exportLearningData() {
+                    // 模拟导出数据操作
+                    alert('学习记录数据导出成功！');
+                    // 这里可以添加实际的导出逻辑，例如生成CSV文件并下载
+                    // 以下是一个简单的CSV导出示例
+                    const headers = ['姓名', '职称', '科室', '机构名称', '学习时间', '认证状态'];
+                    const data = [
+                        ['张三', '主任医师', '内分泌科', '北京协和医院', '2025-12-10 14:30', '已认证'],
+                        ['李四', '副主任医师', '心血管内科', '上海瑞金医院', '2025-12-11 09:15', '已认证'],
+                        ['王五', '主治医师', '糖尿病科', '广州中山医院', '2025-12-12 16:45', '待认证'],
+                        ['赵六', '副主任医师', '老年病科', '成都华西医院', '2025-12-13 11:20', '已认证']
+                    ];
+                    
+                    // 生成CSV内容
+                    let csvContent = headers.join(',') + '\n';
+                    data.forEach(row => {
+                        csvContent += row.join(',') + '\n';
+                    });
+                    
+                    // 创建下载链接并触发下载
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', '作品学习记录.csv');
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+                
+                // 弹窗相关函数
+                // 显示投稿弹窗
+                function showSubmitModal(caseId) {
+                    document.getElementById('modalCaseId').textContent = caseId;
+                    document.getElementById('submitModal').style.display = 'block';
+                }
+                
+                // 关闭投稿弹窗
+                function closeSubmitModal() {
+                    document.getElementById('submitModal').style.display = 'none';
+                    document.getElementById('agreeProtocol').checked = false;
+                    document.getElementById('confirmSubmit').disabled = true;
+                    document.getElementById('confirmSubmit').style.backgroundColor = '#9ca3af';
+                }
+                
+                // 确认投稿
+                function confirmSubmit() {
+                    const caseId = document.getElementById('modalCaseId').textContent;
+                    // 这里可以添加实际的投稿逻辑
+                    alert('投稿请求已发送！请使用手机扫描二维码完成人脸验证，验证成功后作品将进入审核流程。');
+                    closeSubmitModal();
+                }
+                
+                // 刷新二维码
+                function refreshQRCode() {
+                    const qrCodeImage = document.getElementById('qrcodeImage');
+                    // 添加时间戳参数确保二维码刷新
+                    const timestamp = new Date().getTime();
+                    qrCodeImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://example.com/activity/preview&t=${timestamp}`;
+                }
+                
+                // 页面加载完成后添加事件监听
+                document.addEventListener('DOMContentLoaded', function() {
+                    // 监听协议勾选状态
+                    const agreeCheckbox = document.getElementById('agreeProtocol');
+                    const confirmBtn = document.getElementById('confirmSubmit');
+                    
+                    if (agreeCheckbox && confirmBtn) {
+                        agreeCheckbox.addEventListener('change', function() {
+                            if (this.checked) {
+                                confirmBtn.disabled = false;
+                                confirmBtn.style.backgroundColor = '#8b5cf6';
+                                confirmBtn.style.cursor = 'pointer';
+                            } else {
+                                confirmBtn.disabled = true;
+                                confirmBtn.style.backgroundColor = '#9ca3af';
+                                confirmBtn.style.cursor = 'not-allowed';
+                            }
+                        });
+                    }
+                    
+                    // 点击弹窗外部关闭
+                    window.onclick = function(event) {
+                        const modal = document.getElementById('submitModal');
+                        if (event.target == modal) {
+                            closeSubmitModal();
+                        }
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</body>
+</html>

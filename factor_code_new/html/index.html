@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <!-- 加载公共组件的脚本 -->
+    <script>
+        // 动态加载公共组件
+        async function loadComponents() {
+            // 加载顶部导航栏
+            const headerResponse = await fetch('components/header.html');
+            const headerHtml = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerHtml;
+            
+            // 加载左侧侧边栏
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarHtml = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+            
+            // 加载完成后，初始化菜单交互
+            initializeMenu();
+            
+            // 初始化AI轮播文字功能
+            if (typeof initAICarousel === 'function') {
+                initAICarousel();
+            }
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+    
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+            <!-- 欢迎信息 -->
+            <div class="welcome-section">
+                
+                <p class="welcome-text">晚上好，欢迎回来！这是您的学术任务概览</p>
+            </div>
+
+            <!-- 核心数据统计卡片 -->
+            <div class="dashboard-stats" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;">
+                <div class="stat-card" style="padding: 16px; background: white;">
+                    <div class="stat-content">
+                        <div class="stat-label" style="font-size: 14px;">进行中的任务</div>
+                        <div class="stat-value" style="font-size: 1.5rem;">24</div>
+                    </div>
+                </div>
+                <div class="stat-card" style="padding: 16px; background: white;">
+                    <div class="stat-content">
+                        <div class="stat-label" style="font-size: 14px;">组织未分配任务</div>
+                        <div class="stat-value" style="font-size: 1.5rem;">12</div>
+                    </div>
+                </div>
+                <div class="stat-card" style="padding: 16px; background: white;">
+                    <div class="stat-content">
+                        <div class="stat-label" style="font-size: 14px;">代表未分配任务</div>
+                        <div class="stat-value" style="font-size: 1.5rem;">7</div>
+                    </div>
+                </div>
+                <div class="stat-card" style="padding: 16px; background: white;">
+                    <div class="stat-content">
+                        <div class="stat-label" style="font-size: 14px;">医生待完成</div>
+                        <div class="stat-value" style="font-size: 1.5rem;">5</div>
+                    </div>
+                </div>
+                <div class="stat-card" style="padding: 16px; background: white;">
+                    <div class="stat-content">
+                        <div class="stat-label" style="font-size: 14px;">进行中的学术活动</div>
+                        <div class="stat-value" style="font-size: 1.5rem;">11</div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- 任务详情区域 -->
+            <div class="details-section" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0;">
+                <!-- 待办任务列表 -->
+                <div class="tasks-card" style="padding: 20px; background: white; border: none;">
+                    <div class="section-header" style="border-bottom: none; margin-bottom: 0;">
+                        <h2 style="font-size: 1.1rem; font-weight: 600; margin: 0;">待办任务</h2>
+                        <div class="section-actions">
+                            <a class="view-all-link" style="font-size: 13px; color: var(--primary-color); text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 4px;">查看更多<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                        </div>
+                    </div>
+                    <div class="todo-list" style="margin-top: 4px;">
+                        <div class="todo-item" style="padding: 12px; border-radius: 6px; background: white; margin-bottom: 8px; border: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center;">
+                            <div class="todo-content">
+                                <div class="todo-title" style="font-weight: 500; font-size: 14px;">心血管疾病最新治疗进展线上研讨会</div>
+                                <div class="todo-meta" style="font-size: 12px; color: var(--text-tertiary); display: flex; gap: 12px;">
+                                    <span class="todo-type" style="padding: 2px 6px; background: var(--primary-light); color: var(--primary-color); border-radius: 10px; font-size: 11px;">线上科室会</span>
+                                    <span class="todo-deadline">2026-02-15 15:31</span>
+                                </div>
+                            </div>
+                            <button class="assign-btn" style="padding: 4px 8px; background: var(--primary-color); color: white; border: none; border-radius: 3px; font-size: 12px; cursor: pointer; font-weight: 500;">去分配</button>
+                        </div>
+                        <div class="todo-item" style="padding: 12px; border-radius: 6px; background: white; margin-bottom: 8px; border: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center;">
+                            <div class="todo-content">
+                                <div class="todo-title" style="font-weight: 500; font-size: 14px;">肿瘤免疫治疗前沿探讨</div>
+                                <div class="todo-meta" style="font-size: 12px; color: var(--text-tertiary); display: flex; gap: 12px;">
+                                    <span class="todo-type" style="padding: 2px 6px; background: var(--primary-light); color: var(--primary-color); border-radius: 10px; font-size: 11px;">医学播客</span>
+                                    <span class="todo-deadline">2026-02-18 09:45</span>
+                                </div>
+                            </div>
+                            <button class="assign-btn" style="padding: 4px 8px; background: var(--primary-color); color: white; border: none; border-radius: 3px; font-size: 12px; cursor: pointer; font-weight: 500;">去分配</button>
+                        </div>
+                        <div class="todo-item" style="padding: 12px; border-radius: 6px; background: white; margin-bottom: 8px; border: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center;">
+                            <div class="todo-content">
+                                <div class="todo-title" style="font-weight: 500; font-size: 14px;">糖尿病并发症管理案例分析</div>
+                                <div class="todo-meta" style="font-size: 12px; color: var(--text-tertiary); display: flex; gap: 12px;">
+                                    <span class="todo-type" style="padding: 2px 6px; background: var(--primary-light); color: var(--primary-color); border-radius: 10px; font-size: 11px;">互动病例</span>
+                                    <span class="todo-deadline">2026-02-20 14:20</span>
+                                </div>
+                            </div>
+                            <button class="assign-btn" style="padding: 4px 8px; background: var(--primary-color); color: white; border: none; border-radius: 3px; font-size: 12px; cursor: pointer; font-weight: 500;">去分配</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数据驾驶舱卡片 -->
+                <div class="data-dashboard-card" style="padding: 16px; background: white; border: none;">
+                    <div class="section-header" style="border-bottom: none; margin-bottom: 0;">
+                        <h2 style="font-size: 1.1rem; font-weight: 600; margin: 0;">数据驾驶舱</h2>
+                        <div class="section-actions">
+                            <a class="more-link" style="font-size: 13px; color: var(--primary-color); text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 4px;">查看更多<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                        </div>
+                    </div>
+                    <div class="dashboard-content" style="margin-top: 4px;">
+                        <!-- 客户任务覆盖趋势图表 -->
+                        <div style="background: #f8fafc; padding: 12px; border-radius: 6px;">
+                            <h3 style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">客户任务覆盖趋势</h3>
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <div style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%;"></div>
+                                    <span style="font-size: 12px; color: var(--text-secondary);">执行任务数</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <div style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%;"></div>
+                                    <span style="font-size: 12px; color: var(--text-secondary);">覆盖客户数</span>
+                                </div>
+                            </div>
+                            <!-- 折线图Canvas -->
+                            <div style="position: relative; height: 180px;">
+                                <canvas id="trendChart" style="width: 100%; height: 100%;"></canvas>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; color: var(--text-tertiary);">
+                                <span>2022-09</span>
+                                <span>2023-04</span>
+                                <span>2023-11</span>
+                                <span>2024-06</span>
+                                <span>2025-01</span>
+                                <span>2025-08</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <script>
+                    // 绘制客户任务覆盖趋势折线图
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const canvas = document.getElementById('trendChart');
+                        if (!canvas) return;
+                        
+                        const ctx = canvas.getContext('2d');
+                        const width = canvas.width = canvas.offsetWidth;
+                        const height = canvas.height = 180;
+                        
+                        // 数据点 - 模拟数据
+                        const taskData = [30, 90, 60, 30, 45, 30, 40, 35, 70, 60, 70, 40, 35, 30, 65, 75, 150, 160, 130, 90, 90, 120, 140, 165, 130, 80, 30];
+                        const customerData = [10, 25, 20, 15, 20, 18, 22, 20, 28, 25, 30, 22, 20, 18, 25, 30, 40, 45, 42, 35, 38, 45, 50, 60, 55, 40, 15];
+                        
+                        // 绘制网格
+                        ctx.strokeStyle = '#e5e7eb';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        for (let i = 0; i <= 6; i++) {
+                            const y = height - (i * height / 6);
+                            ctx.moveTo(0, y);
+                            ctx.lineTo(width, y);
+                        }
+                        ctx.stroke();
+                        
+                        // 绘制执行任务数折线
+                        ctx.strokeStyle = '#3b82f6';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        for (let i = 0; i < taskData.length; i++) {
+                            const x = (i / (taskData.length - 1)) * width;
+                            const y = height - (taskData[i] / 180) * height;
+                            if (i === 0) {
+                                ctx.moveTo(x, y);
+                            } else {
+                                ctx.lineTo(x, y);
+                            }
+                        }
+                        ctx.stroke();
+                        
+                        // 绘制执行任务数数据点
+                        ctx.fillStyle = '#3b82f6';
+                        for (let i = 0; i < taskData.length; i++) {
+                            const x = (i / (taskData.length - 1)) * width;
+                            const y = height - (taskData[i] / 180) * height;
+                            ctx.beginPath();
+                            ctx.arc(x, y, 3, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                        
+                        // 绘制覆盖客户数折线
+                        ctx.strokeStyle = '#22c55e';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        for (let i = 0; i < customerData.length; i++) {
+                            const x = (i / (customerData.length - 1)) * width;
+                            const y = height - (customerData[i] / 180) * height;
+                            if (i === 0) {
+                                ctx.moveTo(x, y);
+                            } else {
+                                ctx.lineTo(x, y);
+                            }
+                        }
+                        ctx.stroke();
+                        
+                        // 绘制覆盖客户数数据点
+                        ctx.fillStyle = '#22c55e';
+                        for (let i = 0; i < customerData.length; i++) {
+                            const x = (i / (customerData.length - 1)) * width;
+                            const y = height - (customerData[i] / 180) * height;
+                            ctx.beginPath();
+                            ctx.arc(x, y, 3, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    });
+                </script>
+            </div>
+
+            <!-- 学术跟进情况 -->
+            <div class="followup-section" style="margin: 30px 0; border: none;">
+                <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border: none; border-bottom: none;">
+                    <h2 style="font-size: 1.1rem; font-weight: 600; margin: 0;">进行中的任务</h2>
+                    <div class="section-actions">
+                            <button class="export-btn" style="padding: 6px 12px; background: var(--primary-light); color: var(--primary-color); border: none; border-radius: 4px; font-size: 13px; cursor: pointer;">导出数据</button>
+                        </div>
+                </div>
+                <div class="followup-table" style="border: none;">
+                            <div class="table-header" style="display: grid; grid-template-columns: 1fr 1fr 1fr 0.5fr 0.5fr 0.8fr 0.8fr 0.8fr; gap: 12px; padding: 12px 16px; background: #f8fafc; border: none;">
+                                <div class="table-col" style="font-weight: 600; color: var(--text-secondary); font-size: 14px; border: none;">活动名称</div>
+                                <div class="table-col" style="font-weight: 600; color: var(--text-secondary); font-size: 14px; border: none;">活动类型</div>
+                                <div class="table-col" style="font-weight: 600; color: var(--text-secondary); font-size: 14px; border: none;">状态</div>
+                                <div class="table-col" style="font-weight: 600; color: var(--text-secondary); font-size: 14px; border: none;">代表</div>
+                                <div class="table-col" style="font-weight: 600; color: var(--text-secondary); font-size: 14px; border: none;">医生</div>
+                                <div class="table-col" style="font-weight: 600; color: var(--text-secondary); font-size: 14px; border: none;">组织名称</div>
+                                <div class="table-col" style="font-weight: 600; color: var(--text-secondary); font-size: 14px; border: none;">医生任务有效期</div>
+                                <div class="table-col" style="font-weight: 600; color: var(--text-secondary); font-size: 14px; border: none;">任务剩余时间</div>
+                            </div>
+                            <div class="table-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr 0.5fr 0.5fr 0.8fr 0.8fr 0.8fr; gap: 12px; padding: 12px 16px; background: white; margin-top: 8px; border: none; border-bottom: 1px solid #f0f0f0;">
+                                <div class="table-col" style="font-size: 14px; border: none;">糖尿病多个重要医...</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">深度调研</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">医生待完成</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">甘松</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">首乌</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">长卿测试公司</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">7天</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">8天</div>
+                            </div>
+                            <div class="table-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr 0.5fr 0.5fr 0.8fr 0.8fr 0.8fr; gap: 12px; padding: 12px 16px; background: white; margin-top: 8px; border: none; border-bottom: 1px solid #f0f0f0;">
+                                <div class="table-col" style="font-size: 14px; border: none;">糖尿病并发症管理</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">深度调研</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">医生待完成</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">甘松</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">首乌</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">长卿测试公司</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">7天</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">8天</div>
+                            </div>
+                            <div class="table-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr 0.5fr 0.5fr 0.8fr 0.8fr 0.8fr; gap: 12px; padding: 12px 16px; background: white; margin-top: 8px; border: none;">
+                                <div class="table-col" style="font-size: 14px; border: none;">糖尿病并发症管理案例分析</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">深度调研</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">医生待完成</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">甘松</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">吴田伟</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">长卿测试公司</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">7天</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">8天</div>
+                            </div>
+                        </div>
+            </div>
+
+            <!-- 辅助功能卡片 -->
+            <div class="auxiliary-section" style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin: 30px 0;">
+                <!-- 数据服务中心卡片 -->
+                <div class="data-service-card" style="padding: 20px; background: white;">
+                    <div class="section-header" style="border-bottom: none; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0;">
+                        <h2 style="font-size: 1.1rem; font-weight: 600; margin: 0;">数据服务中心</h2>
+                        <div class="section-actions">
+                            <a style="font-size: 13px; color: var(--primary-color); text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 4px;">查看更多<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                        </div>
+                    </div>
+                    <div class="data-service-content" style="margin-top: 4px;">
+                        <div class="data-service-table" style="border: none;">
+                            <div class="table-header" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; padding: 12px 16px; background: #f8fafc; border: none;">
+                                <div class="table-col" style="font-weight: 600; color: var(--text-secondary); font-size: 14px; border: none;">服务名称</div>
+                                <div class="table-col" style="font-weight: 600; color: var(--text-secondary); font-size: 14px; border: none;">相关报表数</div>
+                                <div class="table-col" style="font-weight: 600; color: var(--text-secondary); font-size: 14px; border: none;">发布日期</div>
+                            </div>
+                            <div class="table-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; padding: 12px 16px; background: white; margin-top: 8px; border: none; border-bottom: 1px solid #f0f0f0;">
+                                <div class="table-col" style="font-size: 14px; border: none;">如何用行为数据来考核代表 <span style="margin-left: 8px; padding: 2px 6px; background: #fef3c7; color: #d97706; border-radius: 4px; font-size: 12px;">未读</span></div>
+                                <div class="table-col" style="font-size: 14px; border: none;">3</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">2023-04-26 15:00:43</div>
+                            </div>
+                            <div class="table-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; padding: 12px 16px; background: white; margin-top: 8px; border: none; border-bottom: 1px solid #f0f0f0;">
+                                <div class="table-col" style="font-size: 14px; border: none;">一键添加管理层应用看板，助您纵览业务全局！ <span style="margin-left: 8px; padding: 2px 6px; background: #fef3c7; color: #d97706; border-radius: 4px; font-size: 12px;">未读</span></div>
+                                <div class="table-col" style="font-size: 14px; border: none;">14</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">2023-03-09 14:04:18</div>
+                            </div>
+                            <div class="table-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; padding: 12px 16px; background: white; margin-top: 8px; border: none; border-bottom: 1px solid #f0f0f0;">
+                                <div class="table-col" style="font-size: 14px; border: none;">数据指标体系的应用和搭建 <span style="margin-left: 8px; padding: 2px 6px; background: #f3f4f6; color: #6b7280; border-radius: 4px; font-size: 12px;">已读</span></div>
+                                <div class="table-col" style="font-size: 14px; border: none;">5</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">2023-02-28 17:51:32</div>
+                            </div>
+                            <div class="table-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; padding: 12px 16px; background: white; margin-top: 8px; border: none; border-bottom: 1px solid #f0f0f0;">
+                                <div class="table-col" style="font-size: 14px; border: none;">用户分析模型-属性分析的使用方法 <span style="margin-left: 8px; padding: 2px 6px; background: #f3f4f6; color: #6b7280; border-radius: 4px; font-size: 12px;">已读</span></div>
+                                <div class="table-col" style="font-size: 14px; border: none;">4</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">2023-02-27 16:14:36</div>
+                            </div>
+                            <div class="table-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; padding: 12px 16px; background: white; margin-top: 8px; border: none; border-bottom: 1px solid #f0f0f0;">
+                                <div class="table-col" style="font-size: 14px; border: none;">盘古云数据驾驶舱 助力数字化转型 <span style="margin-left: 8px; padding: 2px 6px; background: #f3f4f6; color: #6b7280; border-radius: 4px; font-size: 12px;">已读</span></div>
+                                <div class="table-col" style="font-size: 14px; border: none;">7</div>
+                                <div class="table-col" style="font-size: 14px; border: none;">2023-01-13 15:32:57</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 消息管理卡片 -->
+                <div class="message-card" style="padding: 20px; background: white;">
+                    <div class="section-header" style="border-bottom: none; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0;">
+                        <h2 style="font-size: 1.1rem; font-weight: 600; margin: 0;">消息管理</h2>
+                        <a class="message-link" style="font-size: 13px; color: var(--primary-color); text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 4px;">查看全部消息<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
+                        <div class="message-list" style="border: none;">
+                            <div class="message-item" style="padding: 16px 0; border: none; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 4px;">
+                                        <span style="color: #ef4444; font-size: 12px; margin-right: 8px;">未读</span>
+                                        <span style="font-size: 14px;">您有3个任务即将到期，请及时处理</span>
+                                    </div>
+                                </div>
+                                <div class="message-time" style="font-size: 12px; color: #9ca3af; margin-left: 12px;">10:30</div>
+                            </div>
+                            <div class="message-item" style="padding: 16px 0; border: none; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 4px;">
+                                        <span style="color: #ef4444; font-size: 12px; margin-right: 8px;">未读</span>
+                                        <span style="font-size: 14px;">代表张小明绑定了5位医生</span>
+                                    </div>
+                                </div>
+                                <div class="message-time" style="font-size: 12px; color: #9ca3af; margin-left: 12px;">09:45</div>
+                            </div>
+                            <div class="message-item" style="padding: 16px 0; border: none; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 4px;">
+                                        <span style="color: #6b7280; font-size: 12px; margin-right: 8px;">已读</span>
+                                        <span style="font-size: 14px;">心血管疾病研讨会已完成，参会人数15人</span>
+                                    </div>
+                                </div>
+                                <div class="message-time" style="font-size: 12px; color: #9ca3af; margin-left: 12px;">昨天</div>
+                            </div>
+                            <div class="message-item" style="padding: 16px 0; border: none; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 4px;">
+                                        <span style="color: #6b7280; font-size: 12px; margin-right: 8px;">已读</span>
+                                        <span style="font-size: 14px;">上月学术活动报告已生成，请查看</span>
+                                    </div>
+                                </div>
+                                <div class="message-time" style="font-size: 12px; color: #9ca3af; margin-left: 12px;">2026-02-22</div>
+                            </div>
+                            <div class="message-item" style="padding: 16px 0; border: none; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 4px;">
+                                        <span style="color: #6b7280; font-size: 12px; margin-right: 8px;">已读</span>
+                                        <span style="font-size: 14px;">新功能"智能任务分配"已上线</span>
+                                    </div>
+                                </div>
+                                <div class="message-time" style="font-size: 12px; color: #9ca3af; margin-left: 12px;">2026-02-20</div>
+                            </div>
+                            <div class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 24px;">
+                                <button class="page-btn" style="padding: 4px 8px; background: white; color: var(--text-secondary); border: 1px solid #f0f0f0; border-radius: 4px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                                <button class="page-btn active" style="padding: 4px 8px; background: var(--primary-color); color: white; border: 1px solid var(--primary-color); border-radius: 4px; font-size: 12px; cursor: pointer; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">1</button>
+                                <button class="page-btn" style="padding: 4px 8px; background: white; color: var(--text-secondary); border: 1px solid #f0f0f0; border-radius: 4px; font-size: 12px; cursor: pointer; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">2</button>
+                                <button class="page-btn" style="padding: 4px 8px; background: white; color: var(--text-secondary); border: 1px solid #f0f0f0; border-radius: 4px; font-size: 12px; cursor: pointer; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">3</button>
+                                <button class="page-btn" style="padding: 4px 8px; background: white; color: var(--text-secondary); border: 1px solid #f0f0f0; border-radius: 4px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loading" id="loading" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>AI正在思考...</p>
+    </div>
+
+    <!-- 公共JS文件 -->
+    <script src="../js/menu.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>

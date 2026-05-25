@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新建问卷调研 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/record.css">
+    <link rel="stylesheet" href="../css/materials.css">
+    <link rel="stylesheet" href="../css/create-survey.css">
+</head>
+<body>
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <div class="right-content">
+            <!-- 页面标题 -->
+            <div class="page-title">
+                <button class="action-btn back-btn" onclick="window.location.href='materials.html'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    返回列表
+                </button>
+                <div class="survey-actions">
+                    <button class="action-btn preview-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        预览
+                    </button>
+                    <button class="action-btn save-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        保存
+                    </button>
+                    <button class="action-btn publish-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        保存并发布
+                    </button>
+                </div>
+            </div>
+
+            <main class="content-area">
+            <!-- 内容卡片 -->
+            <div class="content-card">
+                <!-- 基本信息表单 -->
+                <div class="survey-section">
+                    <h3 class="section-title">基本信息</h3>
+                    <div class="form-container">
+                        <div class="form-row">
+                            <div class="form-item">
+                                <label for="survey-title">调研标题 <span class="required">*</span></label>
+                                <input type="text" id="survey-title" placeholder="请输入调研标题" required>
+                            </div>
+                            <div class="form-item">
+                                <label for="product-tag">产品标签</label>
+                                <select id="product-tag">
+                                    <option value="">请选择产品标签</option>
+                                    <option value="product1">产品1</option>
+                                    <option value="product2">产品2</option>
+                                    <option value="product3">产品3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-item full-width">
+                                <label for="survey-intro">调研简介</label>
+                                <textarea id="survey-intro" rows="3" placeholder="请输入调研简介"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-item full-width">
+                                <label for="survey-purpose">调研方向以及目的</label>
+                                <textarea id="survey-purpose" rows="4" placeholder="请输入调研方向以及目的"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 答题设置 -->
+                <div class="survey-section">
+                    <h3 class="section-title">答题设置</h3>
+                    <div class="form-container">
+                        <div class="form-row">
+                            <div class="form-item">
+                                <label for="answer-settings">答题设置</label>
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="answer-settings" value="no-score" checked>
+                                        <span class="radio-label">不分对错</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="answer-settings" value="with-score">
+                                        <span class="radio-label">分对错</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-item">
+                                <label for="answer-mode">答题方式</label>
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="answer-mode" value="sequential" checked>
+                                        <span class="radio-label">顺序答题</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="answer-mode" value="random">
+                                        <span class="radio-label">随机抽取</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-item" id="random-count-container" style="display: none;">
+                                <label for="random-count">抽取题目数量</label>
+                                <input type="number" id="random-count" min="1" placeholder="请输入抽取题目数量">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 题目管理 -->
+                <div class="survey-section">
+                    <h3 class="section-title">题目管理</h3>
+                    
+                    <!-- 题目类型添加栏 -->
+                    <div class="question-type-bar">
+                        <button class="question-type-btn" data-type="single">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            单选题
+                        </button>
+                        <button class="question-type-btn" data-type="multiple">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <polyline points="3 9 21 9"></polyline>
+                                <polyline points="9 21 9 9"></polyline>
+                            </svg>
+                            多选题
+                        </button>
+                        <button class="question-type-btn" data-type="fill">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                            填空题
+                        </button>
+                        <button class="question-type-btn" data-type="essay">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                            </svg>
+                            问答题
+                        </button>
+                        <button class="question-type-btn" data-type="sort">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="8" y1="6" x2="21" y2="6"></line>
+                                <line x1="8" y1="12" x2="21" y2="12"></line>
+                                <line x1="8" y1="18" x2="21" y2="18"></line>
+                                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                            </svg>
+                            排序题
+                        </button>
+                        <div class="import-export-actions">
+                            <button class="action-btn import-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                导入题目
+                            </button>
+                            <button class="action-btn template-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M12 11l-4-4m0 0l4-4m-4 4h8"></path>
+                                </svg>
+                                下载模板
+                            </button>
+                            <button class="action-btn from-library-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                从素材库添加
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 题目列表 -->
+                    <div class="questions-container" id="questionsContainer">
+                        <!-- 题目将通过JavaScript动态添加 -->
+                    </div>
+                </div>
+            </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loading" id="loading" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>AI正在思考...</p>
+    </div>
+
+    <script src="../js/script.js?v=1"></script>
+    <script src="../js/menu.js?v=1"></script>
+    <script>
+        // 动态加载公共组件
+        async function loadComponents() {
+            try {
+                // 加载顶部导航
+                const headerResponse = await fetch('components/header.html');
+                const headerHtml = await headerResponse.text();
+                document.getElementById('header-placeholder').innerHTML = headerHtml;
+                
+                // 加载侧边栏
+                const sidebarResponse = await fetch('components/sidebar.html');
+                const sidebarHtml = await sidebarResponse.text();
+                document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+                
+                // 重新初始化菜单交互
+                if (typeof initializeMenu === 'function') {
+                    initializeMenu();
+                }
+            } catch (error) {
+                console.error('加载公共组件失败:', error);
+            }
+        }
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            loadComponents();
+            initSurveyPage();
+        });
+
+        // 初始化问卷页面
+        function initSurveyPage() {
+            // 答题方式切换
+            const answerModeRadios = document.querySelectorAll('input[name="answer-mode"]');
+            const randomCountContainer = document.getElementById('random-count-container');
+            
+            answerModeRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'random') {
+                        randomCountContainer.style.display = 'block';
+                    } else {
+                        randomCountContainer.style.display = 'none';
+                    }
+                });
+            });
+
+            // 题目类型按钮点击事件
+            const questionTypeBtns = document.querySelectorAll('.question-type-btn');
+            questionTypeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const questionType = this.getAttribute('data-type');
+                    addQuestion(questionType);
+                });
+            });
+
+            // 导入题目按钮点击事件
+            document.querySelector('.import-btn').addEventListener('click', function() {
+                alert('导入题目功能待实现');
+            });
+
+            // 下载模板按钮点击事件
+            document.querySelector('.template-btn').addEventListener('click', function() {
+                alert('下载模板功能待实现');
+            });
+
+            // 从素材库添加按钮点击事件
+            document.querySelector('.from-library-btn').addEventListener('click', function() {
+                alert('从素材库添加功能待实现');
+            });
+
+            // 预览按钮点击事件
+            document.querySelector('.preview-btn').addEventListener('click', function() {
+                alert('预览功能待实现');
+            });
+
+            // 保存按钮点击事件
+            document.querySelector('.save-btn').addEventListener('click', function() {
+                saveSurvey('draft');
+            });
+
+            // 保存并发布按钮点击事件
+            document.querySelector('.publish-btn').addEventListener('click', function() {
+                saveSurvey('publish');
+            });
+        }
+
+        // 添加题目
+        function addQuestion(type) {
+            const questionsContainer = document.getElementById('questionsContainer');
+            const questionCount = questionsContainer.children.length + 1;
+            
+            let questionHtml = '';
+            
+            switch(type) {
+                case 'single':
+                    questionHtml = getSingleChoiceQuestionHtml(questionCount);
+                    break;
+                case 'multiple':
+                    questionHtml = getMultipleChoiceQuestionHtml(questionCount);
+                    break;
+                case 'fill':
+                    questionHtml = getFillQuestionHtml(questionCount);
+                    break;
+                case 'essay':
+                    questionHtml = getEssayQuestionHtml(questionCount);
+                    break;
+                case 'sort':
+                    questionHtml = getSortQuestionHtml(questionCount);
+                    break;
+            }
+            
+            questionsContainer.insertAdjacentHTML('beforeend', questionHtml);
+            
+            // 绑定新添加题目的事件
+            bindQuestionEvents();
+        }
+
+        // 获取单选题HTML
+        function getSingleChoiceQuestionHtml(index) {
+            return `
+                <div class="question-item" data-index="${index}">
+                    <div class="question-header">
+                        <div class="question-info">
+                            <span class="question-type-label">单选题</span>
+                            <span class="question-index">${index}.</span>
+                            <input type="text" class="question-title" placeholder="请输入题目">
+                        </div>
+                        <div class="question-actions">
+                            <button class="action-btn up-btn" title="上移">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="18 15 12 9 6 15"></polyline>
+                                </svg>
+                            </button>
+                            <button class="action-btn down-btn" title="下移">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                            <button class="action-btn delete-btn" title="删除题目">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="question-content">
+                        <div class="options-container">
+                            <div class="option-item">
+                                <div class="option-main">
+                                    <button class="action-btn correct-option-btn" title="设置为正确答案">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </button>
+                                    <div class="option-content">
+                                        <div class="option-header">
+                                            <span class="option-index">A</span>
+                                            <input type="text" class="option-text" placeholder="请输入选项内容">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="option-actions">
+                                    <button class="action-btn add-after-option-btn" title="在当前选项后添加新选项">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                    <button class="action-btn delete-option-btn" title="删除选项">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="option-item">
+                                <div class="option-main">
+                                    <button class="action-btn correct-option-btn" title="设置为正确答案">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </button>
+                                    <div class="option-content">
+                                        <div class="option-header">
+                                            <span class="option-index">B</span>
+                                            <input type="text" class="option-text" placeholder="请输入选项内容">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="option-actions">
+                                    <button class="action-btn add-after-option-btn" title="在当前选项后添加新选项">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                    <button class="action-btn delete-option-btn" title="删除选项">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-option-container">
+                            <button class="action-btn add-option-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                添加选项
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 获取多选题HTML
+        function getMultipleChoiceQuestionHtml(index) {
+            return `
+                <div class="question-item" data-index="${index}">
+                    <div class="question-header">
+                        <div class="question-info">
+                            <span class="question-type-label">多选题</span>
+                            <span class="question-index">${index}.</span>
+                            <input type="text" class="question-title" placeholder="请输入题目">
+                        </div>
+                        <div class="question-actions">
+                            <button class="action-btn up-btn" title="上移">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="18 15 12 9 6 15"></polyline>
+                                </svg>
+                            </button>
+                            <button class="action-btn down-btn" title="下移">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                            <button class="action-btn delete-btn" title="删除题目">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="question-content">
+                        <div class="options-container">
+                            <div class="option-item">
+                                <div class="option-main">
+                                    <button class="action-btn correct-option-btn" title="设置为正确答案">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </button>
+                                    <div class="option-content">
+                                        <div class="option-header">
+                                            <span class="option-index">A</span>
+                                            <input type="text" class="option-text" placeholder="请输入选项内容">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="option-actions">
+                                    <button class="action-btn add-after-option-btn" title="在当前选项后添加新选项">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                    <button class="action-btn delete-option-btn" title="删除选项">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="option-item">
+                                <div class="option-main">
+                                    <button class="action-btn correct-option-btn" title="设置为正确答案">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </button>
+                                    <div class="option-content">
+                                        <div class="option-header">
+                                            <span class="option-index">B</span>
+                                            <input type="text" class="option-text" placeholder="请输入选项内容">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="option-actions">
+                                    <button class="action-btn add-after-option-btn" title="在当前选项后添加新选项">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+                                    <button class="action-btn delete-option-btn" title="删除选项">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-option-container">
+                            <button class="action-btn add-option-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                添加选项
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 获取填空题HTML
+        function getFillQuestionHtml(index) {
+            return `
+                <div class="question-item" data-index="${index}">
+                    <div class="question-header">
+                        <div class="question-info">
+                            <span class="question-type-label">填空题</span>
+                            <span class="question-index">${index}.</span>
+                            <input type="text" class="question-title" placeholder="请输入题目">
+                        </div>
+                        <div class="question-actions">
+                            <button class="action-btn up-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="18 15 12 9 6 15"></polyline>
+                                </svg>
+                            </button>
+                            <button class="action-btn down-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                            <button class="action-btn delete-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="question-content">
+                        <div class="fill-container">
+                            <input type="text" class="fill-placeholder" placeholder="请输入填空提示（可选）">
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 获取问答题HTML
+        function getEssayQuestionHtml(index) {
+            return `
+                <div class="question-item" data-index="${index}">
+                    <div class="question-header">
+                        <div class="question-info">
+                            <span class="question-type-label">问答题</span>
+                            <span class="question-index">${index}.</span>
+                            <input type="text" class="question-title" placeholder="请输入题目">
+                        </div>
+                        <div class="question-actions">
+                            <button class="action-btn up-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="18 15 12 9 6 15"></polyline>
+                                </svg>
+                            </button>
+                            <button class="action-btn down-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                            <button class="action-btn delete-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="question-content">
+                        <div class="essay-container">
+                            <textarea class="essay-placeholder" rows="3" placeholder="请输入答题提示（可选）"></textarea>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 获取排序题HTML
+        function getSortQuestionHtml(index) {
+            return `
+                <div class="question-item" data-index="${index}">
+                    <div class="question-header">
+                        <div class="question-info">
+                            <span class="question-type-label">排序题</span>
+                            <span class="question-index">${index}.</span>
+                            <input type="text" class="question-title" placeholder="请输入题目">
+                        </div>
+                        <div class="question-actions">
+                            <button class="action-btn up-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="18 15 12 9 6 15"></polyline>
+                                </svg>
+                            </button>
+                            <button class="action-btn down-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                            <button class="action-btn delete-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="question-content">
+                        <div class="sort-container">
+                            <div class="sort-item">
+                                <div class="sort-header">
+                                    <span class="sort-index">1</span>
+                                    <input type="text" class="sort-text" placeholder="请输入排序项">
+                                </div>
+                                <button class="action-btn delete-sort-item-btn">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="sort-item">
+                                <div class="sort-header">
+                                    <span class="sort-index">2</span>
+                                    <input type="text" class="sort-text" placeholder="请输入排序项">
+                                </div>
+                                <button class="action-btn delete-sort-item-btn">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="sort-item">
+                                <div class="sort-header">
+                                    <span class="sort-index">3</span>
+                                    <input type="text" class="sort-text" placeholder="请输入排序项">
+                                </div>
+                                <button class="action-btn delete-sort-item-btn">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="action-btn add-sort-item-btn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            添加排序项
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 绑定题目事件
+        function bindQuestionEvents() {
+            // 删除题目按钮
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.question-item').remove();
+                    reorderQuestions();
+                });
+            });
+
+            // 添加选项按钮
+            document.querySelectorAll('.add-option-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const optionsContainer = this.previousElementSibling;
+                    const optionCount = optionsContainer.children.length;
+                    const optionLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+                    
+                    if (optionCount < optionLetters.length) {
+                        const newOption = document.createElement('div');
+                        newOption.className = 'option-item';
+                        newOption.innerHTML = `
+                            <div class="option-header">
+                                <button class="action-btn correct-option-btn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </button>
+                                <span class="option-index">${optionLetters[optionCount]}</span>
+                                <input type="text" class="option-text" placeholder="请输入选项内容">
+                            </div>
+                            <div class="option-actions">
+                                <button class="action-btn add-after-option-btn">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </button>
+                                <button class="action-btn delete-option-btn">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        `;
+                        optionsContainer.appendChild(newOption);
+                        
+                        // 绑定删除选项按钮事件
+                        newOption.querySelector('.delete-option-btn').addEventListener('click', function() {
+                            this.closest('.option-item').remove();
+                            reorderOptions(optionsContainer);
+                        });
+                        
+                        // 绑定设置正确选项按钮事件
+                        newOption.querySelector('.correct-option-btn').addEventListener('click', function() {
+                            const optionItem = this.closest('.option-item');
+                            const optionsContainer = optionItem.closest('.options-container');
+                            const questionItem = optionsContainer.closest('.question-item');
+                            const questionTypeLabel = questionItem.querySelector('.question-type-label').textContent;
+                            
+                            // 对于单选题，取消其他选项的正确标记
+                            if (questionTypeLabel === '单选题') {
+                                optionsContainer.querySelectorAll('.correct-option-btn').forEach(btn => {
+                                    btn.classList.remove('correct');
+                                });
+                            }
+                            
+                            // 切换当前选项的正确标记
+                            this.classList.toggle('correct');
+                        });
+                        
+                        // 绑定在选项后添加新选项按钮事件
+                        newOption.querySelector('.add-after-option-btn').addEventListener('click', function() {
+                            const optionItem = this.closest('.option-item');
+                            const optionsContainer = optionItem.closest('.options-container');
+                            const optionIndex = Array.from(optionsContainer.children).indexOf(optionItem);
+                            const optionCount = optionsContainer.children.length;
+                            const optionLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+                            
+                            if (optionCount < optionLetters.length) {
+                                const newOption = document.createElement('div');
+                                newOption.className = 'option-item';
+                                newOption.innerHTML = `
+                                    <div class="option-header">
+                                        <button class="action-btn correct-option-btn">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </button>
+                                        <span class="option-index">${optionLetters[optionCount]}</span>
+                                        <input type="text" class="option-text" placeholder="请输入选项内容">
+                                    </div>
+                                    <div class="option-actions">
+                                        <button class="action-btn add-after-option-btn">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            </svg>
+                                        </button>
+                                        <button class="action-btn delete-option-btn">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                `;
+                                
+                                // 插入到当前选项之后
+                                optionsContainer.insertBefore(newOption, optionItem.nextElementSibling);
+                                
+                                // 重新排序选项
+                                reorderOptions(optionsContainer);
+                                
+                                // 绑定删除选项按钮事件
+                                newOption.querySelector('.delete-option-btn').addEventListener('click', function() {
+                                    this.closest('.option-item').remove();
+                                    reorderOptions(optionsContainer);
+                                });
+                                
+                                // 绑定设置正确选项按钮事件
+                                newOption.querySelector('.correct-option-btn').addEventListener('click', function() {
+                                    const optionItem = this.closest('.option-item');
+                                    const optionsContainer = optionItem.closest('.options-container');
+                                    const questionItem = optionsContainer.closest('.question-item');
+                                    const questionTypeLabel = questionItem.querySelector('.question-type-label').textContent;
+                                    
+                                    // 对于单选题，取消其他选项的正确标记
+                                    if (questionTypeLabel === '单选题') {
+                                        optionsContainer.querySelectorAll('.correct-option-btn').forEach(btn => {
+                                            btn.classList.remove('correct');
+                                        });
+                                    }
+                                    
+                                    // 切换当前选项的正确标记
+                                    this.classList.toggle('correct');
+                                });
+                                
+                                // 绑定在选项后添加新选项按钮事件
+                                newOption.querySelector('.add-after-option-btn').addEventListener('click', function() {
+                                    // 递归调用，使用相同的逻辑
+                                    const addAfterEvent = new Event('click');
+                                    this.dispatchEvent(addAfterEvent);
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+            // 删除选项按钮
+            document.querySelectorAll('.delete-option-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const optionItem = this.closest('.option-item');
+                    const optionsContainer = optionItem.parentElement;
+                    optionItem.remove();
+                    reorderOptions(optionsContainer);
+                });
+            });
+            
+            // 设置正确选项按钮
+            document.querySelectorAll('.correct-option-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const optionItem = this.closest('.option-item');
+                    const optionsContainer = optionItem.closest('.options-container');
+                    const questionItem = optionsContainer.closest('.question-item');
+                    const questionTypeLabel = questionItem.querySelector('.question-type-label').textContent;
+                    
+                    // 对于单选题，取消其他选项的正确标记
+                    if (questionTypeLabel === '单选题') {
+                        optionsContainer.querySelectorAll('.correct-option-btn').forEach(btn => {
+                            btn.classList.remove('correct');
+                        });
+                    }
+                    
+                    // 切换当前选项的正确标记
+                    this.classList.toggle('correct');
+                });
+            });
+            
+            // 在选项后添加新选项按钮
+            document.querySelectorAll('.add-after-option-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const optionItem = this.closest('.option-item');
+                    const optionsContainer = optionItem.closest('.options-container');
+                    const optionIndex = Array.from(optionsContainer.children).indexOf(optionItem);
+                    const optionCount = optionsContainer.children.length;
+                    const optionLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+                    
+                    if (optionCount < optionLetters.length) {
+                        const newOption = document.createElement('div');
+                        newOption.className = 'option-item';
+                        newOption.innerHTML = `
+                            <div class="option-header">
+                                <button class="action-btn correct-option-btn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </button>
+                                <span class="option-index">${optionLetters[optionCount]}</span>
+                                <input type="text" class="option-text" placeholder="请输入选项内容">
+                            </div>
+                            <div class="option-actions">
+                                <button class="action-btn add-after-option-btn">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </button>
+                                <button class="action-btn delete-option-btn">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        `;
+                        
+                        // 插入到当前选项之后
+                        optionsContainer.insertBefore(newOption, optionItem.nextElementSibling);
+                        
+                        // 重新排序选项
+                        reorderOptions(optionsContainer);
+                        
+                        // 绑定删除选项按钮事件
+                        newOption.querySelector('.delete-option-btn').addEventListener('click', function() {
+                            this.closest('.option-item').remove();
+                            reorderOptions(optionsContainer);
+                        });
+                        
+                        // 绑定设置正确选项按钮事件
+                        newOption.querySelector('.correct-option-btn').addEventListener('click', function() {
+                            const optionItem = this.closest('.option-item');
+                            const optionsContainer = optionItem.closest('.options-container');
+                            const questionItem = optionsContainer.closest('.question-item');
+                            const questionTypeLabel = questionItem.querySelector('.question-type-label').textContent;
+                            
+                            // 对于单选题，取消其他选项的正确标记
+                            if (questionTypeLabel === '单选题') {
+                                optionsContainer.querySelectorAll('.correct-option-btn').forEach(btn => {
+                                    btn.classList.remove('correct');
+                                });
+                            }
+                            
+                            // 切换当前选项的正确标记
+                            this.classList.toggle('correct');
+                        });
+                        
+                        // 绑定在选项后添加新选项按钮事件
+                        newOption.querySelector('.add-after-option-btn').addEventListener('click', function() {
+                            // 递归调用，使用相同的逻辑
+                            const addAfterEvent = new Event('click');
+                            this.dispatchEvent(addAfterEvent);
+                        });
+                    }
+                });
+            });
+
+            // 添加排序项按钮
+            document.querySelectorAll('.add-sort-item-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const sortContainer = this.previousElementSibling;
+                    const sortCount = sortContainer.children.length + 1;
+                    
+                    const newSortItem = document.createElement('div');
+                    newSortItem.className = 'sort-item';
+                    newSortItem.innerHTML = `
+                        <div class="sort-header">
+                            <span class="sort-index">${sortCount}</span>
+                            <input type="text" class="sort-text" placeholder="请输入排序项">
+                        </div>
+                        <button class="action-btn delete-sort-item-btn">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    `;
+                    sortContainer.appendChild(newSortItem);
+                    
+                    // 绑定删除排序项按钮事件
+                    newSortItem.querySelector('.delete-sort-item-btn').addEventListener('click', function() {
+                        this.closest('.sort-item').remove();
+                        reorderSortItems(sortContainer);
+                    });
+                });
+            });
+
+            // 删除排序项按钮
+            document.querySelectorAll('.delete-sort-item-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const sortItem = this.closest('.sort-item');
+                    const sortContainer = sortItem.parentElement;
+                    sortItem.remove();
+                    reorderSortItems(sortContainer);
+                });
+            });
+        }
+
+        // 重新排序题目
+        function reorderQuestions() {
+            const questionsContainer = document.getElementById('questionsContainer');
+            const questionItems = questionsContainer.querySelectorAll('.question-item');
+            
+            questionItems.forEach((item, index) => {
+                const questionInfo = item.querySelector('.question-info');
+                const questionIndex = questionInfo.querySelector('.question-index');
+                questionIndex.textContent = `${index + 1}.`;
+                item.setAttribute('data-index', index + 1);
+            });
+        }
+
+        // 重新排序选项
+        function reorderOptions(optionsContainer) {
+            const optionItems = optionsContainer.querySelectorAll('.option-item');
+            const optionLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+            
+            optionItems.forEach((item, index) => {
+                const optionIndex = item.querySelector('.option-index');
+                optionIndex.textContent = optionLetters[index];
+            });
+        }
+
+        // 重新排序排序项
+        function reorderSortItems(sortContainer) {
+            const sortItems = sortContainer.querySelectorAll('.sort-item');
+            
+            sortItems.forEach((item, index) => {
+                const sortIndex = item.querySelector('.sort-index');
+                sortIndex.textContent = index + 1;
+            });
+        }
+
+        // 保存问卷
+        function saveSurvey(status) {
+            // 收集问卷数据
+            const surveyData = {
+                title: document.getElementById('survey-title').value,
+                intro: document.getElementById('survey-intro').value,
+                purpose: document.getElementById('survey-purpose').value,
+                productTag: document.getElementById('product-tag').value,
+                answerSettings: document.querySelector('input[name="answer-settings"]:checked').value,
+                answerMode: document.querySelector('input[name="answer-mode"]:checked').value,
+                randomCount: document.getElementById('answer-mode').value === 'random' ? document.getElementById('random-count').value : null,
+                questions: [],
+                status: status
+            };
+
+            // 收集题目数据
+            const questionItems = document.querySelectorAll('.question-item');
+            questionItems.forEach(item => {
+                const questionTitle = item.querySelector('.question-title').value;
+                const questionTypeLabel = item.querySelector('.question-type-label').textContent;
+                
+                let questionType = '';
+                switch(questionTypeLabel) {
+                    case '单选题':
+                        questionType = 'single';
+                        break;
+                    case '多选题':
+                        questionType = 'multiple';
+                        break;
+                    case '填空题':
+                        questionType = 'fill';
+                        break;
+                    case '问答题':
+                        questionType = 'essay';
+                        break;
+                    case '排序题':
+                        questionType = 'sort';
+                        break;
+                }
+
+                let questionData = {
+                    title: questionTitle,
+                    type: questionType
+                };
+
+                // 根据题目类型收集不同的数据
+                if (questionType === 'single' || questionType === 'multiple') {
+                    const options = [];
+                    const optionItems = item.querySelectorAll('.option-item');
+                    optionItems.forEach(optionItem => {
+                        const optionText = optionItem.querySelector('.option-text').value;
+                        options.push(optionText);
+                    });
+                    questionData.options = options;
+                } else if (questionType === 'fill') {
+                    const fillPlaceholder = item.querySelector('.fill-placeholder').value;
+                    questionData.placeholder = fillPlaceholder;
+                } else if (questionType === 'essay') {
+                    const essayPlaceholder = item.querySelector('.essay-placeholder').value;
+                    questionData.placeholder = essayPlaceholder;
+                } else if (questionType === 'sort') {
+                    const sortItems = [];
+                    const sortItemElements = item.querySelectorAll('.sort-item');
+                    sortItemElements.forEach(sortItem => {
+                        const sortText = sortItem.querySelector('.sort-text').value;
+                        sortItems.push(sortText);
+                    });
+                    questionData.items = sortItems;
+                }
+
+                surveyData.questions.push(questionData);
+            });
+
+            // 这里可以添加实际的保存逻辑，比如发送到服务器
+            console.log('保存问卷数据:', surveyData);
+            
+            // 模拟保存成功
+            alert(`问卷已${status === 'publish' ? '发布' : '保存为草稿'}`);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,2576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建病例 - 在线病例互动征集</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/record.css">
+    <link rel="stylesheet" href="../css/materials.css">
+    <script src="../js/script.js?v=1"></script>
+    <script src="../js/menu.js?v=1"></script>
+    <style>
+        /* 病例创建页面专用样式 */
+        /* 确保导航栏和侧边栏固定，只有内容区域滚动，且隐藏滚动条 */
+        body {
+            height: 100vh !important;
+            overflow: hidden !important;
+        }
+
+        /* 恢复main-container固定高度和flex布局 */
+        .main-container {
+            display: flex !important;
+            height: calc(100vh - 75px) !important;
+            overflow: hidden !important;
+        }
+
+        /* 确保right-content作为flex容器，只有内容区域滚动 */
+        .right-content {
+            flex: 1 !important;
+            overflow: hidden !important;
+            display: flex !important;
+            flex-direction: column !important;
+            position: relative !important;
+        }
+
+        /* 确保content-area可以滚动，且隐藏滚动条 */
+        .content-area {
+            flex: 1 !important;
+            overflow-y: auto !important;
+            /* 隐藏滚动条 - Chrome, Safari 和 Opera */
+            -webkit-scrollbar: none;
+            /* 隐藏滚动条 - IE, Edge 和 Firefox */
+            scrollbar-width: none;
+        }
+
+        /* 隐藏所有元素的滚动条 */
+        * {
+            /* 隐藏滚动条 - Chrome, Safari 和 Opera */
+            -webkit-scrollbar: none;
+            /* 隐藏滚动条 - IE, Edge 和 Firefox */
+            scrollbar-width: none;
+        }
+
+        /* 确保辅助功能区可以滚动但隐藏滚动条 */
+        .auxiliary-tools {
+            overflow-y: auto !important;
+        }
+
+        /* 页面标题和返回按钮容器 */
+        .page-title {
+            background-color: white !important;
+            padding: 16px 20px !important;
+            margin: 0 !important;
+            border-bottom: none !important;
+            width: 100% !important;
+            position: sticky !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 9999 !important;
+            display: flex !important;
+            justify-content: flex-start !important;
+            align-items: center !important;
+            box-sizing: border-box !important;
+        }
+
+        /* 完全自定义的返回按钮样式，覆盖所有!important */
+        .custom-back-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 8px 16px !important;
+            border: none !important;
+            border-radius: 8px !important;
+            background-color: #f8fafc !important;
+            color: #4a4a4a !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            text-decoration: none !important;
+            transition: all 0.3s ease !important;
+            height: auto !important;
+            width: auto !important;
+            margin: 0 !important;
+            line-height: 1.5 !important;
+            white-space: nowrap !important;
+            box-sizing: border-box !important;
+        }
+
+        /* 步骤条样式 - 按照图片设计，大气占满主内容区 */
+        .step-progress {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 16px 0;
+            background-color: #f9fafb;
+            position: sticky;
+            top: 63px;
+            /* 放在返回按钮下方 */
+            z-index: 9998;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            position: relative;
+            gap: 12px;
+            padding: 12px 24px;
+            background-color: transparent;
+            margin: 0 4px;
+            border-radius: 24px;
+            transition: all 0.3s ease;
+            flex: 1;
+            justify-content: center;
+            max-width: 25%;
+        }
+
+        /* 步骤编号 */
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #d1d5db;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+            position: relative;
+            z-index: 3;
+            transition: all 0.3s ease;
+        }
+
+        /* 步骤文本 */
+        .step-text {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.4;
+            white-space: nowrap;
+            position: relative;
+            z-index: 3;
+        }
+
+        /* 当前步骤样式 */
+        .step.current {
+            background-color: #eff6ff;
+        }
+
+        .step.current .step-number {
+            background-color: #60a5fa;
+            color: white;
+        }
+
+        .step.current .step-text {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        /* 其他步骤样式 */
+        .step:not(.current) {
+            background-color: #f3f4f6;
+        }
+
+        .step:not(.current) .step-number {
+            background-color: #9ca3af;
+        }
+
+        .step:not(.current) .step-text {
+            color: #6b7280;
+        }
+
+        /* 移除步骤线 */
+        .step:not(:last-child)::after {
+            display: none;
+        }
+
+        /* 已完成步骤样式 */
+        .step.completed {
+            background-color: #d1fae5;
+        }
+
+        .step.completed .step-number {
+            background-color: #059669;
+        }
+
+        .step.completed .step-text {
+            color: #065f46;
+            font-weight: 500;
+        }
+
+        .custom-back-btn:hover {
+            background-color: #edf2f7 !important;
+            color: #2d3748 !important;
+        }
+
+        .custom-back-btn svg {
+            width: 16px !important;
+            height: 16px !important;
+            stroke: currentColor !important;
+            stroke-width: 2 !important;
+            stroke-linecap: round !important;
+            stroke-linejoin: round !important;
+        }
+
+        /* 内容区头部 - 创建病例导航栏 */
+        .case-header {
+            background-color: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+        }
+
+        /* 功能按钮容器 */
+        .case-header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* 功能按钮样式 */
+        .case-header-actions button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .case-header-actions button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 保存草稿按钮 */
+        #save-draft-btn {
+            background-color: #10b981;
+            color: white;
+        }
+
+        #save-draft-btn:hover {
+            background-color: #059669;
+        }
+
+        /* 预览病例按钮 */
+        #preview-btn {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        #preview-btn:hover {
+            background-color: #2563eb;
+        }
+
+        /* 提交病例按钮 */
+        #submit-btn {
+            background-color: #8b5cf6;
+            color: white;
+        }
+
+        #submit-btn:hover {
+            background-color: #7c3aed;
+        }
+
+        /* 核心编辑区 */
+        .core-editor {
+            background-color: white;
+            border-radius: 8px;
+
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        /* 辅助功能区 */
+        .auxiliary-tools {
+            width: 280px;
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            position: sticky;
+            top: 0px;
+            height: fit-content;
+            min-height: 230px;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            align-self: flex-start;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 内容区主布局 */
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 0;
+            max-width: 2200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* 调整content-area内边距 */
+        .content-area {
+            padding: var(--spacing-lg) 20px;
+            max-width: 2200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* 确保right-content居中 */
+        .right-content {
+            flex: 1;
+            overflow-y: visible !important;
+            background-color: var(--background-secondary);
+        }
+
+        /* 确保content-left充分利用空间 */
+        .content-left {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* 基本信息与辅助功能区布局 */
+        .basic-info-with-tools {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            flex-direction: row-reverse;
+        }
+
+        /* 确保辅助功能区与基本信息模块完全对齐 */
+        .auxiliary-tools {
+            margin: 0;
+        }
+
+        /* 调整辅助功能区内部间距，与基本信息模块对齐 */
+        .aux-section-title {
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        /* 内容区左侧 */
+        .content-left {
+            flex: 1;
+        }
+
+        /* 折叠面板样式 */
+        .collapsible-panel {
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: none;
+            overflow: visible;
+        }
+
+        /* 交互工具样式 - 默认隐藏，仅显示面板标题中的交互工具 */
+        .interaction-tools {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+
+        /* 显示面板标题中的交互工具 */
+        .panel-header .interaction-tools {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 隐藏富文本编辑器下方的交互工具 */
+        .form-field .interaction-tools {
+            display: none;
+        }
+
+        .panel-header {
+            background-color: white;
+            padding: 16px 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 16px;
+            color: #1f2937;
+            transition: background-color 0.2s ease;
+            position: relative;
+        }
+
+        .panel-content {
+            padding: 6px 24px;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
+
+
+        /* 模块拖拽样式 */
+        .panel-header.dragging {
+            opacity: 0.5;
+        }
+
+        /* 表单行样式 */
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        /* 表单字段样式 */
+        .form-field {
+            flex: 1;
+            min-width: 240px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        /* 字段标签样式 */
+        .form-field label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        /* 必填字段标记 */
+        .form-field.required label::after {
+            content: ' *';
+            color: #ef4444;
+        }
+
+        /* 输入框样式 */
+        .form-field input[type="text"],
+        .form-field input[type="number"],
+        .form-field input[type="date"],
+        .form-field select,
+        .form-field textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .form-field input[type="text"]:hover,
+        .form-field input[type="number"]:hover,
+        .form-field input[type="date"]:hover,
+        .form-field select:hover,
+        .form-field textarea:hover {
+            border-color: #93c5fd;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-field input[type="text"]:focus,
+        .form-field input[type="number"]:focus,
+        .form-field input[type="date"]:focus,
+        .form-field select:focus,
+        .form-field textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        /* 文本域样式 */
+        .form-field textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* 辅助功能区标题 */
+        .aux-section-title {
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        /* 辅助功能区内容 */
+        .aux-section-content {
+            padding: 1px 20px 16px 20px;
+        }
+
+        /* 辅助功能区按钮 */
+        .aux-btn {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            background-color: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 富文本编辑器容器样式 */
+        .rich-text-editor {
+            display: block !important;
+            width: 100%;
+            flex-direction: row !important;
+            gap: 0 !important;
+        }
+
+        /* 调整富文本编辑器内文本域高度 */
+        .rich-text-editor textarea {
+            min-height: 120px !important;
+        }
+
+        .aux-btn:hover {
+            background-color: #e5e7eb;
+            border-color: #9ca3af;
+        }
+
+        /* 常用病例模板列表 */
+        .template-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .template-item {
+            padding: 12px;
+            background-color: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .template-item:hover {
+            background-color: #e5e7eb;
+            border-color: #9ca3af;
+        }
+
+        /* 常见主诉示例 */
+        .common-complaints {
+            margin-top: 12px;
+            padding: 12px;
+            background-color: #e0f2fe;
+            border-radius: 6px;
+        }
+
+        .common-complaints h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0369a1;
+            margin-bottom: 8px;
+        }
+
+        .complaint-examples {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .complaint-example {
+            padding: 8px 12px;
+            background-color: white;
+            border: 1px solid #93c5fd;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .complaint-example:hover {
+            background-color: #eff6ff;
+            border-color: #3b82f6;
+        }
+
+        /* 文件上传区域 */
+        .file-upload-area {
+            margin-top: 0;
+            padding: 20px;
+            border: 2px dashed #d1d5db;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .file-upload-area:hover {
+            border-color: #3b82f6;
+            background-color: #f0f9ff;
+        }
+
+        .file-upload-area input[type="file"] {
+            display: none;
+        }
+
+        /* 上传进度条 */
+        .upload-progress {
+            margin-top: 12px;
+            height: 4px;
+            background-color: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .upload-progress-bar {
+            height: 100%;
+            background-color: #3b82f6;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        /* 已上传文件列表 */
+        .uploaded-files {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .uploaded-file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        /* 解析核对标签 */
+        .verify-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            background-color: #fbbf24;
+            color: #92400e;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 4px;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        /* 粘贴解析区域 */
+        .paste-area {
+            margin-top: 0;
+        }
+
+        .paste-area textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 120px;
+            margin-bottom: 12px;
+        }
+
+        /* 一键解析按钮 */
+        .parse-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .parse-btn:hover {
+            background-color: #2563eb;
+        }
+
+        /* 通知样式 */
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .notification.success {
+            background-color: #10b981;
+        }
+
+        .notification.error {
+            background-color: #ef4444;
+        }
+
+        .notification.warning {
+            background-color: #f59e0b;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* 联想提示框 */
+        .suggestions {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .suggestion-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* 药物名称联想提示 */
+        .drug-suggestions {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* AI辅助诊断提示 */
+        .ai-suggestions {
+            margin-top: 12px;
+            padding: 12px;
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+        }
+
+        .ai-suggestions h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #15803d;
+            margin-bottom: 8px;
+        }
+
+        .ai-suggestion-item {
+            padding: 8px;
+            background-color: white;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .ai-suggestion-item:hover {
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+
+            .auxiliary-tools {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .case-header {
+                padding: 12px 16px;
+            }
+
+            .case-header-actions {
+                flex-wrap: wrap;
+            }
+
+            .case-header-actions button {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+
+            .content-wrapper {
+                padding: 12px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .form-field {
+                min-width: auto;
+            }
+        }
+
+        /* 题目类型按钮样式 */
+        .question-type-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background-color: white;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-type-btn:hover {
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 题目项样式 */
+        .question-item {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .question-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .question-item-title {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 14px;
+        }
+
+        .question-item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 4px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background-color: white;
+            color: #6b7280;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        .delete-btn {
+            color: #ef4444;
+            border-color: #fecaca;
+        }
+
+        .delete-btn:hover {
+            background-color: #fee2e2;
+            border-color: #f87171;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <div class="right-content">
+            <!-- 页面标题和返回按钮容器 -->
+            <div class="page-title">
+                <button type="button" class="custom-back-btn" onclick="window.history.back()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    返回活动列表
+                </button>
+            </div>
+
+            <!-- 步骤条 - 放在返回按钮底部的白色背景上 -->
+            <div class="step-progress">
+                <div class="step current">
+                    <div class="step-number">1</div>
+                    <div class="step-text">新建互动病例</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">设置任务规则</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">发布委托需求</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-text">选择任务对象并分配</div>
+                </div>
+            </div>
+
+            <!-- 主要内容区域 -->
+            <main class="content-area">
+                <!-- 内容区主布局 -->
+                <div class="content-wrapper">
+
+                    <!-- 基本信息与辅助功能区布局 -->
+                    <div class="basic-info-with-tools">
+                        <!-- 内容区左侧：核心编辑区 -->
+                        <div class="content-left">
+                            <!-- 病例基础信息模块 -->
+                            <div class="collapsible-panel" id="case-basic-info-panel">
+                                <div class="panel-header">
+                                    <span>病例基础信息 <span style="color: #ef4444; font-size: 14px;">(必填)</span></span>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="form-row">
+                                        <!-- 病例标题 -->
+                                        <div class="form-field required">
+                                            <label for="case-title">病例标题</label>
+                                            <input type="text" id="case-title" placeholder="请输入病例标题" maxlength="200"
+                                                onblur="autoSave()">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <!-- 病例简介 -->
+                                        <div class="form-field required">
+                                            <label for="case-summary">病例简介</label>
+                                            <textarea id="case-summary" placeholder="请简要介绍病例的核心内容和亮点" maxlength="500"
+                                                onblur="autoSave()" style="min-height: 120px;"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <!-- 文献资料上传 -->
+                                        <div class="form-field">
+                                            <label for="case-literature">文献资料 <span
+                                                    style="font-size: 12px; color: #9ca3af; font-weight: normal;">(该项为选题，可上传
+                                                    PDF 文件)</span></label>
+                                            <div style="margin-top: 8px;">
+                                                <input type="file" id="literature-file" multiple accept=".pdf"
+                                                    style="display: none;" onchange="handleFileUpload(event)">
+                                                <button type="button"
+                                                    onclick="document.getElementById('literature-file').click()"
+                                                    style="height: 40px; padding: 0 16px; background-color: #f3f4f6; color: #374151; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                                    </svg>
+                                                    点击上传文献资料
+                                                </button>
+                                            </div>
+                                            <div class="uploaded-files" id="uploaded-literature"
+                                                style="margin-top: 12px;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <!-- 病例作者 -->
+                                        <div class="form-field required">
+                                            <label for="case-author">病例作者</label>
+                                            <div style="display: flex; gap: 8px; align-items: center;">
+                                                <div style="flex: 0 0 250px; position: relative;">
+                                                    <input type="text" id="case-author" placeholder="请选择病例作者" readonly
+                                                        onclick="openDoctorSelection()"
+                                                        style="height: 40px; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; width: 100%; box-sizing: border-box;">
+                                                </div>
+                                                <button type="button" onclick="openDoctorSelection()"
+                                                    style="height: 40px; padding: 0 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                                                    选择医生
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <!-- 产品标签 -->
+                                        <div class="form-field">
+                                            <label for="case-product-tags">产品标签</label>
+                                            <div style="display: flex; gap: 8px; align-items: center;">
+                                                <div style="flex: 0 0 250px; position: relative;">
+                                                    <input type="text" id="case-product-tags" placeholder="请选择产品标签"
+                                                        readonly onclick="openProductTagSelection()"
+                                                        style="height: 40px; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; width: 100%; box-sizing: border-box;">
+                                                </div>
+                                                <button type="button" onclick="openProductTagSelection()"
+                                                    style="height: 40px; padding: 0 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                                                    选择标签
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <!-- 答题时长限制 -->
+                                        <div class="form-field">
+                                            <label>答题时长限制</label>
+                                            <div
+                                                style="display: flex; align-items: center; gap: 16px; margin-top: 8px;">
+                                                <label
+                                                    style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                                    <input type="radio" name="time-limit" value="unlimited" checked
+                                                        onchange="toggleTimeLimitInput()">
+                                                    <span>无限制</span>
+                                                </label>
+                                                <label
+                                                    style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                                    <input type="radio" name="time-limit" value="limited"
+                                                        onchange="toggleTimeLimitInput()">
+                                                    <span>有限制，答题时长不低于</span>
+                                                </label>
+                                                <div style="display: flex; align-items: center; gap: 8px; opacity: 0.5; pointer-events: none;"
+                                                    id="time-limit-input-container">
+                                                    <div
+                                                        style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+                                                        <input type="number" id="time-limit-minutes" placeholder="请输入"
+                                                            min="5" onblur="autoSave()" style="width: 120px;">
+                                                        <span>分钟</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 患者基本信息模块 -->
+                            <div class="collapsible-panel" id="patient-info-panel">
+                                <div class="panel-header"
+                                    style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>患者基本信息 <span style="color: #ef4444; font-size: 14px;">(必填)</span></span>
+                                    <div class="interaction-tools"
+                                        style="display: flex; gap: 12px; align-items: center;">
+                                        <button type="button" class="add-question-btn"
+                                            onclick="addQuestion('patient-info')"
+                                            style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                                            </svg>
+                                            添加题目
+                                        </button>
+                                        <button type="button" class="add-paginator-btn"
+                                            onclick="addPaginator('patient-info')"
+                                            style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y1="10" x2="21" y1="10"></line>
+                                            </svg>
+                                            添加分页器
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="panel-content">
+                                    <!-- 富文本输入框 -->
+                                    <div class="rich-text-editor form-field required"
+                                        style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                        <textarea id="patient-info-content"
+                                            placeholder="请输入患者的基本信息，包括性别、年龄、就诊日期、科室等，例如：性别：男，年龄：65岁，就诊日期：2024-01-01，科室：内科"
+                                            maxlength="1000" onblur="autoSave()"
+                                            style="width: 100%; min-height: 120px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                    </div>
+
+                                    <div class="interaction-tools"
+                                        style="margin-top: 8px; display: flex; gap: 12px; align-items: center;">
+                                        <button type="button" class="add-question-btn"
+                                            onclick="addQuestion('patient-info')"
+                                            style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                                            </svg>
+                                            添加题目
+                                        </button>
+                                        <button type="button" class="add-paginator-btn"
+                                            onclick="addPaginator('patient-info')"
+                                            style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y="10" x2="21" y="10"></line>
+                                            </svg>
+                                            添加分页器
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 主诉模块 -->
+                            <div class="collapsible-panel" id="chief-complaint-panel">
+                                <div class="panel-header"
+                                    style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>主诉内容 <span style="color: #ef4444; font-size: 14px;">(必填)</span></span>
+                                    <!-- 添加题目和分页器功能 -->
+                                    <div class="interaction-tools"
+                                        style="display: flex; gap: 12px; align-items: center;">
+                                        <button type="button" class="add-question-btn"
+                                            onclick="addQuestion('chief-complaint')"
+                                            style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                                            </svg>
+                                            添加题目
+                                        </button>
+                                        <button type="button" class="add-paginator-btn"
+                                            onclick="addPaginator('chief-complaint')"
+                                            style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y1="10" x2="21" y1="10"></line>
+                                            </svg>
+                                            添加分页器
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="panel-content">
+                                    <!-- 富文本输入框 -->
+                                    <div class="rich-text-editor form-field required"
+                                        style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                        <textarea id="chief-complaint"
+                                            placeholder="请输入患者的主要症状和持续时间，例如：糖尿病史 5 年，足部溃疡 1 周" maxlength="500"
+                                            onblur="autoSave()"
+                                            style="width: 100%; min-height: 150px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                    </div>
+
+                                    <!-- 添加题目和分页器功能 -->
+                                    <div class="interaction-tools"
+                                        style="margin-top: 12px; display: flex; gap: 12px; align-items: center;">
+                                        <button type="button" class="add-question-btn"
+                                            onclick="addQuestion('chief-complaint')"
+                                            style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                                            </svg>
+                                            添加题目
+                                        </button>
+                                        <button type="button" class="add-paginator-btn"
+                                            onclick="addPaginator('chief-complaint')"
+                                            style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y="10" x2="21" y="10"></line>
+                                            </svg>
+                                            添加分页器
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 问诊模块 -->
+                            <div class="collapsible-panel" id="interrogation-panel">
+                                <div class="panel-header"
+                                    style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>问诊 <span style="color: #ef4444; font-size: 14px;">(必填)</span></span>
+                                    <!-- 添加题目和分页器功能 -->
+                                    <div class="interaction-tools"
+                                        style="display: flex; gap: 12px; align-items: center;">
+                                        <button type="button" class="add-question-btn"
+                                            onclick="addQuestion('present-illness')"
+                                            style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                                            </svg>
+                                            添加题目
+                                        </button>
+                                        <button type="button" class="add-paginator-btn"
+                                            onclick="addPaginator('present-illness')"
+                                            style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y1="10" x2="21" y1="10"></line>
+                                            </svg>
+                                            添加分页器
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="panel-content">
+                                    <!-- 现病史 -->
+                                    <div class="sub-module">
+                                        <label for="present-illness-content">现病史内容</label>
+                                        <!-- 富文本输入框 -->
+                                        <div class="rich-text-editor"
+                                            style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                            <textarea id="present-illness-content"
+                                                placeholder="请详细描述患者的发病诱因、主要症状和诊疗经过，例如：患者于1周前无明显诱因出现发热，体温最高达39℃，伴咳嗽、咳痰..."
+                                                maxlength="2500" onblur="autoSave()"
+                                                style="width: 100%; min-height: 200px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                        </div>
+
+                                        <!-- 添加题目和分页器功能 -->
+                                        <div class="interaction-tools"
+                                            style="margin-top: 12px; display: flex; gap: 12px; align-items: center;">
+                                            <button type="button" class="add-question-btn"
+                                                onclick="addQuestion('present-illness')"
+                                                style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                                                </svg>
+                                                添加题目
+                                            </button>
+                                            <button type="button" class="add-paginator-btn"
+                                                onclick="addPaginator('present-illness')"
+                                                style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                    <line x1="3" y="10" x2="21" y="10"></line>
+                                                </svg>
+                                                添加分页器
+                                            </button>
+                                        </div>
+                                    </div>
+
+
+
+                                    <!-- 既往史 -->
+                                    <div class="sub-module">
+                                        <label for="past-diseases">既往史内容</label>
+                                        <!-- 富文本输入框 -->
+                                        <div class="rich-text-editor"
+                                            style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                            <textarea id="past-diseases"
+                                                placeholder="请详细描述患者的既往疾病、手术史和过敏史，例如：高血压病史10年，糖尿病病史5年，无手术史，青霉素过敏"
+                                                maxlength="1000" onblur="autoSave()"
+                                                style="width: 100%; min-height: 150px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                        </div>
+
+                                        <!-- 添加题目和分页器功能 -->
+                                        <div class="interaction-tools"
+                                            style="margin-top: 12px; display: flex; gap: 12px; align-items: center;">
+                                            <button type="button" class="add-question-btn"
+                                                onclick="addQuestion('past-diseases')"
+                                                style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                                                </svg>
+                                                添加题目
+                                            </button>
+                                            <button type="button" class="add-paginator-btn"
+                                                onclick="addPaginator('past-diseases')"
+                                                style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                    <line x1="3" y="10" x2="21" y="10"></line>
+                                                </svg>
+                                                添加分页器
+                                            </button>
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <!-- 个人史 -->
+                                    <div class="sub-module">
+                                        <label for="personal-history">个人史内容</label>
+                                        <!-- 富文本输入框 -->
+                                        <div class="rich-text-editor"
+                                            style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                            <textarea id="personal-history"
+                                                placeholder="请详细描述患者的生活习惯、职业、烟酒史、婚姻生育史等，例如：长期吸烟，每日20支，饮酒史20年，每日白酒2两"
+                                                maxlength="1000" onblur="autoSave()"
+                                                style="width: 100%; min-height: 150px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                        </div>
+
+                                        <!-- 添加题目和分页器功能 -->
+                                        <div class="interaction-tools"
+                                            style="margin-top: 12px; display: flex; gap: 12px; align-items: center;">
+                                            <button type="button" class="add-question-btn"
+                                                onclick="addQuestion('personal-history')"
+                                                style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                                                </svg>
+                                                添加题目
+                                            </button>
+                                            <button type="button" class="add-paginator-btn"
+                                                onclick="addPaginator('personal-history')"
+                                                style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                    <line x1="3" y="10" x2="21" y="10"></line>
+                                                </svg>
+                                                添加分页器
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- 家族史 -->
+                                    <div class="sub-module">
+                                        <label for="family-history">家族史内容</label>
+                                        <!-- 富文本输入框 -->
+                                        <div class="rich-text-editor"
+                                            style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                            <textarea id="family-history"
+                                                placeholder="请详细描述患者家族成员的健康状况，尤其是遗传性疾病史，例如：父亲有高血压病史，母亲有糖尿病病史"
+                                                maxlength="1000" onblur="autoSave()"
+                                                style="width: 100%; min-height: 150px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                        </div>
+
+                                        <!-- 添加题目和分页器功能 -->
+                                        <div class="interaction-tools"
+                                            style="margin-top: 12px; display: flex; gap: 12px; align-items: center;">
+                                            <button type="button" class="add-question-btn"
+                                                onclick="addQuestion('family-history')"
+                                                style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                                                </svg>
+                                                添加题目
+                                            </button>
+                                            <button type="button" class="add-paginator-btn"
+                                                onclick="addPaginator('family-history')"
+                                                style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                    <line x1="3" y="10" x2="21" y="10"></line>
+                                                </svg>
+                                                添加分页器
+                                            </button>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 查体模块 -->
+                            <div class="collapsible-panel" id="physical-exam-panel">
+                                <div class="panel-header">
+                                    <span>查体内容 <span style="color: #ef4444; font-size: 14px;">(必填)</span></span>
+                                </div>
+                                <div class="panel-content">
+                                    <!-- 富文本输入框 -->
+                                    <div class="rich-text-editor"
+                                        style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                        <textarea id="physical-exam-content"
+                                            placeholder="请详细描述患者的体格检查结果，包括生命体征、一般情况、系统检查等，例如：体温38.5℃，脉搏90次/分，呼吸20次/分，血压130/80mmHg，神志清楚，精神可"
+                                            maxlength="2000" onblur="autoSave()"
+                                            style="width: 100%; min-height: 200px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                    </div>
+
+                                    <!-- 添加题目和分页器功能 -->
+                                    <div class="interaction-tools"
+                                        style="margin-top: 12px; display: flex; gap: 12px; align-items: center;">
+                                        <button type="button" class="add-question-btn"
+                                            onclick="addQuestion('physical-exam')"
+                                            style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                                            </svg>
+                                            添加题目
+                                        </button>
+                                        <button type="button" class="add-paginator-btn"
+                                            onclick="addPaginator('physical-exam')"
+                                            style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y1="10" x2="21" y1="10"></line>
+                                            </svg>
+                                            添加分页器
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- 辅助检查模块 -->
+                            <div class="collapsible-panel" id="auxiliary-exam-panel">
+                                <div class="panel-header">
+                                    <span>辅助检查 <span style="color: #6b7280; font-size: 14px;">(可选)</span></span>
+                                </div>
+                                <div class="panel-content">
+                                    <!-- 富文本输入框 -->
+                                    <div class="rich-text-editor"
+                                        style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                        <textarea id="auxiliary-exam-content"
+                                            placeholder="请输入辅助检查结果，包括检查项目、检查时间和具体结果，例如：血常规：2024-01-01，白细胞计数 12.0×10^9/L，中性粒细胞百分比 85%；CT：2024-01-02，肺部可见斑片状阴影"
+                                            maxlength="2000" onblur="autoSave()"
+                                            style="width: 100%; min-height: 200px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                    </div>
+
+                                    <!-- 添加题目和分页器功能 -->
+                                    <div class="interaction-tools"
+                                        style="margin-top: 12px; display: flex; gap: 12px; align-items: center;">
+                                        <button type="button" class="add-question-btn"
+                                            onclick="addQuestion('auxiliary-exam')"
+                                            style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                                            </svg>
+                                            添加题目
+                                        </button>
+                                        <button type="button" class="add-paginator-btn"
+                                            onclick="addPaginator('auxiliary-exam')"
+                                            style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y1="10" x2="21" y1="10"></line>
+                                            </svg>
+                                            添加分页器
+                                        </button>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <!-- 初步诊断模块 -->
+                            <div class="collapsible-panel" id="preliminary-diagnosis-panel">
+                                <div class="panel-header">
+                                    <span>初步诊断 <span style="color: #ef4444; font-size: 14px;">(必填)</span></span>
+                                </div>
+                                <div class="panel-content">
+                                    <!-- 富文本输入框 -->
+                                    <div class="rich-text-editor"
+                                        style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                        <textarea id="preliminary-diagnosis" placeholder="请输入初步诊断" maxlength="500"
+                                            onblur="autoSave()"
+                                            style="width: 100%; min-height: 150px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                    </div>
+
+                                    <!-- 添加题目和分页器功能 -->
+                                    <div class="interaction-tools"
+                                        style="margin-top: 12px; display: flex; gap: 12px; align-items: center;">
+                                        <button type="button" class="add-question-btn"
+                                            onclick="addQuestion('preliminary-diagnosis')"
+                                            style="padding: 8px 16px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                                            </svg>
+                                            添加题目
+                                        </button>
+                                        <button type="button" class="add-paginator-btn"
+                                            onclick="addPaginator('preliminary-diagnosis')"
+                                            style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y1="10" x2="21" y1="10"></line>
+                                            </svg>
+                                            添加分页器
+                                        </button>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <!-- 诊断依据模块 -->
+                            <div class="collapsible-panel" id="diagnosis-basis-panel">
+                                <div class="panel-header">
+                                    <span>诊断依据 <span style="color: #ef4444; font-size: 14px;">(必填)</span></span>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="form-row">
+                                        <div class="form-field required">
+                                            <!-- 富文本输入框 -->
+                                            <div class="rich-text-editor"
+                                                style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                                <textarea id="diagnosis-basis" placeholder="请输入诊断依据，结合症状、体征和检查结果"
+                                                    maxlength="1000" onblur="autoSave()"
+                                                    style="width: 100%; min-height: 150px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 鉴别诊断模块 -->
+                            <div class="collapsible-panel" id="differential-diagnosis-panel">
+                                <div class="panel-header">
+                                    <span>鉴别诊断 <span style="color: #ef4444; font-size: 14px;">(必填)</span></span>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="form-row">
+                                        <div class="form-field required">
+                                            <!-- 富文本输入框 -->
+                                            <div class="rich-text-editor"
+                                                style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                                <textarea id="differential-diagnosis"
+                                                    placeholder="请输入鉴别诊断，包括需要鉴别的疾病和鉴别要点" maxlength="1000"
+                                                    onblur="autoSave()"
+                                                    style="width: 100%; min-height: 150px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 治疗方案模块 -->
+                            <div class="collapsible-panel" id="treatment-plan-panel">
+                                <div class="panel-header">
+                                    <span>治疗方案 <span style="color: #ef4444; font-size: 14px;">(必填)</span></span>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="form-row">
+                                        <div class="form-field required">
+                                            <!-- 富文本输入框 -->
+                                            <div class="rich-text-editor"
+                                                style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                                <textarea id="treatment-plan-content"
+                                                    placeholder="请详细描述治疗方案，包括治疗方式、药物名称（含剂量/用法）和治疗周期，例如：药物治疗：阿莫西林 500mg，每日3次，口服，疗程7天"
+                                                    maxlength="1500" onblur="autoSave()"
+                                                    style="width: 100%; min-height: 200px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 健康指导模块 -->
+                            <div class="collapsible-panel" id="health-guidance-panel">
+                                <div class="panel-header">
+                                    <span>健康指导 <span style="color: #6b7280; font-size: 14px;">(可选)</span></span>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="form-row">
+                                        <div class="form-field">
+
+                                            <!-- 富文本输入框 -->
+                                            <div class="rich-text-editor"
+                                                style="border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden;">
+                                                <textarea id="health-guidance"
+                                                    placeholder="请输入健康指导内容，包括饮食、运动、生活习惯等方面的建议，例如：建议患者低盐低脂饮食，适量运动，戒烟限酒，定期复查"
+                                                    maxlength="1000" onblur="autoSave()"
+                                                    style="width: 100%; min-height: 150px; padding: 12px; border: none; resize: vertical; font-family: inherit; font-size: 14px;"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 辅助功能区 -->
+                        <div class="auxiliary-tools">
+                            <!-- 功能说明 -->
+                            <!-- 智能辅助功能 -->
+                            <div class="aux-section"
+                                style="background-color: white; border: none; border-radius: 8px; margin-bottom: 16px;">
+                                <div class="aux-section-content" style="padding: 16px;">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <div>
+                                            <p style="margin: 0; font-size: 14px; font-weight: 600; color: #000000;">
+                                                智能辅助功能</p>
+                                            <p style="margin: 4px 0 0 0; font-size: 13px; color: #000000;">
+                                                支持文件上传和文本粘贴两种方式，系统将自动解析内容到相应字段</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 文件导入 -->
+                            <div class="aux-section"
+                                style="background-color: white; border: none; border-radius: 8px; margin-top: 12px;">
+                                <div class="aux-section-title">
+                                    文件导入
+                                </div>
+                                <div class="aux-section-content">
+                                    <div class="file-upload-area"
+                                        onclick="document.getElementById('file-upload').click()">
+                                        <input type="file" id="file-upload" accept=".doc,.docx,.pdf"
+                                            style="display: none;" onchange="handleFileUploadParse(event)">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="7 10 12 15 17 10"></polyline>
+                                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                                        </svg>
+                                        <p style="margin: 8px 0 0 0; font-size: 14px; color: #6b7280;">点击或拖拽文件到此处导入</p>
+                                        <p style="margin: 4px 0 0 0; font-size: 12px; color: #9ca3af;">
+                                            支持.doc、.docx、.pdf格式</p>
+                                    </div>
+                                    <div class="upload-progress" style="display: none; margin-top: 12px;">
+                                        <div class="upload-progress-bar" style="width: 0%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 一键解析 -->
+                            <div class="aux-section"
+                                style="background-color: white; border: none; border-radius: 8px; margin-top: 12px;">
+                                <div class="aux-section-title">
+                                    文本解析
+                                </div>
+                                <div class="aux-section-content">
+                                    <div class="paste-area">
+                                        <textarea id="paste-content" placeholder="粘贴病例文本，点击一键解析自动填充病例信息"></textarea>
+                                        <button class="parse-btn" onclick="parseCaseText()">
+                                            一键解析
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- 悬浮功能按钮区域 -->
+            <div class="floating-buttons"
+                style="position: absolute; bottom: 0; left: 0; right: 0; background-color: white; border-top: 1px solid #e2e8f0; padding: 16px 20px; box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); z-index: 9999; display: flex; justify-content: center; gap: 12px;">
+                <button type="button" class="save-btn" onclick="saveDraft()"
+                    style="padding: 10px 24px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                    保存
+                </button>
+                <button type="button" class="next-btn" onclick="goToNextStep()"
+                    style="padding: 10px 24px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                    下一步
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 动态加载公共组件
+        async function loadComponents() {
+            try {
+                // 加载顶部导航
+                const headerResponse = await fetch('components/header.html');
+                const headerHtml = await headerResponse.text();
+                document.getElementById('header-placeholder').innerHTML = headerHtml;
+
+                // 加载左侧侧边栏
+                const sidebarResponse = await fetch('components/sidebar.html');
+                const sidebarHtml = await sidebarResponse.text();
+                document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+
+                // 初始化菜单
+                initializeMenu();
+            } catch (error) {
+                console.error('加载组件失败:', error);
+            }
+        }
+
+        // 页面加载时执行
+        window.addEventListener('DOMContentLoaded', loadComponents);
+
+        // 题目计数
+        let questionCounter = 0;
+
+        // 题目类型映射
+        const typeMap = {
+            'single': '单选题',
+            'multiple': '多选题',
+            'fill': '填空题',
+            'essay': '问答题',
+            'sort': '排序题',
+            'scale': '量表题'
+        };
+
+        // 添加题目函数，支持不同类型
+        function addQuestion(section, type = 'single') {
+            const questionsList = document.getElementById(`${section}-questions`);
+            if (!questionsList) return;
+
+            questionCounter++;
+            const questionId = `question-${section}-${questionCounter}`;
+
+            // 根据题目类型生成不同的HTML
+            let questionTypeHtml = '';
+            switch (type) {
+                case 'single':
+                    questionTypeHtml = `
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">选项</label>
+                            <div style="display: flex; gap: 12px; margin-bottom: 8px;">
+                                <div style="flex: 1;">
+                                    <input type="text" placeholder="选项A" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <input type="text" placeholder="选项B" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 12px;">
+                                <div style="flex: 1;">
+                                    <input type="text" placeholder="选项C" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <input type="text" placeholder="选项D" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">正确答案</label>
+                            <select style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                            </select>
+                        </div>
+                    `;
+                    break;
+                case 'multiple':
+                    questionTypeHtml = `
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">选项</label>
+                            <div style="display: flex; gap: 12px; margin-bottom: 8px;">
+                                <div style="flex: 1;">
+                                    <input type="text" placeholder="选项A" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <input type="text" placeholder="选项B" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 12px;">
+                                <div style="flex: 1;">
+                                    <input type="text" placeholder="选项C" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <input type="text" placeholder="选项D" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">正确答案</label>
+                            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                                <label style="display: flex; align-items: center; gap: 6px; margin-right: 16px; font-size: 13px; color: #374151;">
+                                    <input type="checkbox" value="A" style="margin: 0;">
+                                    <span>A</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; margin-right: 16px; font-size: 13px; color: #374151;">
+                                    <input type="checkbox" value="B" style="margin: 0;">
+                                    <span>B</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; margin-right: 16px; font-size: 13px; color: #374151;">
+                                    <input type="checkbox" value="C" style="margin: 0;">
+                                    <span>C</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #374151;">
+                                    <input type="checkbox" value="D" style="margin: 0;">
+                                    <span>D</span>
+                                </label>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'fill':
+                    questionTypeHtml = `
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">正确答案</label>
+                            <input type="text" placeholder="请输入正确答案" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                        </div>
+                    `;
+                    break;
+                case 'essay':
+                    questionTypeHtml = `
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">参考答案</label>
+                            <textarea style="width: 100%; min-height: 120px; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
+                        </div>
+                    `;
+                    break;
+                case 'sort':
+                    questionTypeHtml = `
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">排序选项</label>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="width: 20px; text-align: center; color: #6b7280;">1</span>
+                                    <input type="text" placeholder="选项1" style="flex: 1; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="width: 20px; text-align: center; color: #6b7280;">2</span>
+                                    <input type="text" placeholder="选项2" style="flex: 1; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="width: 20px; text-align: center; color: #6b7280;">3</span>
+                                    <input type="text" placeholder="选项3" style="flex: 1; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="width: 20px; text-align: center; color: #6b7280;">4</span>
+                                    <input type="text" placeholder="选项4" style="flex: 1; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'scale':
+                    questionTypeHtml = `
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">量表范围</label>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <input type="number" placeholder="最小值" style="width: 120px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                                <span style="color: #6b7280;">-</span>
+                                <input type="number" placeholder="最大值" style="width: 120px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px;">
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">评分说明</label>
+                            <textarea style="width: 100%; min-height: 80px; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
+                        </div>
+                    `;
+                    break;
+            }
+
+            const questionHtml = `
+                <div class="question-item" id="${questionId}" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #374151;">${typeMap[type]} ${questionCounter}</div>
+                        <div style="display: flex; gap: 8px;">
+                            <button type="button" onclick="moveQuestion('${questionId}', 'up')" style="padding: 4px 8px; background-color: #f3f4f6; border: 1px solid #d1d5db; border-radius: 4px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="18 15 12 9 6 15"></polyline>
+                                </svg>
+                                上移
+                            </button>
+                            <button type="button" onclick="moveQuestion('${questionId}', 'down')" style="padding: 4px 8px; background-color: #f3f4f6; border: 1px solid #d1d5db; border-radius: 4px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                                下移
+                            </button>
+                            <button type="button" onclick="deleteQuestion('${questionId}')" style="padding: 4px 8px; background-color: #fee2e2; border: 1px solid #fecaca; border-radius: 4px; font-size: 12px; cursor: pointer; color: #dc2626; display: flex; align-items: center; gap: 4px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                </svg>
+                                删除
+                            </button>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">题目内容</label>
+                        <textarea style="width: 100%; min-height: 80px; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
+                    </div>
+                    ${questionTypeHtml}
+                </div>
+            `;
+
+            questionsList.insertAdjacentHTML('beforeend', questionHtml);
+        }
+
+        // 为富文本编辑器添加题目类型选择的悬停功能
+        document.addEventListener('DOMContentLoaded', function () {
+            // 为所有添加题目按钮添加题目类型选择菜单
+            const addQuestionBtns = document.querySelectorAll('.add-question-btn');
+
+            addQuestionBtns.forEach(btn => {
+                // 获取当前按钮所在的section
+                const section = btn.onclick.toString().match(/addQuestion\('([^']+)'/)[1];
+
+                // 创建题目类型选择器容器
+                const selectorContainer = document.createElement('div');
+                selectorContainer.className = 'question-type-selector';
+                selectorContainer.style.position = 'relative';
+
+                // 替换按钮的父元素
+                const parent = btn.parentElement;
+                parent.insertBefore(selectorContainer, btn);
+                selectorContainer.appendChild(btn);
+
+                // 创建题目类型菜单
+                const questionMenu = document.createElement('div');
+                questionMenu.className = 'question-types-menu';
+                questionMenu.style.position = 'absolute';
+                questionMenu.style.top = '100%';
+                questionMenu.style.left = '0';
+                questionMenu.style.backgroundColor = 'white';
+                questionMenu.style.border = '1px solid #d1d5db';
+                questionMenu.style.borderRadius = '6px';
+                questionMenu.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                questionMenu.style.zIndex = '99999';
+                questionMenu.style.width = '480px';
+                questionMenu.style.display = 'none';
+                questionMenu.style.flexDirection = 'row';
+                questionMenu.style.flexWrap = 'wrap';
+                questionMenu.style.gap = '8px';
+                questionMenu.style.padding = '8px';
+                questionMenu.style.boxSizing = 'border-box';
+
+                // 添加题目类型按钮
+                const questionTypes = [
+                    { type: 'single', name: '单选题' },
+                    { type: 'multiple', name: '多选题' },
+                    { type: 'fill', name: '填空题' },
+                    { type: 'essay', name: '问答题' },
+                    { type: 'sort', name: '排序题' },
+                    { type: 'scale', name: '量表题' }
+                ];
+
+                questionTypes.forEach(qt => {
+                    const typeBtn = document.createElement('button');
+                    typeBtn.type = 'button';
+                    typeBtn.textContent = qt.name;
+                    typeBtn.onclick = () => addQuestion(section, qt.type);
+                    typeBtn.style.width = '32%';
+                    typeBtn.style.padding = '8px 12px';
+                    typeBtn.style.textAlign = 'center';
+                    typeBtn.style.background = 'none';
+                    typeBtn.style.border = '1px solid #d1d5db';
+                    typeBtn.style.borderRadius = '4px';
+                    typeBtn.style.fontSize = '14px';
+                    typeBtn.style.color = '#374151';
+                    typeBtn.style.cursor = 'pointer';
+                    typeBtn.style.transition = 'all 0.2s ease';
+                    typeBtn.style.boxSizing = 'border-box';
+
+                    // 添加悬停效果
+                    typeBtn.addEventListener('mouseenter', () => {
+                        typeBtn.style.backgroundColor = '#f3f4f6';
+                        typeBtn.style.borderColor = '#9ca3af';
+                    });
+                    typeBtn.addEventListener('mouseleave', () => {
+                        typeBtn.style.backgroundColor = 'white';
+                        typeBtn.style.borderColor = '#d1d5db';
+                    });
+
+                    questionMenu.appendChild(typeBtn);
+                });
+
+                selectorContainer.appendChild(questionMenu);
+
+                // 添加悬停显示/隐藏功能
+                selectorContainer.addEventListener('mouseenter', () => {
+                    questionMenu.style.display = 'flex';
+                });
+
+                selectorContainer.addEventListener('mouseleave', () => {
+                    questionMenu.style.display = 'none';
+                });
+            });
+        });
+
+        // 添加分页器函数
+        function addPaginator(section) {
+            // 构建分页器HTML，只保留中间的线段
+            const paginatorHtml = `
+                <div class="paginator-item" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin: 16px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #374151;">分页器</div>
+                        <div style="display: flex; gap: 8px;">
+                            <button type="button" onclick="movePaginator(this, 'up')" style="padding: 4px 8px; background-color: #f3f4f6; border: 1px solid #d1d5db; border-radius: 4px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="18 15 12 9 6 15"></polyline>
+                                </svg>
+                                上移
+                            </button>
+                            <button type="button" onclick="movePaginator(this, 'down')" style="padding: 4px 8px; background-color: #f3f4f6; border: 1px solid #d1d5db; border-radius: 4px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                                下移
+                            </button>
+                            <button type="button" onclick="deletePaginator(this)" style="padding: 4px 8px; background-color: #fee2e2; border: 1px solid #fecaca; border-radius: 4px; font-size: 12px; cursor: pointer; color: #dc2626; display: flex; align-items: center; gap: 4px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                </svg>
+                                删除
+                            </button>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: center; align-items: center; padding: 8px 0; flex-wrap: nowrap;">
+                        <div style="height: 1px; background-color: #e5e7eb; width: 100%; margin: 0 16px;"></div>
+                        <div style="color: #6b7280; font-size: 14px; white-space: nowrap;">第1 / 1页</div>
+                        <div style="height: 1px; background-color: #e5e7eb; width: 100%; margin: 0 16px;"></div>
+                    </div>
+                </div>
+            `;
+
+            // 获取当前section对应的面板
+            const panelId = section === 'patient-info' ? 'patient-info-panel' :
+                section === 'chief-complaint' ? 'chief-complaint-panel' :
+                    section === 'present-illness' ? 'interrogation-panel' :
+                        section === 'past-diseases' ? 'interrogation-panel' :
+                            section === 'personal-history' ? 'interrogation-panel' :
+                                section === 'family-history' ? 'interrogation-panel' :
+                                    section === 'physical-exam' ? 'physical-exam-panel' :
+                                        section === 'auxiliary-exam' ? 'auxiliary-exam-panel' :
+                                            section === 'preliminary-diagnosis' ? 'preliminary-diagnosis-panel' : null;
+
+            if (panelId) {
+                const panel = document.getElementById(panelId);
+                if (panel) {
+                    // 将分页器插入到当前面板之后
+                    panel.insertAdjacentHTML('afterend', paginatorHtml);
+                }
+            }
+        }
+
+        // 移动题目函数
+        function moveQuestion(questionId, direction) {
+            const questionItem = document.getElementById(questionId);
+            if (!questionItem) return;
+
+            const questionsList = questionItem.parentElement;
+            const siblings = Array.from(questionsList.children);
+            const index = siblings.indexOf(questionItem);
+
+            if (direction === 'up' && index > 0) {
+                questionsList.insertBefore(questionItem, siblings[index - 1]);
+            } else if (direction === 'down' && index < siblings.length - 1) {
+                questionsList.insertBefore(questionItem, siblings[index + 2]);
+            }
+        }
+
+        // 移动分页器函数
+        function movePaginator(button, direction) {
+            const paginatorItem = button.closest('.paginator-item');
+            if (!paginatorItem) return;
+
+            // 获取父容器中的所有面板和分页器
+            const container = paginatorItem.parentElement;
+            const siblings = Array.from(container.children);
+            const index = siblings.indexOf(paginatorItem);
+
+            if (direction === 'up' && index > 1) {
+                // 向上移动，插入到前一个面板之前
+                container.insertBefore(paginatorItem, siblings[index - 2]);
+            } else if (direction === 'down' && index < siblings.length - 2) {
+                // 向下移动，插入到后一个面板之后
+                container.insertBefore(paginatorItem, siblings[index + 2]);
+            }
+        }
+
+        // 删除题目函数
+        function deleteQuestion(questionId) {
+            const questionItem = document.getElementById(questionId);
+            if (questionItem) {
+                questionItem.remove();
+            }
+        }
+
+        // 删除分页器函数
+        function deletePaginator(button) {
+            const paginatorItem = button.closest('.paginator-item');
+            if (paginatorItem) {
+                paginatorItem.remove();
+            }
+        }
+
+        // 保存草稿函数
+        function saveDraft() {
+            // 保存草稿逻辑
+            showNotification('草稿已保存', 'success');
+        }
+
+        // 预览病例函数
+        function previewCase() {
+            // 预览病例逻辑
+            showNotification('正在生成预览...', 'warning');
+        }
+
+        // 提交病例函数
+        function submitCase() {
+            // 提交病例逻辑
+            showNotification('病例已提交，等待审核', 'success');
+        }
+
+        // 显示通知
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // 显示通知
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            // 3秒后隐藏通知
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // 自动保存功能
+        function autoSave() {
+            // 自动保存逻辑
+        }
+
+        // 加载病例模板
+        function loadTemplate(templateType) {
+            // 根据模板类型加载不同的模板内容
+            showNotification(`正在加载${templateType}模板...`, 'warning');
+        }
+
+        // 添加题目
+        function addQuestion(questionType) {
+            // 添加不同类型题目的逻辑
+            const questionsContainer = document.getElementById('questions-container');
+            const questionItem = document.createElement('div');
+            questionItem.className = 'question-item';
+
+            let questionHtml = '';
+            switch (questionType) {
+                case 'single-choice':
+                    questionHtml = `
+                        <div class="question-item-header">
+                            <div class="question-item-title">单选题</div>
+                            <div class="question-item-actions">
+                                <button class="action-btn" onclick="editQuestion(this)">编辑</button>
+                                <button class="action-btn delete-btn" onclick="deleteQuestion(this)">删除</button>
+                            </div>
+                        </div>
+                        <div class="question-content">
+                            <textarea placeholder="请输入题目内容" style="width: 100%; min-height: 60px; margin-bottom: 12px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;"></textarea>
+                            <div class="options">
+                                <div style="margin-bottom: 8px;">
+                                    <input type="radio" name="option-${Date.now()}" id="option-${Date.now()}-a">
+                                    <label for="option-${Date.now()}-a" style="margin-left: 8px;"><input type="text" placeholder="选项A" style="width: 80%; padding: 6px; border: 1px solid #d1d5db; border-radius: 4px;"></label>
+                                </div>
+                                <div style="margin-bottom: 8px;">
+                                    <input type="radio" name="option-${Date.now()}" id="option-${Date.now()}-b">
+                                    <label for="option-${Date.now()}-b" style="margin-left: 8px;"><input type="text" placeholder="选项B" style="width: 80%; padding: 6px; border: 1px solid #d1d5db; border-radius: 4px;"></label>
+                                </div>
+                                <div style="margin-bottom: 8px;">
+                                    <input type="radio" name="option-${Date.now()}" id="option-${Date.now()}-c">
+                                    <label for="option-${Date.now()}-c" style="margin-left: 8px;"><input type="text" placeholder="选项C" style="width: 80%; padding: 6px; border: 1px solid #d1d5db; border-radius: 4px;"></label>
+                                </div>
+                                <div style="margin-bottom: 8px;">
+                                    <input type="radio" name="option-${Date.now()}" id="option-${Date.now()}-d">
+                                    <label for="option-${Date.now()}-d" style="margin-left: 8px;"><input type="text" placeholder="选项D" style="width: 80%; padding: 6px; border: 1px solid #d1d5db; border-radius: 4px;"></label>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'multiple-choice':
+                    questionHtml = `
+                        <div class="question-item-header">
+                            <div class="question-item-title">多选题</div>
+                            <div class="question-item-actions">
+                                <button class="action-btn" onclick="editQuestion(this)">编辑</button>
+                                <button class="action-btn delete-btn" onclick="deleteQuestion(this)">删除</button>
+                            </div>
+                        </div>
+                        <div class="question-content">
+                            <textarea placeholder="请输入题目内容" style="width: 100%; min-height: 60px; margin-bottom: 12px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;"></textarea>
+                            <div class="options">
+                                <div style="margin-bottom: 8px;">
+                                    <input type="checkbox" id="option-${Date.now()}-a">
+                                    <label for="option-${Date.now()}-a" style="margin-left: 8px;"><input type="text" placeholder="选项A" style="width: 80%; padding: 6px; border: 1px solid #d1d5db; border-radius: 4px;"></label>
+                                </div>
+                                <div style="margin-bottom: 8px;">
+                                    <input type="checkbox" id="option-${Date.now()}-b">
+                                    <label for="option-${Date.now()}-b" style="margin-left: 8px;"><input type="text" placeholder="选项B" style="width: 80%; padding: 6px; border: 1px solid #d1d5db; border-radius: 4px;"></label>
+                                </div>
+                                <div style="margin-bottom: 8px;">
+                                    <input type="checkbox" id="option-${Date.now()}-c">
+                                    <label for="option-${Date.now()}-c" style="margin-left: 8px;"><input type="text" placeholder="选项C" style="width: 80%; padding: 6px; border: 1px solid #d1d5db; border-radius: 4px;"></label>
+                                </div>
+                                <div style="margin-bottom: 8px;">
+                                    <input type="checkbox" id="option-${Date.now()}-d">
+                                    <label for="option-${Date.now()}-d" style="margin-left: 8px;"><input type="text" placeholder="选项D" style="width: 80%; padding: 6px; border: 1px solid #d1d5db; border-radius: 4px;"></label>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'true-false':
+                    questionHtml = `
+                        <div class="question-item-header">
+                            <div class="question-item-title">判断题</div>
+                            <div class="question-item-actions">
+                                <button class="action-btn" onclick="editQuestion(this)">编辑</button>
+                                <button class="action-btn delete-btn" onclick="deleteQuestion(this)">删除</button>
+                            </div>
+                        </div>
+                        <div class="question-content">
+                            <textarea placeholder="请输入题目内容" style="width: 100%; min-height: 60px; margin-bottom: 12px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;"></textarea>
+                            <div class="options">
+                                <div style="margin-bottom: 8px;">
+                                    <input type="radio" name="option-${Date.now()}" id="option-${Date.now()}-true">
+                                    <label for="option-${Date.now()}-true" style="margin-left: 8px;">正确</label>
+                                </div>
+                                <div style="margin-bottom: 8px;">
+                                    <input type="radio" name="option-${Date.now()}" id="option-${Date.now()}-false">
+                                    <label for="option-${Date.now()}-false" style="margin-left: 8px;">错误</label>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'short-answer':
+                    questionHtml = `
+                        <div class="question-item-header">
+                            <div class="question-item-title">简答题</div>
+                            <div class="question-item-actions">
+                                <button class="action-btn" onclick="editQuestion(this)">编辑</button>
+                                <button class="action-btn delete-btn" onclick="deleteQuestion(this)">删除</button>
+                            </div>
+                        </div>
+                        <div class="question-content">
+                            <textarea placeholder="请输入题目内容" style="width: 100%; min-height: 60px; margin-bottom: 12px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;"></textarea>
+                            <div style="margin-bottom: 8px;">
+                                <label style="display: block; margin-bottom: 6px;">参考答案：</label>
+                                <textarea placeholder="请输入参考答案" style="width: 100%; min-height: 80px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;"></textarea>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+
+            questionItem.innerHTML = questionHtml;
+            questionsContainer.appendChild(questionItem);
+        }
+
+        // 编辑题目
+        function editQuestion(btn) {
+            const questionItem = btn.closest('.question-item');
+            // 编辑题目逻辑
+            showNotification('编辑题目功能开发中', 'warning');
+        }
+
+        // 删除题目
+        function deleteQuestion(btn) {
+            const questionItem = btn.closest('.question-item');
+            questionItem.remove();
+            showNotification('题目已删除', 'success');
+        }
+
+        // 处理文件上传并解析
+        function handleFileUploadParse(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // 显示上传进度
+            const progressBar = document.querySelector('.upload-progress');
+            const progressBarInner = document.querySelector('.upload-progress-bar');
+            if (progressBar && progressBarInner) {
+                progressBar.style.display = 'block';
+                progressBarInner.style.width = '0%';
+            }
+
+            showNotification(`正在上传并解析文件：${file.name}...`, 'warning');
+
+            // 模拟文件上传和解析过程
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                if (progressBarInner) {
+                    progressBarInner.style.width = `${progress}%`;
+                }
+                if (progress >= 100) {
+                    clearInterval(interval);
+
+                    // 隐藏进度条
+                    if (progressBar) {
+                        progressBar.style.display = 'none';
+                    }
+
+                    // 添加文件到列表
+                    const uploadedFilesContainer = document.getElementById('uploaded-files');
+                    uploadedFilesContainer.innerHTML = `
+                        <div class="uploaded-file-item">
+                            <div>${file.name}</div>
+                            <div style="font-size: 12px; color: #9ca3af;">${(file.size / (1024 * 1024)).toFixed(2)} MB</div>
+                        </div>
+                    `;
+
+                    // 显示替换文件按钮
+                    const replaceFileBtn = document.getElementById('replace-file-btn');
+                    replaceFileBtn.style.display = 'block';
+
+                    // 模拟解析完成并填充数据
+                    setTimeout(() => {
+                        // 这里可以添加真实的解析逻辑，将文件内容填充到对应字段
+                        showNotification(`文件解析完成，已自动填充相关字段`, 'success');
+                    }, 500);
+                }
+            }, 100);
+
+            // 重置文件输入
+            event.target.value = '';
+        }
+
+        // 清除已上传文件
+        function clearUploadedFile() {
+            const uploadedFilesContainer = document.getElementById('uploaded-files');
+            const replaceFileBtn = document.getElementById('replace-file-btn');
+
+            uploadedFilesContainer.innerHTML = '';
+            replaceFileBtn.style.display = 'none';
+
+            showNotification('已清除当前文件，可重新上传', 'info');
+        }
+
+        // 解析病例文本
+        function parseCaseText() {
+            const pasteContent = document.getElementById('paste-content').value;
+            if (!pasteContent.trim()) {
+                showNotification('请先粘贴病例文本', 'error');
+                return;
+            }
+
+            // 解析病例文本逻辑
+            showNotification('正在解析病例文本...', 'warning');
+
+            // 模拟解析完成
+            setTimeout(() => {
+                // 这里可以添加真实的解析逻辑，将文本内容填充到对应字段
+                showNotification('病例文本解析完成，已自动填充相关字段', 'success');
+
+                // 清空文本域
+                document.getElementById('paste-content').value = '';
+            }, 1500);
+        }
+
+        // 加载病例模板
+        function loadTemplate(templateType) {
+            // 加载病例模板逻辑
+            showNotification(`正在加载${templateType}模板...`, 'warning');
+
+            // 模拟模板加载完成
+            setTimeout(() => {
+                showNotification(`${templateType}模板加载完成，已自动填充相关字段`, 'success');
+            }, 1500);
+        }
+
+        // 自动保存功能
+        function autoSave() {
+            // 自动保存逻辑
+            console.log('自动保存...');
+        }
+
+        // 文件上传处理函数
+        function handleFileUpload(event) {
+            const files = event.target.files;
+            const uploadedFilesContainer = document.getElementById('uploaded-literature');
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const fileItem = document.createElement('div');
+                fileItem.className = 'uploaded-file-item';
+                fileItem.innerHTML = `
+                    <div>${file.name}</div>
+                    <button type="button" onclick="removeUploadedFile(this)" style="background: none; border: none; color: #ef4444; cursor: pointer;">删除</button>
+                `;
+                uploadedFilesContainer.appendChild(fileItem);
+            }
+
+            // 重置文件输入
+            event.target.value = '';
+        }
+
+        // 删除已上传文件
+        function removeUploadedFile(button) {
+            button.closest('.uploaded-file-item').remove();
+        }
+
+        // 打开医生选择弹窗
+        function openDoctorSelection() {
+            // 这里可以实现医生选择弹窗的逻辑
+            // 暂时用alert模拟
+            alert('医生选择功能开发中...');
+        }
+
+        // 打开产品标签选择弹窗
+        function openProductTagSelection() {
+            // 这里可以实现产品标签选择弹窗的逻辑
+            // 暂时用alert模拟
+            alert('产品标签选择功能开发中...');
+        }
+
+        // 切换答题时长限制输入框
+        function toggleTimeLimitInput() {
+            const timeLimitContainer = document.getElementById('time-limit-input-container');
+            const limitedRadio = document.querySelector('input[name="time-limit"][value="limited"]');
+
+            if (limitedRadio.checked) {
+                timeLimitContainer.style.opacity = '1';
+                timeLimitContainer.style.pointerEvents = 'auto';
+            } else {
+                timeLimitContainer.style.opacity = '0.5';
+                timeLimitContainer.style.pointerEvents = 'none';
+            }
+        }
+
+        // 页面加载完成后初始化事件监听
+        document.addEventListener('DOMContentLoaded', function () {
+            // 页面加载完成后的初始化逻辑
+        });
+    </script>
+
+    <script>
+        // 下一步功能
+        function goToNextStep() {
+            showNotification('正在跳转到下一步...', 'warning');
+            // 这里可以添加跳转到下一步的逻辑
+            setTimeout(() => {
+                showNotification('已跳转到下一步', 'success');
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>

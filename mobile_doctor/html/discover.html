@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>发现 - 医生端</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/activities.css">
+</head>
+<body>
+  <!-- 手机屏幕模拟容器 -->
+  <div class="phone-container">
+    <!-- 屏幕内容容器 -->
+    <div class="screen-content">
+      <!-- 状态栏容器 -->
+      <div id="status-bar-container"></div>
+      
+      <!-- 头部组件 -->
+      <div id="header-container"></div>
+      
+      <!-- 内容区 -->
+      <main class="content">
+        <!-- 发现内容 -->
+        <div id="discover-content" class="module-content active">
+          
+          <!-- 一级标签页 -->
+          <div class="discover-primary-tabs">
+            <button class="primary-tab-btn active" data-tab="expert">大咖讲堂</button>
+            <button class="primary-tab-btn" data-tab="podcast">医学播客</button>
+            <button class="primary-tab-btn" data-tab="patient">患者管理</button>
+          </div>
+          
+          <!-- 大咖讲堂内容 -->
+          <div class="tab-panel active" id="expert-panel">
+            <!-- 二级标签页 -->
+            <div class="discover-secondary-tabs">
+              <button class="secondary-tab-btn active" data-category="live">直播</button>
+              <button class="secondary-tab-btn" data-category="meeting">会议</button>
+              <button class="secondary-tab-btn" data-category="shop">大咖店铺</button>
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="8" stroke="#999" stroke-width="2"/>
+                <path d="M21 21l-4.35-4.35" stroke="#999" stroke-width="2" stroke-linecap="round"/>
+                <path d="M16 16l-2 2" stroke="#999" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            
+            <!-- 直播列表 -->
+            <div class="live-list">
+              <!-- 直播项1 -->
+              <div class="live-item">
+                <div class="live-item-left">
+                  <div class="live-status upcoming">即将开播</div>
+                  <div class="live-channel">直播频道</div>
+                </div>
+                <div class="live-item-right">
+                  <div class="live-title">直播</div>
+                  <div class="live-speaker">主讲人：梁辉宇 主治医师</div>
+                  <div class="live-time">2026-01-31 00:00:00</div>
+                </div>
+              </div>
+              
+              <!-- 直播项2 -->
+              <div class="live-item">
+                <div class="live-item-left">
+                  <div class="live-channel">直播频道</div>
+                </div>
+                <div class="live-item-right">
+                  <div class="live-title">123</div>
+                  <div class="live-speaker">主讲人：吴田伟 副主任医师</div>
+                  <div class="live-views">18观看</div>
+                </div>
+              </div>
+              
+              <!-- 直播项3 -->
+              <div class="live-item">
+                <div class="live-item-left">
+                  <div class="live-status ongoing">直播中</div>
+                  <div class="live-channel">直播频道</div>
+                </div>
+                <div class="live-item-right">
+                  <div class="live-title">123</div>
+                  <div class="live-speaker">主讲人：吴田伟 副主任医师</div>
+                  <div class="live-views">36观看</div>
+                </div>
+              </div>
+              
+              <!-- 直播项4 -->
+              <div class="live-item">
+                <div class="live-item-left">
+                  <div class="live-channel">直播频道</div>
+                </div>
+                <div class="live-item-right">
+                  <div class="live-title">长卿测试直播</div>
+                  <div class="live-speaker">主讲人：吴田伟 主管护师</div>
+                  <div class="live-views">9观看</div>
+                </div>
+              </div>
+              
+              <!-- 直播项5 -->
+              <div class="live-item">
+                <div class="live-item-left">
+                  <div class="live-status upcoming">即将开播</div>
+                  <div class="live-channel">直播频道</div>
+                </div>
+                <div class="live-item-right">
+                  <div class="live-title">测试淄博</div>
+                  <div class="live-speaker">主讲人：吴田伟 副主任医师</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 医学播客内容 -->
+          <div class="tab-panel" id="podcast-panel">
+            <!-- 二级标签页 -->
+            <div class="discover-secondary-tabs">
+              <button class="secondary-tab-btn active" data-category="all">全部</button>
+              <button class="secondary-tab-btn" data-category="cardio">心血管</button>
+              <button class="secondary-tab-btn" data-category="neuro">神经科</button>
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="8" stroke="#999" stroke-width="2"/>
+                <path d="M21 21l-4.35-4.35" stroke="#999" stroke-width="2" stroke-linecap="round"/>
+                <path d="M16 16l-2 2" stroke="#999" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            
+            <!-- 播客列表 -->
+            <div class="podcast-list">
+              <div class="empty-state">
+                <div class="empty-icon">🎙️</div>
+                <div class="empty-text">医学播客内容待实现</div>
+                <div class="empty-hint">敬请期待更多精彩内容</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 患者管理内容 -->
+          <div class="tab-panel" id="patient-panel">
+            <!-- 二级标签页 -->
+            <div class="discover-secondary-tabs">
+              <button class="secondary-tab-btn active" data-category="all">全部患者</button>
+              <button class="secondary-tab-btn" data-category="follow">随访中</button>
+              <button class="secondary-tab-btn" data-category="completed">已完成</button>
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="8" stroke="#999" stroke-width="2"/>
+                <path d="M21 21l-4.35-4.35" stroke="#999" stroke-width="2" stroke-linecap="round"/>
+                <path d="M16 16l-2 2" stroke="#999" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            
+            <!-- 患者列表 -->
+            <div class="patient-list">
+              <div class="empty-state">
+                <div class="empty-icon">👥</div>
+                <div class="empty-text">患者管理内容待实现</div>
+                <div class="empty-hint">敬请期待更多功能</div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </main>
+      
+      <!-- 底部组件 -->
+      <div id="footer-container"></div>
+    </div>
+  </div>
+  
+  <!-- 脚本文件 -->
+  <script src="../js/scripts.js"></script>
+  <script>
+    // 页面加载完成后初始化组件，传递页面标题
+    document.addEventListener('DOMContentLoaded', function() {
+      initPageComponents({ title: '发现' });
+      
+      // 一级标签切换
+      const primaryTabs = document.querySelectorAll('.primary-tab-btn');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+      
+      primaryTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const targetTab = this.dataset.tab;
+          
+          // 更新一级标签状态
+          primaryTabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          
+          // 显示对应的面板
+          tabPanels.forEach(panel => {
+            panel.classList.remove('active');
+            if (panel.id === targetTab + '-panel') {
+              panel.classList.add('active');
+            }
+          });
+        });
+      });
+      
+      // 二级标签切换
+      const secondaryTabs = document.querySelectorAll('.secondary-tab-btn');
+      
+      secondaryTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const parentPanel = this.closest('.tab-panel');
+          const tabs = parentPanel.querySelectorAll('.secondary-tab-btn');
+          
+          tabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+    });
+  </script>
+  <script src="../js/activities.js"></script>
+</body>
+</html>

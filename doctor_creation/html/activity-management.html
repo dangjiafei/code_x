@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活动管理 - 创作者中心</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js"></script>
+</head>
+<body>
+    <!-- 组件加载脚本 -->
+    <script>
+        async function loadComponents() {
+            const headerResponse = await fetch('components/header.html');
+            const headerContent = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerContent;
+
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarContent = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarContent;
+
+            if (typeof initializeMenu === 'function') {
+                initializeMenu();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            loadComponents();
+            initializeActivityNameSearch();
+        });
+
+        function initializeActivityNameSearch() {
+            const searchConfigs = [
+                { inputId: 'myActivitySearch', contentId: 'content-mine' },
+                { inputId: 'endedActivitySearch', contentId: 'content-ended' }
+            ];
+
+            searchConfigs.forEach(function(config) {
+                const input = document.getElementById(config.inputId);
+                const content = document.getElementById(config.contentId);
+                if (!input || !content) {
+                    return;
+                }
+
+                const cards = Array.from(content.querySelectorAll('.managed-activity-card'));
+                input.addEventListener('input', function() {
+                    const keyword = this.value.trim().toLowerCase();
+                    cards.forEach(function(card) {
+                        const title = card.querySelector('h3')?.textContent.trim().toLowerCase() || '';
+                        card.style.display = keyword === '' || title.includes(keyword) ? '' : 'none';
+                    });
+                });
+            });
+        }
+    </script>
+
+    <div id="header-placeholder"></div>
+
+    <div class="main-container">
+        <div id="sidebar-placeholder"></div>
+
+        <main class="content-area activity-management-page">
+            <div class="service-tabs activity-status-tabs">
+                <div class="service-tab active" data-target="content-mine">我的活动 <span class="tab-count">8</span></div>
+                <div class="service-tab" data-target="content-ended">已结束 <span class="tab-count">4</span></div>
+            </div>
+
+            <div class="content-card activity-management-card">
+                <div class="filter-bars">
+                    <div class="filter-bar active" data-filter-for="content-mine">
+                        <div class="filter-items-container">
+                            <div class="filter-item">
+                                <input id="myActivitySearch" type="text" placeholder="搜索活动名称" style="width: 240px;">
+                            </div>
+                            <div class="filter-item">
+                                <select>
+                                    <option>全部医学领域</option>
+                                    <option>心血管</option>
+                                    <option>内分泌</option>
+                                    <option>神经科</option>
+                                    <option>消化科</option>
+                                    <option>呼吸科</option>
+                                    <option>骨科</option>
+                                    <option>肿瘤科</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-bar" data-filter-for="content-ended" style="display: none;">
+                        <div class="filter-items-container">
+                            <div class="filter-item">
+                                <input id="endedActivitySearch" type="text" placeholder="搜索活动名称" style="width: 220px;">
+                            </div>
+                            <div class="filter-item">
+                                <select>
+                                    <option>全部医学领域</option>
+                                    <option>内分泌</option>
+                                    <option>皮肤科</option>
+                                    <option>心血管</option>
+                                    <option>儿科</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-mine" class="tab-content active">
+                    <div class="management-section-head">
+                        <div>
+                            <p>可进入详情查看活动开放主题和创作要求。</p>
+                        </div>
+                    </div>
+
+                    <div class="managed-activity-grid">
+                        <article class="managed-activity-card">
+                            <div class="activity-card-cover cover-cardiovascular status-reviewing" data-meta="心血管 · 1篇投稿" data-status="审核中"></div>
+                            <h3>心血管真实世界诊疗经验专题征集</h3>
+                            <p>投稿主题：冠心病诊疗新进展</p>
+                            <div class="content-type-tags">
+                                <span>医学播客</span>
+                                <span>在线互动病例</span>
+                                <span>手术/操作视频</span>
+                            </div>
+                            <div class="activity-metrics-row">
+                                <div><strong>1篇</strong><span>已投稿</span></div>
+                                <div><strong class="metric-subtle">审核中</strong><span>当前状态</span></div>
+                                <div><strong class="metric-subtle">心血管</strong><span>医学领域</span></div>
+                            </div>
+                            <div class="managed-card-actions">
+                                <a href="marketing-detail.html" class="action-btn primary">查看详情</a>
+                            </div>
+                        </article>
+
+                        <article class="managed-activity-card">
+                            <div class="activity-card-cover cover-endocrine status-completed" data-meta="内分泌 · 1篇投稿" data-status="已完成"></div>
+                            <h3>糖尿病规范化治疗病例征集</h3>
+                            <p>投稿主题：糖尿病并发症管理病例</p>
+                            <div class="content-type-tags">
+                                <span>在线互动病例</span>
+                                <span>医学播客</span>
+                            </div>
+                            <div class="activity-metrics-row">
+                                <div><strong>1篇</strong><span>已投稿</span></div>
+                                <div><strong class="metric-subtle">已完成</strong><span>当前状态</span></div>
+                                <div><strong class="metric-subtle">内分泌</strong><span>医学领域</span></div>
+                            </div>
+                            <div class="managed-card-actions">
+                                <a href="case-collection-detail.html" class="action-btn primary">查看详情</a>
+                            </div>
+                        </article>
+
+                        <article class="managed-activity-card">
+                            <div class="activity-card-cover cover-neurology status-pending" data-meta="神经科 · 3天剩余" data-status="待投稿"></div>
+                            <h3>神经系统疾病诊疗经验征集</h3>
+                            <p>选择主题：疑难诊断路径复盘</p>
+                            <div class="content-type-tags">
+                                <span>医学播客</span>
+                                <span>在线互动病例</span>
+                            </div>
+                            <div class="activity-metrics-row">
+                                <div><strong>0篇</strong><span>已投稿</span></div>
+                                <div><strong class="metric-subtle">待投稿</strong><span>当前状态</span></div>
+                                <div><strong class="metric-subtle">3天</strong><span>剩余时间</span></div>
+                            </div>
+                            <div class="managed-card-actions">
+                                <a href="podcast-detail.html" class="action-btn primary">查看详情</a>
+                            </div>
+                        </article>
+
+                        <article class="managed-activity-card">
+                            <div class="activity-card-cover cover-gastro status-rejected" data-meta="消化科 · 1篇投稿" data-status="未通过"></div>
+                            <h3>消化系统疾病诊疗病例征集</h3>
+                            <p>投稿主题：消化系统疾病诊疗病例</p>
+                            <div class="content-type-tags">
+                                <span>在线互动病例</span>
+                            </div>
+                            <div class="activity-metrics-row">
+                                <div><strong>1篇</strong><span>已投稿</span></div>
+                                <div><strong class="metric-subtle status-text-rejected">未通过</strong><span>当前状态</span></div>
+                                <div><strong class="metric-subtle">可修改</strong><span>处理方式</span></div>
+                            </div>
+                            <div class="managed-card-actions">
+                                <a href="case-collection-detail.html" class="action-btn primary">查看详情</a>
+                            </div>
+                        </article>
+
+                        <article class="managed-activity-card">
+                            <div class="activity-card-cover cover-pediatrics status-pending" data-meta="呼吸科 · 6天剩余" data-status="待投稿"></div>
+                            <h3>呼吸系统慢病管理经验征集</h3>
+                            <p>选择主题：慢阻肺长期随访管理</p>
+                            <div class="content-type-tags">
+                                <span>医学播客</span>
+                                <span>在线互动病例</span>
+                            </div>
+                            <div class="activity-metrics-row">
+                                <div><strong>0篇</strong><span>已投稿</span></div>
+                                <div><strong class="metric-subtle">待投稿</strong><span>当前状态</span></div>
+                                <div><strong class="metric-subtle">呼吸科</strong><span>医学领域</span></div>
+                            </div>
+                            <div class="managed-card-actions">
+                                <a href="podcast-detail.html" class="action-btn primary">查看详情</a>
+                            </div>
+                        </article>
+
+                        <article class="managed-activity-card">
+                            <div class="activity-card-cover cover-orthopedics status-reviewing" data-meta="骨科 · 1篇投稿" data-status="审核中"></div>
+                            <h3>骨科围术期管理经验征集</h3>
+                            <p>投稿主题：术后康复路径管理</p>
+                            <div class="content-type-tags">
+                                <span>手术/操作视频</span>
+                                <span>医学播客</span>
+                            </div>
+                            <div class="activity-metrics-row">
+                                <div><strong>1篇</strong><span>已投稿</span></div>
+                                <div><strong class="metric-subtle">审核中</strong><span>当前状态</span></div>
+                                <div><strong class="metric-subtle">骨科</strong><span>医学领域</span></div>
+                            </div>
+                            <div class="managed-card-actions">
+                                <a href="marketing-detail.html" class="action-btn primary">查看详情</a>
+                            </div>
+                        </article>
+
+                        <article class="managed-activity-card">
+                            <div class="activity-card-cover cover-dermatology status-rejected" data-meta="皮肤科 · 1篇投稿" data-status="未通过"></div>
+                            <h3>皮肤科疑难病例讨论专题</h3>
+                            <p>投稿主题：皮疹鉴别诊断复盘</p>
+                            <div class="content-type-tags">
+                                <span>在线互动病例</span>
+                            </div>
+                            <div class="activity-metrics-row">
+                                <div><strong>1篇</strong><span>已投稿</span></div>
+                                <div><strong class="metric-subtle status-text-rejected">未通过</strong><span>当前状态</span></div>
+                                <div><strong class="metric-subtle">皮肤科</strong><span>医学领域</span></div>
+                            </div>
+                            <div class="managed-card-actions">
+                                <a href="case-collection-detail.html" class="action-btn primary">查看详情</a>
+                            </div>
+                        </article>
+
+                        <article class="managed-activity-card">
+                            <div class="activity-card-cover cover-cardiovascular status-completed" data-meta="肿瘤科 · 2篇投稿" data-status="已完成"></div>
+                            <h3>肿瘤支持治疗真实病例征集</h3>
+                            <p>投稿主题：化疗不良反应管理经验</p>
+                            <div class="content-type-tags">
+                                <span>在线互动病例</span>
+                                <span>医学播客</span>
+                            </div>
+                            <div class="activity-metrics-row">
+                                <div><strong>2篇</strong><span>已投稿</span></div>
+                                <div><strong class="metric-subtle">已完成</strong><span>当前状态</span></div>
+                                <div><strong class="metric-subtle">肿瘤科</strong><span>医学领域</span></div>
+                            </div>
+                            <div class="managed-card-actions">
+                                <a href="marketing-detail.html" class="action-btn primary">查看详情</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <div id="content-ended" class="tab-content" style="display: none;">
+                    <div class="management-section-head">
+                        <div>
+                            <p>活动结束后仍可回看活动信息、主题方向和你的历史投稿。</p>
+                        </div>
+                    </div>
+
+                    <div class="managed-activity-grid">
+                        <article class="managed-activity-card muted">
+                            <div class="activity-card-cover cover-endocrine status-ended" data-meta="内分泌 · 1篇投稿" data-status="已结束"></div>
+                            <h3>糖尿病规范化治疗病例征集</h3>
+                            <p>活动方向：糖尿病长期管理与并发症干预</p>
+                            <div class="content-type-tags">
+                                <span>在线互动病例</span>
+                                <span>医学播客</span>
+                            </div>
+                            <div class="activity-metrics-row">
+                                <div><strong>4</strong><span>全部主题</span></div>
+                                <div><strong class="metric-subtle">1篇</strong><span>我的投稿</span></div>
+                                <div><strong class="metric-subtle">已结束</strong><span>当前状态</span></div>
+                            </div>
+                            <div class="managed-card-actions">
+                                <a href="marketing-detail.html" class="action-btn primary">查看详情</a>
+                            </div>
+                        </article>
+
+                        <article class="managed-activity-card muted">
+                            <div class="activity-card-cover cover-dermatology status-ended" data-meta="皮肤科 · 0篇投稿" data-status="已结束"></div>
+                            <h3>皮肤科疑难病例讨论专题</h3>
+                            <p>活动方向：皮肤科疑难辨证与治疗复盘</p>
+                            <div class="content-type-tags">
+                                <span>在线互动病例</span>
+                            </div>
+                            <div class="activity-metrics-row">
+                                <div><strong>2</strong><span>全部主题</span></div>
+                                <div><strong class="metric-subtle">0篇</strong><span>我的投稿</span></div>
+                                <div><strong class="metric-subtle">已结束</strong><span>当前状态</span></div>
+                            </div>
+                            <div class="managed-card-actions">
+                                <a href="marketing-detail.html" class="action-btn primary">查看详情</a>
+                            </div>
+                        </article>
+
+                        <article class="managed-activity-card muted">
+                            <div class="activity-card-cover cover-cardiovascular status-ended" data-meta="心血管 · 2篇投稿" data-status="已结束"></div>
+                            <h3>冠心病介入治疗经验征集</h3>
+                            <p>活动方向：介入治疗决策与术后长期管理</p>
+                            <div class="content-type-tags">
+                                <span>医学播客</span>
+                                <span>手术/操作视频</span>
+                            </div>
+                            <div class="activity-metrics-row">
+                                <div><strong>5</strong><span>全部主题</span></div>
+                                <div><strong class="metric-subtle">2篇</strong><span>我的投稿</span></div>
+                                <div><strong class="metric-subtle">已结束</strong><span>当前状态</span></div>
+                            </div>
+                            <div class="managed-card-actions">
+                                <a href="marketing-detail.html" class="action-btn primary">查看详情</a>
+                            </div>
+                        </article>
+
+                        <article class="managed-activity-card muted">
+                            <div class="activity-card-cover cover-pediatrics status-ended" data-meta="儿科 · 1篇投稿" data-status="已结束"></div>
+                            <h3>儿童呼吸道感染病例征集</h3>
+                            <p>活动方向：儿童呼吸道感染诊疗与随访</p>
+                            <div class="content-type-tags">
+                                <span>在线互动病例</span>
+                            </div>
+                            <div class="activity-metrics-row">
+                                <div><strong>3</strong><span>全部主题</span></div>
+                                <div><strong class="metric-subtle">1篇</strong><span>我的投稿</span></div>
+                                <div><strong class="metric-subtle">已结束</strong><span>当前状态</span></div>
+                            </div>
+                            <div class="managed-card-actions">
+                                <a href="marketing-detail.html" class="action-btn primary">查看详情</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

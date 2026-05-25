@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程管理 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/course-management.css">
+</head>
+<body>
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+            <!-- 服务类型标签 -->
+            <div class="service-tabs">
+                <div class="service-tab active">全部</div>
+                <div class="service-tab">111</div>
+                <div class="service-tab">222</div>
+            </div>
+
+            <!-- 功能区和课程内容区合并卡片 -->
+            <div class="content-card">
+                <!-- 筛选栏 -->
+                <div class="filter-bar">
+                    <div class="filter-items-container">
+                        <div class="filter-item">
+                            <input type="text" placeholder="搜索课程名称或ID" style="width: 180px;">
+                        </div>
+                        <div class="filter-item">
+                            <select style="width: 140px;">
+                                <option>课程来源</option>
+                                <option>来源1</option>
+                                <option>来源2</option>
+                                <option>来源3</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <select style="width: 140px;">
+                                <option>产品标签</option>
+                                <option>标签1</option>
+                                <option>标签2</option>
+                                <option>标签3</option>
+                            </select>
+                        </div>
+                        <!-- 默认隐藏的筛选选项 -->
+                        <div class="filter-item hidden" id="promotion-department">
+                            <select style="width: 140px;">
+                                <option>推广科室</option>
+                                <option>科室1</option>
+                                <option>科室2</option>
+                                <option>科室3</option>
+                            </select>
+                        </div>
+                        <div class="filter-item hidden" id="custom-tags">
+                            <select style="width: 140px;">
+                                <option>自定义标签</option>
+                                <option>标签1</option>
+                                <option>标签2</option>
+                                <option>标签3</option>
+                            </select>
+                        </div>
+                        <div class="filter-item date-range hidden" id="date-range">
+                            <input type="date" value="2025-08-27" style="width: 140px;">
+                            <span class="date-separator">至</span>
+                            <input type="date" value="2025-11-27" style="width: 140px;">
+                        </div>
+                        <!-- 更多筛选按钮 -->
+                        <div class="filter-item">
+                            <button class="more-filter-btn" id="moreFilterBtn">
+                                更多筛选
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px; vertical-align: middle;">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <div class="batch-actions" style="display: none;">
+                            <button class="batch-btn">批量删除</button>
+                        </div>
+                        
+                        <button class="action-btn edit">批量操作</button>
+                        <button class="upload-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            新建课程
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 筛选栏交互功能 -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // 获取更多筛选按钮和需要隐藏的筛选选项
+                        const moreFilterBtn = document.getElementById('moreFilterBtn');
+                        const hiddenFilters = document.querySelectorAll('.filter-item.hidden');
+                        
+                        // 点击更多筛选按钮时显示/隐藏筛选选项
+                        moreFilterBtn.addEventListener('click', function() {
+                            // 切换隐藏筛选选项的显示状态
+                            hiddenFilters.forEach(filter => {
+                                filter.classList.toggle('hidden');
+                            });
+                            
+                            // 切换按钮文本和图标
+                            if (moreFilterBtn.textContent.includes('更多筛选')) {
+                                moreFilterBtn.innerHTML = '收起筛选 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px; vertical-align: middle;"><polyline points="6 15 12 9 18 15"></polyline></svg>';
+                            } else {
+                                moreFilterBtn.innerHTML = '更多筛选 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px; vertical-align: middle;"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+                            }
+                        });
+                    });
+                </script>
+
+                <!-- 课程网格布局 -->
+                <div class="courses-grid">
+                    <!-- 课程卡片示例 -->
+                    <div class="course-card">
+                        <img src="https://picsum.photos/320/160?random=1" alt="心血管疾病课程" class="course-image">
+                        <div class="course-content">
+                            <h3 class="course-title">心血管疾病防治新进展</h3>
+                            <p class="course-description">本课程将探讨心血管疾病的最新防治策略，包括药物治疗、生活方式干预等内容，旨在提高临床医生的诊疗水平。</p>
+
+                            <div class="course-tags">
+                                <span class="course-tag product-tag">荆防颗粒</span>
+                                <span class="course-tag">心血管</span>
+                                <span class="course-tag">内科</span>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-created-time">2025-10-14 13:23</div>
+                                <div class="course-actions">
+                                    <button class="action-btn edit">设置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 课程卡片示例 -->
+                    <div class="course-card">
+                        <img src="https://picsum.photos/320/160?random=2" alt="糖尿病管理课程" class="course-image">
+                        <div class="course-content">
+                            <h3 class="course-title">糖尿病患者管理优化</h3>
+                            <p class="course-description">探讨糖尿病患者的全面管理方案，包括血糖监测、饮食指导、运动处方等内容，提升患者生活质量。</p>
+
+                            <div class="course-tags">
+                                <span class="course-tag product-tag">盖笛欣</span>
+                                <span class="course-tag">糖尿病</span>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-created-time">2025-10-13 15:45</div>
+                                <div class="course-actions">
+                                    <button class="action-btn edit">设置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 课程卡片示例 -->
+                    <div class="course-card">
+                        <img src="https://picsum.photos/320/160?random=3" alt="儿科疾病课程" class="course-image">
+                        <div class="course-content">
+                            <h3 class="course-title">儿科常见疾病诊疗</h3>
+                            <p class="course-description">介绍儿科常见疾病的诊断与治疗方法，包括呼吸道感染、消化道疾病等，提高儿科医生的临床技能。</p>
+
+                            <div class="course-tags">
+                                <span class="course-tag product-tag">砂糖产品</span>
+                                <span class="course-tag">儿科</span>
+                                <span class="course-tag">呼吸系统</span>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-created-time">2025-10-12 09:30</div>
+                                <div class="course-actions">
+                                    <button class="action-btn edit">设置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 课程卡片示例 -->
+                    <div class="course-card">
+                        <img src="https://picsum.photos/320/160?random=4" alt="呼吸系统课程" class="course-image">
+                        <div class="course-content">
+                            <h3 class="course-title">呼吸系统疾病诊治进展</h3>
+                            <p class="course-description">深入探讨呼吸系统疾病的最新诊疗进展，包括慢性阻塞性肺疾病、哮喘等常见疾病的治疗新策略。</p>
+
+                            <div class="course-tags">
+                                <span class="course-tag product-tag">荆防颗粒</span>
+                                <span class="course-tag">呼吸系统</span>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-created-time">2025-10-11 16:15</div>
+                                <div class="course-actions">
+                                    <button class="action-btn edit">设置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 课程卡片示例 -->
+                    <div class="course-card">
+                        <img src="https://picsum.photos/320/160?random=5" alt="神经系统课程" class="course-image">
+                        <div class="course-content">
+                            <h3 class="course-title">神经系统疾病护理新进展</h3>
+                            <p class="course-description">介绍神经系统疾病患者的护理要点，包括康复训练、并发症预防等内容，提升护理质量。</p>
+
+                            <div class="course-tags">
+                                <span class="course-tag product-tag">盖笛欣</span>
+                                <span class="course-tag">神经内科</span>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-created-time">2025-10-10 14:20</div>
+                                <div class="course-actions">
+                                    <button class="action-btn edit">设置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 课程卡片示例 -->
+                    <div class="course-card">
+                        <img src="https://picsum.photos/320/160?random=6" alt="消化系统课程" class="course-image">
+                        <div class="course-content">
+                            <h3 class="course-title">消化系统疾病诊断与治疗</h3>
+                            <p class="course-description">探讨消化系统疾病的诊断方法和治疗策略，包括胃镜检查、药物治疗等内容，提高临床诊疗水平。</p>
+
+                            <div class="course-tags">
+                                <span class="course-tag product-tag">test1</span>
+                                <span class="course-tag">消化系统</span>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-created-time">2025-10-09 11:05</div>
+                                <div class="course-actions">
+                                    <button class="action-btn edit">设置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 课程卡片示例 -->
+                    <div class="course-card">
+                        <img src="https://picsum.photos/320/160?random=7" alt="内分泌系统课程" class="course-image">
+                        <div class="course-content">
+                            <h3 class="course-title">内分泌系统疾病最新进展</h3>
+                            <p class="course-description">介绍内分泌系统疾病的最新研究进展，包括甲状腺疾病、肾上腺疾病等内容，拓展临床医生的知识领域。</p>
+
+                            <div class="course-tags">
+                                <span class="course-tag product-tag">111</span>
+                                <span class="course-tag">内分泌</span>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-created-time">2025-10-08 10:10</div>
+                                <div class="course-actions">
+                                    <button class="action-btn edit">设置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 课程卡片示例 -->
+                    <div class="course-card">
+                        <img src="https://picsum.photos/320/160?random=8" alt="泌尿系统课程" class="course-image">
+                        <div class="course-content">
+                            <h3 class="course-title">泌尿系统疾病护理指南</h3>
+                            <p class="course-description">探讨泌尿系统疾病患者的护理规范，包括 catheter护理、尿液监测等内容，提高护理质量。</p>
+
+                            <div class="course-tags">
+                                <span class="course-tag product-tag">荆防颗粒</span>
+                                <span class="course-tag">泌尿系统</span>
+                                <span class="course-tag">护理</span>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-created-time">2025-10-07 15:30</div>
+                                <div class="course-actions">
+                                    <button class="action-btn edit">设置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分页 -->
+                <div class="pagination">
+                    <div class="pagination-info">
+                        共 12 条记录
+                    </div>
+                    <div class="pagination-buttons">
+                        <button class="page-btn" disabled>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loading" id="loading" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>AI正在思考...</p>
+    </div>
+
+    <script src="../js/script.js?v=1"></script>
+    <script src="../js/menu.js?v=1"></script>
+    <script>
+        // 动态加载公共组件
+        async function loadComponents() {
+            try {
+                // 加载顶部导航
+                const headerResponse = await fetch('components/header.html');
+                const headerHtml = await headerResponse.text();
+                document.getElementById('header-placeholder').innerHTML = headerHtml;
+                
+                // 加载左侧侧边栏
+                const sidebarResponse = await fetch('components/sidebar.html');
+                const sidebarHtml = await sidebarResponse.text();
+                document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+                
+                // 初始化菜单
+                initializeMenu();
+            } catch (error) {
+                console.error('加载组件失败:', error);
+            }
+        }
+        
+        // 页面加载时执行
+        window.addEventListener('DOMContentLoaded', loadComponents);
+        
+        // 服务标签切换
+        const serviceTabs = document.querySelectorAll('.service-tab');
+        
+        serviceTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                serviceTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                // 这里可以添加切换服务类型的逻辑
+            });
+        });
+        
+        // 课程类型标签切换
+        const courseTypeTabs = document.querySelectorAll('.course-type-tab');
+        
+        courseTypeTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                courseTypeTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                // 这里可以添加切换课程类型的逻辑
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专家评审 - 在线互动病例征集</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js"></script>
+</head>
+<body>
+    <!-- 组件加载脚本 -->
+    <script>
+        async function loadComponents() {
+            // 加载顶部导航栏
+            const headerResponse = await fetch('components/header.html');
+            const headerContent = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerContent;
+            
+            // 加载左侧侧边栏
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarContent = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarContent;
+            
+            // 在侧边栏加载完成后初始化菜单
+            if (typeof initializeMenu === 'function') {
+                initializeMenu();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 主要内容区域 -->
+        <main class="content-area">
+            <!-- 标签页 -->
+            <div class="service-tabs">
+                <div class="service-tab active" data-tab="podcast">医学播客</div>
+                <div class="service-tab" data-tab="case">在线互动病例</div>
+            </div>
+            
+            <!-- 功能区和课程内容区合并卡片 -->
+            <div class="content-card">
+                <!-- 标签页内容 -->
+                <div class="tab-content active" id="podcast-content">
+                    <!-- 状态切换标签 -->
+                    <div class="record-tabs" style="display: flex;">
+                        <div class="record-tab active" data-status="all">全部作品</div>
+                        <div class="record-tab" data-status="pending">待评审 <span style="color: #0022ff;">4</span></div>
+                        <div class="record-tab" data-status="reviewed">已评审</div>
+                    </div>
+                    
+                    <!-- 搜索栏 -->
+                    <div class="filter-bar" style="display: flex;">
+                        <div class="filter-items-container">
+                            <div class="filter-item">
+                                <input type="text" placeholder="搜索作品名称" style="width: 200px;">
+                                <button class="action-btn" style="margin-left: 8px;">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="record-table">
+                            <thead>
+                            <tr>
+                                <th>作品名称</th>
+                                <th>当前状态</th>
+                                <th>截止时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">心血管疾病防治新进展</div>
+                                        <div class="material-id">ID: POD001</div>
+                                    </td>
+                                    <td><span class="status-tag pending">待评审</span></td>
+                                    <td><span class="deadline" data-deadline="2026-01-07T12:00:00">剩余 1 天</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" onclick="window.location.href='expert-review-detail.html?id=4'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">糖尿病患者管理优化</div>
+                                        <div class="material-id">ID: POD002</div>
+                                    </td>
+                                    <td><span class="status-tag pending">待评审</span></td>
+                                    <td><span class="deadline" data-deadline="2026-01-06T18:00:00">剩余 6 小时</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" onclick="window.location.href='expert-review-detail.html?id=5'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">儿科常见疾病诊疗</div>
+                                        <div class="material-id">ID: POD003</div>
+                                    </td>
+                                    <td><span class="status-tag pending">待评审</span></td>
+                                    <td><span class="deadline" data-deadline="2026-01-06T15:30:00">剩余 3 小时</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" onclick="window.location.href='expert-review-detail.html?id=6'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">呼吸系统疾病诊治进展</div>
+                                        <div class="material-id">ID: POD004</div>
+                                    </td>
+                                    <td><span class="status-tag pending">待评审</span></td>
+                                    <td><span class="deadline" data-deadline="2026-01-10T09:00:00">剩余 4 天</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" onclick="window.location.href='expert-review-detail.html?id=7'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- 测试状态：待评审 + 超过15天 -->
+                                <tr>
+                                    <td>
+                                        <div class="material-title">肿瘤治疗新进展</div>
+                                        <div class="material-id">ID: POD007</div>
+                                    </td>
+                                    <td><span class="status-tag pending">待评审</span></td>
+                                    <td><span class="deadline" data-deadline="2026-02-01T14:00:00">剩余 26 天</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" onclick="window.location.href='expert-review-detail.html?id=12'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- 测试状态：待评审 + 已过期 -->
+                                <tr>
+                                    <td>
+                                        <div class="material-title">内分泌疾病诊治</div>
+                                        <div class="material-id">ID: POD008</div>
+                                    </td>
+                                    <td><span class="status-tag pending">待评审</span></td>
+                                    <td><span class="deadline" data-deadline="2025-12-01T12:00:00">已过期</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" onclick="window.location.href='expert-review-detail.html?id=13'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- 测试状态：已评审 + 未过期 -->
+                                <tr>
+                                    <td>
+                                        <div class="material-title">肾病综合征治疗</div>
+                                        <div class="material-id">ID: POD009</div>
+                                    </td>
+                                    <td><span class="status-tag reviewed">已评审</span></td>
+                                    <td><span class="deadline" data-deadline="2026-01-08T10:00:00">剩余 2 天</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view reviewed-btn" onclick="window.location.href='expert-review-detail.html?id=14'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">消化系统疾病诊疗</div>
+                                        <div class="material-id">ID: POD005</div>
+                                    </td>
+                                    <td><span class="status-tag reviewed">已评审</span></td>
+                                    <td><span class="deadline expired">已过期</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view reviewed-btn" onclick="window.location.href='expert-review-detail.html?id=10'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">神经系统疾病诊治</div>
+                                        <div class="material-id">ID: POD006</div>
+                                    </td>
+                                    <td><span class="status-tag reviewed">已评审</span></td>
+                                    <td><span class="deadline expired">已过期</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view reviewed-btn" onclick="window.location.href='expert-review-detail.html?id=11'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="case-content">
+                    <!-- 状态切换标签 -->
+                    <div class="record-tabs" style="display: flex;">
+                        <div class="record-tab active" data-status="all">全部作品</div>
+                        <div class="record-tab" data-status="pending">待评审 <span style="color: #0022ff;">3</span></div>
+                        <div class="record-tab" data-status="reviewed">已评审</div>
+                    </div>
+                    
+                    <!-- 搜索栏 -->
+                    <div class="filter-bar" style="display: flex;">
+                        <div class="filter-items-container">
+                            <div class="filter-item">
+                                <input type="text" placeholder="搜索作品名称" style="width: 200px;">
+                                <button class="action-btn" style="margin-left: 8px;">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="record-table">
+                            <thead>
+                                <tr>
+                                    <th>作品名称</th>
+                                    <th>当前状态</th>
+                                    <th>截止时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">糖尿病并发症管理病例征集</div>
+                                        <div class="material-id">ID: CASE001</div>
+                                    </td>
+                                    <td><span class="status-tag pending">待评审</span></td>
+                                    <td><span class="deadline" data-deadline="2026-01-08T10:00:00">剩余 2 天</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" onclick="window.location.href='expert-review-detail.html?id=1'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">心血管疾病防治新进展</div>
+                                        <div class="material-id">ID: CASE002</div>
+                                    </td>
+                                    <td><span class="status-tag pending">待评审</span></td>
+                                    <td><span class="deadline" data-deadline="2026-01-06T20:00:00">剩余 8 小时</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" onclick="window.location.href='expert-review-detail.html?id=2'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">高血压的个体化治疗</div>
+                                        <div class="material-id">ID: CASE003</div>
+                                    </td>
+                                    <td><span class="status-tag pending">待评审</span></td>
+                                    <td><span class="deadline" data-deadline="2026-01-06T14:00:00">剩余 2 小时</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" onclick="window.location.href='expert-review-detail.html?id=3'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">呼吸系统疾病诊治进展</div>
+                                        <div class="material-id">ID: CASE004</div>
+                                    </td>
+                                    <td><span class="status-tag reviewed">已评审</span></td>
+                                    <td><span class="deadline expired">已过期</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view reviewed-btn" onclick="window.location.href='expert-review-detail.html?id=8'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="material-title">消化系统疾病诊疗</div>
+                                        <div class="material-id">ID: CASE005</div>
+                                    </td>
+                                    <td><span class="status-tag reviewed">已评审</span></td>
+                                    <td><span class="deadline expired">已过期</span></td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view reviewed-btn" onclick="window.location.href='expert-review-detail.html?id=9'">查看详情</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 计算并格式化截止时间
+        function updateDeadlines() {
+            const now = new Date();
+            const deadlineElements = document.querySelectorAll('.deadline[data-deadline]');
+            
+            deadlineElements.forEach(element => {
+                const deadlineStr = element.getAttribute('data-deadline');
+                const deadline = new Date(deadlineStr);
+                const diffMs = deadline - now;
+                
+                // 清除之前的样式类
+                element.classList.remove('deadline-danger', 'deadline-warning', 'deadline-normal', 'deadline-expired', 'deadline-expired-reviewed', 'deadline-expired-unreviewed');
+                
+                // 获取当前行的状态
+                const row = element.closest('tr');
+                const statusElement = row.querySelector('.status-tag');
+                const statusText = statusElement ? statusElement.textContent.trim() : '';
+                const isReviewed = statusText === '已评审' || statusText === '已通过' || statusText === '已驳回';
+                const isPending = statusText === '待评审';
+                
+                if (diffMs <= 0) {
+                    // 已过期
+                    element.textContent = '已过期';
+                    if (isReviewed) {
+                        element.classList.add('deadline-expired-reviewed');
+                    } else {
+                        element.classList.add('deadline-expired-unreviewed');
+                    }
+                } else {
+                    // 计算剩余时间
+                    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                    const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                    
+                    let text = '';
+                    let className = '';
+                    
+                    if (diffDays >= 15) {
+                        // 15天及以上，显示具体日期
+                        const year = deadline.getFullYear();
+                        const month = String(deadline.getMonth() + 1).padStart(2, '0');
+                        const day = String(deadline.getDate()).padStart(2, '0');
+                        const hours = String(deadline.getHours()).padStart(2, '0');
+                        const minutes = String(deadline.getMinutes()).padStart(2, '0');
+                        text = `${year}-${month}-${day} ${hours}:${minutes}`;
+                        className = 'deadline-normal';
+                    } else if (diffDays > 0) {
+                        // 1-14天，显示剩余天数
+                        text = `剩余 ${diffDays} 天`;
+                        className = 'deadline-normal';
+                    } else if (diffHours > 0) {
+                        // 1-23小时，显示剩余小时数
+                        text = `剩余 ${diffHours} 小时`;
+                        className = diffHours <= 6 ? 'deadline-danger' : 'deadline-warning';
+                    } else {
+                        // 少于1小时，显示剩余分钟数
+                        text = `剩余 ${diffMinutes} 分钟`;
+                        className = 'deadline-danger';
+                    }
+                    
+                    element.textContent = text;
+                    element.classList.add(className);
+                }
+            });
+        }
+        
+        // 标签页切换逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化截止时间显示
+            updateDeadlines();
+            // 每1分钟更新一次截止时间
+            setInterval(updateDeadlines, 60000);
+            
+            const tabs = document.querySelectorAll('.service-tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // 重置所有标签页的状态
+            function resetAllTabs() {
+                tabContents.forEach(content => {
+                    // 重置状态标签
+                    const recordTabs = content.querySelectorAll('.record-tab');
+                    recordTabs.forEach(t => t.classList.remove('active'));
+                    const allTab = content.querySelector('.record-tab[data-status="all"]');
+                    if (allTab) {
+                        allTab.classList.add('active');
+                    }
+                    
+                    // 清空搜索框
+                    const searchInput = content.querySelector('input[type="text"]');
+                    if (searchInput) {
+                        searchInput.value = '';
+                    }
+                    
+                    // 显示所有表格行
+                    const tableRows = content.querySelectorAll('.record-table tbody tr');
+                    tableRows.forEach(row => {
+                        row.style.display = '';
+                    });
+                });
+            }
+            
+            // 切换主标签页
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有活跃状态
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // 添加当前活跃状态
+                    this.classList.add('active');
+                    const targetTab = this.dataset.tab;
+                    const targetContent = document.getElementById(`${targetTab}-content`);
+                    targetContent.classList.add('active');
+                    
+                    // 重置所有标签页的状态，确保每个标签页都是独立的
+                    resetAllTabs();
+                });
+            });
+            
+            // 状态切换逻辑
+            const recordTabsContainers = document.querySelectorAll('.record-tabs');
+            recordTabsContainers.forEach(container => {
+                const recordTabs = container.querySelectorAll('.record-tab');
+                
+                recordTabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        // 移除当前容器中所有标签的active状态
+                        recordTabs.forEach(t => t.classList.remove('active'));
+                        // 为当前标签添加active状态
+                        this.classList.add('active');
+                        
+                        // 获取要筛选的状态
+                        const status = this.dataset.status;
+                        // 获取当前标签所属的tab-content
+                        const tabContent = this.closest('.tab-content');
+                        if (!tabContent) return;
+                        
+                        // 筛选当前标签页的表格行
+                        const tableRows = tabContent.querySelectorAll('.record-table tbody tr');
+                        tableRows.forEach(row => {
+                            const statusElement = row.querySelector('.status-tag');
+                            if (!statusElement) return;
+                            
+                            const rowStatus = statusElement.textContent.trim();
+                            
+                            // 根据筛选条件显示或隐藏行
+                            if (status === 'all' || 
+                                (status === 'pending' && rowStatus === '待评审') || 
+                                (status === 'reviewed' && rowStatus === '已评审')) {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+            });
+            
+            // 搜索功能
+            const searchButtons = document.querySelectorAll('.filter-bar button.action-btn');
+            searchButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 获取当前搜索栏所在的tab-content
+                    const tabContent = this.closest('.tab-content');
+                    if (!tabContent) return;
+                    
+                    // 获取搜索关键词
+                    const searchInput = tabContent.querySelector('input[type="text"]');
+                    if (!searchInput) return;
+                    const keyword = searchInput.value.trim().toLowerCase();
+                    
+                    // 筛选当前标签页的表格行
+                    const tableRows = tabContent.querySelectorAll('.record-table tbody tr');
+                    tableRows.forEach(row => {
+                        const titleElement = row.querySelector('.material-title');
+                        if (!titleElement) return;
+                        
+                        const title = titleElement.textContent.trim().toLowerCase();
+                        
+                        // 根据搜索关键词显示或隐藏行
+                        if (keyword === '' || title.includes(keyword)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

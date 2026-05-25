@@ -1,0 +1,126 @@
+<!-- 顶部导航栏 -->
+<header class="top-header">
+    <div class="header-left">
+        <div class="logo">
+            <span class="logo-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </span>
+            <span class="logo-text">趣学术</span>
+        </div>
+        
+        <!-- 组织信息 -->
+        <div class="organization-info">
+            <span class="org-name">甘松测试药业</span>
+            <svg class="org-dropdown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </div>
+    </div>
+    
+    <!-- AI助手入口 -->
+    <div class="ai-wrapper">
+        <a href="ai-dialog.html" class="ai-entry-button" id="aiEntryButton">
+            <div class="ai-icon-wrapper">
+                <svg class="ai-sparkle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+                </svg>
+            </div>
+            
+            <div class="ai-placeholder-text" id="aiPlaceholderText">解释这份最新《高血压指南》的核心变化...</div>
+
+            <div class="ai-cta-label">
+                <span class="ai-cta-text">进入对话</span> 
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </div>
+        </a>
+    </div>
+
+    <script>
+        // 极简轮播实现 - 直接操作DOM
+        (function() {
+            // 轮播的文案列表
+            const texts = [
+                "生成本周任务周报，节省 30 分钟...",
+                "分析进行中任务风险，一键洞察进度...",
+                "查找关于特定疾病的最新文献综述...",
+                "自动起草邮件给医生，专业且高效...",
+                "即时问答，解决所有系统操作疑问..."
+            ];
+            
+            // 直接在脚本底部执行，确保元素已加载
+            let index = 0;
+            const element = document.getElementById('aiPlaceholderText');
+            
+            if (element) {
+                // 每3秒切换一次
+                setInterval(() => {
+                    index = (index + 1) % texts.length;
+                    element.textContent = texts[index];
+                }, 3000);
+            }
+        })();
+    </script>
+    
+    <div class="header-right">
+        <!-- 帮助中心 -->
+        <div class="help-center" tabindex="-1">
+            <div class="icon-container" tabindex="-1">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" tabindex="-1">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <path d="M12 17h.01"></path>
+                </svg>
+            </div>
+        </div>
+        
+        <div class="notification" tabindex="-1">
+            <span class="notification-icon" tabindex="-1">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" tabindex="-1">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+            </span>
+            <span class="notification-text" tabindex="-1">新的可用奖励</span>
+        </div>
+        
+        <!-- 刷新图标 -->
+        <div class="refresh-btn" onclick="location.reload()" tabindex="-1">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" tabindex="-1">
+                <path d="M21.5 2v6h-6M2.5 22v-6h6"></path>
+                <path d="M2 12a10 10 0 0 0 20 0 10 10 0 0 0-20 0z"></path>
+            </svg>
+        </div>
+        
+        <!-- 个人中心 -->
+        <div class="user-center" tabindex="-1">
+            <div class="user-info-dropdown" tabindex="-1">
+                <div class="user-avatar" tabindex="-1">
+                    <div class="avatar" tabindex="-1">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" tabindex="-1">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="dropdown-icon" tabindex="-1">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" tabindex="-1">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <!-- 下拉菜单（默认隐藏） -->
+                <div class="user-dropdown-menu" style="display: none;" tabindex="-1">
+                    <div class="dropdown-item" tabindex="-1">账户和安全</div>
+                    <div class="dropdown-item" tabindex="-1">切换账号</div>
+                    <div class="dropdown-item" tabindex="-1">回收站</div>
+                    <div class="dropdown-item logout" tabindex="-1">退出登录</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

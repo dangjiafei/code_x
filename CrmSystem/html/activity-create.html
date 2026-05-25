@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新建活动 - 趣学术CRM</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/activity-detail.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-container">
+        <div id="sidebar-placeholder"></div>
+
+        <div class="right-content">
+            <div class="fixed-header-bar">
+                <div class="fixed-header-content">
+                    <div class="header-left">
+                        <button class="btn-back" onclick="goBack()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                            返回列表
+                        </button>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn btn-secondary" id="saveDraftBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                            </svg>
+                            保存草稿
+                        </button>
+                        <button class="btn btn-primary" id="submitBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            发布活动
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <main class="content-area">
+                <div class="step-progress">
+                    <div class="step-item active" data-step="1">
+                        <span class="step-number">1</span>
+                        <span class="step-label">基础信息</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item" data-step="2">
+                        <span class="step-number">2</span>
+                        <span class="step-label">征稿主题与投稿要求</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item" data-step="3">
+                        <span class="step-number">3</span>
+                        <span class="step-label">活动概览生成</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item" data-step="4">
+                        <span class="step-number">4</span>
+                        <span class="step-label">活动海报</span>
+                    </div>
+                </div>
+
+                <div class="form-container">
+                    <div class="form-step active" id="step1">
+                        <div class="config-section">
+                            <h2 class="section-title">基础信息</h2>
+
+                            <div class="form-group">
+                                <label class="form-label">医学领域 <span class="required">*</span></label>
+                                <select id="activityDomain" class="form-input">
+                                    <option value="">请选择医学领域</option>
+                                    <option value="cardiology">心血管疾病</option>
+                                    <option value="neurology">神经内科</option>
+                                    <option value="orthopedics">骨科</option>
+                                    <option value="gastroenterology">消化内科</option>
+                                    <option value="endocrinology">内分泌科</option>
+                                    <option value="respiratory">呼吸内科</option>
+                                    <option value="add-domain">新增领域</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">活动名称 <span class="required">*</span></label>
+                                <input type="text" id="activityName" class="form-input" placeholder="请输入活动名称（最多50字）" maxlength="50">
+                                <span class="form-hint">活动名称不可与已有活动重名</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">活动背景</label>
+                                <textarea id="activityBackground" class="form-input" rows="3" placeholder="请描述活动背景，例如：当前医学领域发展现状、存在的问题、开展此活动的契机等..."></textarea>
+                                <span class="form-hint">背景说明可作为系统生成医生端概览的参考，不需要写成长篇宣传文案</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">活动目的与目标</label>
+                                <textarea id="activityPurpose" class="form-input" rows="4" placeholder="请描述活动目的（如促进学术交流、沉淀真实病例经验等）及具体目标（如征集XX篇病例、覆盖XX个主题方向等）..."></textarea>
+                                <span class="form-hint">明确的目的将帮助聚焦活动方向，可量化的目标便于活动效果评估</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">活动封面 <span class="required">*</span></label>
+                                <div class="upload-area" id="coverUpload">
+                                    <div class="upload-placeholder">
+                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="7 10 12 15 17 10"></polyline>
+                                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                                        </svg>
+                                        <p>点击或拖拽上传封面图片</p>
+                                        <p class="upload-hint">支持 jpg/png 格式，比例 16:9，大小不超过 2MB</p>
+                                    </div>
+                                    <div class="upload-preview" id="coverPreview" style="display: none;">
+                                        <img id="coverImg" src="" alt="封面预览">
+                                        <button class="remove-cover-btn">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">招募时间范围 <span class="required">*</span></label>
+                                <div class="date-range">
+                                    <div class="date-input-wrap">
+                                        <input type="date" id="startDate" class="form-input date-input">
+                                    </div>
+                                    <span class="date-separator">至</span>
+                                    <div class="date-input-wrap">
+                                        <input type="date" id="endDate" class="form-input date-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn btn-secondary next-btn" data-step="1">下一步</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" id="step2">
+                        <div class="config-section">
+                            <div class="theme-step-workbench">
+                                <div class="theme-step-main">
+                                    <div class="theme-section-card theme-section">
+                                        <div class="section-header">
+                                            <div>
+                                                <label class="form-label">征稿主题 <span class="required">*</span></label>
+                                                <p class="section-desc compact">主题名称用于区分方向，主题说明用于讲清创作边界，创作重点用于提示医生需要重点表达的内容。</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="type-themes-vertical">
+                                            <div class="type-theme-card active" data-type="medical-podcast">
+                                                <div class="type-card-header">
+                                                    <div class="type-info">
+                                                        <span class="type-name">医学播客</span>
+                                                        <span class="type-desc">适合经验复盘、诊疗思路、专题讲述</span>
+                                                        <span class="theme-count-badge">1</span>
+                                                    </div>
+                                                    <button class="type-toggle">
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div class="type-card-content">
+                                                    <button class="btn btn-sm btn-primary add-theme-btn" data-type="medical-podcast">
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                        </svg>
+                                                        新增医学播客主题
+                                                    </button>
+                                                    <div class="theme-list" data-type="medical-podcast">
+                                                        <div class="theme-card" data-index="0">
+                                                            <div class="theme-header">
+                                                                <div>
+                                                                    <span class="theme-number">主题 1</span>
+                                                                    <span class="theme-type-label">医学播客</span>
+                                                                </div>
+                                                                <div class="theme-actions">
+                                                                    <button class="theme-action-btn move-up" disabled>
+                                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <polyline points="18 15 12 9 6 15"></polyline>
+                                                                        </svg>
+                                                                    </button>
+                                                                    <button class="theme-action-btn move-down">
+                                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                                                        </svg>
+                                                                    </button>
+                                                                    <button class="theme-action-btn remove" disabled>
+                                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path d="M3 6h18"></path>
+                                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="theme-form">
+                                                                <input type="text" class="form-input theme-name" placeholder="主题名称，例如：冠心病诊疗决策复盘" maxlength="30">
+                                                                <textarea class="form-input theme-desc" placeholder="主题说明：医生围绕什么临床方向展开创作，边界是什么。" maxlength="200"></textarea>
+                                                                <input type="text" class="form-input theme-focus" placeholder="创作重点，例如：诊断依据、治疗取舍、随访管理">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="type-theme-card" data-type="surgery-video">
+                                                <div class="type-card-header">
+                                                    <div class="type-info">
+                                                        <span class="type-name">手术/操作视频</span>
+                                                        <span class="type-desc">适合操作流程、关键步骤、并发症处理</span>
+                                                        <span class="theme-count-badge">0</span>
+                                                    </div>
+                                                    <button class="type-toggle">
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div class="type-card-content">
+                                                    <button class="btn btn-sm btn-primary add-theme-btn" data-type="surgery-video">
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                        </svg>
+                                                        新增手术/操作主题
+                                                    </button>
+                                                    <div class="theme-list" data-type="surgery-video"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="type-theme-card" data-type="online-case">
+                                                <div class="type-card-header">
+                                                    <div class="type-info">
+                                                        <span class="type-name">在线互动病例</span>
+                                                        <span class="type-desc">适合病例推演、诊疗选择、互动问答</span>
+                                                        <span class="theme-count-badge">0</span>
+                                                    </div>
+                                                    <button class="type-toggle">
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div class="type-card-content">
+                                                    <button class="btn btn-sm btn-primary add-theme-btn" data-type="online-case">
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                        </svg>
+                                                        新增互动病例主题
+                                                    </button>
+                                                    <div class="theme-list" data-type="online-case"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="theme-section-card submission-section">
+                                        <div class="section-header">
+                                            <div>
+                                                <label class="form-label">投稿要求 <span class="required">*</span></label>
+                                                <p class="section-desc compact">这里是所有主题共用的底线要求；不同内容类型的时长或格式可以单独配置。</p>
+                                            </div>
+                                        </div>
+                                        <div class="requirement-list" id="requirementList">
+                                            <div class="requirement-card">
+                                                <div class="requirement-row">
+                                                    <input type="text" class="requirement-label-input" placeholder="标签" value="内容完整">
+                                                    <span class="requirement-colon">：</span>
+                                                    <input type="text" class="requirement-content-input" placeholder="详细内容" value="请说明病例背景、诊断依据、治疗过程、关键判断和复盘思考。">
+                                                </div>
+                                                <div class="requirement-actions">
+                                                    <button class="requirement-btn add-btn">新增</button>
+                                                    <button class="requirement-btn delete-btn" disabled>删除</button>
+                                                </div>
+                                            </div>
+                                            <div class="requirement-card">
+                                                <div class="requirement-row">
+                                                    <input type="text" class="requirement-label-input" placeholder="标签" value="隐私保护">
+                                                    <span class="requirement-colon">：</span>
+                                                    <input type="text" class="requirement-content-input" placeholder="详细内容" value="请确保患者姓名、身份证号、联系方式、影像编号等隐私信息已脱敏。">
+                                                </div>
+                                                <div class="requirement-actions">
+                                                    <button class="requirement-btn add-btn">新增</button>
+                                                    <button class="requirement-btn delete-btn">删除</button>
+                                                </div>
+                                            </div>
+                                            <div class="requirement-card">
+                                                <div class="requirement-row">
+                                                    <input type="text" class="requirement-label-input" placeholder="标签" value="学术价值">
+                                                    <span class="requirement-colon">：</span>
+                                                    <input type="text" class="requirement-content-input" placeholder="详细内容" value="请突出诊疗思路、决策依据、经验启发或特殊病例特点。">
+                                                </div>
+                                                <div class="requirement-actions">
+                                                    <button class="requirement-btn add-btn">新增</button>
+                                                    <button class="requirement-btn delete-btn">删除</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="duration-section-row">
+                                            <div class="duration-section-item">
+                                                <span class="duration-label">医学播客：</span>
+                                                <span class="duration-text">建议时长</span>
+                                                <div class="duration-options">
+                                                    <label class="duration-option active">
+                                                        <input type="checkbox" name="duration" value="15-20" checked>
+                                                        <span class="duration-value">15-20分钟</span>
+                                                    </label>
+                                                    <label class="duration-option">
+                                                        <input type="checkbox" name="duration" value="20-40">
+                                                        <span class="duration-value">20-40分钟</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="duration-divider"></div>
+                                            <div class="duration-section-item">
+                                                <span class="duration-label">手术/操作视频：</span>
+                                                <span class="duration-text">建议时长</span>
+                                                <div class="duration-options">
+                                                    <label class="duration-option active">
+                                                        <input type="checkbox" name="duration-surgery" value="5-10" checked>
+                                                        <span class="duration-value">5-10分钟</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn btn-secondary prev-btn" data-step="2">上一步</button>
+                            <button class="btn btn-primary next-btn" data-step="2">下一步</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" id="step3">
+                        <div class="config-section">
+                            <div class="expression-workbench">
+                                <div class="expression-main">
+                                    <div class="expression-toolbar">
+                                        <div>
+                                            <h2 class="section-title">活动概览内容</h2>
+                                            <p class="section-desc compact">用于医生端“本期征集重点”模块。可先由 AI 生成，再微调标题、说明和覆盖方向。</p>
+                                        </div>
+                                        <button type="button" class="btn btn-primary" id="generateExpressionBtn">AI 生成概览</button>
+                                    </div>
+
+                                    <div class="expression-card prominent">
+                                        <div class="expression-card-head">
+                                            <div>
+                                                <span>本期征集重点标题</span>
+                                                <p>用于医生端详情页“本期征集重点”模块。</p>
+                                            </div>
+                                        </div>
+                                        <div class="field-usage">
+                                            <span>展示位置：医生端详情页活动概览</span>
+                                            <span>来源：活动领域和主题方向自动生成</span>
+                                        </div>
+                                        <textarea id="expressionMission" class="form-input expression-textarea mission" rows="3"></textarea>
+                                    </div>
+
+                                    <div class="expression-grid">
+                                        <div class="expression-card">
+                                            <div class="expression-card-head">
+                                                <div>
+                                                    <span>概览说明</span>
+                                                    <p>说明本期主题覆盖哪些方向，以及适合医生如何创作。</p>
+                                                </div>
+                                            </div>
+                                            <div class="field-usage">
+                                                <span>展示位置：医生端“本期征集重点”说明</span>
+                                                <span>来源：主题名称、主题说明和创作重点</span>
+                                            </div>
+                                            <textarea id="expressionProblem" class="form-input expression-textarea" rows="5"></textarea>
+                                        </div>
+                                        <div class="expression-card">
+                                            <div class="expression-card-head">
+                                                <div>
+                                                    <span>覆盖方向标签</span>
+                                                    <p>详情页概览中展示的主题方向，可新增或删除。</p>
+                                                </div>
+                                            </div>
+                                            <div class="field-usage">
+                                                <span>展示位置：医生端概览标签</span>
+                                                <span>来源：征稿主题名称自动提取</span>
+                                            </div>
+                                            <div class="overview-tag-editor">
+                                                <div class="overview-direction-tags" id="overviewDirectionTags"></div>
+                                                <div class="overview-tag-input-row">
+                                                    <input type="text" id="overviewDirectionInput" class="form-input" placeholder="新增覆盖方向，例如：冠心病诊疗">
+                                                    <button type="button" class="btn btn-secondary" id="addOverviewDirectionBtn">确认添加</button>
+                                                </div>
+                                            </div>
+                                            <textarea id="expressionDoctorValue" class="form-input expression-textarea" rows="2" hidden></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn btn-secondary prev-btn" data-step="3">上一步</button>
+                            <button class="btn btn-primary next-btn" data-step="3">下一步</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" id="step4">
+                        <div class="poster-builder">
+                            <div class="poster-source-panel">
+                                <div class="poster-column-head">
+                                    <span>海报元素</span>
+                                    <h3>生成封面需要这些信息</h3>
+                                </div>
+                                <div class="poster-source-summary" id="aiPreviewBasic">
+                                    <div class="source-hero-card">
+                                        <span>主标题</span>
+                                        <h4 id="previewName">心血管真实世界诊疗经验专题征集</h4>
+                                        <p id="previewMission">围绕心血管真实世界诊疗经验，征集可复盘、可交流的内容。</p>
+                                    </div>
+                                    <div class="source-brief">
+                                        <span>副文案</span>
+                                        <p id="previewProblem">本期主题覆盖冠心病诊疗、心衰管理等方向，适合结合真实病例讲清诊疗判断、操作要点和长期管理经验。</p>
+                                    </div>
+                                    <div class="source-meta-row">
+                                        <span>覆盖方向</span>
+                                        <strong id="previewDoctorValue">冠心病诊疗、心力衰竭管理、心律失常诊治</strong>
+                                    </div>
+                                    <div class="source-theme-block">
+                                        <div class="source-theme-head">
+                                            <span>主题信息</span>
+                                            <strong>用于画面关键词</strong>
+                                        </div>
+                                        <div class="preview-themes" id="previewThemes">
+                                            <div class="theme-tag">1. 冠心病诊疗新进展</div>
+                                            <div class="theme-tag">2. 心力衰竭管理</div>
+                                            <div class="theme-tag">3. 心律失常诊治</div>
+                                        </div>
+                                    </div>
+                                    <div class="source-cover-strip" id="previewCover">
+                                        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=900&h=520&fit=crop" alt="活动封面">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="poster-chat-panel">
+                                <div class="poster-editor-hero">
+                                    <div>
+                                        <span>AI 海报助手</span>
+                                        <h2>生成封面图片</h2>
+                                        <p>选择封面整体风格，再用一句话告诉 AI 想要的画面感觉。主题数量、按钮和信息结构由模板固定。</p>
+                                    </div>
+                                </div>
+
+                                <div class="poster-editor-section">
+                                    <div class="poster-control-block">
+                                        <label class="design-control-label">封面风格</label>
+                                        <div class="poster-style-options">
+                                            <button type="button" class="design-style-option active" data-style="academic">
+                                                <strong>学术期刊感</strong>
+                                                <span>正式、克制、专业</span>
+                                            </button>
+                                            <button type="button" class="design-style-option" data-style="clinical">
+                                                <strong>临床真实感</strong>
+                                                <span>医生、病例、真实场景</span>
+                                            </button>
+                                            <button type="button" class="design-style-option" data-style="challenge">
+                                                <strong>专题征集感</strong>
+                                                <span>更有号召力和传播感</span>
+                                            </button>
+                                        </div>
+                                        <select id="posterLayoutMode" class="form-input" hidden>
+                                            <option value="statement">突出本期征集重点</option>
+                                        </select>
+                                        <select id="posterToneMode" class="form-input" hidden>
+                                            <option value="academic">学术正式</option>
+                                        </select>
+                                        <input type="radio" name="designAccent" value="#667eea" checked hidden>
+                                        <select id="detailLayoutMode" class="form-input" hidden>
+                                            <option value="value-first">概览在前，主题在后</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="poster-control-block">
+                                        <label class="design-control-label" for="chatInput">AI 生成要求</label>
+                                        <textarea id="chatInput" class="form-input" rows="5" placeholder="例如：更像高端医学会议封面，弱化营销感，突出真实病例和心血管学术征集"></textarea>
+                                        <div class="chat-actions">
+                                            <button type="button" class="btn btn-secondary" id="regenerateBtn">重新生成</button>
+                                            <button type="button" class="btn btn-primary" id="sendBtn">生成封面</button>
+                                        </div>
+                                        <div class="chat-container" id="chatContainer" hidden></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="poster-preview-stage">
+                                <div class="poster-stage-head">
+                                    <div>
+                                        <span>实时预览</span>
+                                        <strong>移动端长图海报</strong>
+                                    </div>
+                                    <small>海报本体</small>
+                                </div>
+                                <div class="poster-preview-shell">
+                                    <div class="poster-image-preview" id="posterPreview">
+                                        <img id="posterCoverImage" src="../img/activity-poster-preview.png" alt="活动海报封面预览">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn btn-secondary prev-btn" data-step="4">上一步</button>
+                            <button class="btn btn-primary" id="finishCreateBtn">保存并发布</button>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/activity-create.js"></script>
+
+    <div class="modal-overlay" id="domainModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>新增医学领域</h3>
+                <button class="modal-close" id="closeDomainModal">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">领域名称 <span class="required">*</span></label>
+                    <input type="text" id="newDomainName" class="form-input" placeholder="请输入领域名称">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelDomainBtn">取消</button>
+                <button class="btn btn-primary" id="confirmDomainBtn">确认添加</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

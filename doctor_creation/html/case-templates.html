@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>病例模板 - 在线互动病例征集</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .templates-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        .template-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .template-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .template-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .template-type {
+            padding: 4px 12px;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .template-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .template-steps {
+            margin-bottom: 20px;
+        }
+        
+        .template-step {
+            background-color: var(--background-secondary);
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .template-step h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .template-step p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .template-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .template-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .use-template-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .use-template-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+        
+        .preview-template-btn {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .preview-template-btn:hover {
+            background-color: #4ade80;
+            transform: translateY(-1px);
+        }
+        
+        .templates-header {
+            margin-bottom: 32px;
+        }
+        
+        .templates-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .templates-header p {
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- 组件加载脚本 -->
+    <script>
+        async function loadComponents() {
+            // 加载顶部导航栏
+            const headerResponse = await fetch('components/header.html');
+            const headerContent = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerContent;
+            
+            // 加载左侧侧边栏
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarContent = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarContent;
+            
+            // 在侧边栏加载完成后初始化菜单
+            if (typeof initializeMenu === 'function') {
+                initializeMenu();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <div class="right-content">
+            <div class="templates-container">
+                <div class="templates-header">
+                    <h1>病例模板库</h1>
+                    <p>选择一个模板开始创建您的在线互动病例，模板包含完整的诊疗流程和互动题目示例</p>
+                </div>
+
+                <!-- 模板1：糖尿病病例 -->
+                <div class="template-card">
+                    <div class="template-header">
+                        <h3 class="template-title">2型糖尿病合并高血压病例</h3>
+                        <span class="template-type">内分泌科</span>
+                    </div>
+                    <div class="template-description">
+                        本模板包含完整的糖尿病患者诊疗流程，包括问诊、查体、辅助检查、诊断、治疗方案和健康指导，适合内分泌科医生使用。
+                    </div>
+                    <div class="template-steps">
+                        <div class="template-step">
+                            <h4>1. 问诊</h4>
+                            <p>包含患者基本信息、主诉、现病史、既往史、家族史等完整问诊流程，配有互动题目示例。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>2. 查体</h4>
+                            <p>包含生命体征、一般情况、专科检查等内容，配有典型体征的互动选择题。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>3. 辅助检查</h4>
+                            <p>包含血糖、血脂、肝肾功能等实验室检查，以及影像学检查，配有检查结果分析的互动题目。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>4. 初步诊断</h4>
+                            <p>基于检查结果的诊断思路，配有鉴别诊断的互动选择题。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>5. 治疗方案</h4>
+                            <p>包含药物治疗、生活方式干预等综合治疗方案，配有治疗方案选择的互动题目。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>6. 健康指导</h4>
+                            <p>包含饮食、运动、自我监测等健康指导内容，配有健康管理的互动题目。</p>
+                        </div>
+                    </div>
+                    <div class="template-actions">
+                        <button class="template-btn use-template-btn" onclick="useTemplate('diabetes-hypertension')">使用模板</button>
+                        <button class="template-btn preview-template-btn" onclick="previewTemplate('diabetes-hypertension')">预览模板</button>
+                    </div>
+                </div>
+
+                <!-- 模板2：心血管疾病病例 -->
+                <div class="template-card">
+                    <div class="template-header">
+                        <h3 class="template-title">冠心病急性心肌梗死病例</h3>
+                        <span class="template-type">心血管内科</span>
+                    </div>
+                    <div class="template-description">
+                        本模板包含冠心病急性心肌梗死的完整诊疗流程，适合心血管内科医生使用。
+                    </div>
+                    <div class="template-steps">
+                        <div class="template-step">
+                            <h4>1. 问诊</h4>
+                            <p>包含典型胸痛症状、危险因素等问诊内容，配有症状识别的互动题目。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>2. 查体</h4>
+                            <p>包含生命体征、心脏听诊等内容，配有体征判断的互动题目。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>3. 辅助检查</h4>
+                            <p>包含心电图、心肌酶、冠脉造影等检查，配有检查结果判读的互动题目。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>4. 诊断与鉴别诊断</h4>
+                            <p>包含诊断标准和鉴别诊断，配有诊断思路的互动题目。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>5. 治疗方案</h4>
+                            <p>包含急诊PCI、药物治疗等内容，配有治疗决策的互动题目。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>6. 出院指导</h4>
+                            <p>包含二级预防、随访计划等内容，配有患者教育的互动题目。</p>
+                        </div>
+                    </div>
+                    <div class="template-actions">
+                        <button class="template-btn use-template-btn" onclick="useTemplate('coronary-ami')">使用模板</button>
+                        <button class="template-btn preview-template-btn" onclick="previewTemplate('coronary-ami')">预览模板</button>
+                    </div>
+                </div>
+
+                <!-- 模板3：脑血管疾病病例 -->
+                <div class="template-card">
+                    <div class="template-header">
+                        <h3 class="template-title">缺血性脑卒中病例</h3>
+                        <span class="template-type">神经内科</span>
+                    </div>
+                    <div class="template-description">
+                        本模板包含缺血性脑卒中的完整诊疗流程，适合神经内科医生使用。
+                    </div>
+                    <div class="template-steps">
+                        <div class="template-step">
+                            <h4>1. 问诊</h4>
+                            <p>包含起病特点、症状演变、危险因素等内容，配有脑卒中识别的互动题目。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>2. 神经系统查体</h4>
+                            <p>包含意识、语言、肢体力量等检查，配有神经功能评估的互动题目。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>3. 辅助检查</h4>
+                            <p>包含头颅CT/MRI、血管超声等检查，配有影像解读的互动题目。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>4. 诊断与分型</h4>
+                            <p>包含TOAST分型、病因诊断等内容，配有诊断分型的互动题目。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>5. 急性期治疗</h4>
+                            <p>包含静脉溶栓、抗血小板等治疗，配有治疗时机的互动题目。</p>
+                        </div>
+                        <div class="template-step">
+                            <h4>6. 康复与二级预防</h4>
+                            <p>包含康复训练、危险因素控制等内容，配有康复指导的互动题目。</p>
+                        </div>
+                    </div>
+                    <div class="template-actions">
+                        <button class="template-btn use-template-btn" onclick="useTemplate('ischemic-stroke')">使用模板</button>
+                        <button class="template-btn preview-template-btn" onclick="previewTemplate('ischemic-stroke')">预览模板</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 使用模板
+        function useTemplate(templateId) {
+            // 保存模板选择到localStorage
+            localStorage.setItem('selectedTemplate', templateId);
+            
+            // 跳转到创建病例页面
+            window.location.href = 'create-case.html?template=' + templateId;
+        }
+        
+        // 预览模板
+        function previewTemplate(templateId) {
+            // 跳转到模板预览页面
+            alert('模板预览功能开发中，敬请期待！');
+        }
+    </script>
+</body>
+</html>

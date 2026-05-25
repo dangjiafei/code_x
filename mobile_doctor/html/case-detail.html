@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>病例详情 - 医生端</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    /* 病例详情页面样式 - 覆盖默认内边距，让case-header能左右铺满屏幕 */
+    .case-detail-content {
+      padding: 0 !important;
+      background-color: #f5f7fa;
+      min-height: calc(100vh - 88px); /* 移除底部导航栏后，调整内容区域高度 */
+    }
+    
+    /* 调整内容区域的高度，移除底部导航栏的影响 */
+    .content {
+      height: calc(100% - 44px - 44px) !important; /* 移除底部导航栏的60px高度 */
+    }
+    
+    /* 病例头部信息 - 全屏白色背景，左右铺满屏幕 */
+    .case-header {
+      background-color: #fff;
+      padding: 16px 16px;
+      margin: 0 0 12px 0;
+      border-left: none;
+      width: 100%;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+    }
+    
+
+    
+    /* 患者基本信息 - 单独区域样式 */
+    .case-section {
+      margin: 0 12px 12px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* 调整 section-title 样式 - 适配直接嵌入的SVG图标，区分标题和内容 */
+    .case-section .section-title {
+      padding: 0 0 8px 0 !important;
+      margin: 0 !important;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      border-bottom: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    /* 标题中的SVG图标样式 */
+    .section-title svg {
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+    
+    /* 评论区样式 - 作为一整个模块 */
+    .comments-section {
+      margin-top: 16px;
+      background-color: #fff;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+      border: none;
+      margin-left: 0;
+      margin-right: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    /* 评论列表样式 */
+    .comments-list {
+      margin-top: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      background-color: #fff;
+    }
+    
+    /* 评论项样式 - 重置样式，避免外部样式干扰 */
+    .comment-item {
+      background-color: #fff;
+      border-radius: 0;
+      padding: 0;
+      border: none;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* 最后一个评论项无边框 */
+    .comment-item:last-child {
+      border-bottom: none;
+    }
+    
+    /* 评论主体 - 使用flex布局，避免定位冲突 */
+    .comment-body {
+      display: flex;
+      gap: 12px;
+      padding: 0;
+      background-color: #fff;
+    }
+    
+    /* 评论头像样式 - 使用flex布局，更可靠 */
+    .comment-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      background-color: #f0f0f0;
+      flex-shrink: 0;
+    }
+    
+    /* 匿名用户头像样式 */
+    .comment-avatar.anonymous {
+      width: 36px;
+      height: 36px;
+    }
+    
+    /* 评论内容区域 - 占据剩余空间 */
+    .comment-content-area {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    /* 调整评论内容的内边距，使其左对齐 */
+    .comment-content-area {
+      padding: 0;
+    }
+    
+    /* 评论头部样式 - 调整布局，使作者名称向左移动，时间换行并左对齐 */
+    .comment-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      width: 100%;
+    }
+    
+    /* 作者信息容器 - 包含作者名称和职称 */
+    .comment-author-info {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 2px;
+      width: 100%;
+    }
+    
+    /* 作者详情 - 包含名称和头衔 */
+    .comment-author-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* 作者名称 - 向左对齐 */
+    .comment-author-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    /* 时间显示 - 保持原位 */
+    .comment-time {
+      font-size: 11px;
+      color: #999;
+      margin-top: 2px;
+      padding: 0;
+      white-space: nowrap;
+      align-self: flex-start;
+    }
+    
+    /* 调整作者信息容器，确保左对齐 */
+    .comment-author-info {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 0;
+    }
+    
+    /* 调整作者详情，确保左对齐 */
+    .comment-author-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* 调整作者姓名，确保左对齐 */
+    .comment-author-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    /* 调整时间显示，确保与作者名称对齐 */
+    .comment-time {
+      font-size: 11px;
+      color: #999;
+      margin: 0;
+      padding: 0;
+      white-space: nowrap;
+    }
+    
+    /* 评论作者头衔样式 - 放在名称后面 */
+    .comment-author-title {
+      font-size: 11px;
+      color: #999;
+      font-weight: normal;
+    }
+    
+    /* 评论认证样式 */
+    .comment-verified {
+      font-size: 10px;
+      color: #1890ff;
+      background-color: #e6f7ff;
+      padding: 1px 6px;
+      border-radius: 10px;
+      margin-left: 4px;
+    }
+    
+    /* 评论时间样式 - 放在人名下方 */
+    .comment-time {
+      font-size: 11px;
+      color: #999;
+      margin-top: 2px;
+      align-self: flex-start;
+    }
+    
+    /* 评论内容样式 - 左对齐 */
+    .comment-content {
+      font-size: 12px;
+      line-height: 1.4;
+      color: #666;
+      margin-bottom: 10px;
+      text-align: left;
+      word-break: break-word;
+    }
+    
+    /* 评论操作样式 - 左对齐 */
+    .comment-actions {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    
+    /* 回复项样式 - 重置样式，使用flex布局 */
+    .reply-item {
+      margin-top: 0;
+      margin-left: 48px;
+      display: flex;
+      gap: 12px;
+      padding: 0 0 16px 0;
+      background-color: #fff;
+    }
+    
+    /* 评论区标题样式 - 调整宽度和背景 */
+    .comments-section .section-title {
+      padding: 16px;
+      background-color: #fff;
+      margin: 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    /* 回复内容区域 */
+    .reply-content-area {
+      flex: 1;
+      min-width: 0;
+      background-color: #fafafa;
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px solid #f0f0f0;
+    }
+    
+    /* 评论操作按钮样式 */
+    .comment-action-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 11px;
+      color: #999;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    /* 评论操作按钮悬停样式 */
+    .comment-action-btn:hover {
+      color: #4096ff;
+    }
+    
+    /* 评论操作按钮SVG样式 */
+    .comment-action-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+    }
+    
+    /* 点赞数样式 */
+    .like-count {
+      font-size: 11px;
+      color: #999;
+    }
+    
+    /* 点赞按钮激活样式 */
+    .like-btn.active {
+      color: #ff4d4f;
+    }
+    
+    /* 点赞按钮激活时的SVG样式 */
+    .like-btn.active svg {
+      fill: #ff4d4f;
+      stroke: #ff4d4f;
+    }
+    
+    /* 评论输入框容器样式 */
+    .comment-input-container {
+      margin-top: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: #fff;
+      padding: 16px;
+      border-radius: 0;
+      border: none;
+      border-top: 1px solid #f0f0f0;
+      box-sizing: border-box;
+    }
+    
+    /* 评论输入框样式 */
+    .comment-input {
+      width: 100%;
+      min-height: 60px;
+      padding: 10px;
+      border: 1px solid #e8e8e8;
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.4;
+      color: #333;
+      resize: vertical;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    
+    /* 评论输入框聚焦样式 */
+    .comment-input:focus {
+      outline: none;
+      border-color: #4096ff;
+      box-shadow: 0 0 0 2px rgba(64, 150, 255, 0.1);
+    }
+    
+    /* 评论提交按钮样式 */
+    .comment-submit-btn {
+      align-self: flex-end;
+      padding: 8px 16px;
+      background-color: #4096ff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    /* 评论提交按钮悬停样式 */
+    .comment-submit-btn:hover {
+      background-color: #69b1ff;
+    }
+    
+    /* 评论提交按钮激活样式 */
+    .comment-submit-btn:active {
+      background-color: #3385ff;
+    }
+    
+    /* 学术调研标题样式 - 用于创建者自我评语 */
+    .survey-title-container {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    
+    .survey-title-icon {
+      width: 16px;
+      height: 16px;
+      stroke: #1890ff;
+      stroke-width: 2;
+    }
+    
+    .survey-card-title {
+      font-size: 12px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #1890ff 0%, #722ed1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      display: inline-block;
+    }
+    
+    .case-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 10px;
+      line-height: 1.4;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .case-meta {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #888;
+      width: 100%;
+    }
+    
+    .case-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background-color: #f5f7fa;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      font-size: 11px;
+    }
+    
+    .video-interaction {
+      width: 100%;
+    }
+    
+    .case-meta-item:hover {
+      background-color: #e6f7ff;
+      color: #1890ff;
+    }
+    
+    .case-meta-item svg {
+      width: 12px;
+      height: 12px;
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
+    
+    .case-meta-item:hover svg {
+      opacity: 1;
+    }
+    
+    .case-description {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #666;
+      margin-bottom: 0;
+      position: relative;
+      z-index: 1;
+      padding: 0;
+      background-color: transparent;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    
+    /* 讲师信息样式 */
+    .lecturer-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      padding: 0;
+      background-color: transparent;
+      border-radius: 0;
+      border: none;
+    }
+    
+    .lecturer-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .lecturer-details {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .lecturer-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .lecturer-stats {
+      font-size: 11px;
+      color: #888;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .lecturer-actions {
+      display: flex;
+      align-items: center;
+    }
+    
+    .follow-btn {
+      padding: 6px 12px;
+      background-color: #f0f0f0;
+      color: #333;
+      border: none;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .follow-btn:hover {
+      background-color: #e0e0e0;
+      transform: translateY(-1px);
+    }
+    
+    /* 视频互动样式 */
+    .video-interaction {
+      margin-bottom: 10px;
+    }
+    
+    .video-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+    }
+    
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .status-badge {
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 500;
+      background-color: #ff4d4f;
+      color: #fff;
+    }
+    
+    .interaction-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .interaction-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    
+    .interaction-btn:hover {
+      background-color: #f0f0f0;
+    }
+    
+    .interaction-btn svg {
+      width: 16px;
+      height: 16px;
+      color: #666;
+      transition: all 0.2s ease;
+    }
+    
+    .interaction-btn:hover svg {
+      color: #1890ff;
+    }
+    
+    /* 标签页内容样式 */
+    .tab-content {
+      width: 100%;
+    }
+    
+    .tab-pane {
+      display: none;
+      width: 100%;
+    }
+    
+    .tab-pane.active {
+      display: block;
+    }
+    
+    /* 标签页导航样式 */
+    .tabs-nav {
+      display: flex;
+      background-color: transparent;
+      border-bottom: none;
+      margin: -8px 0 6px 0;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 16px 0 0;
+    }
+    
+    .tab-btn {
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      border-bottom: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      position: relative;
+    }
+    
+    .tab-btn.active {
+      color: #ff7a45;
+    }
+    
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30%;
+      height: 2px;
+      background-color: #ff7a45;
+      transition: all 0.2s ease;
+    }
+    
+    .tab-btn:hover {
+      color: #ff9c6e;
+    }
+    
+    /* 病例步骤部分 */
+    .case-steps {
+      padding: 12px;
+      background-color: #f5f7fa;
+    }
+    
+    /* 每个步骤的样式 */
+    .case-section {
+      margin-bottom: 16px;
+      padding: 12px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    
+    .case-info-content {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #666;
+    }
+    
+    .case-info-content p {
+      margin-bottom: 6px;
+    }
+    
+    .case-info-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    
+    /* 问题部分 - 单独区域 */
+    .questions-section {
+      padding: 12px;
+      background-color: #f5f7fa;
+      margin-top: 0;
+    }
+    
+    .questions-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    
+    /* 单个问题样式 */
+    .question-item {
+      margin-bottom: 16px;
+      padding: 12px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* 题目标题样式 */
+    .question-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #333;
+      margin: 0 0 10px 0;
+      line-height: 1.5;
+    }
+    
+    .question-title::before {
+      content: "题";  /* 添加题标识 */
+      color: #1890ff;
+      margin-right: 4px;
+      font-weight: 600;
+    }
+    
+    /* 题目标题后的类型标识 */
+    .question-type {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 10px;
+      margin-left: 6px;
+      white-space: nowrap;
+      vertical-align: middle;
+      display: inline-block;
+    }
+    
+    .question-type.single {
+      background-color: #e6f7ff;
+      color: #1890ff;
+    }
+    
+    .question-type.multiple {
+      background-color: #f6ffed;
+      color: #52c41a;
+    }
+    
+    .question-options {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 0;
+    }
+    
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      background-color: #fafafa;
+      border-radius: 6px;
+      border: 1px solid #f0f0f0;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .option-item:hover {
+      background-color: #f0f0f0;
+      border-color: #e0e0e0;
+    }
+    
+    /* 隐藏选项中的单选/多选框，但保持其功能 */
+    .option-item input[type="radio"],
+    .option-item input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      margin: 0;
+    }
+    
+    /* 调整标签样式，使其直接显示选项内容，不再有左侧勾选空间 */
+    .option-item label {
+      flex: 1;
+      font-size: 12px;
+      color: #666;
+      cursor: pointer;
+      padding: 0;
+      position: relative;
+    }
+    
+    /* 通过div区域变化显示选中状态 */
+    .option-item input[type="radio"]:checked + label,
+    .option-item input[type="checkbox"]:checked + label {
+      color: #1890ff;
+    }
+    
+    .option-item input[type="radio"]:checked,
+    .option-item input[type="checkbox"]:checked {
+      background-color: #e6f7ff;
+      border-color: #1890ff;
+    }
+    
+    /* 直接修改option-item的选中状态 */
+    .option-item:has(input[type="radio"]:checked),
+    .option-item:has(input[type="checkbox"]:checked) {
+      background-color: #e6f7ff;
+      border-color: #1890ff;
+    }
+    
+    /* 自我评语 */
+    .self-evaluation-section {
+      padding: 12px;
+      background-color: #f5f7fa;
+      margin-top: 0;
+    }
+    
+    .self-evaluation {
+      background-color: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    .self-evaluation-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .self-evaluation-content {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #666;
+    }
+    
+    /* 评论区域 */
+    .comments-section {
+      padding: 12px;
+      background-color: #f5f7fa;
+      margin-top: 0;
+    }
+    
+    .comments-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    
+    .comments-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .comment-item {
+      background-color: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    
+    .comment-author {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .comment-time {
+      font-size: 11px;
+      color: #999;
+    }
+    
+    .comment-content {
+      font-size: 12px;
+      line-height: 1.4;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .comment-footer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      color: #999;
+    }
+    
+    .comment-like {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    
+    /* 提交按钮 - 悬浮在手机模拟屏幕最下方，调整高度 */
+    .submit-section {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(245, 247, 250, 0.95);
+      backdrop-filter: blur(5px);
+      padding: 10px 20px 15px;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+      z-index: 1000;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    /* 底部操作栏布局 */
+    .bottom-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      width: 100%;
+      justify-content: flex-start;
+    }
+    
+    /* 图标按钮样式 */
+    .action-icon-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      transition: all 0.3s;
+      gap: 2px;
+    }
+    
+    .action-icon-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: #999;
+      transition: all 0.3s;
+    }
+    
+    .action-icon-text {
+      font-size: 11px;
+      color: #999;
+      transition: all 0.3s;
+    }
+    
+    .action-icon-btn:hover svg,
+    .action-icon-btn:active svg {
+      stroke: #4a90e2;
+    }
+    
+    .action-icon-btn:hover .action-icon-text,
+    .action-icon-btn:active .action-icon-text {
+      color: #4a90e2;
+    }
+    
+    /* 右侧提交按钮 - 占70% */
+    .submit-button {
+      display: block;
+      flex: 0 0 100%;
+      padding: 10px;
+      background-color: #1890ff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 2px 6px rgba(24, 144, 255, 0.3);
+    }
+    
+    .submit-button:hover {
+      background-color: #40a9ff;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 9px rgba(24, 144, 255, 0.4);
+    }
+    
+    .submit-button:active {
+      background-color: #096dd9;
+      transform: translateY(0);
+      box-shadow: 0 1px 4px rgba(24, 144, 255, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <!-- 手机屏幕模拟容器 -->
+  <div class="phone-container">
+    <!-- 屏幕内容容器 -->
+    <div class="screen-content">
+      <!-- 状态栏容器 -->
+      <div id="status-bar-container"></div>
+      
+      <!-- 头部组件 -->
+      <div id="header-container"></div>
+      
+      <!-- 内容区 -->
+      <main class="content">
+        <!-- 病例详情内容 -->
+        <div id="case-content" class="module-content active case-detail-content">
+          <!-- 病例头部信息 - 全屏白色背景，无左侧蓝色线段 -->
+          <div class="case-header">
+            <!-- 头像信息等元素 -->
+            <div class="lecturer-info">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="讲师头像" class="lecturer-avatar">
+              <div class="lecturer-details">
+                <div class="lecturer-name">党佳飞</div>
+                <div class="lecturer-stats">主任医师 | 内分泌科 | 北京协和医院</div>
+              </div>
+
+            </div>
+            <h1 class="case-title">疑难病例互动讨论：罕见肺部感染</h1>
+            <div class="case-meta">
+              <div class="video-interaction">
+                <div class="video-stats">
+                  <div class="stat-item">
+                    <span class="status-badge">未完成</span>
+                    <span style="margin-left: 8px;">截止日期：2026-01-30</span>
+                  </div>
+                  
+                  <!-- 互动按钮 -->
+                  <div class="interaction-buttons">
+                    <button class="interaction-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                        </svg>
+                    </button>
+                    <button class="interaction-btn">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="case-description">
+              通过真实病例分析，提升临床思维能力和疑难病例处理水平，适合呼吸科、感染科医生学习。本病例展示了一位罕见肺部感染患者的完整诊疗过程，包括从问诊到治疗的全过程。
+            </p>
+          </div>
+          
+          <!-- 标签页导航 -->
+          <div class="tabs-nav">
+            <button class="tab-btn active" data-tab="intro">互动病例</button>
+          </div>
+          
+          <!-- 标签页内容容器 -->
+          <div class="tab-content">
+            <!-- 简介标签页内容 -->
+            <div id="intro" class="tab-pane active">
+          
+          <!-- 患者基本信息 -->
+          <div class="case-section section-patient-info">
+            <h2 class="section-title">
+              患者基本信息
+            </h2>
+            <div class="case-info-content">
+              <p>患者是一名男性，年龄65岁。主诉：发热、咳嗽、咳痰2周，加重伴呼吸困难3天。</p>
+            </div>
+          </div>
+          
+          <!-- 问题1：单选题 - 患者基本信息相关 -->
+          <div class="case-section">
+              <h3 class="question-title">根据患者基本信息，属于以下哪个年龄段<span class="question-type single">单选</span></h3>
+              <div class="question-options">
+                <div class="option-item">
+                  <input type="radio" id="q1-a" name="q1" value="a">
+                  <label for="q1-a">A. 青年（18-44岁）</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" id="q1-b" name="q1" value="b">
+                  <label for="q1-b">B. 中年（45-59岁）</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" id="q1-c" name="q1" value="c">
+                  <label for="q1-c">C. 老年（60岁以上）</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" id="q1-d" name="q1" value="d">
+                  <label for="q1-d">D. 儿童（14岁以下）</label>
+                </div>
+              </div>
+          </div>
+          
+          <!-- 主诉内容 -->
+          <div class="case-section section-chief-complaint">
+            <h2 class="section-title">
+              主诉内容
+            </h2>
+            <div class="case-info-content">
+              <p>患者2周前无明显诱因出现发热，体温最高38.5℃，伴有咳嗽、咳少量白色黏痰，无胸痛、咯血等症状。自行服用"感冒药"后症状无明显缓解。3天前上述症状加重，出现呼吸困难，活动后明显，遂来我院就诊。</p>
+            </div>
+          </div>
+          
+          <!-- 问题2：单选题 - 主诉内容相关 -->
+          <div class="case-section">
+              <h3 class="question-title">根据患者的主诉，最主要的症状是什么？<span class="question-type single">单选</span></h3>
+              <div class="question-options">
+                <div class="option-item">
+                  <input type="radio" id="q2-a" name="q2" value="a">
+                  <label for="q2-a">A. 发热</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" id="q2-b" name="q2" value="b">
+                  <label for="q2-b">B. 咳嗽、咳痰</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" id="q2-c" name="q2" value="c">
+                  <label for="q2-c">C. 呼吸困难</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" id="q2-d" name="q2" value="d">
+                  <label for="q2-d">D. 胸痛</label>
+                </div>
+              </div>
+          </div>
+          
+          <!-- 问诊 -->
+          <div class="case-section section-history-taking">
+            <h2 class="section-title">
+              问诊
+            </h2>
+            <div class="case-info-content">
+              <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">现病史</h3>
+              <p>患者2周前开始出现发热、咳嗽、咳痰，近3天症状加重伴呼吸困难。无寒战、盗汗，无恶心、呕吐，无腹痛、腹泻。饮食、睡眠欠佳，大小便正常，近期体重无明显变化。</p>
+              
+              <h3 style="font-size: 14px; font-weight: 600; margin: 12px 0 8px;">既往史</h3>
+              <p>有高血压病史10年，规律服用降压药物，血压控制良好。否认糖尿病、冠心病等慢性疾病史。否认结核、肝炎等传染病史。否认手术、外伤史。否认药物过敏史。</p>
+              
+              <h3 style="font-size: 14px; font-weight: 600; margin: 12px 0 8px;">个人史</h3>
+              <p>吸烟40年，平均20支/日，已戒烟5年。饮酒30年，平均每日白酒100ml，已戒酒3年。否认疫区接触史，否认放射性物质接触史。</p>
+              
+              <h3 style="font-size: 14px; font-weight: 600; margin: 12px 0 8px;">家族史</h3>
+              <p>父母已故，死因不详。否认家族性遗传疾病史。</p>
+            </div>
+          </div>
+          
+          <!-- 问题3：多选题 - 问诊内容相关 -->
+          <div class="case-section">
+              <h3 class="question-title">根据患者的个人史，可能与当前疾病相关？<span class="question-type multiple">多选</span></h3>
+              <div class="question-options">
+                <div class="option-item">
+                  <input type="checkbox" id="q3-a" name="q3" value="a">
+                  <label for="q3-a">A. 吸烟史</label>
+                </div>
+                <div class="option-item">
+                  <input type="checkbox" id="q3-b" name="q3" value="b">
+                  <label for="q3-b">B. 饮酒史</label>
+                </div>
+                <div class="option-item">
+                  <input type="checkbox" id="q3-c" name="q3" value="c">
+                  <label for="q3-c">C. 高血压病史</label>
+                </div>
+                <div class="option-item">
+                  <input type="checkbox" id="q3-d" name="q3" value="d">
+                  <label for="q3-d">D. 疫区接触史</label>
+                </div>
+              </div>
+          </div>
+          
+          <!-- 查体 -->
+          <div class="case-section section-physical-exam">
+            <h2 class="section-title">
+              查体
+            </h2>
+            <div class="case-info-content">
+              <p><strong>体温：</strong>38.9℃</p>
+              <p><strong>脉搏：</strong>110次/分</p>
+              <p><strong>呼吸：</strong>28次/分</p>
+              <p><strong>血压：</strong>130/80mmHg</p>
+              <p><strong>一般情况：</strong>神志清楚，精神欠佳，急性病容，呼吸急促。</p>
+              <p><strong>胸部：</strong>胸廓对称，双侧呼吸运动减弱，双肺叩诊呈清音，双肺可闻及大量湿性啰音，以右肺中下叶为著。</p>
+              <p><strong>心脏：</strong>心率110次/分，律齐，各瓣膜听诊区未闻及杂音。</p>
+              <p><strong>腹部：</strong>腹软，无压痛及反跳痛，肝脾肋下未触及，肠鸣音正常。</p>
+              <p><strong>神经系统：</strong>生理反射存在，病理反射未引出。</p>
+            </div>
+          </div>
+          
+          <!-- 问题4：单选题 - 查体内容相关 -->
+          <div class="case-section">
+              <h3 class="question-title">根据查体结果，哪项体征提示肺部感染严重？<span class="question-type single">单选</span></h3>
+              <div class="question-options">
+                <div class="option-item">
+                  <input type="radio" id="q4-a" name="q4" value="a">
+                  <label for="q4-a">A. 体温38.9℃</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" id="q4-b" name="q4" value="b">
+                  <label for="q4-b">B. 脉搏110次/分</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" id="q4-c" name="q4" value="c">
+                  <label for="q4-c">C. 呼吸28次/分</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" id="q4-d" name="q4" value="d">
+                  <label for="q4-d">D. 双肺可闻及大量湿性啰音</label>
+                </div>
+              </div>
+          </div>
+          
+          <!-- 辅助检查 -->
+          <div class="case-section section-auxiliary-exam">
+            <h2 class="section-title">
+              辅助检查
+            </h2>
+            <div class="case-info-content">
+              <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">血常规</h3>
+              <p>白细胞计数：15.6×10^9/L，中性粒细胞百分比：88%，淋巴细胞百分比：10%，血红蛋白：130g/L，血小板计数：220×10^9/L。</p>
+              
+              <h3 style="font-size: 14px; font-weight: 600; margin: 12px 0 8px;">血生化</h3>
+              <p>肝肾功能正常，电解质正常，C反应蛋白：120mg/L，降钙素原：0.8ng/ml。</p>
+              
+              <h3 style="font-size: 14px; font-weight: 600; margin: 12px 0 8px;">胸部CT</h3>
+              <p>双肺多发斑片状阴影，以右肺中下叶为主，部分融合成大片状实变影，可见支气管充气征。</p>
+              <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chest%20CT%20scan%20showing%20multiple%20patchy%20shadows%20in%20both%20lungs%20with%20consolidation%20in%20right%20lower%20lobe&image_size=square_hd" alt="胸部CT影像" />
+              
+              <h3 style="font-size: 14px; font-weight: 600; margin: 12px 0 8px;">痰培养</h3>
+              <p>未检出致病菌。</p>
+              
+              <h3 style="font-size: 14px; font-weight: 600; margin: 12px 0 8px;">血气分析</h3>
+              <p>pH：7.42，PaO2：65mmHg，PaCO2：40mmHg，SaO2：92%（吸氧2L/min）。</p>
+            </div>
+          </div>
+          
+          <!-- 问题5：多选题 - 辅助检查相关 -->
+          <div class="case-section">
+              <h3 class="question-title">根据检查结果，哪些指标提示患者病情较重？<span class="question-type multiple">多选</span></h3>
+              <div class="question-options">
+                <div class="option-item">
+                  <input type="checkbox" id="q5-a" name="q5" value="a">
+                  <label for="q5-a">A. 白细胞计数15.6×10^9/L</label>
+                </div>
+                <div class="option-item">
+                  <input type="checkbox" id="q5-b" name="q5" value="b">
+                  <label for="q5-b">B. C反应蛋白120mg/L</label>
+                </div>
+                <div class="option-item">
+                  <input type="checkbox" id="q5-c" name="q5" value="c">
+                  <label for="q5-c">C. 胸部CT显示双肺多发斑片状阴影，部分融合</label>
+                </div>
+                <div class="option-item">
+                  <input type="checkbox" id="q5-d" name="q5" value="d">
+                  <label for="q5-d">D. 血气分析PaO2：65mmHg（吸氧2L/min）</label>
+                </div>
+              </div>
+          </div>
+          
+          <!-- 初步诊断 -->
+          <div class="case-section section-primary-diagnosis">
+            <h2 class="section-title">
+              初步诊断
+            </h2>
+            <div class="case-info-content">
+              <p>社区获得性肺炎（重症）</p>
+              <p>Ⅰ型呼吸衰竭</p>
+              <p>高血压病2级（中危）</p>
+            </div>
+          </div>
+          
+          <!-- 鉴别诊断 -->
+          <div class="case-section section-differential-diagnosis">
+            <h2 class="section-title">
+              鉴别诊断
+            </h2>
+            <div class="case-info-content">
+              <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">1. 肺结核</h3>
+              <p>患者有发热、咳嗽、咳痰症状，但无盗汗、乏力等结核中毒症状，胸部CT表现为多发斑片状阴影，而非典型的结核病灶，痰培养未检出结核菌，故暂不考虑。</p>
+              
+              <h3 style="font-size: 14px; font-weight: 600; margin: 12px 0 8px;">2. 肺部肿瘤</h3>
+              <p>患者为老年男性，有长期吸烟史，但起病急，有明显的感染中毒症状，胸部CT表现为多发斑片状阴影，而非肿块影，故暂不考虑。</p>
+              
+              <h3 style="font-size: 14px; font-weight: 600; margin: 12px 0 8px;">3. 病毒性肺炎</h3>
+              <p>病毒性肺炎多有流行病学史，起病急，症状重，但白细胞计数多正常或降低，该患者白细胞计数明显升高，中性粒细胞比例增高，故暂不考虑。</p>
+            </div>
+          </div>
+          
+          <!-- 治疗方案 -->
+          <div class="case-section section-treatment-plan">
+            <h2 class="section-title">
+              治疗方案
+            </h2>
+            <div class="case-info-content">
+              <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">1. 抗感染治疗</h3>
+              <p>给予头孢哌酮舒巴坦钠 3.0g ivgtt q8h + 阿奇霉素 0.5g ivgtt qd，联合抗感染治疗。</p>
+              
+              <h3 style="font-size: 14px; font-weight: 600; margin: 12px 0 8px;">2. 呼吸支持</h3>
+              <p>给予鼻导管吸氧，氧流量 3-5L/min，维持血氧饱和度 >94%。</p>
+              
+              <h3 style="font-size: 14px; font-weight: 600; margin: 12px 0 8px;">3. 对症支持治疗</h3>
+              <p>给予布洛芬退热，氨溴索祛痰，多索茶碱平喘，维持水电解质平衡。</p>
+              
+              <h3 style="font-size: 14px; font-weight: 600; margin: 12px 0 8px;">4. 监测指标</h3>
+              <p>密切监测体温、呼吸、心率、血压、血氧饱和度，定期复查血常规、C反应蛋白、降钙素原、胸部CT等。</p>
+            </div>
+          </div>
+          
+          <!-- 健康指导 -->
+          <div class="case-section section-health-guidance">
+            <h2 class="section-title">
+              健康指导
+            </h2>
+            <div class="case-info-content">
+              <p>1. 注意休息，避免劳累，保证充足的睡眠。</p>
+              <p>2. 加强营养，多吃富含蛋白质、维生素的食物，增强机体免疫力。</p>
+              <p>3. 戒烟戒酒，避免接触有害气体和粉尘。</p>
+              <p>4. 适当进行体育锻炼，增强体质。</p>
+              <p>5. 按医嘱服药，定期复查，如有不适及时就诊。</p>
+              <p>6. 接种流感疫苗和肺炎球菌疫苗，预防呼吸道感染。</p>
+            </div>
+          </div>
+          
+          <!-- 自我评语 -->
+          <div class="case-section">
+              <div class="survey-title-container">
+                <h3 class="survey-card-title">创作者自我评语</h3>
+              </div>
+              <div class="self-evaluation-content">
+                <p>本病例为一典型的重症社区获得性肺炎病例，患者病情进展迅速，出现了呼吸衰竭。通过详细的病史询问、体格检查和辅助检查，我们做出了及时的诊断和治疗。在治疗过程中，我们采用了联合抗感染方案，并给予了呼吸支持和对症治疗，患者病情得到了有效控制。</p>
+                <p>通过本病例的学习，希望各位医生能够掌握重症肺炎的诊断和治疗要点，提高临床思维能力和应急处理能力。同时，也希望大家能够重视肺炎的预防工作，尤其是对于老年人、免疫功能低下等高危人群，应积极采取预防措施，减少肺炎的发生。</p>
+              </div>
+          </div>
+          
+          </div>
+            <!-- 评论标签页内容 -->
+            <div id="comments" class="tab-pane">
+          <!-- 评论区 -->
+          <div class="case-section">
+                <!-- 评论主体 - 使用flex布局 -->
+                <div class="comment-body">
+                  <!-- 头像 - flex布局 -->
+                  <div class="comment-avatar" style="background-image: url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
+                  
+                  <!-- 评论内容区域 - 占据剩余空间 -->
+                  <div class="comment-content-area">
+                    <!-- 评论头部 -->
+                    <div class="comment-header">
+                      <div class="comment-author-info">
+                        <div class="comment-author-details">
+                          <div class="comment-author-name">张教授 <span class="comment-author-title">主任医师 | 内分泌科 | 北京协和医院</span></div>
+                        </div>
+                      </div>
+                      <div class="comment-time">2025-12-15 16:30</div>
+                    </div>
+                    
+                    <!-- 评论内容 -->
+                    <div class="comment-content">
+                      这个病例非常典型，展示了糖尿病合并多种并发症的综合管理。尤其是在胰岛素强化治疗和联合调脂方面，提供了很好的临床参考。
+                    </div>
+                    
+                    <!-- 评论操作 -->
+                    <div class="comment-actions">
+                      <button class="comment-action-btn like-btn" onclick="toggleLike(this)">
+                        点赞
+                        <span class="like-count">12</span>
+                      </button>
+                      <button class="comment-action-btn reply-btn" onclick="showReplyInput(this)">
+                        回复
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <!-- 评论主体 - 使用flex布局 -->
+                <div class="comment-body">
+                  <!-- 头像 - flex布局 -->
+                  <div class="comment-avatar" style="background-image: url('https://randomuser.me/api/portraits/men/45.jpg');"></div>
+                  
+                  <!-- 评论内容区域 - 占据剩余空间 -->
+                  <div class="comment-content-area">
+                    <!-- 评论头部 -->
+                    <div class="comment-header">
+                      <div class="comment-author-info">
+                        <div class="comment-author-details">
+                          <div class="comment-author-name">张教授 <span class="comment-author-title">主任医师 | 内分泌科 | 北京协和医院</span></div>
+                        </div>
+                      </div>
+                      <div class="comment-time">2025-12-15 16:30</div>
+                    </div>
+                    
+                    <!-- 评论内容 -->
+                    <div class="comment-content">
+                      这个病例非常典型，展示了糖尿病合并多种并发症的综合管理。尤其是在胰岛素强化治疗和联合调脂方面，提供了很好的临床参考。
+                    </div>
+                    
+                    <!-- 评论操作 -->
+                    <div class="comment-actions">
+                      <button class="comment-action-btn like-btn" onclick="toggleLike(this)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="like-count">12</span>
+                      </button>
+                      <button class="comment-action-btn reply-btn" onclick="showReplyInput(this)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        回复
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+          </div>
+          </div>
+            
+            <!-- 专家评审标签页内容 -->
+            <div id="expert-review" class="tab-pane">
+              <div class="case-section">
+                <div class="section-title">专家评审</div>
+                <div class="case-info-content">
+                  <p>暂无专家评审内容</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 评论输入框 - 单独区域 -->
+          <div class="comment-input-container" style="margin-top: 50px;">
+            <textarea class="comment-input" placeholder="写下您的评论..."></textarea>
+          </div>
+        </div>
+      </main>
+      
+      <!-- 底部操作栏 - 悬浮在手机屏幕底部 -->
+      <div class="submit-section">
+        <div class="bottom-actions">
+          <button class="submit-button" onclick="submitCase()">提交</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 脚本文件 -->
+  <script src="../js/scripts.js"></script>
+  <script>
+    // 页面加载完成后初始化组件，传递页面标题
+    // 覆盖默认的initPageComponents函数，不加载底部导航栏
+    function initPageComponents(options = {}) {
+      const {
+        title = '病例详情' // 默认标题
+      } = options;
+      
+      // 只加载状态栏和头部组件，不加载底部组件
+      loadComponent('./components/status-bar.html', 'status-bar-container');
+      loadComponent('./components/header.html', 'header-container', { title });
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      initPageComponents({ title: '病例详情' });
+    });
+    
+    // 标签页切换功能
+    function initTabs() {
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabPanes = document.querySelectorAll('.tab-pane');
+      
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // 移除所有按钮的激活状态
+          tabBtns.forEach(b => b.classList.remove('active'));
+          // 移除所有内容的激活状态
+          tabPanes.forEach(pane => pane.classList.remove('active'));
+          
+          // 添加当前按钮的激活状态
+          btn.classList.add('active');
+          // 显示对应的内容
+          const targetTab = btn.dataset.tab;
+          const targetPane = document.getElementById(targetTab);
+          if (targetPane) {
+            targetPane.classList.add('active');
+          }
+        });
+      });
+    }
+    
+    // 页面加载完成后初始化标签页
+    document.addEventListener('DOMContentLoaded', function() {
+      initTabs();
+    });
+    
+    // 提交病例函数
+    function submitCase() {
+      // 收集用户答案
+      const answers = {
+        q1: document.querySelector('input[name="q1"]:checked')?.value,
+        q2: document.querySelector('input[name="q2"]:checked')?.value,
+        q3: Array.from(document.querySelectorAll('input[name="q3"]:checked')).map(input => input.value),
+        q4: document.querySelector('input[name="q4"]:checked')?.value,
+        q5: Array.from(document.querySelectorAll('input[name="q5"]:checked')).map(input => input.value)
+      };
+      
+      // 简单验证
+      let missingQuestions = [];
+      if (!answers.q1) missingQuestions.push('1');
+      if (!answers.q2) missingQuestions.push('2');
+      if (!answers.q3 || answers.q3.length === 0) missingQuestions.push('3');
+      if (!answers.q4) missingQuestions.push('4');
+      if (!answers.q5 || answers.q5.length === 0) missingQuestions.push('5');
+      
+      if (missingQuestions.length > 0) {
+        alert(`请回答以下问题：${missingQuestions.join(', ')}`);
+        return;
+      }
+      
+      // 模拟提交
+      alert('提交成功！感谢您的参与。');
+      // 这里可以添加实际的提交逻辑
+    }
+    
+    // 收藏功能
+    function toggleFavorite() {
+      // 模拟收藏功能
+      const iconBtn = event.currentTarget;
+      const svg = iconBtn.querySelector('svg');
+      const isFavorited = svg.style.fill === '#ff4d4f';
+      
+      if (isFavorited) {
+        // 取消收藏
+        svg.style.fill = 'none';
+        svg.style.stroke = '#999';
+        iconBtn.querySelector('.action-icon-text').textContent = '收藏';
+        alert('已取消收藏');
+      } else {
+        // 添加收藏
+        svg.style.fill = '#ff4d4f';
+        svg.style.stroke = '#ff4d4f';
+        iconBtn.querySelector('.action-icon-text').textContent = '已收藏';
+        alert('收藏成功');
+      }
+    }
+    
+    // 点赞功能
+    function toggleLike(button) {
+      const svg = button.querySelector('svg');
+      const isLiked = svg.style.fill === '#ff4d4f';
+      
+      if (isLiked) {
+        // 取消点赞
+        svg.style.fill = 'none';
+        svg.style.stroke = 'currentColor';
+      } else {
+        // 添加点赞
+        svg.style.fill = '#ff4d4f';
+        svg.style.stroke = '#ff4d4f';
+      }
+    }
+    
+    // 评论功能
+    function showComments() {
+      // 跳转到评论区域
+      const commentsSection = document.querySelector('.comments-section');
+      if (commentsSection) {
+        commentsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    
+    // 点赞功能
+    function toggleLike(btn) {
+      const isLiked = btn.classList.contains('active');
+      const likeCountEl = btn.querySelector('.like-count');
+      let likeCount = parseInt(likeCountEl.textContent);
+      
+      if (isLiked) {
+        // 取消点赞
+        btn.classList.remove('active');
+        likeCount--;
+      } else {
+        // 点赞
+        btn.classList.add('active');
+        likeCount++;
+      }
+      
+      likeCountEl.textContent = likeCount;
+    }
+    
+    // 显示回复输入框
+    function showReplyInput(btn) {
+      // 模拟回复功能
+      alert('回复功能已触发');
+      // 实际项目中可以显示回复输入框
+    }
+  </script>
+</body>
+</html>

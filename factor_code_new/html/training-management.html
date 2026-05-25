@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>培训管理 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/training-management.css">
+</head>
+<body>
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+            <!-- 服务类型标签 -->
+            <div class="service-tabs">
+                <div class="service-tab active">培训管理</div>
+                <div class="service-tab">培训统计</div>
+                <div class="service-tab">讲师管理</div>
+                <div class="service-tab">资源管理</div>
+            </div>
+
+            <!-- 培训管理内容 -->
+            <div class="tab-content active" id="trainingManagement">
+                <!-- 功能区和培训内容区合并卡片 -->
+                <div class="content-card">
+                    <!-- 筛选栏 -->
+                    <div class="filter-bar">
+                        <div class="filter-item">
+                            <input type="text" placeholder="培训名称">
+                        </div>
+                        <div class="filter-item">
+                            <input type="text" placeholder="培训编号">
+                        </div>
+                        <div class="filter-item">
+                            <select>
+                                <option>培训状态</option>
+                                <option>进行中</option>
+                                <option>已结束</option>
+                                <option>未开始</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-item">
+                            <select>
+                                <option>培训类型</option>
+                                <option>线上培训</option>
+                                <option>线下培训</option>
+                                <option>混合培训</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <select>
+                                <option>培训对象</option>
+                                <option>内部员工</option>
+                                <option>外部客户</option>
+                                <option>全部</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 搜索按钮紧跟在筛选选项之后 -->
+                        <button class="search-btn">搜索</button>
+
+                        <div class="action-buttons">
+                            <button class="advanced-filter-btn">更多筛选</button>
+                            <button class="external-btn">外部培训管理</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 批量操作栏 -->
+                    <div class="batch-actions" id="batchActionsTraining">
+                        <span class="selected-count" id="selectedCountTraining">已选择 0 条</span>
+                        <button class="batch-btn">批量导出</button>
+                        <button class="batch-btn">批量删除</button>
+                    </div>
+                    
+                    <!-- 培训卡片容器 -->
+                    <div class="training-cards">
+                        <!-- 培训卡片1 -->
+                        <div class="training-card">
+                            <div class="training-card-header">
+                                <img src="https://via.placeholder.com/300x150?text=培训封面1" alt="培训封面">
+                                <div class="training-card-tags">
+                                    <span class="training-card-tag new">NEW</span>
+                                    <span class="training-card-tag">线上</span>
+                                </div>
+                            </div>
+                            <div class="training-card-content">
+                                <span class="training-card-date">2025-01-05 - 2025-01-30</span>
+                                <h3 class="training-card-title">测试培训121</h3>
+                                <div class="training-card-progress">
+                                    <span class="training-card-status">培训已结束</span>
+                                </div>
+                                <div class="training-card-actions">
+                                    <button class="training-card-action-btn">培训记录</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 培训卡片2 -->
+                        <div class="training-card">
+                            <div class="training-card-header">
+                                <img src="https://via.placeholder.com/300x150?text=培训封面2" alt="培训封面">
+                                <div class="training-card-tags">
+                                    <span class="training-card-tag">线上</span>
+                                </div>
+                            </div>
+                            <div class="training-card-content">
+                                <span class="training-card-date">2025-01-09 - 2025-01-31</span>
+                                <h3 class="training-card-title">长隆冬索</h3>
+                                <div class="training-card-progress">
+                                    <span class="training-card-status">培训已结束</span>
+                                </div>
+                                <div class="training-card-actions">
+                                    <button class="training-card-action-btn">培训记录</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 培训卡片3 -->
+                        <div class="training-card">
+                            <div class="training-card-header">
+                                <img src="https://via.placeholder.com/300x150?text=培训封面3" alt="培训封面">
+                                <div class="training-card-tags">
+                                    <span class="training-card-tag new">NEW</span>
+                                    <span class="training-card-tag">线上</span>
+                                </div>
+                            </div>
+                            <div class="training-card-content">
+                                <span class="training-card-date">2025-01-06 - 2025-01-16</span>
+                                <h3 class="training-card-title">测试代表培训</h3>
+                                <div class="training-card-progress">
+                                    <span class="training-card-status">培训已结束</span>
+                                    <div class="training-card-progress-bar">
+                                        <div class="training-card-progress-fill" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="training-card-actions">
+                                    <button class="training-card-action-btn">培训记录</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 培训卡片4 -->
+                        <div class="training-card">
+                            <div class="training-card-header">
+                                <img src="https://via.placeholder.com/300x150?text=培训封面4" alt="培训封面">
+                                <div class="training-card-tags">
+                                    <span class="training-card-tag">线上</span>
+                                </div>
+                            </div>
+                            <div class="training-card-content">
+                                <span class="training-card-date">2025-01-11 - 2025-01-31</span>
+                                <h3 class="training-card-title">测试23</h3>
+                                <div class="training-card-progress">
+                                    <span class="training-card-status">培训已结束</span>
+                                </div>
+                                <div class="training-card-actions">
+                                    <button class="training-card-action-btn">培训记录</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 培训卡片5 -->
+                        <div class="training-card">
+                            <div class="training-card-header">
+                                <img src="https://via.placeholder.com/300x150?text=培训封面5" alt="培训封面">
+                                <div class="training-card-tags">
+                                    <span class="training-card-tag">线上</span>
+                                </div>
+                            </div>
+                            <div class="training-card-content">
+                                <span class="training-card-date">2025-01-04 - 2025-01-31</span>
+                                <h3 class="training-card-title">测试11</h3>
+                                <div class="training-card-progress">
+                                    <span class="training-card-status">培训已结束</span>
+                                </div>
+                                <div class="training-card-actions">
+                                    <button class="training-card-action-btn">培训记录</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 培训卡片6 -->
+                        <div class="training-card">
+                            <div class="training-card-header">
+                                <img src="https://via.placeholder.com/300x150?text=培训封面6" alt="培训封面">
+                                <div class="training-card-tags">
+                                    <span class="training-card-tag">线上</span>
+                                </div>
+                            </div>
+                            <div class="training-card-content">
+                                <span class="training-card-date">2025-01-04 - 2025-01-31</span>
+                                <h3 class="training-card-title">测试</h3>
+                                <div class="training-card-progress">
+                                    <span class="training-card-status">培训已结束</span>
+                                </div>
+                                <div class="training-card-actions">
+                                    <button class="training-card-action-btn">培训记录</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 培训卡片7 -->
+                        <div class="training-card">
+                            <div class="training-card-header">
+                                <img src="https://via.placeholder.com/300x150?text=培训封面7" alt="培训封面">
+                                <div class="training-card-tags">
+                                    <span class="training-card-tag">线下</span>
+                                </div>
+                            </div>
+                            <div class="training-card-content">
+                                <span class="training-card-date">2025-01-04 - 2025-01-15</span>
+                                <h3 class="training-card-title">培训测试</h3>
+                                <div class="training-card-progress">
+                                    <span class="training-card-status">培训已结束</span>
+                                </div>
+                                <div class="training-card-actions">
+                                    <button class="training-card-action-btn">培训记录</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 培训卡片8 -->
+                        <div class="training-card">
+                            <div class="training-card-header">
+                                <img src="https://via.placeholder.com/300x150?text=培训封面8" alt="培训封面">
+                                <div class="training-card-tags">
+                                    <span class="training-card-tag">线下</span>
+                                </div>
+                            </div>
+                            <div class="training-card-content">
+                                <span class="training-card-date">2025-01-04 - 2025-01-15</span>
+                                <h3 class="training-card-title">培训测试2</h3>
+                                <div class="training-card-progress">
+                                    <span class="training-card-status">培训已结束</span>
+                                </div>
+                                <div class="training-card-actions">
+                                    <button class="training-card-action-btn">培训记录</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 培训卡片9 -->
+                        <div class="training-card">
+                            <div class="training-card-header">
+                                <img src="https://via.placeholder.com/300x150?text=培训封面9" alt="培训封面">
+                                <div class="training-card-tags">
+                                    <span class="training-card-tag">混合</span>
+                                </div>
+                            </div>
+                            <div class="training-card-content">
+                                <span class="training-card-date">2025-01-04 - 2025-01-15</span>
+                                <h3 class="training-card-title">模拟Wave</h3>
+                                <div class="training-card-progress">
+                                    <span class="training-card-status">培训已结束</span>
+                                    <div class="training-card-progress-bar">
+                                        <div class="training-card-progress-fill" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="training-card-actions">
+                                    <button class="training-card-action-btn">培训记录</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 培训卡片10 -->
+                        <div class="training-card">
+                            <div class="training-card-header">
+                                <img src="https://via.placeholder.com/300x150?text=培训封面10" alt="培训封面">
+                                <div class="training-card-tags">
+                                    <span class="training-card-tag">混合</span>
+                                </div>
+                            </div>
+                            <div class="training-card-content">
+                                <span class="training-card-date">2025-01-04 - 2025-01-14</span>
+                                <h3 class="training-card-title">第1代表培训</h3>
+                                <div class="training-card-progress">
+                                    <span class="training-card-status">培训已结束</span>
+                                    <div class="training-card-progress-bar">
+                                        <div class="training-card-progress-fill" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="training-card-actions">
+                                    <button class="training-card-action-btn">培训记录</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 培训卡片11 -->
+                        <div class="training-card">
+                            <div class="training-card-header">
+                                <img src="https://via.placeholder.com/300x150?text=培训封面11" alt="培训封面">
+                                <div class="training-card-tags">
+                                    <span class="training-card-tag">混合</span>
+                                </div>
+                            </div>
+                            <div class="training-card-content">
+                                <span class="training-card-date">2025-01-05 - 2025-01-15</span>
+                                <h3 class="training-card-title">新生培训</h3>
+                                <div class="training-card-progress">
+                                    <span class="training-card-status">培训已结束</span>
+                                    <div class="training-card-progress-bar">
+                                        <div class="training-card-progress-fill" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="training-card-actions">
+                                    <button class="training-card-action-btn">培训记录</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 培训卡片12 -->
+                        <div class="training-card">
+                            <div class="training-card-header">
+                                <img src="https://via.placeholder.com/300x150?text=培训封面12" alt="培训封面">
+                                <div class="training-card-tags">
+                                    <span class="training-card-tag">混合</span>
+                                </div>
+                            </div>
+                            <div class="training-card-content">
+                                <span class="training-card-date">2025-01-05 - 2025-01-15</span>
+                                <h3 class="training-card-title">测试111</h3>
+                                <div class="training-card-progress">
+                                    <span class="training-card-status">培训已结束</span>
+                                    <div class="training-card-progress-bar">
+                                        <div class="training-card-progress-fill" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="training-card-actions">
+                                    <button class="training-card-action-btn">培训记录</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 分页控件 -->
+                    <div class="pagination">
+                        <div class="pagination-info">
+                            共 12 条记录
+                        </div>
+                        <div class="pagination-buttons">
+                            <button class="page-btn" disabled>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loading" id="loading" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>AI正在思考...</p>
+    </div>
+
+    <!-- 动态组件加载脚本 -->
+    <script>
+        async function loadComponents() {
+            const headerResponse = await fetch('components/header.html');
+            const headerHtml = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerHtml;
+            
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarHtml = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+            
+            initializeMenu();
+        }
+        window.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+    <script src="../js/script.js?v=1"></script>
+    <script src="../js/menu.js?v=1"></script>
+</body>
+</html>

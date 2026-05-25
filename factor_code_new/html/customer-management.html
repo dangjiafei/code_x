@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客户管理 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/customer-management.css">
+</head>
+<body>
+    <!-- 加载公共组件的脚本 -->
+    <script>
+        // 动态加载公共组件
+        async function loadComponents() {
+            // 加载顶部导航栏
+            const headerResponse = await fetch('components/header.html');
+            const headerHtml = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerHtml;
+            
+            // 加载左侧侧边栏
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarHtml = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+            
+            // 加载完成后，初始化菜单交互
+            initializeMenu();
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+    
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+            <!-- 服务类型标签 -->
+            <div class="service-tabs">
+                <div class="service-tab active">客户管理</div>
+                <div class="service-tab">机构管理</div>
+                <div class="service-tab">客户分级</div>
+                <div class="service-tab">播客管理</div>
+                <div class="service-tab">签约管理</div>
+            </div>
+
+            <!-- 客户管理内容 -->
+            <div class="tab-content active" id="customerManagement">
+                <!-- 功能区和客户内容区合并卡片 -->
+                <div class="content-card">
+                    <!-- 筛选栏 -->
+                    <div class="filter-bar">
+                        <div class="filter-item">
+                            <input type="text" placeholder="客户姓名">
+                        </div>
+                        <div class="filter-item">
+                            <input type="text" placeholder="客户手机号">
+                        </div>
+                        <div class="filter-item">
+                            <select>
+                                <option>认证状态</option>
+                                <option>已认证</option>
+                                <option>未认证</option>
+                                <option>认证中</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-item hidden">
+                            <select>
+                                <option>职业/职称</option>
+                                <option>主任医师</option>
+                                <option>副主任医师</option>
+                                <option>主治医师</option>
+                                <option>住院医师</option>
+                                <option>其他</option>
+                            </select>
+                        </div>
+                        <div class="filter-item hidden">
+                            <select>
+                                <option>机构等级</option>
+                                <option>等级1</option>
+                                <option>等级2</option>
+                                <option>等级3</option>
+                                <option>等级4</option>
+                                <option>等级5</option>
+                            </select>
+                        </div>
+                        <div class="filter-item hidden">
+                            <select>
+                                <option>选择科室</option>
+                                <option>内科</option>
+                                <option>外科</option>
+                                <option>妇产科</option>
+                                <option>儿科</option>
+                                <option>其他</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 搜索按钮紧跟在筛选选项之后 -->
+                        <button class="search-btn">搜索</button>
+
+                        <div class="action-buttons">
+                            <button class="advanced-filter-btn">更多筛选</button>
+                            <button class="external-btn">外部客户管理</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 批量操作栏 -->
+                    <div class="batch-actions" id="batchActionsCustomer">
+                        <span class="selected-count" id="selectedCountCustomer">已选择 0 条</span>
+                        <button class="batch-btn">批量绑定</button>
+                        <button class="batch-btn">批量解绑</button>
+                        <button class="batch-btn delete">批量删除</button>
+                    </div>
+                    
+                    <!-- 表格容器 -->
+                    <div class="table-container">
+                        <!-- 客户列表表格 -->
+                        <table class="customer-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-select"><input type="checkbox" class="select-all check-all-input"></th>
+                                    <th>姓名</th>
+                                    <th>所属职称</th>
+                                    <th>医院</th>
+                                    <th>所在科室</th>
+                                    <th>职业类型</th>
+                                    <th>省市</th>
+                                    <th>手机号</th>
+                                    <th>状态</th>
+                                    <th>编码</th>
+                                    <th>录入时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 客户数据行 -->
+                                <tr>
+                                    <td><input type="checkbox" class="select-row"></td>
+                                    <td>山东冯提莫</td>
+                                    <td>主任医师</td>
+                                    <td>薛木桥体检医院</td>
+                                    <td>检验科</td>
+                                    <td>医生</td>
+                                    <td>浙江 杭州市</td>
+                                    <td>159****7125</td>
+                                    <td>
+                                        <div class="status-tags">
+                                            <span class="status-tag verified">医师<span class="status-icon">✓</span></span>
+                                            <span class="status-tag verified">实名<span class="status-icon">✓</span></span>
+                                            <span class="status-tag verified">讲者<span class="status-icon">✓</span></span>
+                                            <span class="status-tag verified">手机<span class="status-icon">✓</span></span>
+                                            <span class="status-tag verified">专家<span class="status-icon">✓</span></span>
+                                        </div>
+                                    </td>
+                                    <td>ABC123456789001</td>
+                                    <td>2023-07-27 15:23:55</td>
+                                    <td class="action-buttons-cell">
+                                        <button class="action-btn view">查看详情</button>
+                                        <div class="dropdown">
+                                            <button class="action-btn more">更多操作</button>
+                                            <div class="dropdown-menu">
+                                                <a href="#" class="dropdown-item">编辑编码</a>
+                                                <button class="dropdown-item" type="button" onclick="showRecommendExpertModal()">推荐专家</button>
+                                                <a href="#" class="dropdown-item">解除绑定</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="select-row"></td>
+                                    <td>叶林林</td>
+                                    <td>主任医师</td>
+                                    <td>薛木桥体检医院</td>
+                                    <td>内科</td>
+                                    <td>医生</td>
+                                    <td>浙江 杭州市</td>
+                                    <td>188****3770</td>
+                                    <td>
+                                        <div class="status-tags">
+                                            <span class="status-tag verified">医师<span class="status-icon">✓</span></span>
+                                            <span class="status-tag verified">实名<span class="status-icon">✓</span></span>
+                                            <span class="status-tag pending">讲者<span class="status-icon">⏳</span></span>
+                                            <span class="status-tag verified">手机<span class="status-icon">✓</span></span>
+                                        </div>
+                                    </td>
+                                    <td>ABC123456789002</td>
+                                    <td>2023-07-27 03:26:05</td>
+                                    <td class="action-buttons-cell">
+                                        <button class="action-btn view">查看详情</button>
+                                        <div class="dropdown">
+                                            <button class="action-btn more">更多操作</button>
+                                            <div class="dropdown-menu">
+                                                <a href="#" class="dropdown-item">编辑编码</a>
+                                                <button class="dropdown-item" onclick="showRecommendExpertModal()">推荐专家</button>
+                                                <a href="#" class="dropdown-item">解除绑定</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- 模拟专家审核中的数据 -->
+                                <tr>
+                                    <td><input type="checkbox" class="select-row"></td>
+                                    <td>张三</td>
+                                    <td>副主任医师</td>
+                                    <td>杭州市第一医院</td>
+                                    <td>外科</td>
+                                    <td>医生</td>
+                                    <td>浙江 杭州市</td>
+                                    <td>138****8888</td>
+                                    <td>
+                                        <div class="status-tags">
+                                            <span class="status-tag verified">医师<span class="status-icon">✓</span></span>
+                                            <span class="status-tag verified">实名<span class="status-icon">✓</span></span>
+                                            <span class="status-tag verified">讲者<span class="status-icon">✓</span></span>
+                                            <span class="status-tag verified">手机<span class="status-icon">✓</span></span>
+                                            <span class="status-tag pending">专家<span class="status-icon">⏳</span></span>
+                                        </div>
+                                    </td>
+                                    <td>ABC123456789003</td>
+                                    <td>2023-07-28 10:15:30</td>
+                                    <td class="action-buttons-cell">
+                                        <button class="action-btn view">查看详情</button>
+                                        <div class="dropdown">
+                                            <button class="action-btn more">更多操作</button>
+                                            <div class="dropdown-menu">
+                                                <a href="#" class="dropdown-item">编辑编码</a>
+                                                <button class="dropdown-item" type="button" onclick="showRecommendExpertModal()">推荐专家</button>
+                                                <a href="#" class="dropdown-item">解除绑定</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- 模拟主治医师数据，无推荐专家资格 -->
+                                <tr>
+                                    <td><input type="checkbox" class="select-row"></td>
+                                    <td>李四</td>
+                                    <td>主治医师</td>
+                                    <td>杭州市第二医院</td>
+                                    <td>内科</td>
+                                    <td>医生</td>
+                                    <td>浙江 杭州市</td>
+                                    <td>139****9999</td>
+                                    <td>
+                                        <div class="status-tags">
+                                            <span class="status-tag verified">医师<span class="status-icon">✓</span></span>
+                                            <span class="status-tag verified">实名<span class="status-icon">✓</span></span>
+                                            <span class="status-tag pending">讲者<span class="status-icon">⏳</span></span>
+                                            <span class="status-tag verified">手机<span class="status-icon">✓</span></span>
+                                        </div>
+                                    </td>
+                                    <td>ABC123456789004</td>
+                                    <td>2023-07-29 09:00:00</td>
+                                    <td class="action-buttons-cell">
+                                        <button class="action-btn view">查看详情</button>
+                                        <div class="dropdown">
+                                            <button class="action-btn more">更多操作</button>
+                                            <div class="dropdown-menu">
+                                                <a href="#" class="dropdown-item">编辑编码</a>
+                                                <button class="dropdown-item" type="button" onclick="showRecommendExpertModal()">推荐专家</button>
+                                                <a href="#" class="dropdown-item">解除绑定</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- 更多客户数据行... -->
+                            </tbody>
+                        </table>
+                        
+                        <!-- 分页控件 -->
+                        <div class="pagination">
+                            <div class="pagination-info">
+                                共 10 条记录
+                            </div>
+                            <div class="pagination-buttons">
+                                <button class="page-btn" disabled>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="15 18 9 12 15 6"></polyline>
+                                    </svg>
+                                </button>
+                                <button class="page-btn active">1</button>
+                                <button class="page-btn">2</button>
+                                <button class="page-btn">3</button>
+                                <button class="page-btn">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 机构管理内容 -->
+            <div class="tab-content" id="institutionManagement">
+                <!-- 机构管理内容... -->
+            </div>
+        </main>
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loading" id="loading" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>AI正在思考...</p>
+    </div>
+
+    <!-- 推荐专家弹窗 -->
+    <div class="modal" id="recommendExpertModal" style="display: none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>推荐专家</h3>
+                <button class="modal-close" onclick="closeRecommendExpertModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <p>您确定要推荐该客户为专家吗？</p>
+                <p style="color: #64748b; font-size: 0.9rem; margin-top: 12px;">推荐后，平台将进行审核，若认可该专家，后续可针对平台征集的活动内容进行专业质量评审。</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeRecommendExpertModal()">取消</button>
+                <button class="modal-btn confirm" onclick="confirmRecommendExpert()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 公共JS文件 -->
+    <script src="../js/menu.js"></script>
+    <script src="../js/script.js"></script>
+    <script>
+        // 推荐专家弹窗功能
+        function showRecommendExpertModal() {
+            // 获取当前点击的按钮
+            const btn = event.target;
+            
+            // 检查按钮是否为禁用状态
+            if (btn.classList.contains('disabled-btn')) {
+                // 显示提示信息
+                alert(btn.title);
+                return;
+            }
+            
+            // 正常显示弹窗
+            document.getElementById('recommendExpertModal').style.display = 'flex';
+        }
+
+        function closeRecommendExpertModal() {
+            document.getElementById('recommendExpertModal').style.display = 'none';
+        }
+
+        function confirmRecommendExpert() {
+            // 模拟推荐专家的确认操作
+            alert('推荐成功！平台将进行审核，若认可该专家，后续可针对平台征集的活动进行专业质量评审。');
+            closeRecommendExpertModal();
+        }
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有数据行
+            const rows = document.querySelectorAll('.customer-table tbody tr');
+            
+            // 控制推荐专家按钮的可用性
+            rows.forEach((row, index) => {
+                // 获取职称单元格内容
+                const titleCell = row.querySelector('td:nth-child(3)');
+                const title = titleCell ? titleCell.textContent.trim() : '';
+                
+                // 获取推荐专家按钮
+                const recommendBtn = row.querySelector('.dropdown-item[type="button"]');
+                if (!recommendBtn) return;
+                
+                // 检查是否为专家审核中状态
+                const statusTags = row.querySelector('.status-tags');
+                const hasPendingExpert = statusTags.querySelector('.status-tag.pending');
+                const isExpertPending = hasPendingExpert && hasPendingExpert.textContent.includes('专家');
+                
+                // 检查职称是否符合要求（副主任医师及以上）
+                const qualifiedTitles = ['主任医师', '副主任医师'];
+                const isQualified = qualifiedTitles.includes(title);
+                
+                // 如果专家审核中或职称不符合要求，禁用推荐专家按钮
+                if (isExpertPending || !isQualified) {
+                    // 移除disabled属性，使用CSS类来模拟禁用状态，以便触发点击事件
+                    recommendBtn.removeAttribute('disabled');
+                    recommendBtn.classList.add('disabled-btn');
+                    
+                    // 添加提示信息
+                    let tooltipText = '';
+                    if (!isQualified) {
+                        tooltipText = '只有副主任医师及以上职称才有资格推荐专家';
+                    } else if (isExpertPending) {
+                        tooltipText = '专家认证审核中，暂不可重复推荐';
+                    }
+                    
+                    recommendBtn.title = tooltipText;
+                    
+
+                } else {
+                    // 恢复正常状态
+                    recommendBtn.classList.remove('disabled-btn');
+                    recommendBtn.title = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

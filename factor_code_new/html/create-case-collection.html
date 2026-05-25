@@ -1,0 +1,3091 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新建病例征集 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/record.css">
+    <link rel="stylesheet" href="../css/materials.css">
+    <link rel="stylesheet" href="../css/create-survey.css">
+    <!-- 加载公共组件的脚本 -->
+    <script>
+        // 动态加载公共组件
+        async function loadComponents() {
+            // 加载顶部导航栏
+            const headerResponse = await fetch('components/header.html');
+            const headerHtml = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerHtml;
+            
+            // 加载左侧侧边栏
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarHtml = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+            
+            // 加载完成后，初始化菜单交互和AI轮播功能
+            if (typeof initializeMenu === 'function') {
+                initializeMenu();
+            }
+            // 初始化AI轮播文字功能
+            if (typeof initAICarousel === 'function') {
+                initAICarousel();
+            }
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            loadComponents();
+            
+            const questionCountInput = document.getElementById('interaction-question-count');
+            const questionRangeInput = document.getElementById('interaction-question-range');
+            const settingTypeRadios = document.querySelectorAll('input[name="question-setting-type"]');
+            const quantityRadios = document.querySelectorAll('input[name="question-count"]');
+            const customInput = document.getElementById('custom-question-count');
+            const minQuestionInput = document.getElementById('min-question-count');
+            const maxQuestionInput = document.getElementById('max-question-count');
+            const quantitySettings = document.getElementById('quantity-settings');
+            const rangeSettings = document.getElementById('range-settings');
+            const quantityBtn = document.getElementById('quantity-btn');
+            const rangeBtn = document.getElementById('range-btn');
+            const quantityRadio = document.getElementById('quantity-radio');
+            const rangeRadio = document.getElementById('range-radio');
+            
+            // 设置默认值为5
+            questionCountInput.value = '5';
+            questionRangeInput.value = '';
+            
+            // 按钮点击事件
+            quantityBtn.addEventListener('click', function() {
+                // 更新按钮样式
+                quantityBtn.style.backgroundColor = '#667eea';
+                quantityBtn.style.borderColor = '#667eea';
+                quantityBtn.style.color = 'white';
+                rangeBtn.style.backgroundColor = 'white';
+                rangeBtn.style.borderColor = '#e2e8f0';
+                rangeBtn.style.color = '#475569';
+                
+                // 选中对应的单选按钮
+                quantityRadio.checked = true;
+                
+                // 显示/隐藏设置选项
+                quantitySettings.style.display = 'block';
+                rangeSettings.style.display = 'none';
+                
+                // 确保数量选项有默认值
+                const checkedQuantity = document.querySelector('input[name="question-count"]:checked');
+                if (checkedQuantity) {
+                    if (checkedQuantity.value === 'custom') {
+                        if (!customInput.value) customInput.value = '5';
+                        questionCountInput.value = customInput.value;
+                    } else {
+                        questionCountInput.value = checkedQuantity.value;
+                    }
+                }
+            });
+            
+            rangeBtn.addEventListener('click', function() {
+                // 更新按钮样式
+                rangeBtn.style.backgroundColor = '#667eea';
+                rangeBtn.style.borderColor = '#667eea';
+                rangeBtn.style.color = 'white';
+                quantityBtn.style.backgroundColor = 'white';
+                quantityBtn.style.borderColor = '#e2e8f0';
+                quantityBtn.style.color = '#475569';
+                
+                // 选中对应的单选按钮
+                rangeRadio.checked = true;
+                
+                // 显示/隐藏设置选项
+                quantitySettings.style.display = 'none';
+                rangeSettings.style.display = 'block';
+                
+                // 设置默认区间值
+                if (!minQuestionInput.value) minQuestionInput.value = '5';
+                if (!maxQuestionInput.value) maxQuestionInput.value = '10';
+                updateRangeValue();
+            });
+            
+            // 数量选项点击事件
+            quantityRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'custom') {
+                        customInput.style.display = 'inline-block';
+                        if (!customInput.value) {
+                            customInput.value = '5';
+                        }
+                        questionCountInput.value = customInput.value;
+                    } else {
+                        customInput.style.display = 'none';
+                        questionCountInput.value = this.value;
+                    }
+                });
+            });
+            
+            // 自定义输入框变化事件
+            customInput.addEventListener('input', function() {
+                let value = parseInt(this.value) || 5;
+                if (value < 5) value = 5;
+                if (value > 20) value = 20;
+                this.value = value;
+                questionCountInput.value = value;
+            });
+            
+            // 获取区间选项的单选按钮
+            const rangeRadios = document.querySelectorAll('input[name="question-range"]');
+            
+            // 区间选项点击事件
+            rangeRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'custom') {
+                        // 显示自定义区间输入框
+                        minQuestionInput.style.display = 'inline-block';
+                        maxQuestionInput.style.display = 'inline-block';
+                        // 设置默认值
+                        if (!minQuestionInput.value) minQuestionInput.value = '5';
+                        if (!maxQuestionInput.value) maxQuestionInput.value = '10';
+                        updateRangeValue();
+                    } else {
+                        // 隐藏自定义区间输入框
+                        minQuestionInput.style.display = 'none';
+                        maxQuestionInput.style.display = 'none';
+                        // 设置区间值
+                        questionRangeInput.value = this.value;
+                    }
+                });
+            });
+            
+            // 区间输入框变化事件
+            function updateRangeValue() {
+                let min = parseInt(minQuestionInput.value) || 5;
+                let max = parseInt(maxQuestionInput.value) || 10;
+                
+                if (min < 5) min = 5;
+                if (max > 20) max = 20;
+                if (min > max) max = min;
+                
+                minQuestionInput.value = min;
+                maxQuestionInput.value = max;
+                questionRangeInput.value = min + '-' + max;
+            }
+            
+            minQuestionInput.addEventListener('input', updateRangeValue);
+            maxQuestionInput.addEventListener('input', updateRangeValue);
+            
+            // 初始化区间设置
+            function initRangeSettings() {
+                // 隐藏自定义区间输入框
+                minQuestionInput.style.display = 'none';
+                maxQuestionInput.style.display = 'none';
+                // 设置默认区间值
+                questionRangeInput.value = '5-10';
+            }
+            
+            // 初始化
+            initRangeSettings();
+            
+            const caseDescription = document.getElementById('case-description');
+            const aiGenerateBtn = document.getElementById('ai-generate-btn');
+            const aiPrompt = document.getElementById('ai-prompt');
+            
+            // AI生成按钮点击事件
+            if (aiGenerateBtn) {
+                aiGenerateBtn.addEventListener('click', function() {
+                    const prompt = aiPrompt.value.trim();
+                    if (!prompt) {
+                        alert('请输入活动主题关键词');
+                        return;
+                    }
+                    
+                    // 模拟AI生成过程
+                    aiGenerateBtn.disabled = true;
+                    aiGenerateBtn.textContent = '生成中...';
+                    
+                    setTimeout(() => {
+                        // 生成示例内容
+                        const generatedContent = `尊敬的老师，您好！
+
+基于您输入的主题「${prompt}」，我们为您生成以下活动详情建议：
+
+活动背景：
+随着医学技术的不断发展，${prompt}已成为临床关注的热点话题。为促进该领域的学术交流与经验分享，我们特别策划了本次活动。
+
+活动目的：
+1. 分享${prompt}的最新研究进展
+2. 探讨${prompt}的临床实践策略
+3. 搭建${prompt}领域的专业交流平台
+
+活动亮点：
+• 专业前沿：邀请领域内知名专家分享最新研究成果
+• 互动研讨：设置病例讨论、专题辩论等互动环节
+• 资源共享：提供相关学术资料与研究工具
+
+我们诚挚邀请您参与本次活动，共同推动${prompt}领域的发展与进步！`;
+                        
+                        // 将生成内容添加到文本域
+                        caseDescription.value = generatedContent;
+                        
+                        // 恢复按钮状态
+                        aiGenerateBtn.disabled = false;
+                        aiGenerateBtn.textContent = 'AI生成';
+                    }, 1500);
+                });
+            }
+            
+            // 活动封面切换功能
+            const coverTypeRadios = document.querySelectorAll('input[name="cover-type"]');
+            const defaultCoverPreview = document.getElementById('defaultCoverPreview');
+            const customCoverPreview = document.getElementById('customCoverPreview');
+            const coverUpload = document.getElementById('coverUpload');
+            const uploadArea = document.querySelector('.upload-area');
+            
+            // 封面类型切换事件
+            coverTypeRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'default') {
+                        defaultCoverPreview.style.display = 'block';
+                        customCoverPreview.style.display = 'none';
+                    } else if (this.value === 'custom') {
+                        defaultCoverPreview.style.display = 'none';
+                        customCoverPreview.style.display = 'block';
+                    }
+                });
+            });
+            
+            // 上传区域点击事件
+            if (uploadArea) {
+                uploadArea.addEventListener('click', function() {
+                    coverUpload.click();
+                });
+            }
+            
+            // 文件选择事件
+            if (coverUpload) {
+                coverUpload.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.style.width = '100%';
+                            img.style.maxWidth = '300px';
+                            img.style.height = 'auto';
+                            img.style.borderRadius = '8px';
+                            img.style.objectFit = 'cover';
+                            
+                            // 清空上传区域并显示预览图片
+                            uploadArea.innerHTML = '';
+                            uploadArea.appendChild(img);
+                            uploadArea.style.border = 'none';
+                            uploadArea.style.padding = '0';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        });
+        
+        // 初始化病例学术质量管理模块
+        function initQualityManagement() {
+            const qualityOptions = document.querySelectorAll('input[name="quality-control"]');
+            const reviewDimensionsSection = document.getElementById('review-dimensions-section');
+            const expertReviewNotice = document.getElementById('expertReviewNotice');
+            const expertInvitationSection = document.getElementById('expert-invitation-section');
+            const qualityOptionDivs = document.querySelectorAll('.quality-option');
+            
+            // 更新选项样式的函数
+            function updateOptionStyles() {
+                qualityOptionDivs.forEach(div => {
+                    const input = div.querySelector('input[name="quality-control"]');
+                    if (input.checked) {
+                        // 选中状态 - 使用.selected类
+                        div.classList.add('selected');
+                    } else {
+                        // 未选中状态 - 移除.selected类
+                        div.classList.remove('selected');
+                    }
+                });
+            }
+            
+            // 更新评审维度显示
+            function updateReviewDimensionsDisplay() {
+                const selectedValue = document.querySelector('input[name="quality-control"]:checked').value;
+                if (selectedValue === 'peer-review') {
+                    // 专家评审模式 - 显示评审维度设置和专家邀约
+                    reviewDimensionsSection.style.display = 'block';
+                    expertReviewNotice.style.display = 'block';
+                    if (expertInvitationSection) {
+                        expertInvitationSection.style.display = 'block';
+                    }
+                } else {
+                    // 基础服务模式 - 隐藏评审维度设置和专家邀约
+                    reviewDimensionsSection.style.display = 'none';
+                    expertReviewNotice.style.display = 'none';
+                    if (expertInvitationSection) {
+                        expertInvitationSection.style.display = 'none';
+                    }
+                }
+            }
+            
+            // 质量控制选项点击事件
+            qualityOptions.forEach(option => {
+                option.addEventListener('change', function() {
+                    updateReviewDimensionsDisplay();
+                    updateOptionStyles();
+                });
+            });
+            
+            // 为每个质量选项div添加点击事件
+            qualityOptionDivs.forEach(div => {
+                div.addEventListener('click', function() {
+                    const input = this.querySelector('input[name="quality-control"]');
+                    input.checked = true;
+                    // 触发change事件以更新状态
+                    input.dispatchEvent(new Event('change'));
+                    updateReviewDimensionsDisplay();
+                    updateOptionStyles();
+                });
+            });
+            
+            // 模板选择功能
+            const templateBtns = document.querySelectorAll('.template-btn');
+            templateBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有active类
+                    templateBtns.forEach(b => b.classList.remove('active'));
+                    // 为当前按钮添加active类
+                    this.classList.add('active');
+                    
+                    // 根据模板类型设置维度
+                    const templateType = this.dataset.template;
+                    setReviewTemplate(templateType);
+                });
+            });
+            
+            // 预设模板数据
+            const reviewTemplates = {
+                basic: [
+                    { name: '学术专业性', description: '评估病例的学术引用准确性和专业术语使用规范' },
+                    { name: '临床价值', description: '评估病例在临床实践中的参考和指导价值' },
+                    { name: '传播合理性', description: '评估病例内容的可传播性和适宜的传播渠道' }
+                ],
+                clinical: [
+                    { name: '诊断准确性', description: '评估病例诊断过程的完整性和准确性' },
+                    { name: '治疗方案', description: '评估治疗方案的合理性和依据' },
+                    { name: '预后评估', description: '评估病例预后判断的科学性和依据' }
+                ],
+                education: [
+                    { name: '案例典型性', description: '评估病例作为教学案例的典型代表性' },
+                    { name: '教学价值', description: '评估病例在教学中的知识点覆盖和启发价值' },
+                    { name: '启发意义', description: '评估病例对学生或读者的启发和思考价值' }
+                ]
+            };
+            
+            // 设置评审模板
+            function setReviewTemplate(templateType) {
+                const template = reviewTemplates[templateType];
+                if (template) {
+                    const dimensionsList = document.getElementById('dimensions-list');
+                    dimensionsList.innerHTML = '';
+                    
+                    // 添加模板维度
+                    template.forEach(dimension => {
+                        addDimension(dimension.name, dimension.description);
+                    });
+                }
+            }
+            
+            // 添加评审维度
+            function addDimension(name = '', description = '') {
+                const dimensionsList = document.getElementById('dimensions-list');
+                const dimensionItem = document.createElement('div');
+                dimensionItem.className = 'dimension-item';
+                dimensionItem.style.display = 'grid';
+                dimensionItem.style.gridTemplateColumns = '1fr 2fr auto';
+                dimensionItem.style.gap = '12px';
+                dimensionItem.style.alignItems = 'center';
+                dimensionItem.style.padding = '8px 0';
+                dimensionItem.style.background = 'white';
+                dimensionItem.style.border = 'none';
+                dimensionItem.style.marginBottom = '8px';
+                dimensionItem.style.transition = 'all 0.3s ease';
+                
+                dimensionItem.innerHTML = `
+                    <input type="text" class="dimension-name" placeholder="维度名称（如：学术专业性）" value="${name}" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; transition: all 0.3s ease;">
+                    <input type="text" class="dimension-description" placeholder="维度描述（如：评估病例的学术引用准确性）" value="${description}" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; transition: all 0.3s ease;">
+                    <button type="button" class="delete-dimension-btn" style="background: transparent; border: none; color: #ef4444; cursor: pointer; padding: 4px; border-radius: 4px; transition: all 0.3s ease; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                `;
+                
+                // 添加删除按钮点击事件
+                const deleteBtn = dimensionItem.querySelector('.delete-dimension-btn');
+                deleteBtn.addEventListener('click', function() {
+                    dimensionItem.remove();
+                });
+                
+                dimensionsList.appendChild(dimensionItem);
+            }
+            
+            // 添加维度按钮点击事件
+            const addDimensionBtn = document.getElementById('add-dimension-btn');
+            if (addDimensionBtn) {
+                addDimensionBtn.addEventListener('click', function() {
+                    addDimension();
+                });
+            }
+            
+            // 获取评审维度数据
+            window.getReviewDimensions = function() {
+                const dimensions = [];
+                const dimensionItems = document.querySelectorAll('.dimension-item');
+                
+                dimensionItems.forEach(item => {
+                    const nameInput = item.querySelector('.dimension-name');
+                    const descInput = item.querySelector('.dimension-description');
+                    
+                    if (nameInput.value.trim()) {
+                        dimensions.push({
+                            name: nameInput.value.trim(),
+                            description: descInput.value.trim()
+                        });
+                    }
+                });
+                
+                return dimensions;
+            };
+            
+            // 初始化调用，确保页面加载时状态正确
+            updateOptionStyles();
+            updateReviewDimensionsDisplay();
+        }
+        
+        // 页面加载完成后初始化质量评估服务
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化质量评估服务模块
+            initQualityManagement();
+        });
+        
+    </script>
+    
+
+    <style>
+        /* 强制左侧预览区域内所有文字为白色 */
+        .preview-left-section * {
+            color: white !important;
+        }
+        
+        /* 强制左侧预览区域内所有SVG图标为白色 */
+        .preview-left-section svg {
+            stroke: white !important;
+            fill: white !important;
+        }
+        
+        /* 确保左侧预览区域背景色为深色 */
+        .preview-left-section {
+            background-color: #2563eb !important;
+        }
+        
+        /* 确保右侧预览区域背景色为白色 */
+        .preview-right-section {
+            background-color: white !important;
+        }
+        
+        /* 右侧预览区域文字颜色 */
+        .preview-right-section * {
+            color: #1e293b !important;
+        }
+        
+        /* 右侧预览区域SVG图标颜色 */
+        .preview-right-section svg {
+            stroke: #1e293b !important;
+            fill: #1e293b !important;
+        }
+        
+        /* 复制链接按钮样式 */
+        .copy-link-btn {
+            color: #2563eb !important;
+            background-color: white !important;
+            border: 1px solid #2563eb !important;
+        }
+        
+        /* 调整内容卡片宽度为main元素的3/4 */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .content-card {
+            width: 75%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* 恢复页面标题区域原有宽度 */
+        .page-title {
+            width: auto;
+            margin: 0;
+        }
+    </style>
+    <style>
+
+        
+        /* 时间选择器样式优化 */
+        .time-range-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .time-separator {
+            color: #6b7280;
+            font-weight: bold;
+        }
+        
+        /* 邀约对象筛选样式 */
+        .invitation-filter {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .filter-section-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #374151;
+        }
+        .filter-form-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .filter-form-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .filter-form-item label {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        .filter-form-item select,
+        .filter-form-item input {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .filter-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        /* 评审维度设置样式 */
+        .template-btn {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 180px;
+            text-align: left;
+        }
+        
+        .template-btn:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            background: #f8fafc;
+        }
+        
+        .template-btn.active {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .add-dimension-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .add-dimension-btn:hover {
+            background: #5a6fd8;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .delete-dimension-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+        
+        .dimension-item input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        /* 时间范围选择器样式 */
+        .time-range-selector {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .time-range-input {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .time-range-input:hover {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .range-separator {
+            margin: 0 10px;
+            color: #9ca3af;
+        }
+        
+        .calendar-icon {
+            color: #667eea;
+            margin-left: 10px;
+        }
+        
+        /* 时间范围选择器弹窗 */
+        .time-range-picker {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            width: 800px;
+            max-width: 95vw;
+        }
+        
+        .picker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0f2f5;
+        }
+        
+        .picker-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .picker-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .picker-close:hover {
+            color: #6b7280;
+            background-color: #f3f4f6;
+        }
+        
+        /* 日历容器 */
+        .calendar-container {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        .calendar {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        /* 日历头部 */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .calendar-nav {
+            background: none;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            color: #6b7280;
+            transition: all 0.2s ease;
+        }
+        
+        .calendar-nav:hover {
+            border-color: #667eea;
+            color: #667eea;
+            background-color: #f0f4ff;
+        }
+        
+        .calendar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        /* 日历主体 */
+        .calendar-body {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+        
+        .calendar-day {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 32px;
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .calendar-day:hover {
+            background-color: #f0f4ff;
+            color: #667eea;
+        }
+        
+        .calendar-day.selected {
+            background-color: #667eea;
+            color: white;
+        }
+        
+        .calendar-day.today {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .calendar-day.other-month {
+            color: #d1d5db;
+        }
+        
+        /* 筛选器底部按钮 */
+        .picker-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 16px 20px;
+            border-top: 1px solid #f0f2f5;
+            gap: 10px;
+        }
+        
+        .btn-cancel,
+        .btn-confirm {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-cancel {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .btn-confirm {
+            background-color: #667eea;
+            color: white;
+        }
+        
+        .btn-confirm:hover {
+            background-color: #5a6fd8;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* 产品标签选择样式 */
+        .product-tag-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .product-tag-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .selected-tags .tag-item {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .tag-item .remove-tag {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* 活动封面设置样式 */
+        .cover-settings {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .cover-type-selector {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 8px;
+        }
+        
+        .cover-type-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #374151;
+        }
+        
+        .cover-note {
+            font-size: 12px;
+            color: #94a3b8;
+            margin: 0;
+            line-height: 1.4;
+        }
+        
+        .cover-preview-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+
+        
+        /* 全局表单优化 */
+        .survey-section {
+            margin-bottom: 20px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .survey-section .section-title {
+            margin-bottom: 12px;
+        }
+        
+        .form-row {
+            margin-bottom: 16px;
+        }
+        
+        .form-item {
+            margin-bottom: 12px;
+        }
+        
+        .form-item label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #334155;
+            font-size: 13px;
+        }
+        
+        .form-item .required {
+            color: #ef4444;
+            margin-left: 2px;
+        }
+        
+        /* 活动详情文本域优化 */
+        #case-description {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #000000;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            min-height: 220px;
+        }
+        
+        /* 提示文字样式 */
+        #case-description::placeholder {
+            color: #94a3b8;
+            opacity: 1;
+        }
+        
+        #case-description:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background-color: #ffffff;
+        }
+        
+        /* 内容要求样式简化 */
+        .material-requirements-container {
+            padding: 0;
+            background: #ffffff;
+            border: none;
+            border-radius: 8px;
+            margin-top: 8px;
+            box-shadow: none;
+        }
+        
+        .material-requirements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 8px;
+            padding: 0;
+        }
+        
+        .material-item-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0;
+            background: transparent;
+            border: none;
+        }
+        
+        /* 确保form-tip左对齐 */
+        .form-tip {
+            margin-left: 0 !important;
+            text-align: left;
+        }
+        
+        .material-item-text {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 13px;
+            line-height: 1.4;
+            font-family: inherit;
+            height: auto;
+            min-height: 38px;
+            color: #52606d;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+            box-shadow: none;
+        }
+        
+        .material-item-text::placeholder {
+            color: #94a3b8;
+            opacity: 1;
+            font-style: italic;
+        }
+        
+        .material-item-text:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+            color: #334155;
+        }
+        
+        .material-item-actions {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+        }
+        
+        .add-material-btn,
+        .delete-material-btn {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            box-shadow: none;
+        }
+        
+        .add-material-btn {
+            color: #667eea;
+        }
+        
+        .add-material-btn:hover {
+            background: #f0f4ff;
+            text-decoration: none;
+        }
+        
+        .delete-material-btn {
+            color: #ef4444;
+        }
+        
+        .delete-material-btn:hover {
+            background: #fef2f2;
+            text-decoration: none;
+        }
+        
+        /* 表单输入框通用样式优化 */
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #475569;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.08);
+            color: #334155;
+        }
+        
+        /* 优化标题样式 */
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        /* 统一表单行间距 */
+        .form-row {
+            margin-bottom: 15px !important;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        
+        /* 确保所有form-item间距一致 */
+        .form-item {
+            margin-bottom: 0 !important;
+            flex: 1;
+        }
+        
+        /* 确保full-width的form-item占据整行 */
+        .form-item.full-width {
+            width: 100%;
+            flex: none;
+        }
+        
+        /* 统一产品标签容器样式 */
+        .product-tag-container {
+            margin: 0 !important;
+            gap: 8px !important;
+        }
+        
+        /* 统一selected-tags样式 */
+        .selected-tags {
+            margin-top: 8px !important;
+        }
+        
+        /* 调整标题和输入框之间的间距 */
+        .form-item label {
+            margin-bottom: 8px !important;
+        }
+        
+        /* 调整活动详情文本域的样式 */
+        #case-description {
+            margin-top: 8px !important;
+        }
+        
+        /* 统一内容要求容器样式 */
+        .material-requirements-container {
+            margin-top: 8px !important;
+        }
+        
+        /* 统一表单组间距 */
+        .form-group {
+            margin-bottom: 15px !important;
+        }
+
+        /* 预览模态框样式 */
+        .preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-modal.active {
+            display: flex;
+        }
+
+        .preview-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+        }
+
+        .preview-modal-content {
+            position: relative;
+            z-index: 10001;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+            width: 95%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* 左侧活动详情区域 */
+        .preview-left-section {
+            flex: 1;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        /* 右侧活动信息和二维码区域 */
+        .preview-right-section {
+            width: 360px;
+            background: white;
+            padding: 32px;
+            overflow-y: auto;
+            border-left: 1px solid #e5e7eb;
+        }
+
+        /* 预览头部 */
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .preview-header h3 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .preview-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            font-size: 1.1rem;
+            color: white;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+        }
+
+        .preview-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        /* 活动标题栏 */
+        .activity-title-bar {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        /* 活动主标题 */
+        .activity-main-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        /* 活动副标题 */
+        .activity-subtitle {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+            opacity: 0.9;
+        }
+
+        /* 活动详情内容 */
+        .activity-content {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* 活动详情标题 */
+        .activity-content h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        /* 活动详情文本 */
+        .activity-content-text {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* 征稿主题列表 */
+        .activity-themes {
+            margin-bottom: 20px;
+        }
+
+        .activity-themes h5 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .activity-themes ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .activity-themes li {
+            margin-bottom: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* 预览链接区域 */
+        .preview-link-section {
+            margin-top: 32px;
+        }
+
+        .preview-link-section h5 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .preview-link-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .preview-link {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: white;
+            text-decoration: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .copy-link-btn {
+            background: white;
+            color: #3b82f6;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .copy-link-btn:hover {
+            background: #f1f5f9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 活动信息列表 */
+        .activity-info-list {
+            margin-bottom: 32px;
+        }
+
+        .activity-info-item {
+            margin-bottom: 20px;
+        }
+
+        .activity-info-item h5 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .activity-info-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+
+        /* 二维码区域 */
+        .qr-code-section {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .qr-code-section h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        .qr-code-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        .qr-code-container img {
+            width: 180px;
+            height: 180px;
+        }
+
+        /* 底部信息 */
+        .preview-footer-info {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .footer-item {
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-item-label {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .footer-item-value {
+            font-size: 14px;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        /* 微信扫码提示 */
+        .wechat-scan-tip {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        /* 手机刘海 */
+        .mobile-notch {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 25px;
+            background: #000;
+            border-radius: 0 0 20px 20px;
+            z-index: 10;
+        }
+
+        /* 手机屏幕 */
+        .mobile-screen {
+            position: relative;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            height: 812px;
+        }
+
+        /* 状态栏 */
+        .mobile-status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* 活动内容 */
+        .mobile-activity-content {
+            height: calc(100% - 44px);
+            overflow-y: auto;
+            background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+            /* 隐藏滚动条但保留滚动功能 */
+            scrollbar-width: none; /* Firefox */
+        }
+
+        /* 隐藏WebKit浏览器滚动条 */
+        .mobile-activity-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 封面图 */
+        .activity-cover {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 封面图叠加层 */
+        .activity-cover::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+        }
+
+        /* 活动类型标签 */
+        .activity-type-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(102, 126, 234, 0.95);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 20;
+        }
+
+        /* 活动标题（封面图上） */
+        .activity-cover-title {
+            position: absolute;
+            bottom: 20px;
+            left: 16px;
+            right: 16px;
+            color: white;
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1.3;
+            letter-spacing: -0.3px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 20;
+        }
+
+        /* 活动信息 */
+        .activity-info {
+            padding: 0;
+            background: transparent;
+        }
+
+        /* 活动卡片 */
+        .activity-card {
+            background: white;
+            border-radius: 0;
+            margin: 0;
+            padding: 20px 16px;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 活动标题 */
+        .activity-title {
+            display: none;
+        }
+
+        /* 活动标签 */
+        .activity-tags {
+            display: none;
+        }
+
+        /* 活动时间信息 */
+        .activity-time-info {
+            font-size: 14px;
+            color: #4a5568;
+            margin-bottom: 16px;
+            display: block;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            width: auto;
+        }
+
+        .activity-time-info::before {
+            content: "活动时间：";
+            font-weight: 500;
+        }
+
+        /* 活动详情 */
+        .activity-description {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 0;
+            white-space: pre-line;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            border-left: none;
+        }
+
+        /* 突出关键标题 */
+        .activity-description strong {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a2e;
+            display: block;
+            margin: 16px 0 8px;
+        }
+
+        /* 活动部分 */
+        .activity-section {
+            margin: 0;
+            padding: 20px 16px;
+            background: white;
+            border-radius: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-top: 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .section-title::before {
+            font-size: 14px;
+        }
+
+        /* 时间信息卡片 */
+        .time-section {
+            display: none;
+        }
+
+        /* 素材要求列表 */
+        .materials-list {
+            list-style: disc;
+            padding-left: 20px;
+            margin: 0;
+            display: block;
+        }
+
+        .materials-list li {
+            position: relative;
+            padding: 4px 0;
+            margin: 0;
+            color: #4a5568;
+            line-height: 1.5;
+            border-radius: 0;
+            background: transparent;
+            border: none;
+            transition: none;
+            font-size: 14px;
+        }
+
+        /* 移除素材要求中的特殊字体样式 */
+        .materials-list li strong {
+            color: inherit;
+            font-weight: normal;
+        }
+
+        .materials-list li::before {
+            content: none;
+        }
+
+        /* 底部参与按钮 */
+        .activity-footer {
+            padding: 24px 16px 32px;
+            background: white;
+            margin-top: 16px;
+        }
+
+        /* 参与引导 */
+        .participation-guide {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .participation-guide p {
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .participation-guide .highlight {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* 主参与按钮 */
+        .participate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .participate-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .participate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+        }
+
+        /* 辅助参与信息 */
+        .participate-info {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .preview-mobile-frame {
+                padding: 20px 10px;
+            }
+
+            .mobile-phone {
+                width: 100%;
+                max-width: 375px;
+            }
+        }
+        
+        /* 优化选择器样式 */
+        .template-btn {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 180px;
+            text-align: left;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .template-btn:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+            background: #f8fafc;
+        }
+        
+        .template-btn.active {
+            border-color: #667eea;
+            background: #f0f4ff;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <div class="right-content">
+            <!-- 页面标题 -->
+            <div class="page-title">
+                <button class="action-btn back-btn" onclick="window.location.href='activities.html'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    返回列表
+                </button>
+                <div class="survey-actions">
+                    <button class="action-btn preview-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        预览
+                    </button>
+                    <button class="action-btn save-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        保存
+                    </button>
+                    <button class="action-btn publish-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        保存并发布
+                    </button>
+                </div>
+            </div>
+
+            <main class="content-area">
+            <!-- 内容卡片：基本信息 -->
+            <div class="content-card" style="margin-bottom: 16px; box-shadow: none;">
+                <!-- 基本信息表单 -->
+                
+                    <h3 class="section-title">基本信息</h3>
+                    <div class="form-row">
+                        <div class="form-item full-width">
+                            <label for="case-title">活动名称 <span class="required">*</span></label>
+                            <input type="text" id="case-title" placeholder="请输入活动名称" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-item full-width">
+                            <label for="case-description">活动详情 <span class="required">*</span></label>
+                            
+                            <!-- AI辅助生成 -->
+                            <div style="margin-bottom: 12px;">
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="text" id="ai-prompt" placeholder="输入活动主题关键词，AI将生成相关主题" style="flex: 1; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px;">
+                                    <button type="button" id="ai-generate-btn" style="padding: 8px 16px; background-color: #667eea; color: white; border: none; border-radius: 6px; font-size: 13px; cursor: pointer;">AI 生成</button>
+                                </div>
+                            </div>
+                            
+                            <p class="form-tip" style="color: #f59e0b; font-size: 13px; margin-top: 6px; margin-bottom: 12px; background-color: #fffbeb; padding: 8px 12px; border-radius: 6px; display: flex; align-items: center; gap: 8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> 提示：AI生成的内容仅供参考，可能存在不准确或不适合的信息，请务必仔细检查并根据实际情况修改。</p>
+                            
+                            <textarea id="case-description" rows="12" required>尊敬的老师，您好！
+临床病例是医学教育与经验传递的核心载体，而"在线病例互动"能让诊疗思路的分享更具参与感与传播力。深知您在临床一线积累了丰富的病例经验与诊疗智慧，这些宝贵内容不仅能帮助年轻从业者成长，更能通过互动形式让更多同行共同研讨、精进技能。因此，我们诚挚邀请您参与本次在线病例互动创作活动，用互动式病例内容传递专业价值，助力医学知识的生动传播。
+
+征稿内容主题
+我们为您准备了两个契合互动传播的病例主题方向，供您选择：
+① 主题 1：XXXXXXXXXX
+② 主题 2：XXXXXXXXXX
+
+您可以结合自身临床专长，任选其一创作"在线病例互动"内容。</textarea>
+                            
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-item full-width">
+                            <label for="material-requirements">内容要求 <span class="required">*</span></label>
+                            <div class="material-requirements-container">
+                                 <p class="form-tip" style="color: #64748b; font-size: 13px; margin-bottom: 12px;">我们对您提供的内容有以下几点期待：</p>
+                                <div id="material-requirements-list" class="material-requirements-list">
+                                    <!-- 默认内容要求项 -->
+                                    <div class="material-item-content">
+                                        <input type="text" class="material-item-text" placeholder="请输入内容要求" required value="内容完整：请确保病例信息完整，包括患者基本情况、诊断过程、治疗方案及随访结果等关键信息。">
+                                        <div class="material-item-actions">
+                                            <button type="button" class="add-material-btn">新增</button>
+                                            <button type="button" class="delete-material-btn">删除</button>
+                                        </div>
+                                    </div>
+                                    <div class="material-item-content">
+                                        <input type="text" class="material-item-text" placeholder="请输入内容要求" required value="隐私保护：请确保所有患者隐私信息已完全脱敏，如姓名、身份证号、联系方式等。">
+                                        <div class="material-item-actions">
+                                            <button type="button" class="add-material-btn">新增</button>
+                                            <button type="button" class="delete-material-btn">删除</button>
+                                        </div>
+                                    </div>
+                                    <div class="material-item-content">
+                                        <input type="text" class="material-item-text" placeholder="请输入内容要求" required value="学术价值：病例应具有一定的学术参考价值，能够反映临床诊疗思路或展示特殊病例特点。">
+                                        <div class="material-item-actions">
+                                            <button type="button" class="add-material-btn">新增</button>
+                                            <button type="button" class="delete-material-btn">删除</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 隐藏的文本域，用于表单提交 -->
+                                <textarea id="material-requirements" name="material-requirements" style="display: none;" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="target-case-count">平台预期投稿规模 <span class="required">*</span></label>
+                            <input type="number" id="target-case-count" min="1" placeholder="请输入平台预期投稿规模" required>
+                        </div>
+                        <div class="form-item">
+                            <label for="activity-time-range">活动时间 <span class="required">*</span></label>
+                            <div class="time-range-selector">
+                                <div class="time-range-input" id="timeRangeInput">
+                                    <span id="startTimeText">开始时间</span>
+                                    <span class="range-separator">—</span>
+                                    <span id="endTimeText">结束时间</span>
+                                    <div class="calendar-icon">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="activity-start-time" required>
+                                <input type="hidden" id="activity-end-time" required>
+                                <!-- 时间范围选择器弹窗 -->
+                                <div class="time-range-picker" id="timeRangePicker" style="display: none;">
+                                    <div class="picker-header">
+                                        <div class="picker-title">选择活动时间范围</div>
+                                        <button class="picker-close" id="pickerClose">×</button>
+                                    </div>
+                                    <div class="calendar-container">
+                                        <div class="calendar">
+                                            <div class="calendar-header">
+                                                <button class="calendar-nav" id="prevMonth">《</button>
+                                                <div class="calendar-title" id="startCalendarTitle">2025年12月</div>
+                                                <button class="calendar-nav" id="nextMonth">》</button>
+                                            </div>
+                                            <div class="calendar-body" id="startCalendarBody">
+                                                <!-- 日历内容将通过JavaScript生成 -->
+                                            </div>
+                                        </div>
+                                        <div class="calendar">
+                                            <div class="calendar-header">
+                                                <button class="calendar-nav" id="prevMonth2">《</button>
+                                                <div class="calendar-title" id="endCalendarTitle">2026年1月</div>
+                                                <button class="calendar-nav" id="nextMonth2">》</button>
+                                            </div>
+                                            <div class="calendar-body" id="endCalendarBody">
+                                                <!-- 日历内容将通过JavaScript生成 -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="picker-footer">
+                                        <button class="btn-cancel" id="cancelPicker">取消</button>
+                                        <button class="btn-confirm" id="confirmPicker">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-top: 0;">
+                        <div class="form-item">
+                            <label for="product-tag-btn">产品标签 <span class="required">*</span></label>
+                            <div class="product-tag-container">
+                                <div class="product-tag-selector">
+                                    <button type="button" id="product-tag-btn" class="select-tag-btn">
+                                        <span id="selectedTagText" style="color: #94a3b8;">点击选择产品标签</span>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="selected-tags" id="selectedTags"></div>
+                                <input type="hidden" id="product-tags" name="product-tags" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-item full-width">
+                            <label>活动封面</label>
+                            <div class="cover-settings">
+                                <div class="cover-type-selector">
+                                    <label class="cover-type-option">
+                                        <input type="radio" name="cover-type" value="default" checked>
+                                        <span>默认</span>
+                                    </label>
+                                    <label class="cover-type-option">
+                                        <input type="radio" name="cover-type" value="custom">
+                                        <span>自定义</span>
+                                    </label>
+                                </div>
+                                <p class="cover-note">备注：建议使用清晰度不低于1280*720（横）的高清图片，清晰、美观、有信息量的封面会帮助内容获得更多流量。</p>
+                                <div class="cover-preview-container">
+                                    <div class="default-cover" id="defaultCoverPreview" style="display: block;">
+                                        <img src="https://picsum.photos/800/450?random=1" alt="默认封面" style="width: 100%; max-width: 300px; height: auto; border-radius: 8px; object-fit: cover;">
+                                    </div>
+                                    <div class="custom-cover" id="customCoverPreview" style="display: none;">
+                                        <div class="upload-area" style="border: 2px dashed #e2e8f0; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s ease; max-width: 300px;">
+                                            <p style="margin: 0 0 6px; color: #64748b;">点击上传封面图片</p>
+                                            <input type="file" id="coverUpload" accept="image/*" style="display: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <!-- 内容卡片：互动题目设置 -->
+            <div class="content-card" style="margin-bottom: 16px; box-shadow: none;">
+                <h3 class="section-title">互动题目设置</h3>
+
+                <div class="form-row">
+                    <div class="form-item full-width">
+                        <p class="form-tip" style="color: #64748b; font-size: 13px; margin-top: 6px; margin-bottom: 12px;">请选择题目数量的设置方式，报名投稿的用户需要在创作学术内容的过程中加入互动题目</p>
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <!-- 选择设置方式 - 使用按钮式选择 -->
+                            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                                <button type="button" id="quantity-btn" style="padding: 6px 16px; border: 2px solid #667eea; background-color: #667eea; color: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s ease;">按具体数量</button>
+                                <button type="button" id="range-btn" style="padding: 6px 16px; border: 2px solid #e2e8f0; background-color: white; color: #475569; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s ease;">按数量区间</button>
+                                <!-- 隐藏的单选按钮 -->
+                                <input type="radio" name="question-setting-type" value="quantity" checked style="display: none;" id="quantity-radio">
+                                <input type="radio" name="question-setting-type" value="range" style="display: none;" id="range-radio">
+                            </div>
+                            
+                            <!-- 数量设置选项 -->
+                            <div id="quantity-settings" style="display: block;">
+                                <div style="display: flex; gap: 40px; flex-wrap: wrap; align-items: center;">
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                        <input type="radio" name="question-count" value="5" checked style="width: 16px; height: 16px;">
+                                        <span>5道题目</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                        <input type="radio" name="question-count" value="10" style="width: 16px; height: 16px;">
+                                        <span>10道题目</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                        <input type="radio" name="question-count" value="custom" style="width: 16px; height: 16px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span>自定义题目数量</span>
+                                            <input type="number" id="custom-question-count" min="5" max="20" placeholder="请输入" style="width: 100px; height: 32px; padding: 0 8px;">
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 区间设置选项 -->
+                            <div id="range-settings" style="display: none;">
+                                <div style="display: flex; gap: 40px; flex-wrap: wrap; align-items: center;">
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                        <input type="radio" name="question-range" value="5-10" checked style="width: 16px; height: 16px;">
+                                        <span>5-10道题目</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                        <input type="radio" name="question-range" value="10-20" style="width: 16px; height: 16px;">
+                                        <span>10-20道题目</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                        <input type="radio" name="question-range" value="custom" style="width: 16px; height: 16px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span>自定义区间</span>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="number" id="min-question-count" min="5" max="20" placeholder="最小值" style="width: 80px; height: 32px; padding: 0 8px;">
+                                                <span>至</span>
+                                                <input type="number" id="max-question-count" min="5" max="20" placeholder="最大值" style="width: 80px; height: 32px; padding: 0 8px;">
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <input type="number" id="interaction-question-count" min="5" max="20" placeholder="总题目数量" required style="width: 200px; display: none;">
+                            <input type="text" id="interaction-question-range" placeholder="题目数量区间" required style="width: 200px; display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 内容卡片：邀约对象 -->
+            <div class="content-card" style="box-shadow: none;">
+                <!-- 邀约对象 -->
+                
+                    <div class="form-row" style="margin: 0; padding: 0;">
+                        <div class="form-item full-width" style="margin: 0; padding: 0;">
+                            <!-- 标题和按钮容器 -->
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin: 0 0 8px 0; padding: 0; height: 36px;">
+                                <h3 class="section-title" style="margin: 0; line-height: 36px; padding: 0;">邀约对象筛选条件</h3>
+                                <div class="filter-actions" style="display: flex; gap: 10px; align-items: flex-start; height: 100%; margin: 2px 0 0 0; padding: 0;">
+                                    <button type="button" class="action-btn secondary-btn" style="font-size: 12px; padding: 6px 12px; height: 28px; display: flex; align-items: center; justify-content: center;">重置筛选</button>
+                                    <button type="button" class="action-btn primary-btn" style="font-size: 12px; padding: 6px 12px; height: 28px; display: flex; align-items: center; justify-content: center;">筛选医生</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 移除了invitation-filter容器，直接放置筛选内容 -->
+                            <p class="form-tip" style="color: #94a3b8; font-size: 12px; margin: 0 0 10px 0; padding: 0; text-align: left;">该范围仅作为平台活动的推荐匹配条件。厂家使用活动时仍需选择具体主题，并为每个主题单独设置招募条件和采购数量。</p>
+                            <div class="filter-form-row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 0; padding: 0; text-align: left;">
+                                <div class="filter-form-item" style="margin: 0; padding: 0; text-align: left;">
+                                    <label for="province-city" style="font-size: 12px; display: block; margin: 0 0 5px 0; padding: 0; text-align: left;">省份/城市</label>
+                                    <select id="province-city" style="font-size: 12px; padding: 6px; width: 100%; margin: 0; text-align: left;">
+                                        <option value="">请选择</option>
+                                        <option value="beijing">北京市</option>
+                                        <option value="shanghai">上海市</option>
+                                        <option value="guangzhou">广州市</option>
+                                        <option value="shenzhen">深圳市</option>
+                                    </select>
+                                </div>
+                                <div class="filter-form-item" style="margin: 0; padding: 0; text-align: left;">
+                                    <label for="institution-level" style="font-size: 12px; display: block; margin: 0 0 5px 0; padding: 0; text-align: left;">机构等级</label>
+                                    <select id="institution-level" style="font-size: 12px; padding: 6px; width: 100%; margin: 0; text-align: left;">
+                                        <option value="">请选择</option>
+                                        <option value="three-a">三级甲等</option>
+                                        <option value="three-b">三级乙等</option>
+                                        <option value="two-a">二级甲等</option>
+                                        <option value="two-b">二级乙等</option>
+                                        <option value="other">其他</option>
+                                    </select>
+                                </div>
+                                <div class="filter-form-item" style="margin: 0; padding: 0; text-align: left;">
+                                    <label for="title" style="font-size: 12px; display: block; margin: 0 0 5px 0; padding: 0; text-align: left;">身份/职称</label>
+                                    <select id="title" style="font-size: 12px; padding: 6px; width: 100%; margin: 0; text-align: left;">
+                                        <option value="">请选择</option>
+                                        <option value="resident">住院医师</option>
+                                        <option value="attending">主治医师</option>
+                                        <option value="associate-chief">副主任医师</option>
+                                        <option value="chief">主任医师</option>
+                                    </select>
+                                </div>
+                                <div class="filter-form-item" style="margin: 0; padding: 0; text-align: left;">
+                                    <label for="department" style="font-size: 12px; display: block; margin: 0 0 5px 0; padding: 0; text-align: left;">科室</label>
+                                    <select id="department" style="font-size: 12px; padding: 6px; width: 100%; margin: 0; text-align: left;">
+                                        <option value="">请选择</option>
+                                        <option value="internal-medicine">内科</option>
+                                        <option value="surgery">外科</option>
+                                        <option value="pediatrics">儿科</option>
+                                        <option value="cardiology">心内科</option>
+                                        <option value="neurology">神经内科</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <!-- 内容卡片：质量评估服务 -->
+            <div class="content-card" style="margin-bottom: 16px; box-shadow: none;">
+                <!-- 质量评估服务 -->
+                
+                    <h3 class="section-title">质量评估服务</h3>
+                    <div class="form-row">
+                        <div class="form-item full-width">
+                            <p class="form-tip" style="color: #475569; font-size: 14px; margin-bottom: 24px; line-height: 1.6;">我们提供两种质量评估模式，不同模式将为您提供不同的病例质量保障</p>
+                            
+                            <!-- 质量控制选择：左右分布 -->
+                            <div class="quality-control-selection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+                                <!-- 基础模式选项 -->
+                                <label for="quality-control-compliance" style="cursor: pointer; display: block; position: relative;">
+                                    <div class="quality-option" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 20px; cursor: pointer; transition: all 0.3s ease; background: white; display: flex; flex-direction: column; height: 100%;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                            <h4 style="margin: 0; font-size: 16px; color: #334155; font-weight: 600;">基础服务</h4>
+                                            <span style="background: #d1fae5; color: #065f46; padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 600;">基础服务</span>
+                                        </div>
+                                        <div style="padding: 0; margin: 0; flex: 1;">
+                                            <p style="margin: 0 0 16px 0; font-size: 14px; color: #64748b; line-height: 1.6; font-weight: 400;">确保病例内容合规性和隐私保护</p>
+                                            
+                                            <!-- 基础模式功能点 -->
+                                            <ul style="margin: 0 0 20px 0; padding-left: 20px; list-style-type: disc; color: #475569;">
+                                                <li style="margin-bottom: 8px; font-size: 14px; line-height: 1.5; font-weight: 400;">合规性全流程校验</li>
+                                                <li style="margin-bottom: 8px; font-size: 14px; line-height: 1.5; font-weight: 400;">隐私信息的规范处理与保护，保障数据安全</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- 隐藏的单选按钮 -->
+                                        <input type="radio" id="quality-control-compliance" name="quality-control" value="compliance" style="position: absolute; opacity: 0;">
+                                    </div>
+                                </label>
+                                
+                                <!-- 专家同行评审体系选项 -->
+                                <label for="quality-control-peer-review" style="cursor: pointer; display: block; position: relative;">
+                                    <div class="quality-option" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 20px; cursor: pointer; transition: all 0.3s ease; background: white; display: flex; flex-direction: column; height: 100%;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                            <h4 style="margin: 0; font-size: 16px; color: #334155; font-weight: 600;">专家评审</h4>
+                                            <span style="background: #fef3c7; color: #d97706; padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 600;">高级服务</span>
+                                        </div>
+                                        <div style="padding: 0; margin: 0; flex: 1;">
+                                            <p style="margin: 0 0 16px 0; font-size: 14px; color: #f97316; line-height: 1.6; font-weight: 400;">含基础服务全部功能，额外提供学术质量保障</p>
+                                            
+                                            <!-- 高级模式功能点 -->
+                                            <ul style="margin: 0 0 20px 0; padding-left: 20px; list-style-type: disc; color: #475569;">
+                                                <li style="margin-bottom: 8px; font-size: 14px; line-height: 1.5; font-weight: 400;">专家多维度评审：从学术专业性、临床价值等维度对病例进行评估</li>
+                                                <li style="margin-bottom: 8px; font-size: 14px; line-height: 1.5; font-weight: 400;">高质量内容把控：对病例的学术严谨性、临床实用性进行专业把控</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- 隐藏的单选按钮 -->
+                                        <input type="radio" id="quality-control-peer-review" name="quality-control" value="peer-review" checked style="position: absolute; opacity: 0;">
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <style>
+                                /* 增强选中状态样式 */
+                                .quality-option.selected {
+                                    border: 2px solid #667eea !important;
+                                    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+                                    box-shadow: 0 2px 16px rgba(102, 126, 234, 0.12) !important;
+                                    transform: translateY(-1px) !important;
+                                }
+                                
+                                /* 鼠标悬停效果 */
+                                .quality-option:hover {
+                                    border-color: #cbd5e1 !important;
+                                    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+                                }
+                                
+                                /* 专家评审提示信息样式 */
+                                .expert-review-notice {
+                                    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+                                    color: #1e40af;
+                                    padding: 16px 24px;
+                                    border-radius: 8px;
+                                    margin: 24px 0;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 12px;
+                                    font-size: 14px;
+                                    line-height: 1.5;
+                                }
+                                
+                                .expert-review-notice svg {
+                                    flex-shrink: 0;
+                                    width: 20px;
+                                    height: 20px;
+                                    stroke: #1e40af;
+                                    fill: none;
+                                    vertical-align: middle;
+                                }
+                                
+                                .expert-review-notice span {
+                                    display: inline-flex;
+                                    align-items: center;
+                                    height: 100%;
+                                }
+                            </style>
+
+                            <!-- 专家评审提示信息 -->
+                            <div class="expert-review-notice" id="expertReviewNotice">
+                                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                <span>已为您开启专家评审服务，您可以自定义专家评审维度的设置</span>
+                            </div>
+
+                            <!-- 评审维度设置 -->
+                            <div id="review-dimensions-section" style="margin-top: 24px; border: 1px solid #e5e7eb; border-radius: 10px; padding: 24px; background: white;">
+                                <h4 style="margin: 0 0 20px 0; font-size: 16px; color: #374151; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                                    专家评审维度设置
+                                </h4>
+                                
+                                <!-- 预设模板选择 -->
+                                <div style="margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid #f1f5f9;">
+                                    <p style="margin: 0 0 14px 0; font-size: 14px; color: #475569; font-weight: 500;">使用预设模板快速配置评审维度（可选）</p>
+                                    <div class="template-selector" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+                                        <button type="button" class="template-btn" data-template="basic" style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; background: white; cursor: pointer; transition: all 0.3s ease; text-align: left;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px;">基础医学模板</div>
+                                            <div style="font-size: 12px; color: #64748b; line-height: 1.4;">学术专业性、临床价值、传播合理性</div>
+                                        </button>
+                                        <button type="button" class="template-btn" data-template="clinical" style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; background: white; cursor: pointer; transition: all 0.3s ease; text-align: left;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px;">临床实践模板</div>
+                                            <div style="font-size: 12px; color: #64748b; line-height: 1.4;">诊断准确性、治疗方案、预后评估</div>
+                                        </button>
+
+                                        <button type="button" class="template-btn" data-template="education" style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; background: white; cursor: pointer; transition: all 0.3s ease; text-align: left;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px;">教学型模板</div>
+                                            <div style="font-size: 12px; color: #64748b; line-height: 1.4;">案例典型性、教学价值、启发意义</div>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 自定义评审维度 -->
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                        <p style="margin: 0; font-size: 14px; color: #475569; font-weight: 500;">自定义评审维度</p>
+                                        <button type="button" id="add-dimension-btn" class="add-dimension-btn" style="background: #667eea; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            </svg>
+                                            添加维度
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- 评审维度列表 -->
+                                    <div id="dimensions-list" class="dimensions-list">
+                                        <!-- 初始维度示例 -->
+                                        <div class="dimension-item" style="display: grid; grid-template-columns: 1fr 2fr auto; gap: 12px; align-items: center; padding: 8px 0; background: white; border: none; margin-bottom: 8px; transition: all 0.3s ease;">
+                                            <input type="text" class="dimension-name" placeholder="维度名称（如：学术专业性）" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; transition: all 0.3s ease;">
+                                            <input type="text" class="dimension-description" placeholder="维度描述（如：评估病例的学术引用准确性）" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; transition: all 0.3s ease;">
+                                            <button type="button" class="delete-dimension-btn" style="background: transparent; border: none; color: #ef4444; cursor: pointer; padding: 4px; border-radius: 4px; transition: all 0.3s ease; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 内容卡片：邀约专家 -->
+                    <div id="expert-invitation-section" style="margin-top: 24px; border: 1px solid #e5e7eb; border-radius: 10px; padding: 24px; background: white;">
+                        <!-- 邀约专家 -->
+                            <div class="form-row" style="margin: 0; padding: 0;">
+                                <div class="form-item full-width" style="margin: 0; padding: 0;">
+                                    <!-- 标题和按钮容器 -->
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin: 0 0 8px 0; padding: 0; height: 36px;">
+                                        <h3 class="section-title" style="margin: 0; line-height: 36px; padding: 0;">邀约专家筛选条件</h3>
+                                        <div class="filter-actions" style="display: flex; gap: 10px; align-items: flex-start; height: 100%; margin: 2px 0 0 0; padding: 0;">
+                                            <button type="button" class="action-btn secondary-btn" style="font-size: 12px; padding: 6px 12px; height: 28px; display: flex; align-items: center; justify-content: center;">重置筛选</button>
+                                            <button type="button" class="action-btn primary-btn" style="font-size: 12px; padding: 6px 12px; height: 28px; display: flex; align-items: center; justify-content: center;">筛选专家</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 移除了invitation-filter容器，直接放置筛选内容 -->
+                                    <p class="form-tip" style="color: #94a3b8; font-size: 12px; margin: 0 0 10px 0; padding: 0; text-align: left;">为了让活动更精准匹配专业领域专家，您可通过以下条件筛选符合的专家评审参与本次学术活动内容。</p>
+                                    <div class="filter-form-row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 0; padding: 0; text-align: left;">
+                                        <div class="filter-form-item" style="margin: 0; padding: 0; text-align: left;">
+                                            <label for="province-city" style="font-size: 12px; display: block; margin: 0 0 5px 0; padding: 0; text-align: left;">省份/城市</label>
+                                            <select id="province-city" style="font-size: 12px; padding: 6px; width: 100%; margin: 0; text-align: left;">
+                                                <option value="">请选择</option>
+                                                <option value="beijing">北京市</option>
+                                                <option value="shanghai">上海市</option>
+                                                <option value="guangzhou">广州市</option>
+                                                <option value="shenzhen">深圳市</option>
+                                            </select>
+                                        </div>
+                                        <div class="filter-form-item" style="margin: 0; padding: 0; text-align: left;">
+                                            <label for="institution-level" style="font-size: 12px; display: block; margin: 0 0 5px 0; padding: 0; text-align: left;">机构等级</label>
+                                            <select id="institution-level" style="font-size: 12px; padding: 6px; width: 100%; margin: 0; text-align: left;">
+                                                <option value="">请选择</option>
+                                                <option value="three-a">三级甲等</option>
+                                                <option value="three-b">三级乙等</option>
+                                                <option value="two-a">二级甲等</option>
+                                                <option value="two-b">二级乙等</option>
+                                                <option value="other">其他</option>
+                                            </select>
+                                        </div>
+                                        <div class="filter-form-item" style="margin: 0; padding: 0; text-align: left;">
+                                            <label for="title" style="font-size: 12px; display: block; margin: 0 0 5px 0; padding: 0; text-align: left;">身份/职称</label>
+                                            <select id="title" style="font-size: 12px; padding: 6px; width: 100%; margin: 0; text-align: left;">
+                                                <option value="">请选择</option>
+                                                <option value="resident">住院医师</option>
+                                                <option value="attending">主治医师</option>
+                                                <option value="associate-chief">副主任医师</option>
+                                                <option value="chief">主任医师</option>
+                                            </select>
+                                        </div>
+                                        <div class="filter-form-item" style="margin: 0; padding: 0; text-align: left;">
+                                            <label for="department" style="font-size: 12px; display: block; margin: 0 0 5px 0; padding: 0; text-align: left;">科室</label>
+                                            <select id="department" style="font-size: 12px; padding: 6px; width: 100%; margin: 0; text-align: left;">
+                                                <option value="">请选择</option>
+                                                <option value="internal-medicine">内科</option>
+                                                <option value="surgery">外科</option>
+                                                <option value="pediatrics">儿科</option>
+                                                <option value="cardiology">心内科</option>
+                                                <option value="neurology">神经内科</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- 产品标签选择弹窗 -->
+    <div class="modal" id="productTagModal" style="display: none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-content" style="width: 600px; max-width: 90vw;">
+            <div class="modal-header">
+                <h3>选择产品标签</h3>
+                <button class="modal-close" id="closeTagModalBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="tag-list">
+                    <div class="tag-item" data-tag="荆防颗粒">荆防颗粒</div>
+                    <div class="tag-item" data-tag="盖笛欣">盖笛欣</div>
+                    <div class="tag-item" data-tag="砂糖产品">砂糖产品</div>
+                    <div class="tag-item" data-tag="硫酸沙丁胺醇">硫酸沙丁胺醇</div>
+                    <div class="tag-item" data-tag="盐酸左氧氟沙星">盐酸左氧氟沙星</div>
+                    <div class="tag-item" data-tag="超学术 1">超学术 1</div>
+                    <div class="tag-item" data-tag="克力力">克力力</div>
+                    <div class="tag-item" data-tag="999胃雷灵">999胃雷灵</div>
+                    <div class="tag-item" data-tag="丁克片">丁克片</div>
+                    <div class="tag-item" data-tag="富图达">富图达</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-btn" id="cancelTagBtn">取消</button>
+                <button type="button" class="confirm-btn" id="confirmTagBtn">确认选择</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 预览模态框 -->
+    <div id="preview-modal" class="preview-modal">
+        <div class="preview-modal-overlay"></div>
+        <div class="preview-modal-content">
+            <!-- 左侧活动详情区域 -->
+            <div class="preview-left-section">
+                <div class="preview-header">
+                    <h3>活动预览</h3>
+                    <button type="button" class="preview-close-btn" onclick="closePreview()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- 活动主标题 -->
+                <h2 class="activity-main-title" id="preview-main-title">活动名称</h2>
+                
+                <!-- 活动副标题 -->
+                <p class="activity-subtitle" id="preview-subtitle">汇聚国内顶尖专家，分享前沿诊疗经验，助力临床能力提升！</p>
+                
+                <!-- 活动详情内容 -->
+                <div class="activity-content">
+                    <h4>活动详情</h4>
+                    <div class="activity-content-text" id="preview-description">
+                        本次活动旨在收集临床中维生素A辅助治疗儿童反复上呼吸道感染的真实案例。通过对患儿营养状态评估、治疗前后呼吸道感染频率对比，探讨VA在增强黏膜免疫、缩短病程及预防复发中的学术价值。诚邀儿科同仁分享经验，共同构建规范化诊疗智库。
+                    </div>
+                    
+                    <!-- 征稿主题列表 -->
+                    <div class="activity-themes">
+                        <h5>征稿内容主题</h5>
+                        <p>我们为您精心挑选了两个热门医学主题，供您选择：</p>
+                        <ul id="preview-themes">
+                            <li>主题1：XXXXXXXX</li>
+                            <li>主题2：XXXXXXXX</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 预览链接区域 -->
+                <div class="preview-link-section">
+                    <h5>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                        预览活动链接：
+                    </h5>
+                    <div class="preview-link-container">
+                        <a href="#" class="preview-link" id="preview-link" target="_blank">https://example.com/activity/preview</a>
+                        <button class="copy-link-btn" onclick="copyPreviewLink()">复制链接</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧活动信息和二维码区域 -->
+            <div class="preview-right-section">
+                
+                <!-- 二维码区域 -->
+                <div class="qr-code-section">
+                    <h4>扫码参与</h4>
+                    <div class="qr-code-container">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://example.com/activity/preview" alt="活动二维码" id="preview-qr-code">
+                    </div>
+                </div>
+                
+                <!-- 活动信息列表 -->
+                <div class="activity-info-list">
+                    <!-- 活动类型 -->
+                    <div class="activity-info-item">
+                        <h5>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                                <circle cx="12" cy="12" r="10" fill="#2563eb"></circle>
+                                <path d="M12 14V10" stroke="white" stroke-width="2" stroke-linecap="round"></path>
+                                <path d="M12 6h.01" stroke="white" stroke-width="2" stroke-linecap="round"></path>
+                            </svg>
+                            活动类型
+                        </h5>
+                        <p id="preview-activity-type">在线病例互动</p>
+                    </div>
+                    
+                    <!-- 活动时间 -->
+                    <div class="activity-info-item">
+                        <h5>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                                <circle cx="12" cy="12" r="10" fill="#2563eb"></circle>
+                                <path d="M12 8v4l3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            活动时间
+                        </h5>
+                        <p id="preview-activity-time">2025-12-01 至 2025-12-31</p>
+                    </div>
+                    
+                    <!-- 素材要求 -->
+                    <div class="activity-info-item">
+                        <h5>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                                <circle cx="12" cy="12" r="10" fill="#2563eb"></circle>
+                                <path d="M8 12h8" stroke="white" stroke-width="2" stroke-linecap="round"></path>
+                                <path d="M12 8v8" stroke="white" stroke-width="2" stroke-linecap="round"></path>
+                            </svg>
+                            素材要求
+                        </h5>
+                        <ul id="preview-materials" class="materials-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js?v=1"></script>
+    <script src="../js/menu.js?v=1"></script>
+    <script>
+        // 动态加载公共组件
+        async function loadComponents() {
+            try {
+                // 加载顶部导航
+                const headerResponse = await fetch('components/header.html');
+                const headerHtml = await headerResponse.text();
+                document.getElementById('header-placeholder').innerHTML = headerHtml;
+                
+                // 加载侧边栏
+                const sidebarResponse = await fetch('components/sidebar.html');
+                const sidebarHtml = await sidebarResponse.text();
+                document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+                
+                // 重新初始化菜单交互
+                if (typeof initializeMenu === 'function') {
+                    initializeMenu();
+                }
+            } catch (error) {
+                console.error('加载公共组件失败:', error);
+            }
+        }
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            loadComponents();
+            initCaseCollectionPage();
+        });
+
+        // 初始化病例征集页面
+        function initCaseCollectionPage() {
+            // 初始化素材要求功能
+            initMaterialRequirements();
+            
+            // 预览按钮点击事件
+            document.querySelector('.preview-btn').addEventListener('click', function() {
+                openPreview();
+            });
+
+            // 保存按钮点击事件
+            document.querySelector('.save-btn').addEventListener('click', function() {
+                saveCaseCollection('draft');
+            });
+
+            // 保存并发布按钮点击事件
+            document.querySelector('.publish-btn').addEventListener('click', function() {
+                saveCaseCollection('publish');
+            });
+            
+
+        }
+
+        // 预览功能
+        function openPreview() {
+            // 填充预览数据
+            populatePreviewData();
+            // 显示预览模态框
+            document.getElementById('preview-modal').classList.add('active');
+        }
+
+        function closePreview() {
+            // 隐藏预览模态框
+            document.getElementById('preview-modal').classList.remove('active');
+        }
+
+        function populatePreviewData() {
+            // 填充活动标题
+            const title = document.getElementById('case-title').value || '伊可新对于儿童发育互动病例';
+            document.getElementById('preview-main-title').textContent = title;
+            
+            // 填充活动副标题
+            document.getElementById('preview-subtitle').textContent = '汇聚国内顶尖专家，分享前沿诊疗经验，助力临床能力提升！';
+            
+            // 填充活动详情
+            const description = document.getElementById('case-description').value || '本次活动旨在收集临床中维生素A辅助治疗儿童反复上呼吸道感染的真实案例。通过对患儿营养状态评估、治疗前后呼吸道感染频率对比，探讨VA在增强黏膜免疫、缩短病程及预防复发中的学术价值。诚邀儿科同仁分享经验，共同构建规范化诊疗智库。';
+            document.getElementById('preview-description').textContent = description;
+            
+            // 填充活动时间
+            const startTimeText = document.getElementById('startTimeText').textContent;
+            const endTimeText = document.getElementById('endTimeText').textContent;
+            const displayTime = startTimeText === '开始时间' ? '2025-12-01 至 2025-12-31' : `${startTimeText} 至 ${endTimeText}`;
+            document.getElementById('preview-activity-time').textContent = displayTime;
+            
+            // 填充素材要求
+            const materialItems = document.querySelectorAll('.material-item-text');
+            const previewMaterialsContainer = document.getElementById('preview-materials');
+            previewMaterialsContainer.innerHTML = '';
+            
+            if (materialItems.length > 0) {
+                let hasMaterials = false;
+                materialItems.forEach(item => {
+                    const materialText = item.value;
+                    if (materialText.trim()) {
+                        hasMaterials = true;
+                        const materialItem = document.createElement('li');
+                        materialItem.textContent = materialText;
+                        previewMaterialsContainer.appendChild(materialItem);
+                    }
+                });
+                
+                if (!hasMaterials) {
+                    const noMaterials = document.createElement('p');
+                    noMaterials.textContent = '暂无素材要求';
+                    previewMaterialsContainer.appendChild(noMaterials);
+                }
+            } else {
+                const noMaterials = document.createElement('p');
+                noMaterials.textContent = '暂无素材要求';
+                previewMaterialsContainer.appendChild(noMaterials);
+            }
+            
+            // 填充活动链接
+            document.getElementById('preview-link').textContent = 'https://example.com/activity/preview';
+            document.getElementById('preview-link').href = 'https://example.com/activity/preview';
+            
+            // 填充二维码
+            document.getElementById('preview-qr-code').src = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://example.com/activity/preview';
+        }
+
+
+
+        // 保存病例征集
+        function saveCaseCollection(status) {
+            // 表单验证
+            const form = document.querySelector('.form-container');
+            if (!form.checkValidity()) {
+                // 触发浏览器的默认验证提示
+                form.reportValidity();
+                return;
+            }
+
+            // 收集表单数据
+            const formData = {
+                title: document.getElementById('case-title').value,
+                targetDisease: document.getElementById('target-disease').value,
+                productTags: document.getElementById('product-tags').value,
+                description: document.getElementById('case-description').value,
+                materialRequirements: document.getElementById('material-requirements').value,
+                startTime: document.getElementById('activity-start-time').value,
+                endTime: document.getElementById('activity-end-time').value,
+                targetCaseCount: document.getElementById('target-case-count').value,
+                // 病例学术质量管理
+                qualityControl: document.querySelector('input[name="quality-control"]:checked').value,
+                // 专家评审维度
+                reviewDimensions: getReviewDimensions(),
+                // 邀约对象筛选条件
+                invitationFilter: {
+                    provinceCity: document.getElementById('province-city').value,
+                    institutionName: document.getElementById('institution-name').value,
+                    title: document.getElementById('title').value,
+                    department: document.getElementById('department').value
+                },
+                status: status
+            };
+
+            // 这里可以添加AJAX请求，将数据提交到服务器
+            console.log('保存病例征集数据:', formData);
+            
+            // 模拟保存成功
+            alert(status === 'draft' ? '保存成功！' : '发布成功！');
+            
+            // 如果是发布成功，可以跳转到列表页
+            if (status === 'publish') {
+                window.location.href = 'activities.html';
+            }
+        }
+
+
+        
+        // 产品标签弹窗相关功能
+        let selectedTag = null;
+        let tagItems = null;
+        
+        // 初始化产品标签功能
+        function initProductTagFunctionality() {
+            // 获取DOM元素
+            const productTagBtn = document.getElementById('product-tag-btn');
+            const productTagModal = document.getElementById('productTagModal');
+            const closeTagModalBtn = document.getElementById('closeTagModalBtn');
+            const cancelTagBtn = document.getElementById('cancelTagBtn');
+            const confirmTagBtn = document.getElementById('confirmTagBtn');
+            const selectedTagsContainer = document.getElementById('selectedTags');
+            const productTagsHidden = document.getElementById('product-tags');
+            
+            // 获取所有标签项
+            tagItems = document.querySelectorAll('.tag-item');
+            
+            // 打开产品标签弹窗
+            productTagBtn.addEventListener('click', function() {
+                productTagModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+            
+            // 关闭产品标签弹窗
+            function closeProductTagModal() {
+                productTagModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                // 重置选中状态
+                selectedTag = null;
+                tagItems.forEach(item => item.classList.remove('selected'));
+            }
+            
+            closeTagModalBtn.addEventListener('click', closeProductTagModal);
+            cancelTagBtn.addEventListener('click', closeProductTagModal);
+            
+            // 点击遮罩层关闭标签弹窗
+            productTagModal.addEventListener('click', function(e) {
+                if (e.target === productTagModal) {
+                    closeProductTagModal();
+                }
+            });
+            
+            // 选择产品标签
+            tagItems.forEach(tagItem => {
+                tagItem.addEventListener('click', function() {
+                    // 移除其他标签的选中状态
+                    tagItems.forEach(item => item.classList.remove('selected'));
+                    // 添加当前标签的选中状态
+                    this.classList.add('selected');
+                    selectedTag = this.dataset.tag;
+                });
+            });
+            
+            // 确认选择产品标签
+            confirmTagBtn.addEventListener('click', function() {
+                if (selectedTag) {
+                    // 更新已选标签显示
+                    const tagItem = document.createElement('div');
+                    tagItem.className = 'tag-item';
+                    tagItem.innerHTML = `
+                        <span>${selectedTag}</span>
+                        <span class="remove-tag" onclick="removeTag(this)">×</span>
+                    `;
+                    selectedTagsContainer.appendChild(tagItem);
+                    
+                    // 更新隐藏字段
+                    updateProductTagsHidden();
+                    
+                    closeProductTagModal();
+                }
+            });
+            
+            // 更新隐藏字段的值
+            function updateProductTagsHidden() {
+                const tagItems = selectedTagsContainer.querySelectorAll('.tag-item');
+                const tagValues = Array.from(tagItems).map(item => 
+                    item.querySelector('span:first-child').textContent
+                );
+                productTagsHidden.value = tagValues.join(',');
+            }
+            
+            // 移除标签函数
+            window.removeTag = function(element) {
+                // 移除标签元素
+                element.parentElement.remove();
+                // 更新隐藏字段
+                updateProductTagsHidden();
+            };
+        }
+        
+        // 初始化产品标签功能
+        initProductTagFunctionality();
+        
+        // 初始化时间范围选择器
+        initTimeRangePicker();
+        
+        // 时间范围选择器功能
+        function initTimeRangePicker() {
+            const timeRangeInput = document.getElementById('timeRangeInput');
+            const timeRangePicker = document.getElementById('timeRangePicker');
+            const pickerClose = document.getElementById('pickerClose');
+            const cancelPicker = document.getElementById('cancelPicker');
+            const confirmPicker = document.getElementById('confirmPicker');
+            const startTimeText = document.getElementById('startTimeText');
+            const endTimeText = document.getElementById('endTimeText');
+            const startTimeHidden = document.getElementById('activity-start-time');
+            const endTimeHidden = document.getElementById('activity-end-time');
+            
+            let selectedStartTime = null;
+            let selectedEndTime = null;
+            
+            // 打开时间范围选择器
+            timeRangeInput.addEventListener('click', function() {
+                timeRangePicker.style.display = 'block';
+                document.addEventListener('click', handleOutsideClick);
+            });
+            
+            // 关闭时间范围选择器
+            function closePicker() {
+                timeRangePicker.style.display = 'none';
+                document.removeEventListener('click', handleOutsideClick);
+            }
+            
+            // 点击外部关闭选择器
+            function handleOutsideClick(e) {
+                if (!timeRangePicker.contains(e.target) && e.target !== timeRangeInput) {
+                    closePicker();
+                }
+            }
+            
+            // 关闭按钮事件
+            pickerClose.addEventListener('click', closePicker);
+            cancelPicker.addEventListener('click', closePicker);
+            
+            // 确认选择事件
+            confirmPicker.addEventListener('click', function() {
+                if (selectedStartTime && selectedEndTime) {
+                    // 格式化时间显示
+                    const startFormatted = formatDate(selectedStartTime);
+                    const endFormatted = formatDate(selectedEndTime);
+                    
+                    // 更新显示
+                    startTimeText.textContent = startFormatted;
+                    endTimeText.textContent = endFormatted;
+                    
+                    // 更新隐藏字段
+                    startTimeHidden.value = selectedStartTime.toISOString().slice(0, 16);
+                    endTimeHidden.value = selectedEndTime.toISOString().slice(0, 16);
+                    
+                    closePicker();
+                }
+            });
+            
+            // 生成日历内容（简化版，仅生成当前和下个月）
+            function generateCalendar(year, month, containerId) {
+                const container = document.getElementById(containerId);
+                const today = new Date();
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const startDate = new Date(firstDay);
+                startDate.setDate(startDate.getDate() - firstDay.getDay());
+                
+                container.innerHTML = '';
+                
+                // 添加星期标题
+                const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+                weekdays.forEach(day => {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day weekday';
+                    dayElement.textContent = day;
+                    dayElement.style.fontWeight = 'bold';
+                    dayElement.style.color = '#6b7280';
+                    dayElement.style.cursor = 'default';
+                    container.appendChild(dayElement);
+                });
+                
+                // 添加日期
+                for (let i = 0; i < 42; i++) {
+                    const date = new Date(startDate);
+                    date.setDate(startDate.getDate() + i);
+                    
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    dayElement.textContent = date.getDate();
+                    dayElement.dataset.date = date.toISOString();
+                    
+                    // 标记今天
+                    if (date.toDateString() === today.toDateString()) {
+                        dayElement.classList.add('today');
+                    }
+                    
+                    // 标记其他月份的日期
+                    if (date.getMonth() !== month) {
+                        dayElement.classList.add('other-month');
+                    }
+                    
+                    // 添加点击事件
+                    dayElement.addEventListener('click', function() {
+                        selectDate(new Date(this.dataset.date));
+                    });
+                    
+                    container.appendChild(dayElement);
+                }
+            }
+            
+            // 选择日期
+            function selectDate(date) {
+                if (!selectedStartTime || (selectedStartTime && selectedEndTime)) {
+                    // 第一次选择或重新选择
+                    selectedStartTime = date;
+                    selectedEndTime = null;
+                } else {
+                    // 第二次选择
+                    if (date < selectedStartTime) {
+                        selectedEndTime = selectedStartTime;
+                        selectedStartTime = date;
+                    } else {
+                        selectedEndTime = date;
+                    }
+                }
+                
+                // 更新日历显示
+                updateCalendarSelection();
+            }
+            
+            // 更新日历选择状态
+            function updateCalendarSelection() {
+                const allDays = document.querySelectorAll('.calendar-day');
+                allDays.forEach(day => {
+                    day.classList.remove('selected');
+                });
+                
+                if (selectedStartTime) {
+                    const startDateStr = selectedStartTime.toISOString();
+                    const startDay = document.querySelector(`[data-date="${startDateStr}"]`);
+                    if (startDay) {
+                        startDay.classList.add('selected');
+                    }
+                }
+                
+                if (selectedEndTime) {
+                    const endDateStr = selectedEndTime.toISOString();
+                    const endDay = document.querySelector(`[data-date="${endDateStr}"]`);
+                    if (endDay) {
+                        endDay.classList.add('selected');
+                    }
+                }
+            }
+            
+            // 格式化日期显示
+            function formatDate(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+            
+            // 生成初始日历（当前月和下个月）
+            const now = new Date();
+            generateCalendar(now.getFullYear(), now.getMonth(), 'startCalendarBody');
+            generateCalendar(now.getFullYear(), now.getMonth() + 1, 'endCalendarBody');
+        }
+        
+        // 素材要求功能
+        function initMaterialRequirements() {
+            const materialList = document.getElementById('material-requirements-list');
+            const hiddenTextarea = document.getElementById('material-requirements');
+            
+            // 更新素材要求隐藏字段
+            function updateHiddenTextarea() {
+                const materialItems = materialList.querySelectorAll('.material-item-text');
+                const requirements = Array.from(materialItems).map(item => item.value.trim()).filter(value => value);
+                hiddenTextarea.value = requirements.join('\n');
+            }
+            
+            // 更新素材项序号
+            function updateMaterialNumbers() {
+                const materialItems = materialList.querySelectorAll('.material-item');
+                materialItems.forEach((item, index) => {
+                    const numberSpan = item.querySelector('.material-item-number');
+                    numberSpan.textContent = `${index + 1}.`;
+                });
+            }
+            
+            // 添加素材项
+            function addMaterialItem() {
+                const newItem = document.createElement('div');
+                newItem.className = 'material-item-content';
+                newItem.innerHTML = `
+                    <input type="text" class="material-item-text" placeholder="请输入素材要求" required>
+                    <div class="material-item-actions">
+                        <button type="button" class="add-material-btn">新增</button>
+                        <button type="button" class="delete-material-btn">删除</button>
+                    </div>
+                `;
+                
+                // 添加事件监听
+                const addBtn = newItem.querySelector('.add-material-btn');
+                const deleteBtn = newItem.querySelector('.delete-material-btn');
+                const input = newItem.querySelector('.material-item-text');
+                
+                addBtn.addEventListener('click', function() {
+                    const index = Array.from(materialList.children).indexOf(newItem);
+                    materialList.insertBefore(addMaterialItem(), newItem.nextSibling);
+                    updateHiddenTextarea();
+                });
+                
+                deleteBtn.addEventListener('click', function() {
+                    newItem.remove();
+                    updateHiddenTextarea();
+                });
+                
+                input.addEventListener('input', updateHiddenTextarea);
+                
+                return newItem;
+            }
+            
+            // 为现有素材项添加事件监听
+            const materialItems = materialList.querySelectorAll('.material-item-content');
+            materialItems.forEach(item => {
+                const addBtn = item.querySelector('.add-material-btn');
+                const deleteBtn = item.querySelector('.delete-material-btn');
+                const input = item.querySelector('.material-item-text');
+                
+                addBtn.addEventListener('click', function() {
+                    const index = Array.from(materialList.children).indexOf(item);
+                    materialList.insertBefore(addMaterialItem(), item.nextSibling);
+                    updateHiddenTextarea();
+                });
+                
+                deleteBtn.addEventListener('click', function() {
+                    item.remove();
+                    updateHiddenTextarea();
+                });
+                
+                input.addEventListener('input', updateHiddenTextarea);
+            });
+            
+            // 初始化隐藏字段
+            updateHiddenTextarea();
+        }
+        
+        // AI优化建议功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为AI优化建议按钮添加点击事件监听器
+            const aiOptimizeBtn = document.getElementById('ai-optimize-btn');
+            if (aiOptimizeBtn) {
+                aiOptimizeBtn.addEventListener('click', function() {
+                    const descriptionTextarea = document.getElementById('case-description');
+                    const currentText = descriptionTextarea.value;
+                    
+                    // 模拟AI优化建议
+                    const optimizedText = optimizeActivityDescription(currentText);
+                    
+                    // 直接更新活动详情内容
+                    descriptionTextarea.value = optimizedText;
+                });
+            }
+        });
+        
+        // 模拟AI优化描述功能
+        function optimizeActivityDescription(originalText) {
+            // 这里可以替换为真实的AI API调用
+            return originalText + '\n\n【AI优化建议】\n1. 建议在开头明确活动主题和目标，如："本次活动聚焦于[疾病名称]的临床病例征集，旨在收集优质病例，促进学术交流。"\n2. 建议添加活动亮点和参与激励，如："优秀病例将获得专家点评机会，并有机会在学术会议上展示。"\n3. 建议明确病例提交格式和截止时间，便于参与者准备。\n4. 建议添加联系方式或咨询渠道，方便参与者答疑。';
+        }
+        
+
+    </script>
+</body>
+</html>

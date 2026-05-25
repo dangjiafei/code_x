@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线互动病例创建系统</title>
+    <!-- 引入Bootstrap提升UI和易用性（适配年长医生的大按钮/清晰布局） -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- 引入Font Awesome图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <!-- 引入富文本编辑器（简化版，满足基础输入）- 延迟加载 -->
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce/tinymce.min.js" defer crossorigin="anonymous"></script>
+    <style>
+        /* 适配年长医生：大按钮、高对比度、清晰间距 */
+        .btn {
+            padding: 12px 24px !important;
+            font-size: 16px !important;
+            border-radius: 8px !important;
+            margin: 5px 0 !important;
+        }
+        .form-label {
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            color: #212529 !important;
+        }
+        .form-control {
+            font-size: 16px !important;
+            padding: 10px !important;
+        }
+        /* 固定底部操作栏 */
+        .fixed-bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 15px;
+            border-top: 1px solid #dee2e6;
+            z-index: 999;
+        }
+        /* 步骤导航 */
+        .step-nav {
+            margin: 20px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .step-item {
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: #e9ecef;
+            margin: 0 5px;
+        }
+        .step-item.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+        /* 模板库样式 */
+        .template-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .template-card:hover {
+            border-color: #0d6efd;
+            background: #f0f7ff;
+        }
+        /* 自定义步骤样式 */
+        .custom-step {
+            border: 1px dashed #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        /* 附件预览 */
+        .file-preview {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin: 5px;
+            overflow: hidden;
+        }
+        .file-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* 引导提示 */
+        .guide-tip {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-size: 15px;
+        }
+        /* 互动配置区域 */
+        .interaction-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        /* 适配大屏 */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4 mb-20">
+        <!-- 顶部标题 -->
+        <h2 class="text-center mb-4">在线互动病例创建系统</h2>
+        
+        <!-- 步骤导航 -->
+        <div class="step-nav d-flex justify-content-center align-items-center">
+            <div class="step-item active" id="step1">1. 场景选择</div>
+            <i class="fas fa-chevron-right mx-2"></i>
+            <div class="step-item" id="step2">2. 信息填充</div>
+            <i class="fas fa-chevron-right mx-2"></i>
+            <div class="step-item" id="step3">3. 互动配置</div>
+        </div>
+
+        <!-- 第一步：场景选择 -->
+        <div id="page1" class="page">
+            <div class="guide-tip">
+                <i class="fas fa-lightbulb mr-2"></i>
+                选择科室和病例类型后，系统会推荐适配的模板，一键即可生成基础框架
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-md-6 mb-4">
+                    <label class="form-label">选择科室 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="departmentSelect">
+                        <option value="">请选择科室</option>
+                        <option value="internal">内科</option>
+                        <option value="surgery">外科</option>
+                        <option value="pediatrics">儿科</option>
+                        <option value="neurology">神经科</option>
+                        <option value="cardiology">心内科</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <label class="form-label">病例类型 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="caseTypeSelect">
+                        <option value="">请选择病例类型</option>
+                        <option value="teaching">教学病例</option>
+                        <option value="discussion">病例讨论</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 模板推荐区域 -->
+            <div id="templateRecommend" class="mt-4 d-none">
+                <h5 class="mb-3">推荐模板</h5>
+                <div class="template-card" id="defaultTemplate">
+                    <h6><i class="fas fa-file-medical mr-2"></i>【内科】教学病例通用模板</h6>
+                    <p class="text-muted">包含问诊、查体、辅助检查等6个基础步骤，适配内科常见病例</p>
+                    <button class="btn btn-primary" onclick="useTemplate()">一键使用模板</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第二步：信息填充 -->
+        <div id="page2" class="page d-none">
+            <!-- 基础信息区 -->
+            <h4 class="mb-3">一、基础信息</h4>
+            <div class="guide-tip">
+                <i class="fas fa-lightbulb-o mr-2"></i>
+                基础信息自动填充您的所属机构/科室，仅需补充病例核心信息
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">病例ID <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="caseId" placeholder="请输入病例ID" value="17677555548471665">
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">患者年龄 <span class="text-danger">*</span></label>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-outline-secondary" onclick="changeAge(-1)">-</button>
+                        <input type="number" class="form-control text-center" id="patientAge" value="87" min="0">
+                        <button class="btn btn-outline-secondary" onclick="changeAge(1)">+</button>
+                    </div>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">患者性别 <span class="text-danger">*</span></label>
+                    <div class="d-flex align-items-center">
+                        <div class="form-check me-3">
+                            <input class="form-check-input" type="radio" name="gender" id="male" checked>
+                            <label class="form-check-label" for="male">男</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gender" id="female">
+                            <label class="form-check-label" for="female">女</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">就诊日期 <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" id="visitDate" value="2024-06-27">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">就诊科室 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="visitDept">
+                        <option value="">请选择就诊科室</option>
+                        <option value="internal" selected>内科</option>
+                        <option value="surgery">外科</option>
+                        <option value="pediatrics">儿科</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">病例标题 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="caseTitle" placeholder="请输入病例标题" maxlength="40">
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">病人主诉 <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="patientComplaint" rows="3" placeholder="请输入病人主诉" maxlength="1000">患者近一月反复乏力、全身骨痛10+年，加重1周</textarea>
+                </div>
+            </div>
+
+            <!-- 诊疗步骤区 -->
+            <h4 class="mb-3 mt-5">二、诊疗步骤内容</h4>
+            <div class="guide-tip">
+                <i class="fas fa-lightbulb-o mr-2"></i>
+                点击右侧模板库可一键填充结构化字段，支持添加自定义步骤、上传图片/文件附件
+            </div>
+
+            <!-- 步骤标签页 -->
+            <ul class="nav nav-tabs mt-3" id="stepTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="inquiry-tab" data-bs-toggle="tab" data-bs-target="#inquiry" type="button" role="tab">1. 问诊</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="physical-tab" data-bs-toggle="tab" data-bs-target="#physical" type="button" role="tab">2. 查体</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="examination-tab" data-bs-toggle="tab" data-bs-target="#examination" type="button" role="tab">3. 辅助检查</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="diagnosis-tab" data-bs-toggle="tab" data-bs-target="#diagnosis" type="button" role="tab">4. 初步诊断</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="treatment-tab" data-bs-toggle="tab" data-bs-target="#treatment" type="button" role="tab">5. 治疗方案</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="guidance-tab" data-bs-toggle="tab" data-bs-target="#guidance" type="button" role="tab">6. 健康指导</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="customStep-tab" data-bs-toggle="tab" data-bs-target="#customStep" type="button" role="tab">
+                        <i class="fas fa-plus mr-1"></i> 自定义步骤
+                    </button>
+                </li>
+            </ul>
+
+            <!-- 步骤内容区 -->
+            <div class="tab-content mt-3" id="stepTabsContent">
+                <!-- 1. 问诊 -->
+                <div class="tab-pane fade show active" id="inquiry" role="tabpanel">
+                    <div class="row">
+                        <!-- 左侧结构化表单 -->
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label">主诉 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="inquiryComplaint" value="患者近一月反复乏力、全身骨痛10+年，加重1周">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">现病史</label>
+                                <textarea class="form-control" id="inquiryPresentHistory" rows="4">患者XX，性别：女，年龄：87岁，因"反复乏力、全身骨痛10+年，加重1周"于2024-06-27 08:21:26入院。</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">既往史</label>
+                                <textarea class="form-control" id="inquiryPastHistory" rows="2"></textarea>
+                            </div>
+                            <!-- 富文本编辑器 -->
+                            <div class="mb-3">
+                                <label class="form-label">详细描述</label>
+                                <textarea id="inquiryRichText"></textarea>
+                            </div>
+                        </div>
+                        <!-- 右侧模板库 -->
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0"><i class="fas fa-th-list mr-2"></i> 问诊模板库</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="template-card" onclick="fillInquiryTemplate()">
+                                        <h7>内科通用问诊模板</h7>
+                                        <p class="text-muted small">一键填充主诉/现病史结构化字段</p>
+                                    </div>
+                                    <div class="template-card">
+                                        <h7>慢病问诊模板</h7>
+                                        <p class="text-muted small">含高血压/糖尿病病史采集</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. 查体 -->
+                <div class="tab-pane fade" id="physical" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- 结构化字段 -->
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label">体温 (℃)</label>
+                                    <input type="number" class="form-control" id="physicalTemp" step="0.1" value="36.5">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">收缩压 (mmHg)</label>
+                                    <input type="number" class="form-control" id="physicalSysBP" value="130">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">舒张压 (mmHg)</label>
+                                    <input type="number" class="form-control" id="physicalDiaBP" value="85">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">心率 (次/分)</label>
+                                    <input type="number" class="form-control" id="physicalHR" value="78">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">体征描述</label>
+                                <textarea class="form-control" id="physicalSigns" rows="4"></textarea>
+                            </div>
+                            <!-- 附件上传 -->
+                            <div class="mb-3">
+                                <label class="form-label">查体附件（图片/报告）</label>
+                                <input type="file" class="form-control" id="physicalFile" multiple accept="image/*,.pdf,.docx">
+                                <div id="physicalFilePreview" class="d-flex flex-wrap mt-2"></div>
+                            </div>
+                            <!-- 富文本 -->
+                            <div class="mb-3">
+                                <label class="form-label">详细描述</label>
+                                <textarea id="physicalRichText"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0"><i class="fas fa-th-list mr-2"></i> 查体模板库</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="template-card">
+                                        <h7>老年人体查模板</h7>
+                                        <p class="text-muted small">含基础生命体征+全身查体</p>
+                                    </div>
+                                    <div class="template-card">
+                                        <h7>心内科查体模板</h7>
+                                        <p class="text-muted small">含心脏听诊/心律描述</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. 辅助检查 -->
+                <div class="tab-pane fade" id="examination" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label">检查项目 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="examItem" placeholder="如：血常规、CT、心电图">
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">检查时间</label>
+                                    <input type="date" class="form-control" id="examDate" value="2024-06-27">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">检查结果</label>
+                                    <input type="text" class="form-control" id="examResult">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">参考范围</label>
+                                <input type="text" class="form-control" id="examReference">
+                            </div>
+                            <!-- 附件上传 -->
+                            <div class="mb-3">
+                                <label class="form-label">检查报告/影像</label>
+                                <input type="file" class="form-control" id="examFile" multiple accept="image/*,.pdf">
+                                <div id="examFilePreview" class="d-flex flex-wrap mt-2"></div>
+                            </div>
+                            <!-- 富文本 -->
+                            <div class="mb-3">
+                                <label class="form-label">详细描述</label>
+                                <textarea id="examRichText"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0"><i class="fas fa-th-list mr-2"></i> 辅助检查模板库</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="template-card" onclick="fillExamTemplate()">
+                                        <h7>血常规检查模板</h7>
+                                        <p class="text-muted small">自动填充参考范围+字段</p>
+                                    </div>
+                                    <div class="template-card">
+                                        <h7>CT检查模板</h7>
+                                        <p class="text-muted small">含影像描述字段</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. 初步诊断 -->
+                <div class="tab-pane fade" id="diagnosis" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label">诊断结论 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="diagnosisResult" placeholder="如：原发性高血压2级">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">诊断依据</label>
+                                <textarea class="form-control" id="diagnosisBasis" rows="4"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">详细描述</label>
+                                <textarea id="diagnosisRichText"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0"><i class="fas fa-th-list mr-2"></i> 诊断模板库</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="template-card">
+                                        <h7>高血压诊断模板</h7>
+                                        <p class="text-muted small">含分级+诊断依据</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. 治疗方案 -->
+                <div class="tab-pane fade" id="treatment" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label">用药方案</label>
+                                <textarea class="form-control" id="treatmentDrug" rows="2" placeholder="药物名称、剂量、用法"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">操作/手术方案</label>
+                                <textarea class="form-control" id="treatmentOperation" rows="2"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">随访计划</label>
+                                <textarea class="form-control" id="treatmentFollowUp" rows="2"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">详细描述</label>
+                                <textarea id="treatmentRichText"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0"><i class="fas fa-th-list mr-2"></i> 治疗模板库</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="template-card">
+                                        <h7>高血压用药模板</h7>
+                                        <p class="text-muted small">含常用降压药+剂量</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. 健康指导 -->
+                <div class="tab-pane fade" id="guidance" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label">注意事项</label>
+                                <textarea class="form-control" id="guidanceNotice" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">复诊建议</label>
+                                <textarea class="form-control" id="guidanceFollowUp" rows="2"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">详细描述</label>
+                                <textarea id="guidanceRichText"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0"><i class="fas fa-th-list mr-2"></i> 指导模板库</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="template-card">
+                                        <h7>慢病健康指导模板</h7>
+                                        <p class="text-muted small">含饮食/运动/用药指导</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 自定义步骤 -->
+                <div class="tab-pane fade" id="customStep" role="tabpanel">
+                    <div class="custom-step">
+                        <div class="mb-3">
+                            <label class="form-label">步骤名称 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="customStepName" placeholder="如：心电图解读、肌力评估">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">步骤类型</label>
+                            <select class="form-select" id="customStepType">
+                                <option value="check">检查类</option>
+                                <option value="assessment">评估类</option>
+                                <option value="treatment">治疗类</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">步骤内容</label>
+                            <textarea class="form-control" id="customStepContent" rows="4"></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="addCustomStep()">添加自定义步骤</button>
+                    </div>
+                    <!-- 已添加的自定义步骤展示 -->
+                    <div id="customStepList" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第三步：互动配置 -->
+        <div id="page3" class="page d-none">
+            <h4 class="mb-3">互动配置</h4>
+            <div class="guide-tip">
+                <i class="fas fa-lightbulb-o mr-2"></i>
+                支持题目互动、病例推演、批注互动，批注功能默认开启无需配置
+            </div>
+
+            <!-- 步骤选择 -->
+            <div class="mb-4">
+                <label class="form-label">选择要添加互动的步骤 <span class="text-danger">*</span></label>
+                <select class="form-select" id="interactionStep">
+                    <option value="inquiry">1. 问诊</option>
+                    <option value="physical">2. 查体</option>
+                    <option value="examination">3. 辅助检查</option>
+                    <option value="diagnosis">4. 初步诊断</option>
+                    <option value="treatment">5. 治疗方案</option>
+                </select>
+            </div>
+
+            <!-- 题目互动 -->
+            <div class="interaction-card">
+                <h5><i class="fas fa-question-circle mr-2"></i> 题目互动</h5>
+                <div class="mb-3 mt-3">
+                    <label class="form-label">题目类型</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="questionType" id="singleChoice" checked>
+                        <label class="form-check-label" for="singleChoice">单选题</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="questionType" id="multiChoice">
+                        <label class="form-check-label" for="multiChoice">多选题</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">题干 <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="questionContent" rows="2">您是内分泌的医生，根据患者基本信息与主诉应优先问询以下哪项病史方向？</textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">选项（每行一个选项）</label>
+                    <textarea class="form-control" id="questionOptions" rows="4">A. 既往史
+B. 现病史
+C. 手术史
+D. 个人史</textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">正确答案 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="questionAnswer" placeholder="如：A 或 A,B" value="A,B,C">
+                </div>
+                <button class="btn btn-primary" onclick="addQuestionInteraction()">添加题目互动</button>
+            </div>
+
+            <!-- 病例推演 -->
+            <div class="interaction-card">
+                <h5><i class="fas fa-sitemap mr-2"></i> 病例推演</h5>
+                <div class="mb-3">
+                    <label class="form-label">推演节点（仅支持初步诊断/治疗方案步骤）</label>
+                    <select class="form-select" id="deductionStep">
+                        <option value="diagnosis">4. 初步诊断</option>
+                        <option value="treatment">5. 治疗方案</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">推演问题 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="deductionQuestion" placeholder="如：该患者的初步诊断方向是？" value="该患者的初步诊断方向是？">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">推演分支1</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <input type="text" class="form-control" id="deductionBranch1Option" placeholder="分支选项" value="高血压">
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <input type="text" class="form-control" id="deductionBranch1Result" placeholder="分支结果/解析" value="解析：患者有长期高血压病史，结合症状优先考虑高血压相关并发症">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">推演分支2</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <input type="text" class="form-control" id="deductionBranch2Option" placeholder="分支选项" value="骨质疏松">
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <input type="text" class="form-control" id="deductionBranch2Result" placeholder="分支结果/解析" value="解析：患者87岁女性，全身骨痛，需优先排查骨质疏松">
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="addDeductionInteraction()">添加病例推演</button>
+            </div>
+
+            <!-- 预览按钮 -->
+            <button class="btn btn-success mt-4" onclick="previewCase()"><i class="fas fa-eye mr-2"></i> 预览病例</button>
+        </div>
+
+        <!-- 预览弹窗 -->
+        <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="previewModalLabel">互动病例预览</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="previewContent">
+                        <!-- 预览内容会动态生成 -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭预览</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 固定底部操作栏 -->
+        <div class="fixed-bottom-bar d-flex justify-content-between">
+            <button class="btn btn-outline-secondary" id="prevBtn" onclick="prevPage()" disabled>上一步</button>
+            <div>
+                <button class="btn btn-outline-secondary me-2" onclick="saveDraft()">保存草稿</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextPage()">下一步</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 全局变量 - 提前定义
+        let currentPage = 1;
+        let customSteps = []; // 存储自定义步骤
+        let interactions = []; // 存储互动配置
+
+        // 科室选择后显示推荐模板
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化富文本编辑器（适配年长医生，简化功能）
+            tinymce.init({
+                selector: 'textarea[id$="RichText"]',
+                height: 200,
+                menubar: false,
+                toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | link image | bullist numlist',
+                plugins: 'advlist autolink lists link image charmap print preview anchor',
+                language: 'zh_CN',
+                branding: false
+            });
+
+            document.getElementById('departmentSelect').addEventListener('change', function() {
+                const dept = this.value;
+                const caseType = document.getElementById('caseTypeSelect').value;
+                if (dept && caseType) {
+                    document.getElementById('templateRecommend').classList.remove('d-none');
+                }
+            });
+            document.getElementById('caseTypeSelect').addEventListener('change', function() {
+                const dept = document.getElementById('departmentSelect').value;
+                const caseType = this.value;
+                if (dept && caseType) {
+                    document.getElementById('templateRecommend').classList.remove('d-none');
+                }
+            });
+
+            // 初始化页面
+            updatePageDisplay();
+        });
+
+        // 使用模板
+        function useTemplate() {
+            // 模拟模板填充基础信息
+            document.getElementById('caseTitle').value = '87岁女性反复乏力、全身骨痛病例分析';
+            document.getElementById('patientAge').value = 87;
+            document.getElementById('female').checked = true;
+            // 跳转到第二步
+            currentPage = 2;
+            updatePageDisplay();
+        }
+
+        // 填充问诊模板
+        function fillInquiryTemplate() {
+            document.getElementById('inquiryComplaint').value = '患者近一月反复乏力、全身骨痛10+年，加重1周';
+            document.getElementById('inquiryPresentHistory').value = '患者XX，性别：女，年龄：87岁，因"反复乏力、全身骨痛10+年，加重1周"于2024-06-27 08:21:26入院。既往有高血压病史15年，规律服用降压药。';
+        }
+
+        // 填充辅助检查模板（血常规）
+        function fillExamTemplate() {
+            document.getElementById('examItem').value = '血常规';
+            document.getElementById('examResult').value = 'WBC 6.5×10^9/L，RBC 3.8×10^12/L，Hb 110g/L';
+            document.getElementById('examReference').value = 'WBC 4-10×10^9/L，RBC 3.5-5.5×10^12/L，Hb 110-150g/L';
+        }
+
+        // 年龄调整
+        function changeAge(num) {
+            const ageInput = document.getElementById('patientAge');
+            let age = parseInt(ageInput.value) + num;
+            if (age < 0) age = 0;
+            ageInput.value = age;
+        }
+
+        // 附件上传预览（查体）
+        document.getElementById('physicalFile').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const previewArea = document.getElementById('physicalFilePreview');
+            previewArea.innerHTML = '';
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const filePreview = document.createElement('div');
+                filePreview.className = 'file-preview';
+                if (file.type.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    filePreview.appendChild(img);
+                } else {
+                    filePreview.innerHTML = `<div class="d-flex align-items-center justify-content-center h-100">
+                        <i class="fas fa-file-pdf text-primary" style="font-size: 30px;"></i>
+                    </div>`;
+                }
+                previewArea.appendChild(filePreview);
+            }
+        });
+
+        // 附件上传预览（辅助检查）
+        document.getElementById('examFile').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const previewArea = document.getElementById('examFilePreview');
+            previewArea.innerHTML = '';
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const filePreview = document.createElement('div');
+                filePreview.className = 'file-preview';
+                if (file.type.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    filePreview.appendChild(img);
+                } else {
+                    filePreview.innerHTML = `<div class="d-flex align-items-center justify-content-center h-100">
+                        <i class="fas fa-file-pdf text-primary" style="font-size: 30px;"></i>
+                    </div>`;
+                }
+                previewArea.appendChild(filePreview);
+            }
+        });
+
+        // 添加自定义步骤
+        function addCustomStep() {
+            const stepName = document.getElementById('customStepName').value;
+            const stepType = document.getElementById('customStepType').value;
+            const stepContent = document.getElementById('customStepContent').value;
+            if (!stepName) {
+                alert('请输入步骤名称！');
+                return;
+            }
+            const step = {
+                id: Date.now(),
+                name: stepName,
+                type: stepType,
+                content: stepContent
+            };
+            customSteps.push(step);
+            // 渲染自定义步骤列表
+            renderCustomSteps();
+            // 清空输入
+            document.getElementById('customStepName').value = '';
+            document.getElementById('customStepContent').value = '';
+            // 新增步骤标签页
+            addCustomStepTab(step);
+        }
+
+        // 渲染自定义步骤列表
+        function renderCustomSteps() {
+            const listArea = document.getElementById('customStepList');
+            listArea.innerHTML = '';
+            customSteps.forEach(step => {
+                const stepCard = document.createElement('div');
+                stepCard.className = 'card mb-3';
+                stepCard.innerHTML = `
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">${step.name}（${getStepTypeName(step.type)}）</h6>
+                        <button class="btn btn-sm btn-danger" onclick="deleteCustomStep(${step.id})">删除</button>
+                    </div>
+                    <div class="card-body">
+                        <p>${step.content}</p>
+                    </div>
+                `;
+                listArea.appendChild(stepCard);
+            });
+        }
+
+        // 获取步骤类型名称
+        function getStepTypeName(type) {
+            switch(type) {
+                case 'check': return '检查类';
+                case 'assessment': return '评估类';
+                case 'treatment': return '治疗类';
+                default: return '其他';
+            }
+        }
+
+        // 添加自定义步骤标签页
+        function addCustomStepTab(step) {
+            const tabList = document.getElementById('stepTabs');
+            const tabContent = document.getElementById('stepTabsContent');
+            
+            // 创建标签
+            const tabItem = document.createElement('li');
+            tabItem.className = 'nav-item';
+            tabItem.setAttribute('role', 'presentation');
+            tabItem.innerHTML = `
+                <button class="nav-link" id="custom-${step.id}-tab" data-bs-toggle="tab" data-bs-target="#custom-${step.id}" type="button" role="tab">
+                    ${step.name}
+                </button>
+            `;
+            tabList.insertBefore(tabItem, document.getElementById('customStep-tab').parentNode);
+            
+            // 创建内容区
+            const tabPane = document.createElement('div');
+            tabPane.className = 'tab-pane fade';
+            tabPane.id = `custom-${step.id}`;
+            tabPane.setAttribute('role', 'tabpanel');
+            tabPane.innerHTML = `
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="form-label">步骤内容</label>
+                            <textarea class="form-control" rows="4">${step.content}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">详细描述</label>
+                            <textarea id="custom-${step.id}-RichText"></textarea>
+                        </div>
+                    </div>
+                </div>
+            `;
+            tabContent.appendChild(tabPane);
+            
+            // 初始化富文本编辑器
+            tinymce.init({
+                selector: `#custom-${step.id}-RichText`,
+                height: 200,
+                menubar: false,
+                toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | link image | bullist numlist',
+                plugins: 'advlist autolink lists link image charmap print preview anchor',
+                language: 'zh_CN',
+                branding: false
+            });
+        }
+
+        // 删除自定义步骤
+        function deleteCustomStep(id) {
+            customSteps = customSteps.filter(step => step.id !== id);
+            renderCustomSteps();
+            // 删除标签页
+            document.getElementById(`custom-${id}-tab`).parentNode.remove();
+            document.getElementById(`custom-${id}`).remove();
+        }
+
+        // 添加题目互动
+        function addQuestionInteraction() {
+            const step = document.getElementById('interactionStep').value;
+            const type = document.querySelector('input[name="questionType"]:checked').id;
+            const content = document.getElementById('questionContent').value;
+            const options = document.getElementById('questionOptions').value;
+            const answer = document.getElementById('questionAnswer').value;
+            if (!content || !options || !answer) {
+                alert('请填写完整题目信息！');
+                return;
+            }
+            const interaction = {
+                type: 'question',
+                step: step,
+                questionType: type,
+                content: content,
+                options: options.split('\n'),
+                answer: answer
+            };
+            interactions.push(interaction);
+            alert('题目互动添加成功！');
+        }
+
+        // 添加病例推演
+        function addDeductionInteraction() {
+            const step = document.getElementById('deductionStep').value;
+            const question = document.getElementById('deductionQuestion').value;
+            if (!question) {
+                alert('请填写推演问题！');
+                return;
+            }
+            const interaction = {
+                type: 'deduction',
+                step: step,
+                question: question,
+                branches: [
+                    { option: document.getElementById('deductionBranch1Option').value, result: document.getElementById('deductionBranch1Result').value },
+                    { option: document.getElementById('deductionBranch2Option').value, result: document.getElementById('deductionBranch2Result').value }
+                ]
+            };
+            interactions.push(interaction);
+            alert('病例推演添加成功！');
+        }
+
+        // 预览病例
+        function previewCase() {
+            const previewContent = document.getElementById('previewContent');
+            let html = `
+                <h4 class="mb-4">${document.getElementById('caseTitle').value || '未命名病例'}</h4>
+                <div class="mb-4">
+                    <p><strong>病例ID：</strong>${document.getElementById('caseId').value}</p>
+                    <p><strong>患者信息：</strong>${document.getElementById('patientAge').value}岁 ${document.getElementById('male').checked ? '男' : '女'}，就诊日期：${document.getElementById('visitDate').value}</p>
+                    <p><strong>主诉：</strong>${document.getElementById('patientComplaint').value}</p>
+                </div>
+                <hr>
+            `;
+
+            // 基础步骤预览
+            const steps = [
+                { id: 'inquiry', name: '问诊', content: document.getElementById('inquiryPresentHistory').value },
+                { id: 'physical', name: '查体', content: `体温：${document.getElementById('physicalTemp').value}℃，血压：${document.getElementById('physicalSysBP').value}/${document.getElementById('physicalDiaBP').value}mmHg，心率：${document.getElementById('physicalHR').value}次/分<br>体征描述：${document.getElementById('physicalSigns').value}` },
+                { id: 'examination', name: '辅助检查', content: `项目：${document.getElementById('examItem').value}，时间：${document.getElementById('examDate').value}<br>结果：${document.getElementById('examResult').value}（参考范围：${document.getElementById('examReference').value}）` },
+                { id: 'diagnosis', name: '初步诊断', content: `结论：${document.getElementById('diagnosisResult').value}<br>依据：${document.getElementById('diagnosisBasis').value}` },
+                { id: 'treatment', name: '治疗方案', content: `用药：${document.getElementById('treatmentDrug').value}<br>操作：${document.getElementById('treatmentOperation').value}<br>随访：${document.getElementById('treatmentFollowUp').value}` },
+                { id: 'guidance', name: '健康指导', content: `注意事项：${document.getElementById('guidanceNotice').value}<br>复诊建议：${document.getElementById('guidanceFollowUp').value}` }
+            ];
+
+            steps.forEach(step => {
+                html += `
+                    <div class="mb-5">
+                        <h5>${step.name}</h5>
+                        <div class="mt-2">${step.content || '暂无内容'}</div>
+                        <!-- 互动内容 -->
+                        ${renderInteraction(step.id)}
+                    </div>
+                `;
+            });
+
+            // 自定义步骤预览
+            if (customSteps.length > 0) {
+                html += '<hr><h5>自定义步骤</h5>';
+                customSteps.forEach(step => {
+                    html += `
+                        <div class="mb-4">
+                            <h6>${step.name}（${getStepTypeName(step.type)}）</h6>
+                            <p>${step.content}</p>
+                        </div>
+                    `;
+                });
+            }
+
+            previewContent.innerHTML = html;
+            // 打开弹窗
+            const modal = new bootstrap.Modal(document.getElementById('previewModal'));
+            modal.show();
+        }
+
+        // 渲染互动内容
+        function renderInteraction(stepId) {
+            const interaction = interactions.find(item => item.step === stepId);
+            if (!interaction) return '';
+            
+            if (interaction.type === 'question') {
+                let optionsHtml = '';
+                interaction.options.forEach(option => {
+                    optionsHtml += `<div class="form-check mt-2">
+                        <input class="form-check-input" type="${interaction.questionType === 'singleChoice' ? 'radio' : 'checkbox'}" name="previewQuestion" id="previewOption-${option.split('.')[0]}">
+                        <label class="form-check-label" for="previewOption-${option.split('.')[0]}">${option}</label>
+                    </div>`;
+                });
+                return `
+                    <div class="mt-3 p-3 border rounded">
+                        <h6>互动题目</h6>
+                        <p>${interaction.content}</p>
+                        ${optionsHtml}
+                        <button class="btn btn-sm btn-primary mt-2">提交答案</button>
+                        <div class="mt-2 text-muted">正确答案：${interaction.answer}</div>
+                    </div>
+                `;
+            } else if (interaction.type === 'deduction') {
+                let branchesHtml = '';
+                interaction.branches.forEach((branch, index) => {
+                    branchesHtml += `<div class="mt-2">
+                        <button class="btn btn-sm btn-outline-primary">${branch.option}</button>
+                    </div>
+                    <div class="mt-1 p-2 bg-light rounded d-none" id="deductionResult-${index}">${branch.result}</div>`;
+                });
+                return `
+                    <div class="mt-3 p-3 border rounded">
+                        <h6>病例推演</h6>
+                        <p>${interaction.question}</p>
+                        ${branchesHtml}
+                    </div>
+                `;
+            }
+            return '';
+        }
+
+        // 步骤切换
+        function nextPage() {
+            if (currentPage === 1 && (!document.getElementById('departmentSelect').value || !document.getElementById('caseTypeSelect').value)) {
+                alert('请选择科室和病例类型！');
+                return;
+            }
+            if (currentPage === 3) {
+                alert('病例创建完成！可点击预览查看效果');
+                return;
+            }
+            currentPage++;
+            updatePageDisplay();
+        }
+
+        function prevPage() {
+            if (currentPage === 1) return;
+            currentPage--;
+            updatePageDisplay();
+        }
+
+        // 更新页面显示
+        function updatePageDisplay() {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('d-none');
+            });
+            // 显示当前页面
+            document.getElementById(`page${currentPage}`).classList.remove('d-none');
+            
+            // 更新步骤导航
+            document.querySelectorAll('.step-item').forEach((item, index) => {
+                if (index+1 === currentPage) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            // 更新按钮状态
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').innerText = currentPage === 3 ? '完成创建' : '下一步';
+        }
+
+        // 保存草稿
+        function saveDraft() {
+            // 模拟保存逻辑
+            alert('草稿保存成功！');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品管理 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/product-management.css">
+    <link rel="stylesheet" href="../css/table.css">
+</head>
+<body>
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+            <!-- 产品类型标签 -->
+            <div class="service-tabs">
+                <div class="service-tab active" data-type="all">所有产品</div>
+                <div class="service-tab" data-type="medicine">药品</div>
+                <div class="service-tab" data-type="device">医疗器械</div>
+                <div class="service-tab" data-type="supplement">保健品</div>
+            </div>
+
+            <!-- 功能区和列表内容区合并卡片 -->
+            <div class="content-card">
+                <!-- 所有产品标签内容 -->
+                <div class="tab-content active" id="all-content">
+                    <!-- 筛选栏 -->
+                    <div class="filter-bar">
+                        <div class="filter-items-container">
+                            <div class="filter-item">
+                                <input type="text" placeholder="搜索产品名称/编码">
+                            </div>
+                            <div class="filter-item">
+                                <select>
+                                    <option>所有类型</option>
+                                    <option>药品</option>
+                                    <option>医疗器械</option>
+                                    <option>保健品</option>
+                                </select>
+                            </div>
+                            <div class="filter-item">
+                                <select>
+                                    <option>所有状态</option>
+                                    <option>启用</option>
+                                    <option>禁用</option>
+                                </select>
+                            </div>
+                            <div class="filter-item">
+                                <select>
+                                    <option>选择分类</option>
+                                    <option>呼吸系统</option>
+                                    <option>消化系统</option>
+                                    <option>心血管系统</option>
+                                    <option>神经系统</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-actions">
+                            <div class="batch-actions" style="display: none;">
+                                <button class="batch-btn">批量启用</button>
+                                <button class="batch-btn">批量禁用</button>
+                                <button class="batch-btn">批量删除</button>
+                            </div>
+                            
+                            <button class="create-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                新增产品
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 产品列表 -->
+                    <div class="table-container">
+                        <table class="record-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-select">
+                                        <input type="checkbox" class="select-all">
+                                    </th>
+                                    <th class="col-product">产品信息</th>
+                                    <th class="col-type">产品类型</th>
+                                    <th class="col-category">所属分类</th>
+                                    <th class="col-status">状态</th>
+                                    <th class="col-creator">创建者</th>
+                                    <th class="col-date">创建时间</th>
+                                    <th class="col-action">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 示例数据行 -->
+                                <tr>
+                                    <td class="col-select">
+                                        <input type="checkbox" class="select-row">
+                                    </td>
+                                    <td class="col-product">
+                                        <div class="product-name">荆防颗粒</div>
+                                        <div class="product-code">ID: MED001</div>
+                                    </td>
+                                    <td class="col-type">药品</td>
+                                    <td class="col-category">呼吸系统</td>
+                                    <td class="col-status">
+                                        <span style="color: #48bb78; font-weight: 500;">启用</span>
+                                    </td>
+                                    <td class="col-creator">长期测试公司</td>
+                                    <td class="col-date">2025-11-12 18:45</td>
+                                    <td>
+                                        <div class="action-buttons-cell">
+                                            <button class="action-btn view" title="查看详情">
+                                                查看
+                                            </button>
+                                            <button class="action-btn edit" title="编辑">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                                </svg>
+                                                编辑
+                                            </button>
+                                            <button class="action-btn delete" title="删除">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                </svg>
+                                                删除
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <tr>
+                                <td class="col-select">
+                                    <input type="checkbox" class="select-row">
+                                </td>
+                                <td class="col-product">
+                                    <div class="product-name">砂糖测试产品</div>
+                                    <div class="product-code">ID: MED002</div>
+                                </td>
+                                <td class="col-type">药品</td>
+                                <td class="col-category">消化系统</td>
+                                <td class="col-status">
+                                    <span style="color: #48bb78; font-weight: 500;">启用</span>
+                                </td>
+                                <td class="col-creator">卡鲁（上海）公司</td>
+                                <td class="col-date">2025-11-07 14:30</td>
+                                <td>
+                                    <div class="action-buttons-cell">
+                                        <button class="action-btn view" title="查看详情">
+                                            查看
+                                        </button>
+                                        <button class="action-btn edit" title="编辑">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                            </svg>
+                                            编辑
+                                        </button>
+                                        <button class="action-btn delete" title="删除">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            </svg>
+                                            删除
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-select">
+                                    <input type="checkbox" class="select-row">
+                                </td>
+                                <td class="col-product">
+                                    <div class="product-name">盖笛欣</div>
+                                    <div class="product-code">ID: MED003</div>
+                                </td>
+                                <td class="col-type">药品</td>
+                                <td class="col-category">营养补充</td>
+                                <td class="col-status">
+                                    <span style="color: #48bb78; font-weight: 500;">启用</span>
+                                </td>
+                                <td class="col-creator">卡鲁（上海）公司</td>
+                                <td class="col-date">2025-11-07 10:15</td>
+                                <td>
+                                    <div class="action-buttons-cell">
+                                        <button class="action-btn view" title="查看详情">
+                                            查看
+                                        </button>
+                                        <button class="action-btn edit" title="编辑">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                            </svg>
+                                            编辑
+                                        </button>
+                                        <button class="action-btn delete" title="删除">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            </svg>
+                                            删除
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-select">
+                                    <input type="checkbox" class="select-row">
+                                </td>
+                                <td class="col-product">
+                                    <div class="product-name">test1</div>
+                                    <div class="product-code">ID: MED004</div>
+                                </td>
+                                <td class="col-type">医疗器械</td>
+                                <td class="col-category">诊断设备</td>
+                                <td class="col-status">
+                                    <span style="color: #ef4444; font-weight: 500;">禁用</span>
+                                </td>
+                                <td class="col-creator">卡鲁（上海）公司</td>
+                                <td class="col-date">2025-11-07 16:00</td>
+                                <td>
+                                    <div class="action-buttons-cell">
+                                        <button class="action-btn view" title="查看详情">
+                                            查看
+                                        </button>
+                                        <button class="action-btn edit" title="编辑">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                            </svg>
+                                            编辑
+                                        </button>
+                                        <button class="action-btn delete" title="删除">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            </svg>
+                                            删除
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-select">
+                                    <input type="checkbox" class="select-row">
+                                </td>
+                                <td class="col-product">
+                                    <div class="product-name">111</div>
+                                    <div class="product-code">ID: MED005</div>
+                                </td>
+                                <td class="col-type">保健品</td>
+                                <td class="col-category">营养补充</td>
+                                <td class="col-status">
+                                    <span style="color: #48bb78; font-weight: 500;">启用</span>
+                                </td>
+                                <td class="col-creator">快普（上海）公司</td>
+                                <td class="col-date">2025-10-27 09:00</td>
+                                <td>
+                                    <div class="action-buttons-cell">
+                                        <button class="action-btn view" title="查看详情">
+                                            查看
+                                        </button>
+                                        <button class="action-btn edit" title="编辑">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                            </svg>
+                                            编辑
+                                        </button>
+                                        <button class="action-btn delete" title="删除">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            </svg>
+                                            删除
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- 分页控件 -->
+                    <div class="pagination">
+                        <div class="pagination-info">
+                            共 28 条记录
+                        </div>
+                        <div class="pagination-buttons">
+                            <button class="page-btn" disabled>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn">...</button>
+                            <button class="page-btn">6</button>
+                            <button class="page-btn">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loading" id="loading" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>AI正在思考...</p>
+    </div>
+
+    <!-- 动态组件加载脚本 -->
+    <script>
+        async function loadComponents() {
+            const headerResponse = await fetch('components/header.html');
+            const headerHtml = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerHtml;
+            
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarHtml = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+            
+            initializeMenu();
+        }
+        window.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+    <script src="../js/script.js?v=1"></script>
+    <script src="../js/menu.js?v=1"></script>
+</body>
+</html>

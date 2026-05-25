@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统入口 - 趣学术CRM</title>
+    <link rel="stylesheet" href="../css/base.css">
+</head>
+<body>
+    <!-- 组件加载脚本已移至navigation.js -->
+    <script>
+        // 确保DOM加载完成后执行初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 页面加载完成后，选中首页菜单项
+            setTimeout(() => {
+                // 移除所有左侧菜单的激活状态
+                const allSidebarNavItems = document.querySelectorAll('.sidebar-nav .nav-item');
+                allSidebarNavItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // 选中首页菜单项
+                const homeNavItem = document.querySelector('.sidebar-nav .nav-item:first-child');
+                if (homeNavItem) {
+                    homeNavItem.classList.add('active');
+                }
+            }, 200);
+        });
+    </script>
+
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+            
+            <!-- 问候语区域 -->
+            <div class="greeting-section" style="margin-bottom: 24px;">
+                <h1 style="font-size: 16px; font-weight: 400; margin: 0; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #6b7280;">下午好，甘松！今天是 <span id="current-date"></span>，祝您工作顺利，心情愉快！</h1>
+            </div>
+            
+            <script>
+                // 显示当前日期和星期
+                function updateDate() {
+                    const now = new Date();
+                    const options = {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        weekday: 'long'
+                    };
+                    document.getElementById('current-date').textContent = now.toLocaleDateString('zh-CN', options);
+                }
+                updateDate();
+            </script>
+            
+            <!-- 统计卡片区域 -->
+            <div class="stats-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px;">
+                <!-- 待审核工单 -->
+                <div class="stat-card" style="padding: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h3 style="font-size: 14px;">待审核工单</h3>
+                        <div style="width: 28px; height: 28px; background: #e8f0ff; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="stat-value" style="font-size: 20px; margin: 0;">24</p>
+                </div>
+                
+                <!-- 待审核项目 -->
+                <div class="stat-card" style="padding: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h3 style="font-size: 14px;">待审核项目</h3>
+                        <div style="width: 28px; height: 28px; background: #fef3c7; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="stat-value" style="font-size: 20px; margin: 0;">86</p>
+                </div>
+                
+                <!-- 待审核医学播客 -->
+                <div class="stat-card" style="padding: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h3 style="font-size: 14px;">待审核医学播客</h3>
+                        <div style="width: 28px; height: 28px; background: #fce7f3; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="stat-value" style="font-size: 20px; margin: 0;">25</p>
+                </div>
+                
+                <!-- 待审核病例互动 -->
+                <div class="stat-card" style="padding: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h3 style="font-size: 14px;">待审核病例互动</h3>
+                        <div style="width: 28px; height: 28px; background: #dbeafe; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="stat-value" style="font-size: 20px; margin: 0;">21</p>
+                </div>
+                
+                <!-- 待审核学术委托 -->
+                <div class="stat-card" style="padding: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h3 style="font-size: 14px;">待审核学术委托</h3>
+                        <div style="width: 28px; height: 28px; background: #d1fae5; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="stat-value" style="font-size: 20px; margin: 0;">18</p>
+                </div>
+                
+                <!-- 待审核医生资质 -->
+                <div class="stat-card" style="padding: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h3 style="font-size: 14px;">待审核医生资质</h3>
+                        <div style="width: 28px; height: 28px; background: #fde68a; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="stat-value" style="font-size: 20px; margin: 0;">12</p>
+                </div>
+                
+                <!-- 待审核合同 -->
+                <div class="stat-card" style="padding: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h3 style="font-size: 14px;">待审核合同</h3>
+                        <div style="width: 28px; height: 28px; background: #ddd6fe; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="stat-value" style="font-size: 20px; margin: 0;">8</p>
+                </div>
+            </div>
+            
+            <!-- 待办任务和审核队列 -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 0;">
+                <!-- 待办任务 -->
+                <div class="white-content-container">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h2 style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin: 0;">待办任务</h2>
+                        <a href="#" style="font-size: 14px; color: var(--primary-color); text-decoration: none;">查看全部</a>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-item urgent">
+                            <div style="width: 8px; height: 8px; background: #f59e0b; border-radius: 50%; margin-top: 6px; margin-right: 12px;"></div>
+                            <div style="flex: 1;">
+                                <h3 class="task-title">医学播客课件审核</h3>
+                                <p class="task-meta">截止时间：今天 18:00</p>
+
+                            </div>
+                            <button class="action-btn view">处理</button>
+                        </div>
+                        <div class="task-item">
+                            <div style="width: 8px; height: 8px; background: #ef4444; border-radius: 50%; margin-top: 6px; margin-right: 12px;"></div>
+                            <div style="flex: 1;">
+                                <h3 class="task-title">医生资质审核</h3>
+                                <p class="task-meta">截止时间：今天 20:00</p>
+
+                            </div>
+                            <button class="action-btn view">处理</button>
+                        </div>
+                        <div class="task-item">
+                            <div style="width: 8px; height: 8px; background: #ef4444; border-radius: 50%; margin-top: 6px; margin-right: 12px;"></div>
+                            <div style="flex: 1;">
+                                <h3 class="task-title">医生资质审核</h3>
+                                <p class="task-meta">截止时间：今天 20:00</p>
+
+                            </div>
+                            <button class="action-btn view">处理</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 审核队列 -->
+                <div class="white-content-container">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h2 style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin: 0;">审核队列</h2>
+                        <a href="#" style="font-size: 14px; color: var(--primary-color); text-decoration: none;">查看全部</a>
+                    </div>
+                    <div class="review-queue">
+                        <div class="queue-item">
+                            <div>
+                                <h3>医学播客审核</h3>
+                                <p>课件审核: 12 | 活动审核: 8 | 视频审核: 5</p>
+                            </div>
+                            <span class="status-tag pending">25项待审核</span>
+                        </div>
+                        <div class="queue-item">
+                            <div>
+                                <h3>在线病例审核</h3>
+                                <p>内容审核: 15 | 活动审核: 6</p>
+                            </div>
+                            <span class="status-tag pending">21项待审核</span>
+                        </div>
+                        <div class="queue-item">
+                            <div>
+                                <h3>其他审核</h3>
+                                <p>医生审核: 18 | 学术委托: 7 | 合同: 4</p>
+                            </div>
+                            <span class="status-tag pending">29项待审核</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 快捷入口 -->
+            <div class="white-content-container">
+                <h2 style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px;">快捷入口</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px;">
+                    <a href="#" class="quick-entry">
+                        <div class="icon-container">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <span>新建工单</span>
+                    </a>
+                    <a href="#" class="quick-entry">
+                        <div class="icon-container">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                        </div>
+                        <span>新建合同</span>
+                    </a>
+                    <a href="#" class="quick-entry">
+                        <div class="icon-container">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </div>
+                        <span>新建发票</span>
+                    </a>
+                    <a href="#" class="quick-entry">
+                        <div class="icon-container">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <span>医生审核</span>
+                    </a>
+                    <a href="#" class="quick-entry">
+                        <div class="icon-container">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                        </div>
+                        <span>学术委托审核</span>
+                    </a>
+                    <a href="#" class="quick-entry">
+                        <div class="icon-container">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                        </div>
+                        <span>医学播客审核</span>
+                    </a>
+                    <a href="#" class="quick-entry">
+                        <div class="icon-container">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            </svg>
+                        </div>
+                        <span>在线病例互动审核</span>
+                    </a>
+                    <a href="#" class="quick-entry">
+                        <div class="icon-container">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <span>合规复审</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 最近动态和风控预警 -->
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+                <!-- 最近动态 -->
+                <div class="white-content-container">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h2 style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin: 0;">最近动态</h2>
+                        <a href="#" style="font-size: 14px; color: var(--primary-color); text-decoration: none;">查看全部</a>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-avatar" style="background: #d1fae5;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="activity-content">医学播客课件 <strong>《心血管疾病预防》</strong> 审核通过</p>
+                                <p class="activity-meta">10分钟前 · 审核人：张医生</p>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar" style="background: #fee2e2;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="activity-content">在线病例内容 <strong>《糖尿病病例讨论》</strong> 审核拒绝</p>
+                                <p class="activity-meta">35分钟前 · 审核人：李医生</p>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar" style="background: #e0e7ff;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="activity-content">工单 <strong>#TK-2026</strong> 已处理完成</p>
+                                <p class="activity-meta">1小时前 · 处理人：王客服</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 风控预警 -->
+                <div class="white-content-container">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h2 style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin: 0;">风控预警</h2>
+                        <a href="#" style="font-size: 14px; color: var(--primary-color); text-decoration: none;">查看全部</a>
+                    </div>
+                    <div class="risk-alert">
+                        <div class="alert-item" style="border: 1px solid #fee2e2; background: #fef2f2;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <h3 style="color: #dc2626;">异常登录</h3>
+                                <span class="alert-time">30分钟前</span>
+                            </div>
+                            <p>检测到来自未知IP的登录尝试，已暂时锁定账户</p>
+                        </div>
+                        <div class="alert-item" style="border: 1px solid #fef3c7; background: #fffbeb;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <h3 style="color: #d97706;">审核超时</h3>
+                                <span class="alert-time">2小时前</span>
+                            </div>
+                            <p>多个审核任务已超过预定处理时间，请及时处理</p>
+                        </div>
+                        <div class="alert-item" style="border: 1px solid #e0e7ff; background: #eff6ff;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <h3 style="color: #2563eb;">数据异常</h3>
+                                <span class="alert-time">4小时前</span>
+                            </div>
+                            <p>医学播客上传量突增，可能存在异常行为</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

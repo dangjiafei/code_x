@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>病例管理 - 在线互动病例征集</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* 病例管理页面专用样式 */
+        .case-management-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .page-header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .management-content {
+            flex: 1;
+            padding: 0 20px 20px 20px;
+        }
+
+        .management-stats {
+            background-color: white;
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .cases-table-container {
+            background-color: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .cases-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .cases-table th,
+        .cases-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cases-table th {
+            background-color: var(--background-light);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .cases-table td {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .cases-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .case-title {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-badge.pending {
+            background-color: var(--warning-light);
+            color: var(--warning-color);
+        }
+
+        .status-badge.approved {
+            background-color: var(--success-light);
+            color: var(--success-color);
+        }
+
+        .status-badge.rejected {
+            background-color: var(--error-light);
+            color: var(--error-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: white;
+            color: var(--text-secondary);
+        }
+
+        .action-btn:hover {
+            background-color: var(--background-light);
+        }
+
+        .action-btn.view {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .action-btn.view:hover {
+            background-color: var(--primary-light);
+        }
+
+        .action-btn.results {
+            border-color: var(--success-color);
+            color: var(--success-color);
+        }
+
+        .action-btn.results:hover {
+            background-color: var(--success-light);
+        }
+
+        .action-btn.revise {
+            border-color: var(--warning-color);
+            color: var(--warning-color);
+        }
+
+        .action-btn.revise:hover {
+            background-color: var(--warning-light);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-tertiary);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-state-desc {
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        /* 审核结果弹窗 */
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .result-modal-content {
+            background-color: white;
+            border-radius: var(--radius-md);
+            padding: 24px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .result-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .result-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .close-modal-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .result-content {
+            margin-bottom: 20px;
+        }
+
+        .result-item {
+            margin-bottom: 16px;
+        }
+
+        .result-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .result-value {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .review-comments {
+            background-color: var(--background-light);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .management-stats {
+                gap: 16px;
+            }
+
+            .cases-table {
+                overflow-x: auto;
+                display: block;
+            }
+
+            .action-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 组件加载脚本 -->
+    <script>
+        async function loadComponents() {
+            // 加载顶部导航栏
+            const headerResponse = await fetch('components/header.html');
+            const headerContent = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerContent;
+            
+            // 加载左侧侧边栏
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarContent = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarContent;
+        }
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <div class="right-content">
+            <!-- 页面标题 -->
+            <div class="page-header">
+                <h1>病例管理</h1>
+            </div>
+
+            <!-- 管理内容 -->
+            <div class="management-content">
+                <div class="management-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-cases">0</span>
+                        <span class="stat-label">总病例数</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="pending-cases">0</span>
+                        <span class="stat-label">待审核</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="approved-cases">0</span>
+                        <span class="stat-label">审核通过</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="rejected-cases">0</span>
+                        <span class="stat-label">审核驳回</span>
+                    </div>
+                </div>
+
+                <!-- 病例列表 -->
+                <div class="cases-table-container">
+                    <table class="cases-table">
+                        <thead>
+                            <tr>
+                                <th>病例标题</th>
+                                <th>活动主题</th>
+                                <th>提交时间</th>
+                                <th>审核状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cases-table-body">
+                            <!-- 病例列表将通过JavaScript动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 空状态 -->
+                <div class="empty-state" id="empty-state" style="display: none;">
+                    <div class="empty-state-icon">📋</div>
+                    <div class="empty-state-title">暂无已投稿病例</div>
+                    <div class="empty-state-desc">您还没有提交任何病例，点击下方按钮开始创建病例吧！</div>
+                    <button class="create-btn" onclick="createNewCase()" style="
+                        background-color: var(--primary-color);
+                        color: white;
+                        border: none;
+                        border-radius: var(--radius-sm);
+                        padding: 10px 20px;
+                        font-size: 14px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;
+                    ">创建新病例</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 审核结果弹窗 -->
+    <div class="result-modal" id="result-modal">
+        <div class="result-modal-content">
+            <div class="result-modal-header">
+                <h2 class="result-modal-title">审核结果详情</h2>
+                <button class="close-modal-btn" onclick="closeResultModal()">×</button>
+            </div>
+            <div class="result-content" id="result-content">
+                <!-- 审核结果将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script>
+        // 当前显示结果的病例ID
+        let currentResultCaseId = null;
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCasesList();
+            updateStats();
+        });
+
+        // 创建新病例
+        function createNewCase() {
+            // 清除当前病例数据
+            localStorage.removeItem('currentCaseData');
+            
+            // 跳转到病例创建页面
+            window.location.href = 'create-case.html';
+        }
+
+        // 获取所有已提交病例
+        function getAllSubmittedCases() {
+            return JSON.parse(localStorage.getItem('submittedCases') || '[]');
+        }
+
+        // 获取所有草稿
+        function getAllDrafts() {
+            return JSON.parse(localStorage.getItem('caseDrafts') || '[]');
+        }
+
+        // 渲染病例列表
+        function renderCasesList() {
+            const cases = getAllSubmittedCases();
+            const tableBody = document.getElementById('cases-table-body');
+            const emptyState = document.getElementById('empty-state');
+
+            if (cases.length === 0) {
+                // 显示空状态
+                tableBody.innerHTML = '';
+                emptyState.style.display = 'block';
+            } else {
+                // 隐藏空状态
+                emptyState.style.display = 'none';
+
+                // 生成病例列表HTML
+                const casesHtml = cases.map(caseItem => `
+                    <tr>
+                        <td>
+                            <div class="case-title">${caseItem.data.step1?.['case-title'] || '未命名病例'}</div>
+                        </td>
+                        <td>${getThemeName(caseItem.data.step1?.['activity-theme'])}</td>
+                        <td>${formatDate(caseItem.submittedAt)}</td>
+                        <td>
+                            <span class="status-badge ${caseItem.status}">${getStatusName(caseItem.status)}</span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn view" onclick="viewCaseDetails('${caseItem.id}')">查看详情</button>
+                                ${caseItem.status !== 'pending' ? `
+                                    <button class="action-btn results" onclick="showReviewResults('${caseItem.id}')">审核结果</button>
+                                ` : ''}
+                                ${caseItem.status === 'rejected' ? `
+                                    <button class="action-btn revise" onclick="reviseCase('${caseItem.draftId}')">修改重投</button>
+                                ` : ''}
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+
+                tableBody.innerHTML = casesHtml;
+            }
+        }
+
+        // 更新统计数据
+        function updateStats() {
+            const cases = getAllSubmittedCases();
+            const total = cases.length;
+            const pending = cases.filter(caseItem => caseItem.status === 'pending').length;
+            const approved = cases.filter(caseItem => caseItem.status === 'approved').length;
+            const rejected = cases.filter(caseItem => caseItem.status === 'rejected').length;
+
+            document.getElementById('total-cases').textContent = total;
+            document.getElementById('pending-cases').textContent = pending;
+            document.getElementById('approved-cases').textContent = approved;
+            document.getElementById('rejected-cases').textContent = rejected;
+        }
+
+        // 查看病例详情
+        function viewCaseDetails(caseId) {
+            // 这里可以实现病例详情查看功能
+            showNotification('病例详情查看功能开发中，敬请期待！', 'success');
+        }
+
+        // 显示审核结果
+        function showReviewResults(caseId) {
+            const cases = getAllSubmittedCases();
+            const caseItem = cases.find(item => item.id === caseId);
+            
+            if (caseItem) {
+                currentResultCaseId = caseId;
+                renderReviewResults(caseItem);
+                document.getElementById('result-modal').style.display = 'flex';
+            }
+        }
+
+        // 渲染审核结果
+        function renderReviewResults(caseItem) {
+            const resultContent = document.getElementById('result-content');
+            
+            // 模拟审核结果数据
+            const reviewResults = {
+                overallRating: caseItem.status === 'approved' ? '优秀' : '需要改进',
+                reviewComments: caseItem.status === 'approved' ? 
+                    '该病例资料完整，诊断依据充分，治疗方案合理，随访结果详细，具有较高的临床参考价值。' : 
+                    '病例资料基本完整，但诊断依据不够充分，治疗方案需要进一步优化，建议补充更多的随访数据。',
+                reviewDate: new Date().toISOString(),
+                reviewerName: '张教授',
+                reviewDepartment: '内分泌科'
+            };
+            
+            resultContent.innerHTML = `
+                <div class="result-item">
+                    <span class="result-label">病例标题</span>
+                    <span class="result-value">${caseItem.data.step1?.['case-title'] || '未命名病例'}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">活动主题</span>
+                    <span class="result-value">${getThemeName(caseItem.data.step1?.['activity-theme'])}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">提交时间</span>
+                    <span class="result-value">${formatDate(caseItem.submittedAt)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">审核状态</span>
+                    <span class="result-value">
+                        <span class="status-badge ${caseItem.status}">${getStatusName(caseItem.status)}</span>
+                    </span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">审核结果</span>
+                    <span class="result-value">${caseItem.status === 'approved' ? '通过' : '驳回'}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">综合评分</span>
+                    <span class="result-value">${reviewResults.overallRating}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">审核意见</span>
+                    <div class="result-value review-comments">${reviewResults.reviewComments}</div>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">审核时间</span>
+                    <span class="result-value">${formatDate(reviewResults.reviewDate)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">审核人</span>
+                    <span class="result-value">${reviewResults.reviewerName}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">审核科室</span>
+                    <span class="result-value">${reviewResults.reviewDepartment}</span>
+                </div>
+            `;
+        }
+
+        // 关闭审核结果弹窗
+        function closeResultModal() {
+            document.getElementById('result-modal').style.display = 'none';
+            currentResultCaseId = null;
+        }
+
+        // 修改重投病例
+        function reviseCase(draftId) {
+            const drafts = getAllDrafts();
+            const draft = drafts.find(d => d.id === draftId);
+            
+            if (draft) {
+                // 保存当前草稿ID到localStorage
+                localStorage.setItem('currentDraftId', draftId);
+                
+                // 将草稿数据加载到当前病例数据中
+                localStorage.setItem('currentCaseData', JSON.stringify(draft.data));
+                
+                // 跳转到病例创建页面
+                window.location.href = 'create-case.html';
+            } else {
+                showNotification('草稿不存在，无法修改！', 'error');
+            }
+        }
+
+        // 获取活动主题名称
+        function getThemeName(themeValue) {
+            const themes = {
+                'theme1': '糖尿病并发症的早期诊断与干预策略',
+                'theme2': '糖尿病患者的长期管理与生活质量提升',
+                'theme3': '心血管疾病防治新进展',
+                'theme4': '高血压的个体化治疗'
+            };
+            return themes[themeValue] || '未选择';
+        }
+
+        // 获取状态名称
+        function getStatusName(status) {
+            const statusMap = {
+                'pending': '待审核',
+                'approved': '审核通过',
+                'rejected': '审核驳回'
+            };
+            return statusMap[status] || '未知';
+        }
+
+        // 格式化日期
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // 显示通知
+        function showNotification(message, type = 'success') {
+            // 创建通知元素
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                padding: 12px 20px;
+                border-radius: var(--radius-sm);
+                color: white;
+                font-size: 14px;
+                z-index: 1000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            
+            if (type === 'success') {
+                notification.style.backgroundColor = 'var(--success-color)';
+            } else {
+                notification.style.backgroundColor = 'var(--error-color)';
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // 显示通知
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // 隐藏通知
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

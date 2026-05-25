@@ -1,0 +1,534 @@
+/* 活动列表页面样式 */
+
+/* 筛选区样式 */
+.filter-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 16px 0;
+    margin-bottom: 16px;
+    box-shadow: none;
+    border-bottom: none;
+}
+
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* 搜索框 */
+.search-box {
+    flex: 0 0 200px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: var(--background-secondary);
+    border: none;
+    border-radius: 6px;
+    color: var(--text-tertiary);
+    margin-left: 20px;
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    background-color: transparent;
+    font-size: 14px;
+    outline: none;
+    color: var(--text-primary);
+}
+
+.search-box input::placeholder {
+    color: var(--text-tertiary);
+}
+
+/* 筛选选择器 */
+.filter-select {
+    display: flex;
+    align-items: center;
+}
+
+.filter-select select {
+    padding: 8px 28px 8px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--text-primary);
+    background-color: white;
+    cursor: pointer;
+    appearance: none;
+    min-width: 140px;
+    position: relative;
+}
+
+.filter-select select::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.filter-select {
+    position: relative;
+}
+
+.filter-select::after {
+    content: '';
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--text-tertiary);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 右侧操作区 */
+.filter-actions {
+    margin-left: auto;
+    padding-right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* 视图切换 */
+.view-toggle {
+    display: flex;
+    gap: 4px;
+    background-color: var(--background-secondary);
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.view-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 32px;
+    padding: 4px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-btn:hover {
+    background-color: white;
+}
+
+.view-btn.active {
+    background-color: white;
+    color: var(--primary-color);
+}
+
+/* 新建活动按钮 */
+.btn-lg {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+}
+
+/* 列表展示区 */
+.list-container {
+    min-height: 400px;
+}
+
+/* 卡片视图 */
+.card-view {
+    display: none;
+}
+
+.card-view.active {
+    display: block;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.activity-card {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.activity-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.card-cover {
+    position: relative;
+    height: 140px;
+    overflow: hidden;
+}
+
+.card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 卡片元信息容器 */
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 8px;
+    color: var(--text-tertiary);
+}
+
+.card-meta svg {
+    flex-shrink: 0;
+}
+
+.meta-label {
+    font-size: 12px;
+    color: var(--text-tertiary);
+}
+
+/* 领域标签 */
+.domain-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+/* 状态徽章 */
+.status-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-badge.draft {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.status-badge.pending {
+    background-color: #fff8e1;
+    color: #f57f17;
+}
+
+.status-badge.published {
+    background-color: #e6f7ee;
+    color: #22c55e;
+}
+
+.status-badge.rejected {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.status-badge.disabled {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.card-content {
+    padding: 12px;
+}
+
+/* 卡片内状态标签（非封面定位） */
+.card-content .status-tag {
+    position: static;
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.card-content .status-tag.draft {
+    background-color: rgba(107, 114, 128, 0.15);
+    color: #6b7280;
+}
+
+.card-content .status-tag.pending {
+    background-color: rgba(245, 127, 23, 0.15);
+    color: #f57f17;
+}
+
+.card-content .status-tag.published {
+    background-color: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+}
+
+.card-content .status-tag.rejected {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.card-content .status-tag.disabled {
+    background-color: rgba(107, 114, 128, 0.15);
+    color: #6b7280;
+}
+
+.card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 6px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.recruitment-period {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin: 0;
+}
+
+/* 统计区域优化 */
+.card-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    margin-top: 8px;
+    background: #f8fafc;
+}
+
+.stat-item {
+    text-align: center;
+    flex: 1;
+}
+
+.stat-value {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.stat-label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 1px;
+}
+
+/* 表格视图 */
+.table-view {
+    display: none;
+}
+
+.table-view.active {
+    display: block;
+}
+
+.activity-table {
+    width: 100%;
+}
+
+.activity-table th,
+.activity-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 14px;
+}
+
+.activity-table th {
+    background-color: var(--background-secondary);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.checkbox-column {
+    width: 40px;
+}
+
+.sortable {
+    cursor: pointer;
+}
+
+.activity-table tbody tr:hover {
+    background-color: var(--background-secondary);
+}
+
+.activity-table .action-btn {
+    margin-right: 8px;
+}
+
+.activity-table .action-btn:last-child {
+    margin-right: 0;
+}
+
+/* 操作按钮样式 */
+.action-btn.edit {
+    background-color: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+}
+
+.action-btn.edit:hover {
+    background-color: rgba(102, 126, 234, 0.2);
+}
+
+.action-btn.view {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.action-btn.view:hover {
+    background-color: rgba(16, 185, 129, 0.2);
+}
+
+.action-btn.delete {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.action-btn.delete:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+}
+
+.action-btn.withdraw {
+    background-color: rgba(251, 191, 36, 0.1);
+    color: #f59e0b;
+}
+
+.action-btn.withdraw:hover {
+    background-color: rgba(251, 191, 36, 0.2);
+}
+
+.action-btn.copy {
+    background-color: rgba(147, 112, 219, 0.1);
+    color: #9370db;
+}
+
+.action-btn.copy:hover {
+    background-color: rgba(147, 112, 219, 0.2);
+}
+
+.action-btn.disable {
+    background-color: rgba(107, 114, 128, 0.1);
+    color: #6b7280;
+}
+
+.action-btn.disable:hover {
+    background-color: rgba(107, 114, 128, 0.2);
+}
+
+/* 分页区域 - 居中显示 */
+.pagination-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 0;
+    margin-top: 20px;
+}
+
+.pagination-info {
+    display: none;
+}
+
+.pagination-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.page-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    background-color: white;
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.page-btn:hover:not(:disabled) {
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
+}
+
+.page-btn.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-size-select select {
+    padding: 6px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .filter-row {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .search-box {
+        flex: 1 1 100%;
+        max-width: none;
+    }
+
+    .filter-actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .activity-table {
+        overflow-x: auto;
+        display: block;
+    }
+
+    .pagination-section {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+}

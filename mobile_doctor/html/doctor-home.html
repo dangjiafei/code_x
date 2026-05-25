@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>医者之家 - 医生端</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/activities.css">
+</head>
+<body>
+  <!-- 手机屏幕模拟容器 -->
+  <div class="phone-container">
+    <!-- 屏幕内容容器 -->
+    <div class="screen-content">
+      <!-- 状态栏容器 -->
+      <div id="status-bar-container"></div>
+      
+      <!-- 头部组件 -->
+      <div id="header-container"></div>
+      
+      <!-- 内容区 -->
+      <main class="content">
+        <!-- 医者之家内容 -->
+        <div id="doctor-home-content" class="module-content active">
+          <!-- 搜索框 -->
+          <div class="doctor-home-search">
+            <input type="text" class="doctor-home-search-input" placeholder="取暖器">
+            <button class="doctor-home-search-btn">搜索</button>
+            <button class="doctor-home-service-btn">🔊 在线客服</button>
+          </div>
+          
+          <!-- 轮播图 -->
+          <div class="doctor-home-banner">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=winter%20hand%20cream%20gift%20set%20with%20three%20tubes%20on%20cream%20background%20pink%20gradient%20light&image_size=landscape_16_9" alt="冬日暖手礼" class="banner-image">
+          </div>
+          
+          <!-- 功能图标区 -->
+          <div class="doctor-home-icons">
+            <div class="icon-item">
+              <div class="icon-badge">NEW</div>
+              <div class="icon-circle">
+                <span class="icon-emoji">✨</span>
+              </div>
+              <div class="icon-text">新品</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon-circle">
+                <span class="icon-emoji">☂️</span>
+              </div>
+              <div class="icon-text">降温必备</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon-badge">NEW</div>
+              <div class="icon-circle">
+                <span class="icon-emoji">🏨</span>
+              </div>
+              <div class="icon-text">美因酒店</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon-badge">爆品</div>
+              <div class="icon-circle">
+                <span class="icon-emoji">🐘</span>
+              </div>
+              <div class="icon-text">小象超市</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon-circle">
+                <span class="icon-emoji">🐰</span>
+              </div>
+              <div class="icon-text">美团外卖</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon-circle">
+                <span class="icon-emoji">🎁</span>
+              </div>
+              <div class="icon-text">包邮专区</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon-circle">
+                <span class="icon-emoji">🎫</span>
+              </div>
+              <div class="icon-text">虚拟卡券</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon-badge">限时特惠</div>
+              <div class="icon-circle">
+                <span class="icon-emoji">🍳</span>
+              </div>
+              <div class="icon-text">厨房厨具</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon-circle">
+                <span class="icon-emoji">🚗</span>
+              </div>
+              <div class="icon-text">美团打车</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon-circle">
+                <span class="icon-emoji">💄</span>
+              </div>
+              <div class="icon-text">美妆护肤</div>
+            </div>
+          </div>
+          
+          <!-- 分类标签 -->
+          <div class="doctor-home-categories">
+            <button class="category-btn active">推荐</button>
+            <button class="category-btn">最新上架</button>
+            <button class="category-btn">休闲食品</button>
+            <button class="category-btn">品牌特卖</button>
+            <button class="category-btn">个护清洁</button>
+            <button class="category-btn">食品饮</button>
+            <button class="category-btn more">▼</button>
+          </div>
+          
+          <!-- 商品推荐区 -->
+          <div class="doctor-home-products">
+            <!-- 特价专区 -->
+            <div class="product-section">
+              <h3 class="section-title">特价专区 <span class="section-subtitle">超值特卖</span></h3>
+              <div class="product-grid">
+                <div class="product-item">
+                  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=skincare%20product%20bottle%20white%20background&image_size=square" alt="商品" class="product-image">
+                </div>
+                <div class="product-item">
+                  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=white%20humidifier%20device%20modern%20design&image_size=square" alt="商品" class="product-image">
+                </div>
+                <div class="product-item">
+                  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=pink%20hand%20soap%20bottle%20pump%20dispenser&image_size=square" alt="商品" class="product-image">
+                </div>
+                <div class="product-item">
+                  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=green%20shampoo%20bottle%20natural%20ingredients&image_size=square" alt="商品" class="product-image">
+                </div>
+              </div>
+            </div>
+            
+            <!-- 囤年货 -->
+            <div class="product-section">
+              <h3 class="section-title">囤年货 <span class="section-subtitle hot">热</span></h3>
+              <div class="product-grid">
+                <div class="product-item">
+                  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20new%20year%20gift%20box%20red%20packaging&image_size=square" alt="商品" class="product-image">
+                </div>
+                <div class="product-item">
+                  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=green%20bottle%20alcohol%20beverage&image_size=square" alt="商品" class="product-image">
+                </div>
+              </div>
+            </div>
+            
+            <!-- 耳机影音 -->
+            <div class="product-section">
+              <h3 class="section-title">耳机影音 <span class="section-subtitle hot">爆</span></h3>
+              <div class="product-grid">
+                <div class="product-item">
+                  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=blue%20medical%20glasses%20stethoscope%20design&image_size=square" alt="商品" class="product-image">
+                </div>
+                <div class="product-item">
+                  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=black%20headphones%20modern%20design&image_size=square" alt="商品" class="product-image">
+                  <button class="product-cart-btn">🛒</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      
+      <!-- 底部组件 -->
+      <div id="footer-container"></div>
+    </div>
+  </div>
+  
+  <!-- 脚本文件 -->
+  <script src="../js/scripts.js"></script>
+  <script>
+    // 页面加载完成后初始化组件，传递页面标题
+    document.addEventListener('DOMContentLoaded', function() {
+      initPageComponents({ title: '医者之家' });
+    });
+  </script>
+  <script src="../js/activities.js"></script>
+</body>
+</html>

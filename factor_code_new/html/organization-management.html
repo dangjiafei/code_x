@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组织管理 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+            <!-- 组织管理内容 -->
+            <div class="organization-management">
+
+                <!-- 主体内容区域 -->
+                <div class="org-content">
+                    <!-- 左侧组织架构树 -->
+                    <div class="org-structure">
+                        <div class="structure-header">
+                            <div class="search-with-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                                <input type="text" class="structure-search" placeholder="搜索员工/手机号/组织">
+                            </div>
+                        </div>
+                        <div class="org-tree">
+                            <div class="tree-node">
+                                <div class="tree-node-header active">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tree-toggle">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                    <span class="node-name">六倍体科技有限公司</span>
+                                </div>
+                                <div class="tree-children show">
+                                    <div class="tree-node">
+                                        <div class="tree-node-header">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tree-toggle">
+                                                <polyline points="9 18 15 12 9 6"></polyline>
+                                            </svg>
+                                            <span class="node-name">研发部</span>
+                                        </div>
+                                        <div class="tree-children">
+                                            <div class="tree-node">
+                                                <div class="tree-node-header">
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tree-toggle">
+                                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                                    </svg>
+                                                    <span class="node-name">前端开发组</span>
+                                                </div>
+                                                <div class="tree-children">
+                                                    <div class="tree-node">
+                                                        <div class="tree-node-header">
+                                                            <span class="tree-toggle-placeholder"></span>
+                                                            <span class="node-name">Web前端团队</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tree-node">
+                                                        <div class="tree-node-header">
+                                                            <span class="tree-toggle-placeholder"></span>
+                                                            <span class="node-name">移动前端团队</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tree-node">
+                                                <div class="tree-node-header">
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tree-toggle">
+                                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                                    </svg>
+                                                    <span class="node-name">后端开发组</span>
+                                                </div>
+                                                <div class="tree-children">
+                                                    <div class="tree-node">
+                                                        <div class="tree-node-header">
+                                                            <span class="tree-toggle-placeholder"></span>
+                                                            <span class="node-name">Java团队</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tree-node">
+                                                        <div class="tree-node-header">
+                                                            <span class="tree-toggle-placeholder"></span>
+                                                            <span class="node-name">Python团队</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tree-node">
+                                                <div class="tree-node-header">
+                                                    <span class="tree-toggle-placeholder"></span>
+                                                    <span class="node-name">测试组</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node">
+                                        <div class="tree-node-header">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tree-toggle">
+                                                <polyline points="9 18 15 12 9 6"></polyline>
+                                            </svg>
+                                            <span class="node-name">市场部</span>
+                                        </div>
+                                        <div class="tree-children">
+                                            <div class="tree-node">
+                                                <div class="tree-node-header">
+                                                    <span class="tree-toggle-placeholder"></span>
+                                                    <span class="node-name">品牌推广组</span>
+                                                </div>
+                                            </div>
+                                            <div class="tree-node">
+                                                <div class="tree-node-header">
+                                                    <span class="tree-toggle-placeholder"></span>
+                                                    <span class="node-name">内容营销组</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node">
+                                        <div class="tree-node-header">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tree-toggle">
+                                                <polyline points="9 18 15 12 9 6"></polyline>
+                                            </svg>
+                                            <span class="node-name">销售部</span>
+                                        </div>
+                                        <div class="tree-children">
+                                            <div class="tree-node">
+                                                <div class="tree-node-header">
+                                                    <span class="tree-toggle-placeholder"></span>
+                                                    <span class="node-name">国内销售组</span>
+                                                </div>
+                                            </div>
+                                            <div class="tree-node">
+                                                <div class="tree-node-header">
+                                                    <span class="tree-toggle-placeholder"></span>
+                                                    <span class="node-name">国际销售组</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node">
+                                        <div class="tree-node-header">
+                                            <span class="tree-toggle-placeholder"></span>
+                                            <span class="node-name">人力资源部</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node">
+                                        <div class="tree-node-header">
+                                            <span class="tree-toggle-placeholder"></span>
+                                            <span class="node-name">财务部</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧管理团队和专家团队 -->
+                    <div class="org-teams">
+                        <!-- 管理团队 -->
+                        <div class="team-section">
+                            <div class="section-header-top">
+                                <h2 class="section-title">甘松测试药业</h2>
+                                <div class="admin-section">
+                                    <a href="#" class="add-admin-btn">管理员权限</a>
+                                    <a href="#" class="add-admin-btn">+ 新增管理员账号</a>
+                                </div>
+                            </div>
+                            <div class="team-table-container">
+                                <table class="team-table">
+                                    <thead>
+                                        <tr>
+                                            <th>姓名</th>
+                                            <th>邮箱</th>
+                                            <th>手机号</th>
+                                            <th>权限</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>张磊</td>
+                                            <td>15058810515@163.com</td>
+                                            <td>15088810515</td>
+                                            <td>全部</td>
+                                            <td class="action-col">
+                                                <div class="action-buttons-cell">
+                                                    <a href="#" class="action-text edit-text">-</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>李四</td>
+                                            <td>13812345678@163.com</td>
+                                            <td>13812345678</td>
+                                            <td>ALL</td>
+                                            <td class="action-col">
+                                                <div class="action-buttons-cell">
+                                                    <a href="#" class="action-text edit-text">编辑</a>
+                                                    <a href="#" class="action-text delete-text">删除</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>王五</td>
+                                            <td>13712345678@163.com</td>
+                                            <td>13712345678</td>
+                                            <td>ALL</td>
+                                            <td class="action-col">
+                                                <div class="action-buttons-cell">
+                                                    <a href="#" class="action-text edit-text">编辑</a>
+                                                    <a href="#" class="action-text delete-text">删除</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>甘松</td>
+                                            <td>13712345678@163.com</td>
+                                            <td>13712345678</td>
+                                            <td>ALL</td>
+                                            <td class="action-col">
+                                                <div class="action-buttons-cell">
+                                                    <a href="#" class="action-text edit-text">编辑</a>
+                                                    <a href="#" class="action-text delete-text">删除</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 专家团队 -->
+                        <div class="team-section">
+                            <div class="tabs-and-buttons">
+                                <div class="service-tabs">
+                                    <div class="service-tab active">在职员工</div>
+                                    <div class="service-tab">已冻结</div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="action-button">添加员工</button>
+                                    <button class="action-button secondary-button">批量操作</button>
+                                    <button class="action-button secondary-button">导出数据</button>
+                                </div>
+                            </div>
+                            <div class="team-table-container">
+                                <table class="team-table">
+                                    <thead>
+                                        <tr>
+                                            <th>姓名</th>
+                                            <th>组织</th>
+                                            <th>手机号</th>
+                                            <th>客户数</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>张伟</td>
+                                            <td>研发部-前端开发组-Web前端团队</td>
+                                            <td>13800138001</td>
+                                            <td>34</td>
+                                            <td class="action-col">
+                                                <div class="action-buttons-cell">
+                                                    <a href="#" class="edit-btn">编辑</a>
+                                                    <a href="#" class="work-btn">市场交接</a>
+                                                    <a href="#" class="delete-btn">冻结</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>李娜</td>
+                                            <td>研发部-后端开发组-Java团队</td>
+                                            <td>13900139002</td>
+                                            <td>12</td>
+                                            <td class="action-col">
+                                                <div class="action-buttons-cell">
+                                                    <a href="#" class="edit-btn">编辑</a>
+                                                    <a href="#" class="work-btn">市场交接</a>
+                                                    <a href="#" class="delete-btn">冻结</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>王强</td>
+                                            <td>市场部-品牌推广组</td>
+                                            <td>13700137003</td>
+                                            <td>28</td>
+                                            <td class="action-col">
+                                                <div class="action-buttons-cell">
+                                                    <a href="#" class="edit-btn">编辑</a>
+                                                    <a href="#" class="work-btn">市场交接</a>
+                                                    <a href="#" class="delete-btn">冻结</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>赵敏</td>
+                                            <td>销售部-国内销售组</td>
+                                            <td>13600136004</td>
+                                            <td>45</td>
+                                            <td class="action-col">
+                                                <div class="action-buttons-cell">
+                                                    <a href="#" class="edit-btn">编辑</a>
+                                                    <a href="#" class="work-btn">市场交接</a>
+                                                    <a href="#" class="delete-btn">冻结</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>陈静</td>
+                                            <td>人力资源部</td>
+                                            <td>13500135005</td>
+                                            <td>0</td>
+                                            <td class="action-col">
+                                                <div class="action-buttons-cell">
+                                                    <a href="#" class="edit-btn">编辑</a>
+                                                    <a href="#" class="work-btn">市场交接</a>
+                                                    <a href="#" class="delete-btn">冻结</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>刘辉</td>
+                                            <td>财务部</td>
+                                            <td>13400134006</td>
+                                            <td>0</td>
+                                            <td class="action-col">
+                                                <div class="action-buttons-cell">
+                                                    <a href="#" class="edit-btn">编辑</a>
+                                                    <a href="#" class="work-btn">市场交接</a>
+                                                    <a href="#" class="delete-btn">冻结</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/script.js?v=1"></script>
+    <script src="../js/menu.js?v=1"></script>
+    <script>
+        async function loadComponents() {
+            const headerResponse = await fetch('components/header.html');
+            const headerHtml = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerHtml;
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarHtml = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+            initializeMenu();
+        }
+        
+        // 服务标签切换功能
+        function initializeServiceTabs() {
+            const serviceTabs = document.querySelectorAll('.service-tab');
+            serviceTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有标签的active类
+                    serviceTabs.forEach(t => t.classList.remove('active'));
+                    // 为当前点击的标签添加active类
+                    this.classList.add('active');
+                    
+                    // 这里可以添加筛选逻辑，根据选中的标签筛选表格数据
+                    const status = this.textContent.trim();
+                    console.log('切换到状态:', status);
+                    // 实际项目中，这里会根据status筛选表格数据
+                });
+            });
+        }
+        
+        window.addEventListener('DOMContentLoaded', function() {
+            loadComponents();
+            // 初始化服务标签切换
+            initializeServiceTabs();
+        });
+    </script>
+</body>
+</html>

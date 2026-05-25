@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能委托 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <!-- 页面特定CSS将在子页面中加载 -->
+</head>
+<body>
+    <!-- 加载公共组件的脚本 -->
+    <script>
+        // 动态加载公共组件
+        async function loadComponents() {
+            // 加载顶部导航栏
+            const headerResponse = await fetch('components/header.html');
+            const headerHtml = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerHtml;
+            
+            // 加载左侧侧边栏
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarHtml = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+            
+            // 加载完成后，初始化菜单交互和AI轮播功能
+            initializeMenu();
+            // 初始化AI轮播文字功能
+            if (typeof initAICarousel === 'function') {
+                initAICarousel();
+            }
+        }
+        
+        // 初始化菜单交互
+        function initializeMenu() {
+            // 获取当前页面的文件名
+            const currentPage = window.location.pathname.split('/').pop();
+            
+            // 获取所有导航链接
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // 移除所有激活状态
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 为当前页面的导航项添加激活状态
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && href === currentPage) {
+                    // 激活当前二级菜单
+                    const navItem = link.closest('.nav-item');
+                    navItem.classList.add('active');
+                    
+                    // 激活父级一级菜单（如果有）
+                    const parentDropdown = navItem.closest('.nav-item.dropdown');
+                    if (parentDropdown) {
+                        parentDropdown.classList.add('active');
+                        // 显示子菜单
+                        const subNav = parentDropdown.querySelector('.sub-nav');
+                        if (subNav) {
+                            subNav.classList.add('show');
+                        }
+                    }
+                } else if (href === 'index.html' && currentPage === 'index.html') {
+                    // 处理首页的特殊情况
+                    const navItem = link.closest('.nav-item');
+                    navItem.classList.add('active');
+                } else if (href === 'activities.html' && (currentPage === 'create-case-collection.html' || currentPage === 'case-work-detail.html')) {
+                    // 处理创建病例和病例详情页面，将活动管理菜单设为激活状态
+                    const navItem = link.closest('.nav-item');
+                    navItem.classList.add('active');
+                    
+                    // 激活父级一级菜单（学术SaaS）
+                    const parentDropdown = navItem.closest('.nav-item.dropdown');
+                    if (parentDropdown) {
+                        parentDropdown.classList.add('active');
+                        // 显示子菜单
+                        const subNav = parentDropdown.querySelector('.sub-nav');
+                        if (subNav) {
+                            subNav.classList.add('show');
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+    
+    <!-- 顶部导航栏占位符 -->
+    <div id="header-placeholder"></div>
+
+    <!-- 主体布局 -->
+    <div class="main-container">
+        <!-- 左侧侧边栏占位符 -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 右侧主要内容区域 -->
+        <main class="content-area">
+            <!-- 页面特定内容将在子页面中加载 -->
+        </main>
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loading" id="loading" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>AI正在思考...</p>
+    </div>
+
+    <!-- 公共JS文件 -->
+    <script src="../js/menu.js"></script>
+    <script src="../js/script.js"></script>
+    <!-- 页面特定JS将在子页面中加载 -->
+</body>
+</html>

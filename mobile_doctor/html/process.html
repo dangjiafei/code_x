@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>创作流程 - 医生端</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .process-container {
+      padding: 20px;
+      background-color: #f5f7fa;
+      min-height: 100%;
+    }
+    
+    .process-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid #f0f0f0;
+      margin-bottom: 20px;
+    }
+    
+    .process-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #999;
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .process-content {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .process-section {
+      margin-bottom: 20px;
+    }
+    
+    .process-section h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin: 0 0 12px 0;
+    }
+    
+    .process-step {
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    
+    .step-item {
+      margin: 8px 0;
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .step-number {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      min-width: 60px;
+      flex-shrink: 0;
+    }
+    
+    .step-description {
+      font-size: 14px;
+      color: #666;
+      flex: 1;
+      line-height: 1.5;
+    }
+    
+    .copy-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #f5f5f5;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .copy-link-text {
+      flex: 1;
+      font-size: 14px;
+      color: #666;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .copy-btn {
+      background-color: #1890ff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .back-btn {
+      display: block;
+      width: 100%;
+      background-color: #1890ff;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 手机屏幕模拟容器 -->
+  <div class="phone-container">
+    <!-- 屏幕内容容器 -->
+    <div class="screen-content">
+      <!-- 状态栏容器 -->
+      <div id="status-bar-container"></div>
+      
+      <!-- 头部组件 -->
+      <div id="header-container"></div>
+      
+      <!-- 内容区 -->
+      <main class="content">
+        <div class="process-container">
+          <div class="process-content">
+            <div class="process-section">
+              <div class="copy-link">
+                <span class="copy-link-text">创作链接地址：https://podcast.quxuehu.com/podcast/...</span>
+                <button class="copy-btn">复制</button>
+              </div>
+              <div class="process-step">
+                <div class="step-item">
+                  <span class="step-number">第一步：</span>
+                  <span class="step-description">点击复制按钮，将作品录制链接复制到 Chrome（谷歌）浏览器中打开</span>
+                </div>
+                <div class="step-item">
+                  <span class="step-number">第二步：</span>
+                  <span class="step-description">使用您的账号登录，可通过手机登录或微信扫码登录，请确保登录账号与您用于投稿的微信账号一致</span>
+                </div>
+                <div class="step-item">
+                  <span class="step-number">第三步：</span>
+                  <span class="step-description">若您尚未报名参与活动，请先前往“招募大厅”完成报名，报名成功后即可开始创作</span>
+                </div>
+                <div class="step-item">
+                  <span class="step-number">第四步：</span>
+                  <span class="step-description">按照创作流程，先完成病例内容的创作，然后设置互动题目，全部完成后即可提交投稿</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button class="back-btn" onclick="window.location.href='podcast-detail.html'">返回</button>
+        </div>
+      </main>
+    </div>
+  </div>
+  
+  <!-- 脚本文件 -->
+  <script src="../js/scripts.js"></script>
+  <script>
+    // 页面加载完成后初始化组件，传递页面标题
+    document.addEventListener('DOMContentLoaded', function() {
+      initPageComponents({ title: '创作流程' });
+    });
+  </script>
+</body>
+</html>
