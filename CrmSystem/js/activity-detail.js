@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     initTabSwitch();
-    initExpandableRows();
+    initEnterpriseDetailModal();
     initSurveyModal();
 });
 
@@ -37,29 +37,47 @@ function initTabSwitch() {
     });
 }
 
-function initExpandableRows() {
-    const expandButtons = document.querySelectorAll('.btn-expand');
-    
-    expandButtons.forEach(btn => {
+function initEnterpriseDetailModal() {
+    document.querySelectorAll('.btn-view-enterprise').forEach(btn => {
         btn.addEventListener('click', function() {
-            const row = this.closest('tr');
-            const nextRow = row.nextElementSibling;
-            
-            if (nextRow && nextRow.classList.contains('expanded-content')) {
-                if (nextRow.style.display === 'none') {
-                    nextRow.style.display = 'table-row';
-                    this.textContent = '收起';
-                } else {
-                    nextRow.style.display = 'none';
-                    this.textContent = '展开';
-                }
-            }
+            openEnterpriseDetailModal(this.closest('tr'));
         });
     });
-    
-    document.querySelectorAll('.expanded-content').forEach(row => {
-        row.style.display = 'none';
+
+    const modal = document.getElementById('enterpriseDetailModal');
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal || e.target.classList.contains('modal-close')) {
+            closeEnterpriseDetailModal();
+        }
     });
+}
+
+function openEnterpriseDetailModal(row) {
+    if (!row) return;
+
+    const cells = row.querySelectorAll('td');
+    const conditionTags = Array.from(cells[3].querySelectorAll('.tag')).map(tag => tag.textContent.trim());
+    const status = cells[7].textContent.trim();
+
+    document.getElementById('enterpriseModalTitle').textContent = cells[0].textContent.trim();
+    document.getElementById('enterpriseModalSubtitle').textContent = '活动参与明细';
+    document.getElementById('enterpriseUseTime').textContent = cells[1].textContent.trim();
+    document.getElementById('enterpriseTargetCount').textContent = cells[2].textContent.trim();
+    document.getElementById('enterpriseMatchedDoctors').textContent = cells[4].textContent.trim();
+    document.getElementById('enterpriseSubmissionCount').textContent = cells[5].textContent.trim();
+    document.getElementById('enterprisePurchasedCount').textContent = cells[6].textContent.trim();
+    document.getElementById('enterpriseRecruitStatus').textContent = status;
+
+    const tagsContainer = document.getElementById('enterpriseConditionTags');
+    tagsContainer.innerHTML = conditionTags.map(tag => `<span class="tag">${tag}</span>`).join('');
+
+    document.getElementById('enterpriseDetailModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeEnterpriseDetailModal() {
+    document.getElementById('enterpriseDetailModal').style.display = 'none';
+    document.body.style.overflow = '';
 }
 
 function initSurveyModal() {
@@ -69,12 +87,27 @@ function initSurveyModal() {
             const themeName = btn.getAttribute('data-theme');
             openSurveyModal(themeName);
         }
+
+        const answerBtn = e.target.closest('.survey-answer-detail');
+        if (answerBtn) {
+            openSurveyAnswerModal(
+                answerBtn.getAttribute('data-doctor'),
+                answerBtn.getAttribute('data-title')
+            );
+        }
     });
     
     const modal = document.getElementById('surveyModal');
     modal.addEventListener('click', function(e) {
         if (e.target === modal || e.target.classList.contains('modal-close')) {
             closeSurveyModal();
+        }
+    });
+
+    const answerModal = document.getElementById('surveyAnswerModal');
+    answerModal.addEventListener('click', function(e) {
+        if (e.target === answerModal || e.target.classList.contains('modal-close')) {
+            closeSurveyAnswerModal();
         }
     });
 }
@@ -91,4 +124,25 @@ function closeSurveyModal() {
     const modal = document.getElementById('surveyModal');
     modal.style.display = 'none';
     document.body.style.overflow = '';
+}
+
+function openSurveyAnswerModal(doctorInfo, contentTitle) {
+    const modal = document.getElementById('surveyAnswerModal');
+    const subtitle = document.getElementById('answerModalSubtitle');
+    const title = document.getElementById('answerContentTitle');
+
+    subtitle.textContent = doctorInfo || '医生信息';
+    title.textContent = contentTitle || '-';
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSurveyAnswerModal() {
+    const modal = document.getElementById('surveyAnswerModal');
+    modal.style.display = 'none';
+
+    const surveyModal = document.getElementById('surveyModal');
+    if (surveyModal.style.display !== 'flex') {
+        document.body.style.overflow = '';
+    }
 }

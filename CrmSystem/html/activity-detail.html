@@ -61,8 +61,8 @@
                                 </div>
                                 <div class="activity-meta-row">
                                     <div class="activity-meta-item">
-                                        <span class="meta-label">活动类型</span>
-                                        <span class="meta-value">市场活动</span>
+                                        <span class="meta-label">活动状态</span>
+                                        <span class="meta-value">进行中</span>
                                     </div>
                                 </div>
                                 <div class="activity-meta-row">
@@ -342,59 +342,7 @@
                                     <td>45</td>
                                     <td>32</td>
                                     <td><span class="status-tag ongoing">进行中</span></td>
-                                    <td><button class="btn-expand">展开</button></td>
-                                </tr>
-                                <tr class="expanded-content">
-                                    <td colspan="9">
-                                        <div class="sub-table-container">
-                                            <div class="sub-table-header">
-                                                <span>该企业投稿列表</span>
-                                                <button class="btn btn-sm btn-export-sub">导出</button>
-                                            </div>
-                                            <table class="sub-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>投稿信息</th>
-                                                        <th>医生匿名信息</th>
-                                                        <th>投稿时间</th>
-                                                        <th>当前状态</th>
-                                                        <th>是否被本企业采购</th>
-                                                        <th>操作</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="submission-title">冠心病介入治疗案例</div>
-                                                            <div class="submission-id">ID: TG-2025-001</div>
-                                                        </td>
-                                                        <td>广东省 | 三甲 | 主任医师 | 心内科</td>
-                                                        <td>2025-03-05 14:20:00</td>
-                                                        <td><span class="status-tag approved">审核通过</span></td>
-                                                        <td>是</td>
-                                                        <td>
-                                                            <button class="action-btn view">预览</button>
-                                                            <button class="action-btn edit">审核</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="submission-title">心力衰竭药物治疗</div>
-                                                            <div class="submission-id">ID: TG-2025-008</div>
-                                                        </td>
-                                                        <td>广东省 | 三甲 | 副主任医师 | 心内科</td>
-                                                        <td>2025-03-08 09:15:00</td>
-                                                        <td><span class="status-tag pending">待审核</span></td>
-                                                        <td>否</td>
-                                                        <td>
-                                                            <button class="action-btn view">预览</button>
-                                                            <button class="action-btn edit">审核</button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </td>
+                                    <td><button class="btn-view-enterprise">查看</button></td>
                                 </tr>
                                 <tr class="expandable-row">
                                     <td>XX药业-华东区-上海办事处</td>
@@ -409,7 +357,7 @@
                                     <td>23</td>
                                     <td>18</td>
                                     <td><span class="status-tag ongoing">进行中</span></td>
-                                    <td><button class="btn-expand">展开</button></td>
+                                    <td><button class="btn-view-enterprise">查看</button></td>
                                 </tr>
                                 <tr class="expandable-row">
                                     <td>XX医药集团-北京总部</td>
@@ -425,7 +373,7 @@
                                     <td>89</td>
                                     <td>67</td>
                                     <td><span class="status-tag ended">已结束</span></td>
-                                    <td><button class="btn-expand">展开</button></td>
+                                    <td><button class="btn-view-enterprise">查看</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -537,7 +485,7 @@
                                         <div class="submission-title">冠心病介入治疗案例</div>
                                         <div class="submission-id">ID: TG-2025-001</div>
                                     </td>
-                                    <td>广东省 | 三甲 | 主任医师 | 心内科</td>
+                                    <td>张伟 | 广东省 | 三甲 | 主任医师 | 心内科</td>
                                     <td>2025-03-05 14:20:00</td>
                                     <td><span class="status-tag approved">审核通过</span></td>
                                     <td>XX集团-广州分公司</td>
@@ -551,7 +499,7 @@
                                         <div class="submission-title">心力衰竭管理经验分享</div>
                                         <div class="submission-id">ID: TG-2025-002</div>
                                     </td>
-                                    <td>上海市 | 三甲 | 副主任医师 | 心内科</td>
+                                    <td>李娜 | 上海市 | 三甲 | 副主任医师 | 心内科</td>
                                     <td>2025-03-06 10:15:00</td>
                                     <td><span class="status-tag pending">待审核</span></td>
                                     <td>-</td>
@@ -565,7 +513,7 @@
                                         <div class="submission-title">心律失常射频消融术</div>
                                         <div class="submission-id">ID: TG-2025-003</div>
                                     </td>
-                                    <td>北京市 | 三甲 | 主任医师 | 心内科</td>
+                                    <td>王磊 | 北京市 | 三甲 | 主任医师 | 心内科</td>
                                     <td>2025-03-07 16:30:00</td>
                                     <td><span class="status-tag purchased">已采购</span></td>
                                     <td>XX医药集团</td>
@@ -579,7 +527,7 @@
                                         <div class="submission-title">冠心病药物治疗方案</div>
                                         <div class="submission-id">ID: TG-2025-004</div>
                                     </td>
-                                    <td>广东省 | 三甲 | 主治医师 | 心内科</td>
+                                    <td>陈敏 | 广东省 | 三甲 | 主治医师 | 心内科</td>
                                     <td>2025-03-08 09:00:00</td>
                                     <td><span class="status-tag rejected">已驳回</span></td>
                                     <td>-</td>
@@ -998,8 +946,6 @@
                                                         <th>发放调研</th>
                                                         <th>回收调研</th>
                                                         <th>回收率</th>
-                                                        <th>认知提升率</th>
-                                                        <th>行为改变率</th>
                                                         <th>操作</th>
                                                     </tr>
                                                 </thead>
@@ -1010,8 +956,6 @@
                                                         <td>1,200</td>
                                                         <td>508</td>
                                                         <td><span class="rate-high">42.3%</span></td>
-                                                        <td>87.6%</td>
-                                                        <td>72.1%</td>
                                                         <td><button class="action-btn view-detail" data-theme="冠心病诊疗新进展">查看详情</button></td>
                                                     </tr>
                                                     <tr>
@@ -1020,8 +964,6 @@
                                                         <td>1,000</td>
                                                         <td>412</td>
                                                         <td><span class="rate-high">41.2%</span></td>
-                                                        <td>85.2%</td>
-                                                        <td>68.9%</td>
                                                         <td><button class="action-btn view-detail" data-theme="心力衰竭管理">查看详情</button></td>
                                                     </tr>
                                                     <tr>
@@ -1030,8 +972,6 @@
                                                         <td>900</td>
                                                         <td>356</td>
                                                         <td><span class="rate-mid">39.6%</span></td>
-                                                        <td>82.1%</td>
-                                                        <td>65.3%</td>
                                                         <td><button class="action-btn view-detail" data-theme="心律失常诊治">查看详情</button></td>
                                                     </tr>
                                                     <tr>
@@ -1040,8 +980,6 @@
                                                         <td>800</td>
                                                         <td>298</td>
                                                         <td><span class="rate-mid">37.3%</span></td>
-                                                        <td>79.8%</td>
-                                                        <td>61.2%</td>
                                                         <td><button class="action-btn view-detail" data-theme="高血压药物治疗">查看详情</button></td>
                                                     </tr>
                                                     <tr>
@@ -1050,8 +988,6 @@
                                                         <td>700</td>
                                                         <td>245</td>
                                                         <td><span class="rate-low">35.0%</span></td>
-                                                        <td>76.5%</td>
-                                                        <td>58.7%</td>
                                                         <td><button class="action-btn view-detail" data-theme="心血管介入技术">查看详情</button></td>
                                                     </tr>
                                                 </tbody>
@@ -1089,8 +1025,6 @@
                                                         <th>发放调研</th>
                                                         <th>回收调研</th>
                                                         <th>回收率</th>
-                                                        <th>认知提升率</th>
-                                                        <th>行为改变率</th>
                                                         <th>操作</th>
                                                     </tr>
                                                 </thead>
@@ -1101,8 +1035,6 @@
                                                         <td>800</td>
                                                         <td>312</td>
                                                         <td><span class="rate-high">39.0%</span></td>
-                                                        <td>84.2%</td>
-                                                        <td>70.5%</td>
                                                         <td><button class="action-btn view-detail" data-theme="PCI手术操作规范">查看详情</button></td>
                                                     </tr>
                                                     <tr>
@@ -1111,8 +1043,6 @@
                                                         <td>700</td>
                                                         <td>245</td>
                                                         <td><span class="rate-mid">35.0%</span></td>
-                                                        <td>81.6%</td>
-                                                        <td>65.8%</td>
                                                         <td><button class="action-btn view-detail" data-theme="射频消融技术">查看详情</button></td>
                                                     </tr>
                                                     <tr>
@@ -1121,8 +1051,6 @@
                                                         <td>600</td>
                                                         <td>198</td>
                                                         <td><span class="rate-mid">33.0%</span></td>
-                                                        <td>78.9%</td>
-                                                        <td>62.3%</td>
                                                         <td><button class="action-btn view-detail" data-theme="起搏器植入术">查看详情</button></td>
                                                     </tr>
                                                 </tbody>
@@ -1160,8 +1088,6 @@
                                                         <th>发放调研</th>
                                                         <th>回收调研</th>
                                                         <th>回收率</th>
-                                                        <th>认知提升率</th>
-                                                        <th>行为改变率</th>
                                                         <th>操作</th>
                                                     </tr>
                                                 </thead>
@@ -1172,8 +1098,6 @@
                                                         <td>600</td>
                                                         <td>245</td>
                                                         <td><span class="rate-high">40.8%</span></td>
-                                                        <td>86.5%</td>
-                                                        <td>71.2%</td>
                                                         <td><button class="action-btn view-detail" data-theme="急性心肌梗死病例">查看详情</button></td>
                                                     </tr>
                                                     <tr>
@@ -1182,8 +1106,6 @@
                                                         <td>550</td>
                                                         <td>198</td>
                                                         <td><span class="rate-mid">36.0%</span></td>
-                                                        <td>83.2%</td>
-                                                        <td>67.5%</td>
                                                         <td><button class="action-btn view-detail" data-theme="心衰病例讨论">查看详情</button></td>
                                                     </tr>
                                                     <tr>
@@ -1192,8 +1114,6 @@
                                                         <td>500</td>
                                                         <td>167</td>
                                                         <td><span class="rate-low">33.4%</span></td>
-                                                        <td>79.5%</td>
-                                                        <td>63.8%</td>
                                                         <td><button class="action-btn view-detail" data-theme="复杂心律失常">查看详情</button></td>
                                                     </tr>
                                                 </tbody>
@@ -1247,6 +1167,141 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="enterpriseDetailModal">
+        <div class="modal-content enterprise-detail-modal">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title" id="enterpriseModalTitle">企业参与详情</h2>
+                    <p class="modal-subtitle" id="enterpriseModalSubtitle">活动参与明细</p>
+                </div>
+                <button class="modal-close" onclick="closeEnterpriseDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="enterprise-detail-summary">
+                    <div class="enterprise-summary-item">
+                        <span class="enterprise-summary-label">使用时间</span>
+                        <span class="enterprise-summary-value" id="enterpriseUseTime">-</span>
+                    </div>
+                    <div class="enterprise-summary-item">
+                        <span class="enterprise-summary-label">目标采购数</span>
+                        <span class="enterprise-summary-value" id="enterpriseTargetCount">-</span>
+                    </div>
+                    <div class="enterprise-summary-item">
+                        <span class="enterprise-summary-label">命中医生数</span>
+                        <span class="enterprise-summary-value" id="enterpriseMatchedDoctors">-</span>
+                    </div>
+                    <div class="enterprise-summary-item">
+                        <span class="enterprise-summary-label">投稿数</span>
+                        <span class="enterprise-summary-value" id="enterpriseSubmissionCount">-</span>
+                    </div>
+                    <div class="enterprise-summary-item">
+                        <span class="enterprise-summary-label">已采购数</span>
+                        <span class="enterprise-summary-value" id="enterprisePurchasedCount">-</span>
+                    </div>
+                    <div class="enterprise-summary-item">
+                        <span class="enterprise-summary-label">招募状态</span>
+                        <span class="enterprise-summary-value" id="enterpriseRecruitStatus">-</span>
+                    </div>
+                </div>
+
+                <div class="enterprise-condition-block">
+                    <span class="enterprise-condition-label">目标人群条件</span>
+                    <div class="enterprise-condition-tags" id="enterpriseConditionTags"></div>
+                </div>
+
+                <div class="sub-table-container enterprise-modal-table">
+                    <div class="sub-table-header">
+                        <span>该企业投稿列表</span>
+                    </div>
+                    <table class="sub-table">
+                        <thead>
+                            <tr>
+                                <th>投稿信息</th>
+                                <th>医生信息</th>
+                                <th>投稿时间</th>
+                                <th>当前状态</th>
+                                <th>是否被本企业采购</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="submission-title">冠心病介入治疗案例</div>
+                                    <div class="submission-id">ID: TG-2025-001</div>
+                                </td>
+                                <td>张伟 | 广东省 | 三甲 | 主任医师 | 心内科</td>
+                                <td>2025-03-05 14:20:00</td>
+                                <td><span class="status-tag approved">审核通过</span></td>
+                                <td>是</td>
+                                <td>
+                                    <button class="action-btn view">预览</button>
+                                    <button class="action-btn edit">审核</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="submission-title">心力衰竭药物治疗</div>
+                                    <div class="submission-id">ID: TG-2025-008</div>
+                                </td>
+                                <td>李娜 | 广东省 | 三甲 | 副主任医师 | 心内科</td>
+                                <td>2025-03-08 09:15:00</td>
+                                <td><span class="status-tag pending">待审核</span></td>
+                                <td>否</td>
+                                <td>
+                                    <button class="action-btn view">预览</button>
+                                    <button class="action-btn edit">审核</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="submission-title">复杂心律失常诊疗复盘</div>
+                                    <div class="submission-id">ID: TG-2025-014</div>
+                                </td>
+                                <td>陈敏 | 广东省 | 三甲 | 主治医师 | 心内科</td>
+                                <td>2025-03-10 11:35:00</td>
+                                <td><span class="status-tag approved">审核通过</span></td>
+                                <td>是</td>
+                                <td>
+                                    <button class="action-btn view">预览</button>
+                                    <button class="action-btn edit">审核</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="submission-title">高血压合并冠心病管理</div>
+                                    <div class="submission-id">ID: TG-2025-021</div>
+                                </td>
+                                <td>刘洋 | 广西省 | 三甲 | 副主任医师 | 心内科</td>
+                                <td>2025-03-12 16:10:00</td>
+                                <td><span class="status-tag pending">待审核</span></td>
+                                <td>否</td>
+                                <td>
+                                    <button class="action-btn view">预览</button>
+                                    <button class="action-btn edit">审核</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="submission-title">冠脉介入术后随访经验</div>
+                                    <div class="submission-id">ID: TG-2025-026</div>
+                                </td>
+                                <td>赵强 | 海南省 | 三甲 | 主任医师 | 心内科</td>
+                                <td>2025-03-14 09:48:00</td>
+                                <td><span class="status-tag approved">审核通过</span></td>
+                                <td>是</td>
+                                <td>
+                                    <button class="action-btn view">预览</button>
+                                    <button class="action-btn edit">审核</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="surveyModal">
         <div class="modal-content survey-modal">
             <div class="modal-header">
@@ -1261,54 +1316,162 @@
                                 <th>投稿标题</th>
                                 <th>医生信息</th>
                                 <th>完成调研</th>
-                                <th>认知提升</th>
-                                <th>行为改变</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
                         <tbody id="submissionSurveyList">
                             <tr>
                                 <td>冠心病介入治疗案例分享</td>
-                                <td>广东省 | 三甲 | 主任医师</td>
+                                <td>张伟 | 广东省 | 三甲 | 主任医师</td>
                                 <td><span class="status-tag completed">已完成</span></td>
-                                <td>92.5%</td>
-                                <td>78.3%</td>
-                                <td><button class="action-btn view">查看详情</button></td>
+                                <td><button class="action-btn view survey-answer-detail" data-doctor="张伟 | 广东省 | 三甲 | 主任医师" data-title="冠心病介入治疗案例分享">内容详情</button></td>
                             </tr>
                             <tr>
                                 <td>急性心梗急诊处理经验</td>
-                                <td>北京市 | 三甲 | 副主任医师</td>
+                                <td>王磊 | 北京市 | 三甲 | 副主任医师</td>
                                 <td><span class="status-tag completed">已完成</span></td>
-                                <td>88.7%</td>
-                                <td>72.1%</td>
-                                <td><button class="action-btn view">查看详情</button></td>
+                                <td><button class="action-btn view survey-answer-detail" data-doctor="王磊 | 北京市 | 三甲 | 副主任医师" data-title="急性心梗急诊处理经验">内容详情</button></td>
                             </tr>
                             <tr>
                                 <td>心衰患者药物治疗方案</td>
-                                <td>上海市 | 三甲 | 主治医师</td>
+                                <td>李娜 | 上海市 | 三甲 | 主治医师</td>
                                 <td><span class="status-tag pending">待完成</span></td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td><button class="action-btn view" disabled>查看详情</button></td>
+                                <td><button class="action-btn view" disabled>内容详情</button></td>
                             </tr>
                             <tr>
                                 <td>冠脉介入术后管理</td>
-                                <td>广东省 | 三甲 | 主任医师</td>
+                                <td>赵强 | 广东省 | 三甲 | 主任医师</td>
                                 <td><span class="status-tag completed">已完成</span></td>
-                                <td>85.2%</td>
-                                <td>68.9%</td>
-                                <td><button class="action-btn view">查看详情</button></td>
+                                <td><button class="action-btn view survey-answer-detail" data-doctor="赵强 | 广东省 | 三甲 | 主任医师" data-title="冠脉介入术后管理">内容详情</button></td>
                             </tr>
                             <tr>
                                 <td>心律失常药物治疗选择</td>
-                                <td>北京市 | 三甲 | 副主任医师</td>
+                                <td>刘洋 | 北京市 | 三甲 | 副主任医师</td>
                                 <td><span class="status-tag completed">已完成</span></td>
-                                <td>90.1%</td>
-                                <td>75.6%</td>
-                                <td><button class="action-btn view">查看详情</button></td>
+                                <td><button class="action-btn view survey-answer-detail" data-doctor="刘洋 | 北京市 | 三甲 | 副主任医师" data-title="心律失常药物治疗选择">内容详情</button></td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="surveyAnswerModal">
+        <div class="modal-content survey-answer-modal">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title">调研题目作答详情</h2>
+                    <p class="modal-subtitle" id="answerModalSubtitle">医生信息</p>
+                </div>
+                <button class="modal-close" onclick="closeSurveyAnswerModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="answer-summary">
+                    <div class="answer-summary-item">
+                        <span class="answer-summary-label">内容标题</span>
+                        <span class="answer-summary-value" id="answerContentTitle">-</span>
+                    </div>
+                    <div class="answer-summary-item">
+                        <span class="answer-summary-label">题型</span>
+                        <span class="answer-summary-value">10 道单选题</span>
+                    </div>
+                    <div class="answer-summary-item">
+                        <span class="answer-summary-label">完成时间</span>
+                        <span class="answer-summary-value">2025-03-12 14:26</span>
+                    </div>
+                </div>
+                <div class="survey-question-list">
+                    <div class="survey-question-item">
+                        <div class="question-title">1. 观看内容后，您对冠心病早期风险识别的理解是否提升？</div>
+                        <div class="question-options">
+                            <span>A. 没有变化</span>
+                            <span>B. 略有提升</span>
+                            <span class="selected">C. 明显提升</span>
+                            <span>D. 不确定</span>
+                        </div>
+                    </div>
+                    <div class="survey-question-item">
+                        <div class="question-title">2. 您是否更清楚介入治疗适应证的判断要点？</div>
+                        <div class="question-options">
+                            <span>A. 不清楚</span>
+                            <span>B. 一般</span>
+                            <span class="selected">C. 比较清楚</span>
+                            <span>D. 非常清楚</span>
+                        </div>
+                    </div>
+                    <div class="survey-question-item">
+                        <div class="question-title">3. 内容是否帮助您理解抗血小板治疗的用药策略？</div>
+                        <div class="question-options">
+                            <span>A. 没有帮助</span>
+                            <span>B. 帮助较小</span>
+                            <span class="selected">C. 帮助较大</span>
+                            <span>D. 帮助非常大</span>
+                        </div>
+                    </div>
+                    <div class="survey-question-item">
+                        <div class="question-title">4. 您是否愿意在后续诊疗中参考本内容的诊疗路径？</div>
+                        <div class="question-options">
+                            <span>A. 不会参考</span>
+                            <span>B. 可能参考</span>
+                            <span class="selected">C. 会参考</span>
+                            <span>D. 已经采用</span>
+                        </div>
+                    </div>
+                    <div class="survey-question-item">
+                        <div class="question-title">5. 本内容是否改变您对复杂病例随访管理的重视程度？</div>
+                        <div class="question-options">
+                            <span>A. 没有改变</span>
+                            <span>B. 略有改变</span>
+                            <span class="selected">C. 明显改变</span>
+                            <span>D. 暂不确定</span>
+                        </div>
+                    </div>
+                    <div class="survey-question-item">
+                        <div class="question-title">6. 您认为病例中的检查组合是否具有临床参考价值？</div>
+                        <div class="question-options">
+                            <span>A. 参考价值低</span>
+                            <span>B. 一般</span>
+                            <span class="selected">C. 较高</span>
+                            <span>D. 很高</span>
+                        </div>
+                    </div>
+                    <div class="survey-question-item">
+                        <div class="question-title">7. 您是否会调整对高危患者宣教内容的安排？</div>
+                        <div class="question-options">
+                            <span>A. 不会</span>
+                            <span>B. 视情况</span>
+                            <span class="selected">C. 会适当调整</span>
+                            <span>D. 会系统调整</span>
+                        </div>
+                    </div>
+                    <div class="survey-question-item">
+                        <div class="question-title">8. 本内容是否增强了您对真实世界病例复盘的兴趣？</div>
+                        <div class="question-options">
+                            <span>A. 没有</span>
+                            <span>B. 略有增强</span>
+                            <span class="selected">C. 明显增强</span>
+                            <span>D. 非常强烈</span>
+                        </div>
+                    </div>
+                    <div class="survey-question-item">
+                        <div class="question-title">9. 您对该内容整体学术质量的评价是？</div>
+                        <div class="question-options">
+                            <span>A. 较低</span>
+                            <span>B. 一般</span>
+                            <span>C. 较高</span>
+                            <span class="selected">D. 很高</span>
+                        </div>
+                    </div>
+                    <div class="survey-question-item">
+                        <div class="question-title">10. 您是否愿意继续参与同类调研或内容学习？</div>
+                        <div class="question-options">
+                            <span>A. 不愿意</span>
+                            <span>B. 视情况</span>
+                            <span>C. 愿意</span>
+                            <span class="selected">D. 非常愿意</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -40,6 +40,8 @@ function initializeMenu() {
                 } else if (href === 'activity-management.html') {
                     // 活动管理页面的处理
                     if (currentUrl.endsWith('activity-management.html') ||
+                        currentUrl.endsWith('marketing-detail.html') ||
+                        currentUrl.endsWith('activity-theme-detail.html') ||
                         currentUrl.endsWith('podcast-detail.html') ||
                         currentUrl.endsWith('case-collection-detail.html') ||
                         currentUrl.endsWith('create-case.html') ||

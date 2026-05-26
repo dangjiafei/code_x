@@ -43,9 +43,10 @@
 
         .hero-card {
             display: grid;
-            grid-template-columns: 260px minmax(0, 1fr);
-            gap: 24px;
-            padding: 24px;
+            grid-template-columns: 220px minmax(0, 1fr);
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
             margin-bottom: 20px;
             background-color: white;
             border-radius: 12px;
@@ -54,7 +55,7 @@
 
         .hero-cover {
             width: 100%;
-            height: 166px;
+            height: 140px;
             border-radius: 10px;
             object-fit: cover;
             background-color: #eef2f7;
@@ -397,6 +398,26 @@
             line-height: 1.6;
         }
 
+        .topic-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .topic-summary span {
+            display: inline-flex;
+            align-items: center;
+            min-height: 26px;
+            padding: 0 9px;
+            border: 1px solid #e2e8f0;
+            border-radius: 13px;
+            color: #475569;
+            background-color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
         .topic-actions {
             display: flex;
             flex-direction: column;
@@ -455,7 +476,7 @@
             border: 1px solid #e5e7eb;
             color: #94a3b8;
             background-color: #f8fafc;
-            cursor: not-allowed;
+            cursor: pointer;
         }
 
         .submission-table {
@@ -620,7 +641,6 @@
                 <section class="hero-card">
                     <img class="hero-cover" src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=640&h=420&fit=crop" alt="心血管疾病病例征稿活动封面">
                     <div>
-                        <span class="hero-eyebrow">平台官方学术征集</span>
                         <h1 class="hero-title">心血管真实世界诊疗经验专题征集</h1>
                         <p class="hero-desc">围绕冠心病、心衰、心律失常和复杂介入等临床场景，征集真实病例复盘、操作经验和长期管理观察。每个主题都对应一个具体创作方向，开放主题可直接投稿。</p>
                         <div class="hero-meta">
@@ -697,14 +717,18 @@
                                         <h3>冠心病诊疗新进展</h3>
                                         <p>围绕冠心病诊疗路径选择、药物方案调整和长期管理，复盘真实病例中的关键判断依据。</p>
                                         <div class="topic-academic"><strong>本主题关注</strong>冠心病患者治疗路径调整中的诊断依据、药物方案和长期获益判断。</div>
-                                        <div class="topic-reason">该主题已开放。你已提交 1 篇作品，可继续查看处理进度或补充修改。</div>
+                                        <div class="topic-summary">
+                                            <span>投稿：1 篇</span>
+                                            <span>课件：审核中</span>
+                                            <span>学习记录：86 次</span>
+                                        </div>
                                     </div>
                                     <div class="topic-actions">
                                         <div class="topic-deadline">
                                             <strong>整理中</strong>
                                             已提交：2026-05-12
                                         </div>
-                                        <a class="secondary-action" href="podcast-detail.html">查看投稿</a>
+                                        <a class="secondary-action" href="activity-theme-detail.html?type=podcast&status=submitted&theme=coronary">进入工作台</a>
                                     </div>
                                 </article>
 
@@ -717,14 +741,18 @@
                                         <h3>心力衰竭管理</h3>
                                         <p>聚焦心衰患者长期管理中的药物调整、器械治疗选择、随访节奏和患者教育经验。</p>
                                         <div class="topic-academic"><strong>本主题关注</strong>心衰长期管理中的药物优化、器械选择、依从性管理和复诊策略。</div>
-                                        <div class="topic-reason">你符合该主题征集条件：心血管内科、三级医院、副主任医师及以上。</div>
+                                        <div class="topic-summary">
+                                            <span>投稿：未提交</span>
+                                            <span>课件：待上传</span>
+                                            <span>学习记录：暂无</span>
+                                        </div>
                                     </div>
                                     <div class="topic-actions">
                                         <div class="topic-deadline">
                                             <strong>剩余 5 天</strong>
                                             可继续提交
                                         </div>
-                                        <a class="primary-action" href="create-case.html?source=platform-activity&theme=heart-failure">去创作</a>
+                                        <a class="primary-action" href="activity-theme-detail.html?type=podcast&status=available&theme=heart-failure">进入工作台</a>
                                     </div>
                                 </article>
 
@@ -737,7 +765,11 @@
                                         <h3>心律失常诊治</h3>
                                         <p>通过复杂病例复盘心律失常诊断、风险评估和治疗选择中的关键决策节点。</p>
                                         <div class="topic-academic"><strong>本主题关注</strong>复杂心律失常患者的风险分层、治疗选择和复发管理。</div>
-                                        <div class="topic-reason">本期该主题暂未向你开放投稿入口，你仍可查看主题方向，为后续开放做准备。</div>
+                                        <div class="topic-summary">
+                                            <span>投稿：暂未开放</span>
+                                            <span>主题说明：可查看</span>
+                                            <span>学习记录：暂无</span>
+                                        </div>
                                     </div>
                                     <div class="topic-actions">
                                         <div class="topic-deadline">
@@ -757,7 +789,11 @@
                                         <h3>复杂冠脉介入手术</h3>
                                         <p>展示 CTO 开通策略、多支血管病变处理、钙化病变处理和复杂分叉病变技术，强调操作复盘和风险控制。</p>
                                         <div class="topic-academic"><strong>本主题关注</strong>复杂冠脉介入中的路径选择、关键步骤、风险控制和并发症处理。</div>
-                                        <div class="topic-reason">本主题目前仅开放给符合手术视频征集条件的医生。你可以阅读要求，但不能提交作品。</div>
+                                        <div class="topic-summary">
+                                            <span>投稿：暂未开放</span>
+                                            <span>素材要求：手术视频</span>
+                                            <span>学习记录：暂无</span>
+                                        </div>
                                     </div>
                                     <div class="topic-actions">
                                         <div class="topic-deadline">
@@ -777,14 +813,18 @@
                                         <h3>心脏起搏器植入</h3>
                                         <p>介绍起搏器植入手术要点、并发症管理、术后随访和参数调整经验。</p>
                                         <div class="topic-academic"><strong>本主题关注</strong>起搏器植入过程中的适应证判断、操作要点和术后参数管理。</div>
-                                        <div class="topic-reason">该主题本期征集已结束，仅支持查看主题说明和历史内容。</div>
+                                        <div class="topic-summary">
+                                            <span>投稿：已结束</span>
+                                            <span>历史作品：1 篇</span>
+                                            <span>学习记录：32 次</span>
+                                        </div>
                                     </div>
                                     <div class="topic-actions">
                                         <div class="topic-deadline">
                                             <strong>已结束</strong>
                                             不再接收投稿
                                         </div>
-                                        <button class="disabled-action" onclick="showLockedReason('心脏起搏器植入')">不可投稿</button>
+                                        <a class="disabled-action" href="activity-theme-detail.html?type=surgery&status=ended&theme=pacemaker">查看主题</a>
                                     </div>
                                 </article>
                             </div>
