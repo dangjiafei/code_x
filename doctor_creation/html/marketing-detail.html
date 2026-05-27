@@ -364,6 +364,16 @@
             background-color: #e0f2fe;
         }
 
+        .topic-status.reviewing {
+            color: #92400e;
+            background-color: #fef3c7;
+        }
+
+        .topic-status.purchased {
+            color: #166534;
+            background-color: #dcfce7;
+        }
+
         .topic-status.locked {
             color: #64748b;
             background-color: #f1f5f9;
@@ -702,8 +712,10 @@
 
                             <div class="topic-toolbar">
                                 <button class="topic-filter active">全部主题 5</button>
-                                <button class="topic-filter">可创作 2</button>
-                                <button class="topic-filter">已投稿 1</button>
+                                <button class="topic-filter">可创作 1</button>
+                                <button class="topic-filter">已投稿 0</button>
+                                <button class="topic-filter">审核中 1</button>
+                                <button class="topic-filter">已采购 1</button>
                                 <button class="topic-filter">暂未开放 2</button>
                             </div>
 
@@ -712,11 +724,11 @@
                                     <div>
                                         <div class="topic-head">
                                             <span class="topic-type">医学播客</span>
-                                            <span class="topic-status submitted">已投稿</span>
+                                            <span class="topic-status reviewing">审核中</span>
                                         </div>
                                         <h3>冠心病诊疗新进展</h3>
                                         <p>围绕冠心病诊疗路径选择、药物方案调整和长期管理，复盘真实病例中的关键判断依据。</p>
-                                        <div class="topic-academic"><strong>本主题关注</strong>冠心病患者治疗路径调整中的诊断依据、药物方案和长期获益判断。</div>
+                                        <div class="topic-academic"><strong>创作重点</strong>冠心病患者治疗路径调整中的诊断依据、药物方案和长期获益判断。</div>
                                         <div class="topic-summary">
                                             <span>投稿：1 篇</span>
                                             <span>课件：审核中</span>
@@ -725,7 +737,7 @@
                                     </div>
                                     <div class="topic-actions">
                                         <div class="topic-deadline">
-                                            <strong>整理中</strong>
+                                            <strong>审核中</strong>
                                             已提交：2026-05-12
                                         </div>
                                         <a class="secondary-action" href="activity-theme-detail.html?type=podcast&status=submitted&theme=coronary">进入工作台</a>
@@ -740,7 +752,7 @@
                                         </div>
                                         <h3>心力衰竭管理</h3>
                                         <p>聚焦心衰患者长期管理中的药物调整、器械治疗选择、随访节奏和患者教育经验。</p>
-                                        <div class="topic-academic"><strong>本主题关注</strong>心衰长期管理中的药物优化、器械选择、依从性管理和复诊策略。</div>
+                                        <div class="topic-academic"><strong>创作重点</strong>心衰长期管理中的药物优化、器械选择、依从性管理和复诊策略。</div>
                                         <div class="topic-summary">
                                             <span>投稿：未提交</span>
                                             <span>课件：待上传</span>
@@ -764,7 +776,7 @@
                                         </div>
                                         <h3>心律失常诊治</h3>
                                         <p>通过复杂病例复盘心律失常诊断、风险评估和治疗选择中的关键决策节点。</p>
-                                        <div class="topic-academic"><strong>本主题关注</strong>复杂心律失常患者的风险分层、治疗选择和复发管理。</div>
+                                        <div class="topic-academic"><strong>创作重点</strong>复杂心律失常患者的风险分层、治疗选择和复发管理。</div>
                                         <div class="topic-summary">
                                             <span>投稿：暂未开放</span>
                                             <span>主题说明：可查看</span>
@@ -788,7 +800,7 @@
                                         </div>
                                         <h3>复杂冠脉介入手术</h3>
                                         <p>展示 CTO 开通策略、多支血管病变处理、钙化病变处理和复杂分叉病变技术，强调操作复盘和风险控制。</p>
-                                        <div class="topic-academic"><strong>本主题关注</strong>复杂冠脉介入中的路径选择、关键步骤、风险控制和并发症处理。</div>
+                                        <div class="topic-academic"><strong>创作重点</strong>复杂冠脉介入中的路径选择、关键步骤、风险控制和并发症处理。</div>
                                         <div class="topic-summary">
                                             <span>投稿：暂未开放</span>
                                             <span>素材要求：手术视频</span>
@@ -808,21 +820,21 @@
                                     <div>
                                         <div class="topic-head">
                                             <span class="topic-type">手术视频</span>
-                                            <span class="topic-status ended">已结束</span>
+                                            <span class="topic-status purchased">已采购</span>
                                         </div>
                                         <h3>心脏起搏器植入</h3>
                                         <p>介绍起搏器植入手术要点、并发症管理、术后随访和参数调整经验。</p>
-                                        <div class="topic-academic"><strong>本主题关注</strong>起搏器植入过程中的适应证判断、操作要点和术后参数管理。</div>
+                                        <div class="topic-academic"><strong>创作重点</strong>起搏器植入过程中的适应证判断、操作要点和术后参数管理。</div>
                                         <div class="topic-summary">
-                                            <span>投稿：已结束</span>
+                                            <span>投稿：已采购</span>
                                             <span>历史作品：1 篇</span>
                                             <span>学习记录：32 次</span>
                                         </div>
                                     </div>
                                     <div class="topic-actions">
                                         <div class="topic-deadline">
-                                            <strong>已结束</strong>
-                                            不再接收投稿
+                                            <strong>已采购</strong>
+                                            作品已被采购
                                         </div>
                                         <a class="disabled-action" href="activity-theme-detail.html?type=surgery&status=ended&theme=pacemaker">查看主题</a>
                                     </div>
@@ -852,14 +864,14 @@
                                         <td>冠心病诊疗新进展</td>
                                         <td>冠心病介入治疗案例分析</td>
                                         <td>2026-05-12</td>
-                                        <td><span class="status-pill reviewing">整理中</span></td>
+                                        <td><span class="status-pill reviewing">审核中</span></td>
                                         <td><a href="podcast-detail.html">查看详情</a></td>
                                     </tr>
                                     <tr>
                                         <td>复杂冠脉介入手术</td>
                                         <td>CTO 病变介入治疗实战分享</td>
                                         <td>2026-05-08</td>
-                                        <td><span class="status-pill success">已收录</span></td>
+                                        <td><span class="status-pill success">已采购</span></td>
                                         <td><a href="case-detail.html">查看作品</a></td>
                                     </tr>
                                 </tbody>
@@ -895,11 +907,11 @@
                                     <strong>2 篇</strong>
                                 </div>
                                 <div class="progress-item">
-                                    <span>整理中</span>
+                                    <span>审核中</span>
                                     <strong>1 篇</strong>
                                 </div>
                                 <div class="progress-item">
-                                    <span>已收录</span>
+                                    <span>已采购</span>
                                     <strong>1 篇</strong>
                                 </div>
                             </div>

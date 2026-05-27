@@ -1,11 +1,16 @@
 /* 活动列表页面样式 */
 
-/* 筛选区样式 */
-.filter-section {
+/* 内容面板 */
+.activity-content-panel {
     background-color: white;
     border-radius: 12px;
-    padding: 16px 0;
+    padding: 16px 24px 24px;
     margin-bottom: 16px;
+}
+
+/* 筛选区样式 */
+.filter-section {
+    padding-bottom: 20px;
     box-shadow: none;
     border-bottom: none;
 }
@@ -14,6 +19,9 @@
     display: flex;
     align-items: center;
     gap: 20px;
+    padding: 12px;
+    background-color: var(--background-secondary);
+    border-radius: 8px;
 }
 
 /* 搜索框 */
@@ -23,11 +31,10 @@
     align-items: center;
     gap: 8px;
     padding: 8px 12px;
-    background-color: var(--background-secondary);
+    background-color: white;
     border: none;
     border-radius: 6px;
     color: var(--text-tertiary);
-    margin-left: 20px;
 }
 
 .search-box input {
@@ -90,10 +97,43 @@
     z-index: 1;
 }
 
+/* 领域筛选 */
+.domain-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 16px;
+}
+
+.domain-filter-btn {
+    min-width: 76px;
+    height: 32px;
+    padding: 0 16px;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    background-color: #f8fafc;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.domain-filter-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.domain-filter-btn.active {
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
+    color: white;
+}
+
 /* 右侧操作区 */
 .filter-actions {
     margin-left: auto;
-    padding-right: 24px;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -515,6 +555,10 @@
         margin-left: 0;
         width: 100%;
         justify-content: flex-end;
+    }
+
+    .domain-filter {
+        padding: 12px 0 0;
     }
 
     .card-grid {

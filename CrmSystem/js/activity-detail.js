@@ -57,15 +57,14 @@ function openEnterpriseDetailModal(row) {
 
     const cells = row.querySelectorAll('td');
     const conditionTags = Array.from(cells[3].querySelectorAll('.tag')).map(tag => tag.textContent.trim());
-    const status = cells[7].textContent.trim();
+    const status = cells[6].textContent.trim();
 
     document.getElementById('enterpriseModalTitle').textContent = cells[0].textContent.trim();
     document.getElementById('enterpriseModalSubtitle').textContent = '活动参与明细';
     document.getElementById('enterpriseUseTime').textContent = cells[1].textContent.trim();
     document.getElementById('enterpriseTargetCount').textContent = cells[2].textContent.trim();
-    document.getElementById('enterpriseMatchedDoctors').textContent = cells[4].textContent.trim();
-    document.getElementById('enterpriseSubmissionCount').textContent = cells[5].textContent.trim();
-    document.getElementById('enterprisePurchasedCount').textContent = cells[6].textContent.trim();
+    document.getElementById('enterpriseSubmissionCount').textContent = cells[4].textContent.trim();
+    document.getElementById('enterprisePurchasedCount').textContent = cells[5].textContent.trim();
     document.getElementById('enterpriseRecruitStatus').textContent = status;
 
     const tagsContainer = document.getElementById('enterpriseConditionTags');

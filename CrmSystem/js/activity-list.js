@@ -52,6 +52,7 @@ function initFilter() {
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
     const statusSelect = document.getElementById('statusSelect');
+    const domainButtons = document.querySelectorAll('.domain-filter-btn');
     
     // 搜索输入框
     if (searchInput) {
@@ -73,6 +74,15 @@ function initFilter() {
             applyFilter();
         });
     }
+
+    // 领域选择
+    domainButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            domainButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            applyFilter();
+        });
+    });
 }
 
 // 应用筛选
@@ -80,15 +90,18 @@ function applyFilter() {
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
     const statusSelect = document.getElementById('statusSelect');
+    const activeDomain = document.querySelector('.domain-filter-btn.active');
     
     const searchText = searchInput ? searchInput.value.trim() : '';
     const sortBy = sortSelect ? sortSelect.value : '';
     const status = statusSelect ? statusSelect.value : '';
+    const domain = activeDomain ? activeDomain.getAttribute('data-domain') : 'all';
     
     console.log('筛选条件:', {
         searchText,
         sortBy,
-        status
+        status,
+        domain
     });
     
     // 这里可以添加实际的筛选逻辑

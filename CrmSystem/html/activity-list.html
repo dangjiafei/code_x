@@ -18,9 +18,10 @@
 
         <!-- 右侧主要内容区域 -->
         <main class="content-area">
+            <div class="activity-content-panel">
 
-            <!-- 筛选区 -->
-            <div class="filter-section">
+                <!-- 筛选区 -->
+                <div class="filter-section">
                 <div class="filter-row">
                     <!-- 搜索框 -->
                     <div class="search-box">
@@ -52,30 +53,6 @@
                             <option value="published">进行中</option>
                             <option value="rejected">已结束</option>
                             <option value="disabled">已停用</option>
-                            <option value="cancelled">已作废</option>
-                        </select>
-                    </div>
-
-                    <!-- 活动类型 -->
-                    <div class="filter-select">
-                        <select id="typeSelect">
-                            <option value="all">全部类型</option>
-                            <option value="draft">医学播客</option>
-                            <option value="pending">互动病例</option>
-                            <option value="surgery-video">手术视频</option>
-                        </select>
-                    </div>
-
-                    <!-- 医学领域 -->
-                    <div class="filter-select">
-                        <select id="domainSelect">
-                            <option value="all">所有领域</option>
-                            <option value="cardiology">心血管疾病</option>
-                            <option value="neurology">神经内科</option>
-                            <option value="orthopedics">骨科</option>
-                            <option value="gastroenterology">消化内科</option>
-                            <option value="endocrinology">内分泌科</option>
-                            <option value="respiratory">呼吸内科</option>
                         </select>
                     </div>
 
@@ -110,10 +87,24 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- 医学领域 -->
+                <div class="domain-filter" id="domainFilter">
+                    <button class="domain-filter-btn active" data-domain="all">全部领域</button>
+                    <button class="domain-filter-btn" data-domain="cardiology">心血管</button>
+                    <button class="domain-filter-btn" data-domain="endocrinology">糖尿病</button>
+                    <button class="domain-filter-btn" data-domain="pediatrics">儿科</button>
+                    <button class="domain-filter-btn" data-domain="respiratory">呼吸</button>
+                    <button class="domain-filter-btn" data-domain="neurology">神经科</button>
+                    <button class="domain-filter-btn" data-domain="oncology">肿瘤</button>
+                    <button class="domain-filter-btn" data-domain="orthopedics">骨科</button>
+                    <button class="domain-filter-btn" data-domain="gastroenterology">消化</button>
+                    <button class="domain-filter-btn" data-domain="cardiovascular-disease">心血管疾病</button>
+                </div>
             </div>
 
-            <!-- 列表展示区 -->
-            <div class="list-container">
+                <!-- 列表展示区 -->
+                <div class="list-container">
                 <!-- 卡片视图 -->
                 <div class="card-view active" id="cardView">
                     <div class="card-grid">
@@ -301,7 +292,7 @@
                         <div class="activity-card" data-id="6">
                             <div class="card-cover">
                                 <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=medical%20symposium%20event&image_size=landscape_16_9" alt="活动封面">
-                                <span class="status-badge cancelled">已作废</span>
+                                <span class="status-badge published">进行中</span>
                             </div>
                             <div class="card-content">
                                 <h3 class="card-title">神经系统疾病病例研讨</h3>
@@ -362,7 +353,6 @@
                                     <td>48</td>
                                     <td>
                                         <button class="action-btn view" data-id="1">查看详情</button>
-                                        <button class="action-btn edit">编辑</button>
                                     </td>
                                 </tr>
                                 <tr data-id="2">
@@ -375,7 +365,6 @@
                                     <td>23</td>
                                     <td>
                                         <button class="action-btn view" data-id="2">查看详情</button>
-                                        <button class="action-btn withdraw">撤回</button>
                                     </td>
                                 </tr>
                                 <tr data-id="3">
@@ -388,7 +377,6 @@
                                     <td>156</td>
                                     <td>
                                         <button class="action-btn view" data-id="3">查看详情</button>
-                                        <button class="action-btn disable">停用</button>
                                     </td>
                                 </tr>
                                 <tr data-id="4">
@@ -425,31 +413,31 @@
                                     <td>76</td>
                                     <td>
                                         <button class="action-btn view" data-id="6">查看详情</button>
-                                        <button class="action-btn disable">停用</button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
+                </div>
 
-            <!-- 分页区域 -->
-            <div class="pagination-section">
-                <div class="pagination-buttons">
-                    <button class="page-btn" disabled>上一页</button>
-                    <button class="page-btn active">1</button>
-                    <button class="page-btn">2</button>
-                    <button class="page-btn">3</button>
-                    <button class="page-btn">4</button>
-                    <button class="page-btn">5</button>
-                    <button class="page-btn">下一页</button>
-                    <div class="page-size-select">
-                        <select>
-                            <option>12条/页</option>
-                            <option>24条/页</option>
-                            <option>48条/页</option>
-                        </select>
+                <!-- 分页区域 -->
+                <div class="pagination-section">
+                    <div class="pagination-buttons">
+                        <button class="page-btn" disabled>上一页</button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">4</button>
+                        <button class="page-btn">5</button>
+                        <button class="page-btn">下一页</button>
+                        <div class="page-size-select">
+                            <select>
+                                <option>12条/页</option>
+                                <option>24条/页</option>
+                                <option>48条/页</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
