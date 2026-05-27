@@ -932,6 +932,55 @@
             flex: 0 0 auto;
         }
 
+        .content-more-menu-wrap {
+            position: relative;
+            display: inline-flex;
+        }
+
+        .content-more-menu {
+            position: fixed;
+            z-index: 1000;
+            display: none;
+            min-width: 148px;
+            padding: 8px 0;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
+        }
+
+        .content-more-menu.active {
+            display: block;
+        }
+
+        .content-more-menu button,
+        .content-more-menu .content-more-menu-item {
+            display: block;
+            width: 100%;
+            height: 40px;
+            padding: 0 18px;
+            border: 0;
+            background: transparent;
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 40px;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .content-more-menu button:hover:not(:disabled),
+        .content-more-menu .content-more-menu-item:hover:not(.disabled) {
+            background-color: #f8fafc;
+            color: #111827;
+        }
+
+        .content-more-menu button:disabled,
+        .content-more-menu .content-more-menu-item.disabled {
+            color: #cbd5e1;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         .content-empty-state {
             display: none;
             padding: 32px;
@@ -1972,7 +2021,7 @@
                     </div>
                     <div class="banner-text">
                         <div class="banner-title">探索精彩学术活动</div>
-                        <div class="banner-desc">发现优质病例征集、学术讨论，开启您的学术之旅</div>
+                        <div class="banner-desc">发现优质学术内容，开启您的学术之旅</div>
                     </div>
                 </div>
             </div>
@@ -1987,13 +2036,13 @@
                 <div class="filter-section">
                     <div class="filter-row">
                         <div class="filter-group">
-                            <input type="text" class="filter-input" placeholder="搜索活动名称、主题" id="keywordSearch">
+                            <input type="text" class="filter-input" placeholder="搜索活动名称" id="keywordSearch">
                         </div>
                         <div class="filter-group">
                             <select class="filter-select" id="statusFilter">
-                                <option value="all">全部</option>
-                                <option value="ongoing" selected>进行中</option>
-                                <option value="upcoming">即将开始</option>
+                                <option value="all" selected>全部</option>
+                                <option value="ongoing">进行中</option>
+                                <option value="upcoming">未开始</option>
                                 <option value="ended">已结束</option>
                             </select>
                         </div>
@@ -2317,7 +2366,7 @@
                 <div class="activity-card" data-activity-id="8">
                     <div class="card-cover">
                         <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=gastroenterology%20digestive%20health%20medical%20education%20professional&image_size=landscape_16_9" alt="活动封面">
-                        <div class="card-badge upcoming">即将开始</div>
+                        <div class="card-badge upcoming">未开始</div>
                     </div>
                     <div class="card-content">
                         <h3 class="card-title">消化内科病例征集活动</h3>
@@ -2371,12 +2420,13 @@
                 <div class="filter-section">
                     <div class="filter-row">
                         <div class="filter-group">
-                            <input type="text" class="filter-input" placeholder="搜索活动名称或主题" id="myActivitySearch">
+                            <input type="text" class="filter-input" placeholder="搜索活动名称" id="myActivitySearch">
                         </div>
                         <div class="filter-group">
                             <select class="filter-select" id="myActivityStatus">
                                 <option value="all">全部状态</option>
                                 <option value="ongoing">进行中</option>
+                                <option value="upcoming">未开始</option>
                                 <option value="ended">已结束</option>
                             </select>
                         </div>
@@ -2384,7 +2434,7 @@
                 </div>
 
                 <div class="my-activities-list" id="myActivitiesList">
-                    <div class="activity-card" data-activity-id="my-1">
+                    <div class="activity-card" data-activity-id="my-1" data-status="ongoing">
                         <div class="card-cover">
                             <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cardiovascular%20disease%20medical%20conference%20professional&image_size=landscape_16_9" alt="活动封面">
                             <div class="card-badge ongoing">进行中</div>
@@ -2398,14 +2448,14 @@
                                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                     </svg>
-                                    156 人报名
+                                    目标合计 120 份
                                 </div>
                                 <div class="stat-item">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="9" cy="7" r="4"></circle>
                                     </svg>
-                                    89 人投稿
+                                    已投稿 89 篇
                                 </div>
                             </div>
                             <div class="card-time">
@@ -2424,7 +2474,7 @@
                         </div>
                     </div>
 
-                    <div class="activity-card" data-activity-id="my-2">
+                    <div class="activity-card" data-activity-id="my-2" data-status="ended">
                         <div class="card-cover">
                             <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=diabetes%20treatment%20medical%20education%20healthcare&image_size=landscape_16_9" alt="活动封面">
                             <div class="card-badge ended">已结束</div>
@@ -2438,14 +2488,14 @@
                                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                     </svg>
-                                    234 人报名
+                                    目标合计 180 份
                                 </div>
                                 <div class="stat-item">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="9" cy="7" r="4"></circle>
                                     </svg>
-                                    156 人投稿
+                                    已投稿 156 篇
                                 </div>
                             </div>
                             <div class="card-time">
@@ -2464,7 +2514,7 @@
                         </div>
                     </div>
 
-                    <div class="activity-card" data-activity-id="my-3">
+                    <div class="activity-card" data-activity-id="my-3" data-status="ongoing">
                         <div class="card-cover">
                             <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=pediatric%20respiratory%20health%20medical%20education&image_size=landscape_16_9" alt="活动封面">
                             <div class="card-badge ongoing">进行中</div>
@@ -2478,14 +2528,14 @@
                                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                     </svg>
-                                    89 人报名
+                                    目标合计 80 份
                                 </div>
                                 <div class="stat-item">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="9" cy="7" r="4"></circle>
                                     </svg>
-                                    45 人投稿
+                                    已投稿 45 篇
                                 </div>
                             </div>
                             <div class="card-time">
@@ -2504,7 +2554,7 @@
                         </div>
                     </div>
 
-                    <div class="activity-card" data-activity-id="my-4">
+                    <div class="activity-card" data-activity-id="my-4" data-status="ended">
                         <div class="card-cover">
                             <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=neurology%20medical%20conference%20brain%20health%20professional&image_size=landscape_16_9" alt="活动封面">
                             <div class="card-badge ended">已结束</div>
@@ -2518,14 +2568,14 @@
                                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                     </svg>
-                                    312 人报名
+                                    目标合计 220 份
                                 </div>
                                 <div class="stat-item">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="9" cy="7" r="4"></circle>
                                     </svg>
-                                    208 人投稿
+                                    已投稿 208 篇
                                 </div>
                             </div>
                             <div class="card-time">
@@ -2544,10 +2594,10 @@
                         </div>
                     </div>
 
-                    <div class="activity-card" data-activity-id="my-5">
+                    <div class="activity-card" data-activity-id="my-5" data-status="upcoming">
                         <div class="card-cover">
                             <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cardiology%20heart%20disease%20medical%20education&image_size=landscape_16_9" alt="活动封面">
-                            <div class="card-badge upcoming">即将开始</div>
+                            <div class="card-badge upcoming">未开始</div>
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">心血管疾病诊疗新进展学术研讨会</h3>
@@ -2558,14 +2608,14 @@
                                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                     </svg>
-                                    128 人报名
+                                    目标合计 100 份
                                 </div>
                                 <div class="stat-item">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="9" cy="7" r="4"></circle>
                                     </svg>
-                                    67 人投稿
+                                    2 个主题任务
                                 </div>
                             </div>
                             <div class="card-time">
@@ -2584,7 +2634,7 @@
                         </div>
                     </div>
 
-                    <div class="activity-card" data-activity-id="my-6">
+                    <div class="activity-card" data-activity-id="my-6" data-status="ongoing">
                         <div class="card-cover">
                             <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=orthopedics%20bone%20joint%20surgery%20medical&image_size=landscape_16_9" alt="活动封面">
                             <div class="card-badge ongoing">进行中</div>
@@ -2598,14 +2648,14 @@
                                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                     </svg>
-                                    195 人报名
+                                    目标合计 150 份
                                 </div>
                                 <div class="stat-item">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="9" cy="7" r="4"></circle>
                                     </svg>
-                                    102 人投稿
+                                    已投稿 102 篇
                                 </div>
                             </div>
                             <div class="card-time">
@@ -2624,7 +2674,7 @@
                         </div>
                     </div>
 
-                    <div class="activity-card" data-activity-id="my-7">
+                    <div class="activity-card" data-activity-id="my-7" data-status="ended">
                         <div class="card-cover">
                             <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=dermatology%20skin%20health%20medical%20conference&image_size=landscape_16_9" alt="活动封面">
                             <div class="card-badge ended">已结束</div>
@@ -2638,14 +2688,14 @@
                                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                     </svg>
-                                    167 人报名
+                                    目标合计 120 份
                                 </div>
                                 <div class="stat-item">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="9" cy="7" r="4"></circle>
                                     </svg>
-                                    94 人投稿
+                                    已投稿 94 篇
                                 </div>
                             </div>
                             <div class="card-time">
@@ -2711,16 +2761,7 @@
                     <div class="filter-section content-filter-section">
                         <div class="filter-row">
                             <div class="filter-group">
-                                <input type="text" class="filter-input" placeholder="搜索内容、医生、医院" id="contentSearch">
-                            </div>
-                            <div class="filter-group">
-                                <select class="filter-select" id="contentActivityFilter">
-                                    <option value="all">全部活动</option>
-                                    <option value="cardio">心血管疾病病例征稿活动</option>
-                                    <option value="diabetes">糖尿病规范化治疗病例征集大赛</option>
-                                    <option value="pediatric">儿科呼吸系统疾病病例征集</option>
-                                    <option value="neurology">神经科疑难病例讨论沙龙</option>
-                                </select>
+                                <input type="text" class="filter-input" placeholder="搜索作品名称或活动名称" id="contentSearch">
                             </div>
                             <div class="filter-group">
                                 <select class="filter-select" id="contentTypeFilter">
@@ -2739,16 +2780,6 @@
                                     <option value="rejected">已驳回</option>
                                 </select>
                             </div>
-                            <div class="filter-group">
-                                <select class="filter-select" id="contentFlowFilter">
-                                    <option value="all">全部流转状态</option>
-                                    <option value="ready">待采购</option>
-                                    <option value="purchased">已采购</option>
-                                    <option value="transfer-pending">待传播</option>
-                                    <option value="transferred">已传播</option>
-                                    <option value="rejected">已驳回</option>
-                                </select>
-                            </div>
                             <div class="filter-actions">
                                 <button class="filter-btn" type="button" onclick="resetAcademicContentFilters()">重置</button>
                             </div>
@@ -2759,10 +2790,6 @@
                         <div>
                             <strong>学术内容列表</strong>
                             <span>当前展示 <b id="visibleContentCount">0</b> 条</span>
-                        </div>
-                        <div class="content-table-actions">
-                            <button class="filter-btn" type="button" onclick="handleContentAction('已导出当前筛选结果')">导出</button>
-                            <button class="filter-btn active" type="button" onclick="handleContentAction('已进入批量采购确认')">批量采购</button>
                         </div>
                     </div>
 
@@ -2776,14 +2803,14 @@
                                     <th>所属活动 / 主题</th>
                                     <th>投稿时间</th>
                                     <th>作品状态</th>
-                                    <th>流转状态</th>
+                                    <th>已传播人数</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody id="academicContentTableBody">
                                 <tr data-content-row data-content-id="work-cardio-1" data-activity="cardio" data-type="medical-podcast" data-status="approved" data-flow="ready">
                                     <td class="doctor-cell">
-                                        <strong>张明</strong>
+                                        <strong>医生信息采购后可见</strong>
                                         <span>主任医师｜心内科</span>
                                         <span>广州XX医院</span>
                                     </td>
@@ -2799,18 +2826,29 @@
                                     </td>
                                     <td>2026-05-05 14:20</td>
                                     <td><span class="status-tag approved">审核通过</span></td>
-                                    <td><span class="flow-tag ready">待采购</span></td>
+                                    <td>0</td>
                                     <td>
                                         <div class="content-actions">
                                             <button class="action-btn view" type="button" onclick="openAcademicContentPreview('work-cardio-1')">详情</button>
-                                            <button class="action-btn transfer" type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
-                                            <button class="action-btn more" type="button" onclick="handleContentAction('已打开更多操作')">更多</button>
+                                            <div class="content-more-menu-wrap">
+                                                <button class="action-btn more" type="button" onclick="toggleContentMoreMenu(event)">更多</button>
+                                                <div class="content-more-menu">
+                                                    <button type="button" disabled>编辑</button>
+                                                    <button type="button" disabled>内容合适</button>
+                                                    <button type="button" disabled>内容不合适</button>
+                                                    <button type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                                                    <button type="button" onclick="handleContentAction('已撤回该作品')">撤回</button>
+                                                    <button type="button" onclick="handleContentAction('已打开观看链接')">观看链接</button>
+                                                    <button type="button" onclick="handleContentAction('已打开观看记录')">观看记录</button>
+                                                    <button type="button" disabled>分享作品</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr data-content-row data-content-id="work-cardio-2" data-activity="cardio" data-type="interactive-case" data-status="pending" data-flow="pending">
                                     <td class="doctor-cell">
-                                        <strong>李华</strong>
+                                        <strong>医生信息采购后可见</strong>
                                         <span>副主任医师｜心内科</span>
                                         <span>广州XX医院</span>
                                     </td>
@@ -2826,12 +2864,23 @@
                                     </td>
                                     <td>2026-05-06 10:15</td>
                                     <td><span class="status-tag pending">待审核</span></td>
-                                    <td><span class="flow-tag pending">待审核</span></td>
+                                    <td>0</td>
                                     <td>
                                         <div class="content-actions">
                                             <button class="action-btn view" type="button" onclick="openAcademicContentPreview('work-cardio-2')">详情</button>
-                                            <button class="action-btn transfer" type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
-                                            <button class="action-btn more" type="button" onclick="handleContentAction('已打开更多操作')">更多</button>
+                                            <div class="content-more-menu-wrap">
+                                                <button class="action-btn more" type="button" onclick="toggleContentMoreMenu(event)">更多</button>
+                                                <div class="content-more-menu">
+                                                    <button type="button" disabled>编辑</button>
+                                                    <button type="button" disabled>内容合适</button>
+                                                    <button type="button" disabled>内容不合适</button>
+                                                    <button type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                                                    <button type="button" onclick="handleContentAction('已撤回该作品')">撤回</button>
+                                                    <button type="button" onclick="handleContentAction('已打开观看链接')">观看链接</button>
+                                                    <button type="button" onclick="handleContentAction('已打开观看记录')">观看记录</button>
+                                                    <button type="button" disabled>分享作品</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -2853,16 +2902,27 @@
                                     </td>
                                     <td>2026-05-07 16:30</td>
                                     <td><span class="status-tag purchased">已采购</span></td>
-                                    <td><span class="flow-tag transfer-pending">待传播</span></td>
+                                    <td>0</td>
                                     <td>
                                         <div class="content-actions">
                                             <button class="action-btn view" type="button" onclick="openAcademicContentPreview('work-cardio-3')">详情</button>
-                                            <button class="action-btn transfer" type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
-                                            <button class="action-btn more" type="button" onclick="handleContentAction('已打开更多操作')">更多</button>
+                                            <div class="content-more-menu-wrap">
+                                                <button class="action-btn more" type="button" onclick="toggleContentMoreMenu(event)">更多</button>
+                                                <div class="content-more-menu">
+                                                    <button type="button" disabled>编辑</button>
+                                                    <button type="button" disabled>内容合适</button>
+                                                    <button type="button" disabled>内容不合适</button>
+                                                    <button type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                                                    <button type="button" onclick="handleContentAction('已撤回该作品')">撤回</button>
+                                                    <button type="button" onclick="handleContentAction('已打开观看链接')">观看链接</button>
+                                                    <button type="button" onclick="handleContentAction('已打开观看记录')">观看记录</button>
+                                                    <button type="button" disabled>分享作品</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr data-content-row data-content-id="work-diabetes-1" data-activity="diabetes" data-type="medical-podcast" data-status="approved" data-flow="purchased">
+                                <tr data-content-row data-content-id="work-diabetes-1" data-activity="diabetes" data-type="medical-podcast" data-status="purchased" data-flow="purchased">
                                     <td class="doctor-cell">
                                         <strong>刘洋</strong>
                                         <span>副主任医师｜内分泌科</span>
@@ -2879,19 +2939,30 @@
                                         <span>血糖监测与药物优化</span>
                                     </td>
                                     <td>2025-11-06 10:00</td>
-                                    <td><span class="status-tag approved">审核通过</span></td>
-                                    <td><span class="flow-tag purchased">已采购</span></td>
+                                    <td><span class="status-tag purchased">已采购</span></td>
+                                    <td>326</td>
                                     <td>
                                         <div class="content-actions">
                                             <button class="action-btn view" type="button" onclick="openAcademicContentPreview('work-diabetes-1')">详情</button>
-                                            <button class="action-btn transfer" type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
-                                            <button class="action-btn more" type="button" onclick="handleContentAction('已打开更多操作')">更多</button>
+                                            <div class="content-more-menu-wrap">
+                                                <button class="action-btn more" type="button" onclick="toggleContentMoreMenu(event)">更多</button>
+                                                <div class="content-more-menu">
+                                                    <button type="button" disabled>编辑</button>
+                                                    <button type="button" disabled>内容合适</button>
+                                                    <button type="button" disabled>内容不合适</button>
+                                                    <button type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                                                    <button type="button" onclick="handleContentAction('已撤回该作品')">撤回</button>
+                                                    <button type="button" onclick="handleContentAction('已打开观看链接')">观看链接</button>
+                                                    <button type="button" onclick="handleContentAction('已打开观看记录')">观看记录</button>
+                                                    <button type="button" disabled>分享作品</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr data-content-row data-content-id="work-pediatric-1" data-activity="pediatric" data-type="interactive-case" data-status="rejected" data-flow="rejected">
                                     <td class="doctor-cell">
-                                        <strong>陈雪</strong>
+                                        <strong>医生信息采购后可见</strong>
                                         <span>主治医师｜儿科</span>
                                         <span>杭州XX儿童医院</span>
                                     </td>
@@ -2907,12 +2978,23 @@
                                     </td>
                                     <td>2026-05-18 09:20</td>
                                     <td><span class="status-tag rejected">已驳回</span></td>
-                                    <td><span class="flow-tag rejected">已驳回</span></td>
+                                    <td>0</td>
                                     <td>
                                         <div class="content-actions">
                                             <button class="action-btn view" type="button" onclick="openAcademicContentPreview('work-pediatric-1')">详情</button>
-                                            <button class="action-btn transfer" type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
-                                            <button class="action-btn more" type="button" onclick="handleContentAction('已打开更多操作')">更多</button>
+                                            <div class="content-more-menu-wrap">
+                                                <button class="action-btn more" type="button" onclick="toggleContentMoreMenu(event)">更多</button>
+                                                <div class="content-more-menu">
+                                                    <button type="button" disabled>编辑</button>
+                                                    <button type="button" disabled>内容合适</button>
+                                                    <button type="button" disabled>内容不合适</button>
+                                                    <button type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                                                    <button type="button" onclick="handleContentAction('已撤回该作品')">撤回</button>
+                                                    <button type="button" onclick="handleContentAction('已打开观看链接')">观看链接</button>
+                                                    <button type="button" onclick="handleContentAction('已打开观看记录')">观看记录</button>
+                                                    <button type="button" disabled>分享作品</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -2934,12 +3016,23 @@
                                     </td>
                                     <td>2025-10-12 17:10</td>
                                     <td><span class="status-tag purchased">已采购</span></td>
-                                    <td><span class="flow-tag transferred">已传播</span></td>
+                                    <td>1280</td>
                                     <td>
                                         <div class="content-actions">
                                             <button class="action-btn view" type="button" onclick="openAcademicContentPreview('work-neurology-1')">详情</button>
-                                            <button class="action-btn transfer" type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
-                                            <button class="action-btn more" type="button" onclick="handleContentAction('已打开更多操作')">更多</button>
+                                            <div class="content-more-menu-wrap">
+                                                <button class="action-btn more" type="button" onclick="toggleContentMoreMenu(event)">更多</button>
+                                                <div class="content-more-menu">
+                                                    <button type="button" disabled>编辑</button>
+                                                    <button type="button" disabled>内容合适</button>
+                                                    <button type="button" disabled>内容不合适</button>
+                                                    <button type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                                                    <button type="button" onclick="handleContentAction('已撤回该作品')">撤回</button>
+                                                    <button type="button" onclick="handleContentAction('已打开观看链接')">观看链接</button>
+                                                    <button type="button" onclick="handleContentAction('已打开观看记录')">观看记录</button>
+                                                    <button type="button" disabled>分享作品</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -3201,7 +3294,7 @@
             const resetBtn = document.getElementById('resetBtn');
             if (resetBtn) {
                 resetBtn.addEventListener('click', function() {
-                document.getElementById('statusFilter').value = 'ongoing';
+                document.getElementById('statusFilter').value = 'all';
                 document.getElementById('disciplineFilter').value = 'all';
                 document.getElementById('startDate').value = '';
                 document.getElementById('endDate').value = '';
@@ -3248,11 +3341,25 @@
                 myActivityStatus.addEventListener('change', filterMyActivities);
             }
 
-            ['contentSearch', 'contentActivityFilter', 'contentTypeFilter', 'contentStatusFilter', 'contentFlowFilter'].forEach(id => {
+            ['contentSearch', 'contentTypeFilter', 'contentStatusFilter'].forEach(id => {
                 const filter = document.getElementById(id);
                 if (!filter) return;
                 filter.addEventListener(filter.tagName === 'INPUT' ? 'input' : 'change', filterAcademicContents);
             });
+
+            const keywordSearch = document.getElementById('keywordSearch');
+            const statusFilter = document.getElementById('statusFilter');
+            const searchBtn = document.getElementById('searchBtn');
+            if (keywordSearch) {
+                keywordSearch.addEventListener('input', filterActivityCards);
+            }
+            if (statusFilter) {
+                statusFilter.addEventListener('change', filterActivityCards);
+            }
+            if (searchBtn) {
+                searchBtn.addEventListener('click', filterActivityCards);
+            }
+            filterActivityCards();
             updateAcademicContentStats();
             filterAcademicContents();
         });
@@ -3396,6 +3503,38 @@
             const buttons = document.querySelectorAll('.discipline-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             document.querySelector('.discipline-btn[data-value="' + discipline + '"]').classList.add('active');
+            filterActivityCards();
+        }
+
+        function filterActivityCards() {
+            const keyword = (document.getElementById('keywordSearch')?.value || '').trim().toLowerCase();
+            const status = document.getElementById('statusFilter')?.value || 'all';
+            const activeDiscipline = document.querySelector('.discipline-btn.active')?.dataset.value || 'all';
+            const disciplineMap = {
+                cardiovascular: '心血管',
+                diabetes: '糖尿病',
+                pediatric: '儿科',
+                respiratory: '呼吸',
+                neurology: '神经科',
+                oncology: '肿瘤'
+            };
+
+            document.querySelectorAll('#activitiesGrid .activity-card').forEach(card => {
+                const activityName = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
+                const fieldName = card.querySelector('.field-badge')?.textContent || '';
+                const badge = card.querySelector('.card-badge');
+                const cardStatus = badge?.classList.contains('ended')
+                    ? 'ended'
+                    : badge?.classList.contains('upcoming')
+                        ? 'upcoming'
+                        : 'ongoing';
+
+                const matchedKeyword = !keyword || activityName.includes(keyword);
+                const matchedStatus = status === 'all' || status === cardStatus;
+                const matchedDiscipline = activeDiscipline === 'all' || fieldName === disciplineMap[activeDiscipline];
+
+                card.style.display = matchedKeyword && matchedStatus && matchedDiscipline ? '' : 'none';
+            });
         }
 
         // 打开活动详情
@@ -3473,7 +3612,7 @@
                 },
                 '2': {
                     title: '2025糖尿病规范化治疗病例征集大赛',
-                    status: '即将开始',
+                    status: '未开始',
                     statusClass: 'tag-status upcoming',
                     deadline: '2026-02-28',
                     topics: ['糖尿病分型诊断', '血糖监测技术', '胰岛素治疗方案', '并发症管理', '糖尿病教育'],
@@ -3550,7 +3689,7 @@
                 <div class="detail-cover">
                 </div>
                 
-                <span class="detail-status" style="background-color: ${activity.status === '进行中' ? '#dcfce7' : activity.status === '即将开始' ? '#fef3c7' : '#f3f4f6'}; color: ${activity.status === '进行中' ? '#16a34a' : activity.status === '即将开始' ? '#d97706' : '#6b7280'};">
+                <span class="detail-status" style="background-color: ${activity.status === '进行中' ? '#dcfce7' : activity.status === '未开始' ? '#fef3c7' : '#f3f4f6'}; color: ${activity.status === '进行中' ? '#16a34a' : activity.status === '未开始' ? '#d97706' : '#6b7280'};">
                     ${activity.status}
                 </span>
                 
@@ -3799,7 +3938,7 @@
                 doctor: '刘洋｜副主任医师｜内分泌科',
                 hospital: '上海XX医院',
                 submitTime: '2025-11-06 10:00',
-                status: '审核通过',
+                status: '已采购',
                 flow: '已采购',
                 summary: '内容结合真实门诊病例讲解血糖监测策略和药物调整逻辑，适合用于销售团队理解规范化治疗路径。'
             },
@@ -3853,21 +3992,19 @@
 
         function filterAcademicContents() {
             const keyword = (document.getElementById('contentSearch')?.value || '').trim().toLowerCase();
-            const activity = document.getElementById('contentActivityFilter')?.value || 'all';
             const type = document.getElementById('contentTypeFilter')?.value || 'all';
             const status = document.getElementById('contentStatusFilter')?.value || 'all';
-            const flow = document.getElementById('contentFlowFilter')?.value || 'all';
             const rows = document.querySelectorAll('#academicContentTableBody tr[data-content-row]');
             let visibleCount = 0;
 
             rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
+                const workTitle = row.querySelector('.content-title-cell strong')?.textContent || '';
+                const activityTitle = row.querySelector('.activity-topic-cell strong')?.textContent || '';
+                const text = `${workTitle} ${activityTitle}`.toLowerCase();
                 const matchedKeyword = !keyword || text.includes(keyword);
-                const matchedActivity = activity === 'all' || row.dataset.activity === activity;
                 const matchedType = type === 'all' || row.dataset.type === type;
                 const matchedStatus = status === 'all' || row.dataset.status === status;
-                const matchedFlow = flow === 'all' || row.dataset.flow === flow;
-                const visible = matchedKeyword && matchedActivity && matchedType && matchedStatus && matchedFlow;
+                const visible = matchedKeyword && matchedType && matchedStatus;
                 row.style.display = visible ? '' : 'none';
                 if (visible) visibleCount += 1;
             });
@@ -3882,10 +4019,8 @@
         function resetAcademicContentFilters() {
             const fields = {
                 contentSearch: '',
-                contentActivityFilter: 'all',
                 contentTypeFilter: 'all',
-                contentStatusFilter: 'all',
-                contentFlowFilter: 'all'
+                contentStatusFilter: 'all'
             };
 
             Object.entries(fields).forEach(([id, value]) => {
@@ -3904,6 +4039,10 @@
             const modalContent = document.getElementById('modalContent');
             if (!modal || !modalContent) return;
 
+            const canShowDoctorInfo = content.status === '已采购';
+            const doctorInfo = canShowDoctorInfo ? content.doctor : content.doctor.split('｜').slice(1).join('｜') || '医生信息采购后可见';
+            const hospitalInfo = canShowDoctorInfo ? content.hospital : getMaskedHospitalInfo(content.hospital);
+
             if (modalTitle) modalTitle.textContent = '学术内容详情';
             modalContent.innerHTML = `
                 <div class="content-preview-head">
@@ -3914,11 +4053,11 @@
                 <div class="content-preview-grid">
                     <div class="content-preview-item">
                         <span>投稿医生</span>
-                        <strong>${escapeHtml(content.doctor)}</strong>
+                        <strong>${escapeHtml(doctorInfo)}</strong>
                     </div>
                     <div class="content-preview-item">
                         <span>所在医院</span>
-                        <strong>${escapeHtml(content.hospital)}</strong>
+                        <strong>${escapeHtml(hospitalInfo)}</strong>
                     </div>
                     <div class="content-preview-item">
                         <span>投稿时间</span>
@@ -3938,8 +4077,72 @@
         }
 
         function handleContentAction(message) {
+            closeContentMoreMenus();
             alert(message);
         }
+
+        function closeContentMoreMenus(exceptMenu = null) {
+            document.querySelectorAll('.content-more-menu.active').forEach(menu => {
+                if (menu !== exceptMenu) {
+                    menu.classList.remove('active');
+                }
+            });
+        }
+
+        function getContentMoreMenu() {
+            let menu = document.getElementById('contentMoreMenu');
+            if (menu) return menu;
+
+            menu = document.createElement('div');
+            menu.id = 'contentMoreMenu';
+            menu.className = 'content-more-menu';
+            menu.innerHTML = `
+                <span class="content-more-menu-item disabled">编辑</span>
+                <span class="content-more-menu-item disabled">内容合适</span>
+                <span class="content-more-menu-item disabled">内容不合适</span>
+                <button type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                <button type="button" onclick="handleContentAction('已撤回该作品')">撤回</button>
+                <button type="button" onclick="handleContentAction('已打开观看链接')">观看链接</button>
+                <button type="button" onclick="handleContentAction('已打开观看记录')">观看记录</button>
+                <span class="content-more-menu-item disabled">分享作品</span>
+            `;
+            document.body.appendChild(menu);
+            return menu;
+        }
+
+        function toggleContentMoreMenu(event) {
+            event.stopPropagation();
+            const menu = getContentMoreMenu();
+
+            const shouldOpen = !menu.classList.contains('active');
+            closeContentMoreMenus(menu);
+            if (!shouldOpen) {
+                menu.classList.remove('active');
+                return;
+            }
+
+            const rect = event.currentTarget.getBoundingClientRect();
+            const menuWidth = 148;
+            const menuHeight = 336;
+            const gap = 6;
+            const top = rect.bottom + gap + menuHeight > window.innerHeight
+                ? Math.max(8, rect.top - gap - menuHeight)
+                : rect.bottom + gap;
+            const left = Math.min(
+                Math.max(8, rect.right - menuWidth),
+                window.innerWidth - menuWidth - 8
+            );
+
+            menu.style.top = `${top}px`;
+            menu.style.left = `${left}px`;
+            menu.classList.add('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.content-more-menu-wrap') && !event.target.closest('.content-more-menu')) {
+                closeContentMoreMenus();
+            }
+        });
 
         function getStoredUsedActivities() {
             try {
@@ -4013,7 +4216,7 @@
             const activities = getStoredUsedActivities();
             activities.forEach(activity => {
                 const status = activity.activityStatus || '进行中';
-                const statusClass = status === '已结束' ? 'ended' : 'ongoing';
+                const statusClass = status === '已结束' ? 'ended' : status === '未开始' ? 'upcoming' : 'ongoing';
                 const selectedThemes = normalizeSelectedThemes(activity);
                 const themeNames = selectedThemes.map(theme => theme.name).join('、') || '已选主题';
                 const totalPurchaseCount = selectedThemes.reduce((sum, theme) => sum + (Number(theme.purchaseCount) || 0), 0) || activity.purchaseCount || 0;
@@ -4051,14 +4254,6 @@
 	                        </div>
 	                        <div class="card-time">
 	                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-	                                <path d="M9 11l3 3L22 4"></path>
-	                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-	                            </svg>
-	                            <span class="card-time-text">开放主题：</span>
-	                            <span class="card-time-value">${escapeHtml(themeNames)}</span>
-	                        </div>
-	                        <div class="card-time">
-	                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 	                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                                 <line x1="16" y1="2" x2="16" y2="6"></line>
                                 <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -4084,12 +4279,17 @@
             const cards = document.querySelectorAll('#myActivitiesList .activity-card');
 
             cards.forEach(card => {
-                const searchableText = card.textContent.toLowerCase();
-                const cardStatus = card.dataset.status || (card.querySelector('.card-badge')?.classList.contains('ended') ? 'ended' : 'ongoing');
+                const searchableText = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
+                const badge = card.querySelector('.card-badge');
+                const cardStatus = card.dataset.status || (badge?.classList.contains('ended') ? 'ended' : badge?.classList.contains('upcoming') ? 'upcoming' : 'ongoing');
                 const matchedKeyword = !keyword || searchableText.includes(keyword);
                 const matchedStatus = status === 'all' || status === cardStatus;
                 card.style.display = matchedKeyword && matchedStatus ? '' : 'none';
             });
+        }
+
+        function getMaskedHospitalInfo(hospital) {
+            return hospital || 'XX医院';
         }
 
         // 提交申请

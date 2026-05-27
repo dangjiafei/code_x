@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>委托详情 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/record.css">
+    <style>
+        .detail-page {
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        .detail-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 18px;
+            align-items: start;
+            padding: 22px 24px;
+            margin-bottom: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .detail-header h1 {
+            margin: 0 0 8px;
+            color: #111827;
+            font-size: 22px;
+            line-height: 1.35;
+        }
+
+        .detail-header p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .detail-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 34px;
+            padding: 0 14px;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            color: #475569;
+            background: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .detail-btn.primary {
+            border-color: #667eea;
+            color: #ffffff;
+            background: #667eea;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            padding: 0 11px;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            color: #4338ca;
+            background: #e0e7ff;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .info-card,
+        .detail-section {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .info-card {
+            padding: 16px;
+        }
+
+        .info-card span {
+            display: block;
+            margin-bottom: 6px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .info-card strong {
+            color: #111827;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .detail-section {
+            padding: 22px 24px;
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            color: #111827;
+            font-size: 18px;
+        }
+
+        .section-title p {
+            margin: 4px 0 0;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(8, minmax(0, 1fr));
+            gap: 0;
+            overflow-x: auto;
+        }
+
+        .timeline-step {
+            position: relative;
+            min-width: 132px;
+            padding: 0 12px 0 0;
+        }
+
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            top: 14px;
+            left: 28px;
+            right: 0;
+            height: 2px;
+            background: #e5e7eb;
+        }
+
+        .timeline-step:last-child::before {
+            display: none;
+        }
+
+        .node {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            color: #ffffff;
+            background: #cbd5e1;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .timeline-step.done .node {
+            background: #16a34a;
+        }
+
+        .timeline-step.current .node {
+            background: #667eea;
+            box-shadow: 0 0 0 6px rgba(102, 126, 234, 0.14);
+        }
+
+        .timeline-step strong {
+            display: block;
+            margin-top: 10px;
+            color: #111827;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .timeline-step span {
+            display: block;
+            color: #94a3b8;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 18px;
+        }
+
+        .plan-box,
+        .progress-box,
+        .report-box {
+            padding: 16px;
+            border: 1px solid #edf2f7;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .plan-box h3,
+        .progress-box h3,
+        .report-box h3 {
+            margin: 0 0 10px;
+            color: #111827;
+            font-size: 15px;
+        }
+
+        .plan-list {
+            display: grid;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .plan-list li {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #475569;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .plan-list li:last-child {
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+
+        .plan-list strong {
+            color: #111827;
+            text-align: right;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .metric-card {
+            padding: 16px;
+            border: 1px solid #edf2f7;
+            border-radius: 10px;
+            background: #ffffff;
+        }
+
+        .metric-card span {
+            display: block;
+            margin-bottom: 6px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .metric-card strong {
+            color: #111827;
+            font-size: 22px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            margin-top: 12px;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #e5e7eb;
+        }
+
+        .progress-bar i {
+            display: block;
+            height: 100%;
+            width: 58%;
+            border-radius: inherit;
+            background: #667eea;
+        }
+
+        .service-record {
+            display: grid;
+            gap: 12px;
+        }
+
+        .service-record-item {
+            padding: 14px 16px;
+            border: 1px solid #edf2f7;
+            border-radius: 10px;
+            background: #ffffff;
+        }
+
+        .service-record-item strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #111827;
+            font-size: 14px;
+        }
+
+        .service-record-item span {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .report-box {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .report-box p {
+            margin: 0;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 1180px) {
+            .detail-header,
+            .info-grid,
+            .two-column,
+            .metric-grid,
+            .report-box {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-actions {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-container">
+        <div id="sidebar-placeholder"></div>
+
+        <main class="content-area">
+            <div class="detail-page">
+                <section class="detail-header">
+                    <div>
+                        <span class="status-pill" id="detailStatus">待确认方案</span>
+                        <h1>骨质疏松初始治疗活动效果评估</h1>
+                        <p id="detailIntro">厂家提交委托后，平台已完成医学评估方案设计。请确认方案后，平台将开始医生触达、数据回收和报告交付。</p>
+                    </div>
+                    <div class="detail-actions">
+                        <a class="detail-btn" href="record.html">返回列表</a>
+                        <a class="detail-btn primary" id="primaryAction" href="#">确认平台方案</a>
+                    </div>
+                </section>
+
+                <div class="info-grid">
+                    <div class="info-card">
+                        <span>委托编号</span>
+                        <strong>DEL-20260526001</strong>
+                    </div>
+                    <div class="info-card">
+                        <span>平台负责人</span>
+                        <strong>医学运营-林倩</strong>
+                    </div>
+                    <div class="info-card">
+                        <span>关联学术内容</span>
+                        <strong>骨质疏松初始治疗的一线选择</strong>
+                    </div>
+                    <div class="info-card">
+                        <span>预计报告交付</span>
+                        <strong>2026-06-05</strong>
+                    </div>
+                </div>
+
+                <section class="detail-section">
+                    <div class="section-title">
+                        <div>
+                            <h2>平台服务进度</h2>
+                            <p>厂家只需要在关键节点确认，执行过程由平台推进。</p>
+                        </div>
+                    </div>
+                    <div class="timeline">
+                        <div class="timeline-step done">
+                            <span class="node">1</span>
+                            <strong>提交委托</strong>
+                            <span>2026-05-26 10:20</span>
+                        </div>
+                        <div class="timeline-step done">
+                            <span class="node">2</span>
+                            <strong>平台受理</strong>
+                            <span>已分配负责人</span>
+                        </div>
+                        <div class="timeline-step current">
+                            <span class="node">3</span>
+                            <strong>制定方案</strong>
+                            <span>待厂家确认</span>
+                        </div>
+                        <div class="timeline-step">
+                            <span class="node">4</span>
+                            <strong>厂家确认</strong>
+                            <span>确认后执行</span>
+                        </div>
+                        <div class="timeline-step">
+                            <span class="node">5</span>
+                            <strong>平台执行</strong>
+                            <span>医生触达</span>
+                        </div>
+                        <div class="timeline-step">
+                            <span class="node">6</span>
+                            <strong>数据回收</strong>
+                            <span>质量校验</span>
+                        </div>
+                        <div class="timeline-step">
+                            <span class="node">7</span>
+                            <strong>报告生成</strong>
+                            <span>医学解读</span>
+                        </div>
+                        <div class="timeline-step">
+                            <span class="node">8</span>
+                            <strong>报告交付</strong>
+                            <span>完成委托</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="detail-section">
+                    <div class="section-title">
+                        <div>
+                            <h2>平台评估方案</h2>
+                            <p>由平台基于委托目标、学习数据和医学运营经验生成。</p>
+                        </div>
+                    </div>
+                    <div class="two-column">
+                        <div class="plan-box">
+                            <h3>方案摘要</h3>
+                            <ul class="plan-list">
+                                <li>
+                                    <span>评估目标</span>
+                                    <strong>验证医生对一线治疗选择的理解与接受度</strong>
+                                </li>
+                                <li>
+                                    <span>目标医生</span>
+                                    <strong>2026-01-27 至 2026-02-27 学习过内容的医生</strong>
+                                </li>
+                                <li>
+                                    <span>样本策略</span>
+                                    <strong>平台触达 320 人，目标回收 180 份有效反馈</strong>
+                                </li>
+                                <li>
+                                    <span>报告输出</span>
+                                    <strong>数据报告、医生分层、后续医学沟通建议</strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="plan-box">
+                            <h3>平台服务边界</h3>
+                            <ul class="plan-list">
+                                <li>
+                                    <span>问卷与指标</span>
+                                    <strong>平台设计，厂家确认</strong>
+                                </li>
+                                <li>
+                                    <span>医生触达</span>
+                                    <strong>平台执行并跟进</strong>
+                                </li>
+                                <li>
+                                    <span>数据质量</span>
+                                    <strong>平台校验有效性</strong>
+                                </li>
+                                <li>
+                                    <span>报告解读</span>
+                                    <strong>医学运营交付结论</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="detail-section">
+                    <div class="section-title">
+                        <div>
+                            <h2>执行数据</h2>
+                            <p>方案确认后，平台执行数据会在这里持续更新。</p>
+                        </div>
+                    </div>
+                    <div class="metric-grid">
+                        <div class="metric-card">
+                            <span>建议触达医生</span>
+                            <strong>320</strong>
+                        </div>
+                        <div class="metric-card">
+                            <span>预计有效回收</span>
+                            <strong>180</strong>
+                        </div>
+                        <div class="metric-card">
+                            <span>当前执行进度</span>
+                            <strong>58%</strong>
+                            <div class="progress-bar"><i></i></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="detail-section">
+                    <div class="section-title">
+                        <div>
+                            <h2>平台服务记录</h2>
+                            <p>沉淀平台在委托中的处理动作，让厂家明确看到服务过程。</p>
+                        </div>
+                    </div>
+                    <div class="service-record">
+                        <div class="service-record-item">
+                            <strong>2026-05-26 14:30 平台受理委托</strong>
+                            <span>医学运营-林倩已完成委托范围确认，关联学术内容和学习人群校验通过。</span>
+                        </div>
+                        <div class="service-record-item">
+                            <strong>2026-05-26 18:10 平台完成方案初稿</strong>
+                            <span>已生成评估问卷框架、目标样本策略和报告结构，等待厂家确认后执行。</span>
+                        </div>
+                        <div class="service-record-item">
+                            <strong id="nextStepTitle">下一步：厂家确认平台方案</strong>
+                            <span id="nextStepDesc">确认后平台将启动医生触达，预计 3 个工作日内完成首轮数据回收。</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="detail-section">
+                    <div class="section-title">
+                        <div>
+                            <h2>报告交付</h2>
+                            <p>委托完成后将在这里查看在线报告、下载数据包和阅读医学运营解读。</p>
+                        </div>
+                    </div>
+                    <div class="report-box">
+                        <div>
+                            <h3>学术效果评估报告</h3>
+                            <p id="reportDesc">当前处于方案确认阶段，报告将在平台完成执行与分析后生成。预计交付时间为 2026-06-05。</p>
+                        </div>
+                        <a class="detail-btn" id="reportAction" href="#">报告未生成</a>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/script.js?v=1"></script>
+    <script src="../js/menu.js?v=1"></script>
+    <script>
+        async function loadComponents() {
+            const headerResponse = await fetch('components/header.html');
+            const headerHtml = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerHtml;
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarHtml = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+            initializeMenu();
+        }
+
+        window.addEventListener('DOMContentLoaded', loadComponents);
+
+        function applyStatusFromQuery() {
+            const status = new URLSearchParams(window.location.search).get('status') || 'confirm';
+            const configs = {
+                pending: {
+                    label: '待平台受理',
+                    intro: '厂家已提交评估委托，平台正在确认委托范围并分配医学运营负责人。受理后会生成正式执行方案。',
+                    action: '等待平台受理',
+                    currentStep: 1,
+                    nextTitle: '下一步：平台受理委托',
+                    nextDesc: '平台将确认委托目标、关联学术内容和可评估医生范围，并分配服务负责人。',
+                    report: '当前处于平台受理阶段，报告将在平台完成执行与分析后生成。',
+                    reportAction: '报告未生成'
+                },
+                confirm: {
+                    label: '待确认方案',
+                    intro: '厂家提交委托后，平台已完成医学评估方案设计。请确认方案后，平台将开始医生触达、数据回收和报告交付。',
+                    action: '确认平台方案',
+                    currentStep: 2,
+                    nextTitle: '下一步：厂家确认平台方案',
+                    nextDesc: '确认后平台将启动医生触达，预计 3 个工作日内完成首轮数据回收。',
+                    report: '当前处于方案确认阶段，报告将在平台完成执行与分析后生成。预计交付时间为 2026-06-05。',
+                    reportAction: '报告未生成'
+                },
+                running: {
+                    label: '执行中',
+                    intro: '平台已根据确认方案启动医生触达和数据回收，当前正在跟进样本达成与反馈质量。',
+                    action: '查看执行数据',
+                    currentStep: 4,
+                    nextTitle: '下一步：平台完成数据回收',
+                    nextDesc: '平台会持续跟进医生反馈质量，达到样本要求后进入报告生成。',
+                    report: '当前处于平台执行阶段，报告将在数据回收完成并通过质量校验后生成。',
+                    reportAction: '报告未生成'
+                },
+                report: {
+                    label: '报告生成中',
+                    intro: '平台已完成主要数据回收，正在进行数据清洗、医学解读和报告生成。',
+                    action: '查看回收数据',
+                    currentStep: 6,
+                    nextTitle: '下一步：平台交付评估报告',
+                    nextDesc: '医学运营将完成结论整理、医生分层和下一阶段沟通建议。',
+                    report: '报告正在生成中，预计 2026-05-27 交付在线报告和数据摘要。',
+                    reportAction: '生成中'
+                },
+                done: {
+                    label: '已完成',
+                    intro: '平台已完成医生触达、数据回收、医学分析和报告交付，本次委托服务已完成。',
+                    action: '下载报告',
+                    currentStep: 8,
+                    nextTitle: '委托已完成',
+                    nextDesc: '厂家可查看在线报告，或下载数据包用于内部复盘。',
+                    report: '平台已交付学术效果评估报告，包含医生分层、核心结论和后续医学沟通建议。',
+                    reportAction: '查看报告'
+                }
+            };
+
+            const config = configs[status] || configs.confirm;
+            document.getElementById('detailStatus').textContent = config.label;
+            document.getElementById('detailIntro').textContent = config.intro;
+            document.getElementById('primaryAction').textContent = config.action;
+            document.getElementById('nextStepTitle').textContent = config.nextTitle;
+            document.getElementById('nextStepDesc').textContent = config.nextDesc;
+            document.getElementById('reportDesc').textContent = config.report;
+            document.getElementById('reportAction').textContent = config.reportAction;
+
+            document.querySelectorAll('.timeline-step').forEach((step, index) => {
+                step.classList.remove('done', 'current');
+                if (index < config.currentStep) {
+                    step.classList.add('done');
+                } else if (index === config.currentStep) {
+                    step.classList.add('current');
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', applyStatusFromQuery);
+    </script>
+</body>
+</html>

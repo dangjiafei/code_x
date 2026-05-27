@@ -196,7 +196,7 @@ function initializeMenu() {
 
             // 处理特殊页面情况
             const isSpecialPage =
-                (currentPage === 'create-delegation.html' && hrefFileName === 'create-delegation.html') ||
+                ((currentPage === 'create-delegation.html' || currentPage === 'delegation-detail.html') && hrefFileName === 'record.html') ||
                 (currentPage === 'create-case-collection.html' && hrefFileName === 'activities.html') ||
                 (currentPage === 'case-collection-detail.html' && hrefFileName === 'activities.html') ||
                 (currentPage === 'activity-detail.html' && hrefFileName === 'academic-activity-market.html');

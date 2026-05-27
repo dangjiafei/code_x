@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提交评估委托 - 趣学术</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/record.css">
+    <style>
+        .delegate-page {
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        .delegate-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 22px 24px;
+            margin-bottom: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .delegate-header h1 {
+            margin: 0 0 8px;
+            color: #111827;
+            font-size: 22px;
+            line-height: 1.35;
+        }
+
+        .delegate-header p {
+            max-width: 720px;
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .return-link,
+        .outline-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 34px;
+            padding: 0 14px;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            color: #475569;
+            background: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .wizard-shell {
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+        }
+
+        .step-rail {
+            position: sticky;
+            top: 88px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 10px;
+            padding: 13px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background: #ffffff;
+            cursor: pointer;
+        }
+
+        .step-item.active {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.08);
+        }
+
+        .step-index {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            color: #ffffff;
+            background: #667eea;
+            font-size: 13px;
+            font-weight: 800;
+            flex: none;
+        }
+
+        .step-item strong {
+            display: block;
+            color: #111827;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .step-item span {
+            display: block;
+            color: #94a3b8;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .delegate-section {
+            padding: 22px 24px;
+            margin-bottom: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .wizard-panel {
+            display: none;
+        }
+
+        .wizard-panel.active {
+            display: block;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            color: #111827;
+            font-size: 18px;
+        }
+
+        .section-title p {
+            margin: 5px 0 0;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            height: 26px;
+            padding: 0 10px;
+            border-radius: 13px;
+            color: #4338ca;
+            background: #e0e7ff;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .type-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .type-tab {
+            display: inline-flex;
+            align-items: center;
+            min-height: 32px;
+            padding: 0 12px;
+            border: 1px solid #dbe3ef;
+            border-radius: 16px;
+            color: #475569;
+            background: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .type-tab.active {
+            border-color: #667eea;
+            color: #4338ca;
+            background: #eef2ff;
+        }
+
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #edf2f7;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .activity-table th,
+        .activity-table td {
+            padding: 13px 14px;
+            border-bottom: 1px solid #edf2f7;
+            text-align: left;
+            color: #475569;
+            font-size: 13px;
+            vertical-align: top;
+        }
+
+        .activity-table th {
+            color: #334155;
+            background: #f8fafc;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .activity-table tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .check-cell {
+            width: 42px;
+        }
+
+        .fake-check {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+            color: #ffffff;
+            background: #ffffff;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .fake-check.checked {
+            border-color: #667eea;
+            background: #667eea;
+        }
+
+        .activity-name {
+            color: #111827;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .muted {
+            color: #94a3b8;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            min-height: 22px;
+            padding: 0 8px;
+            border-radius: 11px;
+            color: #475569;
+            background: #f1f5f9;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .selection-summary {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .summary-card {
+            padding: 13px;
+            border: 1px solid #edf2f7;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .summary-card span {
+            display: block;
+            margin-bottom: 5px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .summary-card strong {
+            color: #111827;
+            font-size: 18px;
+        }
+
+        .condition-grid,
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .condition-card {
+            padding: 16px;
+            border: 1px solid #edf2f7;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .condition-card h3 {
+            margin: 0 0 12px;
+            color: #111827;
+            font-size: 15px;
+        }
+
+        .chip-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            padding: 0 10px;
+            border: 1px solid #dbe3ef;
+            border-radius: 15px;
+            color: #475569;
+            background: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .chip.active {
+            border-color: #667eea;
+            color: #4338ca;
+            background: #eef2ff;
+        }
+
+        .privacy-note {
+            padding: 12px 14px;
+            margin-top: 14px;
+            border: 1px solid #fde68a;
+            border-radius: 10px;
+            color: #92400e;
+            background: #fffbeb;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .form-item label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .form-item input,
+        .form-item select,
+        .form-item textarea {
+            width: 100%;
+            min-height: 38px;
+            padding: 9px 11px;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            color: #334155;
+            background: #ffffff;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        .form-item textarea {
+            min-height: 96px;
+            resize: vertical;
+            line-height: 1.7;
+        }
+
+        .form-item.full {
+            grid-column: 1 / -1;
+        }
+
+        .service-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .service-card {
+            padding: 15px;
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            background: #eff6ff;
+        }
+
+        .service-card strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #1e3a8a;
+            font-size: 14px;
+        }
+
+        .service-card span {
+            color: #475569;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .footer-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+            padding: 18px 24px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .panel-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            padding-top: 18px;
+            margin-top: 18px;
+            border-top: 1px solid #edf2f7;
+        }
+
+        .panel-actions .hint {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .footer-actions p {
+            margin: 0;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .primary-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 0 20px;
+            border: 0;
+            border-radius: 8px;
+            color: #ffffff;
+            background: #667eea;
+            font-size: 14px;
+            font-weight: 800;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 1180px) {
+            .wizard-shell,
+            .selection-summary,
+            .condition-grid,
+            .form-grid,
+            .service-strip {
+                grid-template-columns: 1fr;
+            }
+
+            .step-rail {
+                position: static;
+            }
+
+            .footer-actions {
+                align-items: stretch;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-container">
+        <div id="sidebar-placeholder"></div>
+
+        <main class="content-area">
+            <div class="delegate-page">
+                <section class="delegate-header">
+                    <div>
+                        <h1>提交评估委托</h1>
+                        <p>厂家选择要评估的学术活动范围和目标人群条件，平台受理后再设计问卷、执行医生触达、回收数据并交付报告。</p>
+                    </div>
+                    <a class="return-link" href="record.html">返回委托记录</a>
+                </section>
+
+                <div class="wizard-shell">
+                    <aside class="step-rail">
+                        <div class="step-item active" data-step="0">
+                            <span class="step-index">1</span>
+                            <div>
+                                <strong>选择评估范围</strong>
+                                <span>可选择多个学术活动</span>
+                            </div>
+                        </div>
+                        <div class="step-item" data-step="1">
+                            <span class="step-index">2</span>
+                            <div>
+                                <strong>设置人群条件</strong>
+                                <span>只按条件圈选，不到个人</span>
+                            </div>
+                        </div>
+                        <div class="step-item" data-step="2">
+                            <span class="step-index">3</span>
+                            <div>
+                                <strong>填写委托需求</strong>
+                                <span>提交平台受理</span>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <div>
+                        <section class="delegate-section wizard-panel active" data-panel="0">
+                            <div class="section-title">
+                                <div>
+                                    <h2>1. 选择需要评估的学术活动</h2>
+                                    <p>可以跨活动类型选择多个已传递活动。平台会基于这些活动的学习记录，判断可触达的医生样本。</p>
+                                </div>
+                                <span class="section-badge">支持多选</span>
+                            </div>
+
+                            <div class="type-tabs">
+                                <span class="type-tab active">全部</span>
+                                <span class="type-tab">趣课堂</span>
+                                <span class="type-tab">学术拜访</span>
+                                <span class="type-tab">医学播客</span>
+                                <span class="type-tab">互动病例</span>
+                                <span class="type-tab">趣会议</span>
+                            </div>
+
+                            <table class="activity-table">
+                                <thead>
+                                    <tr>
+                                        <th class="check-cell"></th>
+                                        <th>学术活动</th>
+                                        <th>活动类型</th>
+                                        <th>传递时间</th>
+                                        <th>学习医生</th>
+                                        <th>可评估样本</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="check-cell"><span class="fake-check checked">✓</span></td>
+                                        <td>
+                                            <div class="activity-name">骨质疏松初始治疗的一线选择</div>
+                                            <div class="muted">围绕一线治疗选择和用药时机的学术内容</div>
+                                        </td>
+                                        <td><span class="tag">医学播客</span></td>
+                                        <td>2026-01-27</td>
+                                        <td>612 人</td>
+                                        <td>320 人</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="check-cell"><span class="fake-check checked">✓</span></td>
+                                        <td>
+                                            <div class="activity-name">强直性脊柱炎合并损伤病例调研问卷</div>
+                                            <div class="muted">医生参与病例问卷后的观点反馈</div>
+                                        </td>
+                                        <td><span class="tag">互动病例</span></td>
+                                        <td>2026-02-14</td>
+                                        <td>438 人</td>
+                                        <td>210 人</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="check-cell"><span class="fake-check"> </span></td>
+                                        <td>
+                                            <div class="activity-name">高血压长期管理区域会</div>
+                                            <div class="muted">华东区线上会议后续学习记录</div>
+                                        </td>
+                                        <td><span class="tag">趣会议</span></td>
+                                        <td>2026-05-12</td>
+                                        <td>286 人</td>
+                                        <td>126 人</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="check-cell"><span class="fake-check"> </span></td>
+                                        <td>
+                                            <div class="activity-name">糖尿病并发症规范诊疗趣课堂</div>
+                                            <div class="muted">课程学习、课后测验和收藏行为</div>
+                                        </td>
+                                        <td><span class="tag">趣课堂</span></td>
+                                        <td>2026-05-18</td>
+                                        <td>356 人</td>
+                                        <td>172 人</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="check-cell"><span class="fake-check"> </span></td>
+                                        <td>
+                                            <div class="activity-name">心衰治疗方案学术拜访</div>
+                                            <div class="muted">拜访后内容学习和互动记录</div>
+                                        </td>
+                                        <td><span class="tag">学术拜访</span></td>
+                                        <td>2026-05-20</td>
+                                        <td>194 人</td>
+                                        <td>88 人</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="selection-summary">
+                                <div class="summary-card">
+                                    <span>已选活动</span>
+                                    <strong>2 个</strong>
+                                </div>
+                                <div class="summary-card">
+                                    <span>覆盖活动类型</span>
+                                    <strong>2 类</strong>
+                                </div>
+                                <div class="summary-card">
+                                    <span>学习医生去重后</span>
+                                    <strong>918 人</strong>
+                                </div>
+                                <div class="summary-card">
+                                    <span>平台建议样本</span>
+                                    <strong>430 人</strong>
+                                </div>
+                            </div>
+
+                            <div class="panel-actions">
+                                <span class="hint">已选 2 个学术活动，平台将按活动学习记录计算可评估样本。</span>
+                                <button class="primary-action" type="button" data-next="1">下一步：设置人群条件</button>
+                            </div>
+                        </section>
+
+                        <section class="delegate-section wizard-panel" data-panel="1">
+                            <div class="section-title">
+                                <div>
+                                    <h2>2. 设置目标人群条件</h2>
+                                    <p>厂家只能按医院等级、职称、科室、地区等条件描述目标人群，平台不会让厂家直接指定某个医生。</p>
+                                </div>
+                                <span class="section-badge">不具体到人</span>
+                            </div>
+
+                            <div class="condition-grid">
+                                <div class="condition-card">
+                                    <h3>医院等级</h3>
+                                    <div class="chip-group">
+                                        <span class="chip active">三级医院</span>
+                                        <span class="chip active">二级医院</span>
+                                        <span class="chip">基层医疗机构</span>
+                                        <span class="chip">不限</span>
+                                    </div>
+                                </div>
+                                <div class="condition-card">
+                                    <h3>职称</h3>
+                                    <div class="chip-group">
+                                        <span class="chip active">主任医师</span>
+                                        <span class="chip active">副主任医师</span>
+                                        <span class="chip active">主治医师</span>
+                                        <span class="chip">不限</span>
+                                    </div>
+                                </div>
+                                <div class="condition-card">
+                                    <h3>科室</h3>
+                                    <div class="chip-group">
+                                        <span class="chip active">骨科</span>
+                                        <span class="chip active">风湿免疫科</span>
+                                        <span class="chip">内分泌科</span>
+                                        <span class="chip">全科</span>
+                                    </div>
+                                </div>
+                                <div class="condition-card">
+                                    <h3>地区</h3>
+                                    <div class="chip-group">
+                                        <span class="chip active">华东</span>
+                                        <span class="chip active">华南</span>
+                                        <span class="chip">华北</span>
+                                        <span class="chip">西南</span>
+                                        <span class="chip">不限</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-grid" style="margin-top: 16px;">
+                                <div class="form-item">
+                                    <label>学习时间范围</label>
+                                    <input type="text" value="2026-01-01 至 2026-05-26">
+                                </div>
+                                <div class="form-item">
+                                    <label>期望有效反馈数量</label>
+                                    <select>
+                                        <option>由平台评估后推荐</option>
+                                        <option>不少于 100 份有效反馈</option>
+                                        <option>不少于 200 份有效反馈</option>
+                                        <option>不少于 300 份有效反馈</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="privacy-note">平台将按条件匹配目标人群并执行触达，厂家只能看到汇总进度和结果数据，不能在新建委托时直接选择或排除某个具体医生。</div>
+
+                            <div class="panel-actions">
+                                <button class="outline-btn" type="button" data-next="0">上一步</button>
+                                <button class="primary-action" type="button" data-next="2">下一步：填写委托需求</button>
+                            </div>
+                        </section>
+
+                        <section class="delegate-section wizard-panel" data-panel="2">
+                            <div class="section-title">
+                                <div>
+                                    <h2>3. 填写委托需求</h2>
+                                    <p>这里不需要厂家配置题目或执行流程，只需要说明希望平台帮忙评估什么、什么时候交付。</p>
+                                </div>
+                                <span class="section-badge">平台转化为执行方案</span>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-item">
+                                    <label>委托名称</label>
+                                    <input type="text" value="骨质疏松与强直性脊柱炎学术活动效果评估">
+                                </div>
+                                <div class="form-item">
+                                    <label>期望交付时间</label>
+                                    <input type="date" value="2026-06-05">
+                                </div>
+                                <div class="form-item">
+                                    <label>报告类型</label>
+                                    <select>
+                                        <option>标准评估报告</option>
+                                        <option>分地区对比报告</option>
+                                        <option>分活动类型对比报告</option>
+                                    </select>
+                                </div>
+                                <div class="form-item">
+                                    <label>重点关注方向</label>
+                                    <select>
+                                        <option>医生学习反馈与内容接受度</option>
+                                        <option>不同活动类型的传播效果对比</option>
+                                        <option>目标人群后续触达建议</option>
+                                    </select>
+                                </div>
+                                <div class="form-item full">
+                                    <label>委托说明</label>
+                                    <textarea>希望平台评估已选学术活动对目标医生群体的学习反馈和内容接受度，并给出后续医学沟通建议。</textarea>
+                                </div>
+                            </div>
+
+                            <div class="service-strip">
+                                <div class="service-card">
+                                    <strong>平台受理</strong>
+                                    <span>确认活动范围、人群条件和可执行样本。</span>
+                                </div>
+                                <div class="service-card">
+                                    <strong>平台制定方案</strong>
+                                    <span>把委托需求转化为问卷、触达节奏和报告结构。</span>
+                                </div>
+                                <div class="service-card">
+                                    <strong>平台执行交付</strong>
+                                    <span>负责医生触达、数据回收、质量校验和报告交付。</span>
+                                </div>
+                            </div>
+
+                            <div class="footer-actions" style="margin-top: 18px;">
+                                <p>提交后进入“待平台受理”，平台会先确认服务范围，再给出执行方案供厂家确认。</p>
+                                <a class="primary-action" href="delegation-detail.html?status=pending">提交平台受理</a>
+                            </div>
+
+                            <div class="panel-actions">
+                                <button class="outline-btn" type="button" data-next="1">上一步</button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/script.js?v=1"></script>
+    <script src="../js/menu.js?v=1"></script>
+    <script>
+        async function loadComponents() {
+            const headerResponse = await fetch('components/header.html');
+            const headerHtml = await headerResponse.text();
+            document.getElementById('header-placeholder').innerHTML = headerHtml;
+            const sidebarResponse = await fetch('components/sidebar.html');
+            const sidebarHtml = await sidebarResponse.text();
+            document.getElementById('sidebar-placeholder').innerHTML = sidebarHtml;
+            initializeMenu();
+        }
+
+        window.addEventListener('DOMContentLoaded', loadComponents);
+
+        function showStep(step) {
+            document.querySelectorAll('.step-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.step === String(step));
+            });
+            document.querySelectorAll('.wizard-panel').forEach(panel => {
+                panel.classList.toggle('active', panel.dataset.panel === String(step));
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('[data-step]').forEach(item => {
+                item.addEventListener('click', function() {
+                    showStep(this.dataset.step);
+                });
+            });
+            document.querySelectorAll('[data-next]').forEach(button => {
+                button.addEventListener('click', function() {
+                    showStep(this.dataset.next);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

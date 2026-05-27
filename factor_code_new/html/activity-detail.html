@@ -88,7 +88,7 @@
 
                 <div class="tab-bar">
                         <button class="tab-btn active" data-tab="config" onclick="switchTab('config')">活动信息</button>
-                        <button class="tab-btn" data-tab="usage" onclick="switchTab('usage')">使用明细</button>
+                        <button class="tab-btn" data-tab="usage" onclick="switchTab('usage')">活动参与明细</button>
                         <button class="tab-btn" data-tab="submission" onclick="switchTab('submission')">作品管理</button>
                     </div>
 
@@ -97,8 +97,26 @@
                         <div class="tab-content-inner">
                             <div class="tab-content-left">
                         <div class="config-section">
-                            <h2 class="section-title">活动详情</h2>
-                            <p class="rich-text">本次心血管疾病病例征稿活动是由北京康辰药业股份有限公司发起的学术交流项目，旨在汇聚全国心血管领域医生的临床经验，推动学科发展和诊疗水平提升。活动面向全国各级医疗机构的心血管内科及相关科室医生开放，鼓励分享在冠心病、心力衰竭、心律失常等领域的典型病例、疑难病例及创新诊疗方案。优秀稿件将有机会在行业学术会议上进行分享，并获得权威专家的点评指导。</p>
+                            <h2 class="section-title">活动概览</h2>
+                            <div class="overview-list">
+                                <div class="overview-item">
+                                    <div class="overview-label">本期征集重点</div>
+                                    <div class="overview-primary">围绕心血管真实世界诊疗经验，征集可复盘、可交流的内容</div>
+                                </div>
+                                <div class="overview-item">
+                                    <div class="overview-label">概览说明</div>
+                                    <p class="rich-text">本期活动聚焦冠心病诊疗新进展、心力衰竭管理、心律失常诊治及复杂冠脉介入等临床方向，鼓励医生结合真实诊疗场景，沉淀可用于学术交流的病例复盘、诊疗思路和操作经验。</p>
+                                </div>
+                                <div class="overview-item">
+                                    <div class="overview-label">覆盖方向</div>
+                                    <div class="overview-tags">
+                                        <span>冠心病诊疗</span>
+                                        <span>心力衰竭管理</span>
+                                        <span>心律失常诊治</span>
+                                        <span>复杂冠脉介入</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="config-section">
@@ -203,29 +221,6 @@
                         </div>
 
                         <div class="config-section">
-                            <h2 class="section-title">平台建议匹配范围</h2>
-                            <p class="rich-text" style="margin-bottom: 12px;">以下为平台创建活动时给出的推荐范围，实际招募会以企业使用计划中每个主题配置的条件为准。</p>
-                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 12px;">
-                                <div style="background-color: #f8fafc; border-radius: 8px; padding: 12px;">
-                                    <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">省市</div>
-                                    <div style="font-size: 13px; color: #1e293b;">全国</div>
-                                </div>
-                                <div style="background-color: #f8fafc; border-radius: 8px; padding: 12px;">
-                                    <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">机构名称</div>
-                                    <div style="font-size: 13px; color: #1e293b;">三级甲等医院</div>
-                                </div>
-                                <div style="background-color: #f8fafc; border-radius: 8px; padding: 12px;">
-                                    <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">身份职称</div>
-                                    <div style="font-size: 13px; color: #1e293b;">主任医师、副主任医师</div>
-                                </div>
-                                <div style="background-color: #f8fafc; border-radius: 8px; padding: 12px;">
-                                    <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">科室</div>
-                                    <div style="font-size: 13px; color: #1e293b;">心血管内科、心脏外科</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="config-section">
                             <h2 class="section-title">内容要求</h2>
                             <div class="requirement-list">
                                 <div class="requirement-item">
@@ -276,7 +271,6 @@
                                         <th>使用主题 / 任务归属</th>
                                         <th>目标采购数</th>
                                         <th>目标人群条件</th>
-                                        <th>命中医生数</th>
                                         <th>投稿数</th>
                                         <th>已采购数</th>
                                         <th>招募状态</th>
@@ -296,26 +290,10 @@
                                             <span class="filter-tag">三甲医院</span>
                                             <span class="filter-tag">心内科</span>
                                         </td>
-                                        <td>156</td>
                                         <td>45</td>
                                         <td>32</td>
                                         <td><span class="status-badge ongoing">进行中</span></td>
-                                        <td><button class="action-btn expand-btn" onclick="toggleExpand(1)">展开</button></td>
-                                    </tr>
-                                    <tr class="expand-row" id="expand-1" style="display: none;">
-                                        <td colspan="9">
-                                            <div class="expand-content">
-                                                <div class="expand-section">
-                                                    <h4>报名医生及投稿状态</h4>
-                                                    <table class="detail-table">
-                                                        <tr><th>医生信息</th><th>医院</th><th>报名时间</th><th>投稿标题</th><th>投稿状态</th><th>投稿时间</th><th>操作</th></tr>
-                                                        <tr><td>张明｜主任医师｜心内科</td><td>广州XX医院</td><td>2025-03-02 10:35:00</td><td>冠心病治疗新进展<span class="work-type medical-podcast">医学播客</span></td><td><span class="sub-status approved">审核通过</span></td><td>2025-03-03 09:15:00</td><td><button class="view-btn">查看详情</button></td></tr>
-                                                        <tr><td>李华｜副主任医师｜心内科</td><td>广州XX医院</td><td>2025-03-02 11:20:00</td><td>心力衰竭管理经验<span class="work-type interactive-case">互动病例</span></td><td><span class="sub-status pending">待审核</span></td><td>2025-03-03 15:30:00</td><td><button class="view-btn">查看详情</button></td></tr>
-                                                        <tr><td>王芳｜主任医师｜心血管内科</td><td>深圳XX医院</td><td>2025-03-02 14:45:00</td><td>-</td><td><span class="sub-status no-submit">未投稿</span></td><td>-</td><td>-</td></tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </td>
+                                        <td><button class="action-btn view" type="button" onclick="openUsageContentModal('task-cardio-1')">查看</button></td>
                                     </tr>
                                     <tr class="data-row">
                                         <td>2025-03-05 16:45:00</td>
@@ -329,25 +307,10 @@
                                             <span class="filter-tag">三甲医院</span>
                                             <span class="filter-tag">不限</span>
                                         </td>
-                                        <td>89</td>
                                         <td>23</td>
                                         <td>18</td>
                                         <td><span class="status-badge ongoing">进行中</span></td>
-                                        <td><button class="action-btn expand-btn" onclick="toggleExpand(2)">展开</button></td>
-                                    </tr>
-                                    <tr class="expand-row" id="expand-2" style="display: none;">
-                                        <td colspan="9">
-                                            <div class="expand-content">
-                                                <div class="expand-section">
-                                                    <h4>报名医生及投稿状态</h4>
-                                                    <table class="detail-table">
-                                                        <tr><th>医生信息</th><th>医院</th><th>报名时间</th><th>投稿标题</th><th>投稿状态</th><th>投稿时间</th><th>操作</th></tr>
-                                                        <tr><td>陈伟｜主任医师｜心内科</td><td>上海XX医院</td><td>2025-03-05 17:00:00</td><td>-</td><td><span class="sub-status no-submit">未投稿</span></td><td>-</td><td>-</td></tr>
-                                                        <tr><td>刘洋｜副主任医师｜内分泌科</td><td>上海XX医院</td><td>2025-03-05 18:30:00</td><td>糖尿病诊治指南解读<span class="work-type surgery-video">手术视频</span></td><td><span class="sub-status rejected">审核未通过</span></td><td>2025-03-06 10:00:00</td><td><button class="view-btn">查看详情</button></td></tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </td>
+                                        <td><button class="action-btn view" type="button" onclick="openUsageContentModal('task-cardio-2')">查看</button></td>
                                     </tr>
                                     <tr class="data-row">
                                         <td>2025-02-28 09:00:00</td>
@@ -362,27 +325,10 @@
                                             <span class="filter-tag">主任医师</span>
                                             <span class="filter-tag">心内科</span>
                                         </td>
-                                        <td>234</td>
                                         <td>89</td>
                                         <td>67</td>
                                         <td><span class="status-badge ended">已结束</span></td>
-                                        <td><button class="action-btn expand-btn" onclick="toggleExpand(3)">展开</button></td>
-                                    </tr>
-                                    <tr class="expand-row" id="expand-3" style="display: none;">
-                                        <td colspan="9">
-                                            <div class="expand-content">
-                                                <div class="expand-section">
-                                                    <h4>报名医生及投稿状态</h4>
-                                                    <table class="detail-table">
-                                                        <tr><th>医生信息</th><th>医院</th><th>报名时间</th><th>投稿标题</th><th>投稿状态</th><th>投稿时间</th><th>操作</th></tr>
-                                                        <tr><td>赵强｜主任医师｜心内科</td><td>北京XX医院</td><td>2025-02-28 09:30:00</td><td>心律失常治疗策略<span class="work-type medical-podcast">医学播客</span></td><td><span class="sub-status approved">审核通过</span></td><td>2025-03-01 08:00:00</td><td><button class="view-btn">查看详情</button></td></tr>
-                                                        <tr><td>孙丽｜主任医师｜心血管内科</td><td>北京XX医院</td><td>2025-02-28 10:15:00</td><td>心脏介入手术进展<span class="work-type surgery-video">手术视频</span></td><td><span class="sub-status approved">审核通过</span></td><td>2025-03-01 09:30:00</td><td><button class="view-btn">查看详情</button></td></tr>
-                                                        <tr><td>周杰｜主任医师｜心内科</td><td>北京XX医院</td><td>2025-02-28 11:00:00</td><td>高血压管理新观点<span class="work-type interactive-case">互动病例</span></td><td><span class="sub-status pending">待审核</span></td><td>2025-03-01 10:00:00</td><td><button class="view-btn">查看详情</button></td></tr>
-                                                        <tr><td>吴敏｜副主任医师｜心内科</td><td>北京XX医院</td><td>2025-02-28 14:00:00</td><td>-</td><td><span class="sub-status no-submit">未投稿</span></td><td>-</td><td>-</td></tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </td>
+                                        <td><button class="action-btn view" type="button" onclick="openUsageContentModal('task-cardio-3')">查看</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -390,191 +336,82 @@
                     </div>
 
                     <div class="tab-pane" id="tab-submission">
-                        <div class="filter-bar">
-                            <div class="filter-item">
-                                <select class="filter-select">
-                                    <option value="all">全部主题类型</option>
-                                    <option value="type1">医学播客</option>
-                                    <option value="type2">互动病例</option>
-                                    <option value="type3">手术视频</option>
-                                </select>
+                        <div class="content-summary-strip">
+                            <div class="content-summary-item">
+                                <span class="content-summary-value" id="totalContentCount">0</span>
+                                <span class="content-summary-label">征集内容</span>
                             </div>
-                            <div class="filter-item">
-                                <select class="filter-select">
-                                    <option value="all">全部投稿主题</option>
-                                    <option value="theme1">冠心病诊疗新进展</option>
-                                    <option value="theme2">心力衰竭管理</option>
-                                    <option value="theme3">心律失常诊治</option>
-                                </select>
+                            <div class="content-summary-item">
+                                <span class="content-summary-value" id="pendingReviewCount">0</span>
+                                <span class="content-summary-label">待审核</span>
                             </div>
-                            <div class="filter-item">
-                                <select class="filter-select">
-                                    <option value="all">全部投稿状态</option>
-                                    <option value="pending">待审核</option>
-                                    <option value="approved">审核通过</option>
-                                    <option value="purchased">已采购</option>
-                                    <option value="rejected">已驳回</option>
-                                </select>
+                            <div class="content-summary-item">
+                                <span class="content-summary-value" id="purchasedContentCount">0</span>
+                                <span class="content-summary-label">已采购</span>
+                            </div>
+                            <div class="content-summary-item">
+                                <span class="content-summary-value" id="pendingTransferCount">0</span>
+                                <span class="content-summary-label">待传播</span>
+                            </div>
+                            <div class="content-summary-item">
+                                <span class="content-summary-value" id="transferredContentCount">0</span>
+                                <span class="content-summary-label">已传播</span>
                             </div>
                         </div>
 
-                        <table class="data-table submission-table">
-                            <thead>
-                                <tr>
-                                    <th>医生信息</th>
-                                    <th>报名时间</th>
-                                    <th>作品名称</th>
-                                    <th>投稿主题</th>
-                                    <th>投稿时间</th>
-                                    <th>作品状态</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>张三｜主任医师｜心内科</td>
-                                    <td>2025-03-01 09:30:00</td>
-                                    <td>
-                                        <div class="work-name">VR 各顾各<span class="work-type medical-podcast">医学播客</span></div>
-                                        <div class="work-id">ID: aafb60dab292a8d2dc00ca843283f543</div>
-                                    </td>
-                                    <td>冠心病介入治疗案例</td>
-                                    <td>2025-03-05 14:20:00</td>
-                                    <td><span class="status-tag approved">审核通过</span></td>
-                                    <td>
-                                        <button class="action-btn view">详情</button>
-                                        <button class="action-btn transfer">学术传递</button>
-                                        <div class="action-dropdown">
-                                            <button class="action-btn more">更多</button>
-                                            <div class="dropdown-menu">
-                                                <a href="#">内容合适</a>
-                                                <a href="#">内容不合适</a>
-                                                <a href="#">分享作品</a>
-                                                <a href="#">撤回任务</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>李四｜副主任医师｜心内科</td>
-                                    <td>2025-03-02 10:15:00</td>
-                                    <td>
-                                        <div class="work-name">心血管疾病研究<span class="work-type interactive-case">互动病例</span></div>
-                                        <div class="work-id">ID: b2c8e1f3a4d5c6b7a8e9f0a1b2c3d4e5</div>
-                                    </td>
-                                    <td>心力衰竭管理经验分享</td>
-                                    <td>2025-03-06 10:15:00</td>
-                                    <td><span class="status-tag pending">待审核</span></td>
-                                    <td>
-                                        <button class="action-btn view">详情</button>
-                                        <button class="action-btn transfer">学术传递</button>
-                                        <div class="action-dropdown">
-                                            <button class="action-btn more">更多</button>
-                                            <div class="dropdown-menu">
-                                                <a href="#">内容合适</a>
-                                                <a href="#">内容不合适</a>
-                                                <a href="#">分享作品</a>
-                                                <a href="#">撤回任务</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>王五｜主任医师｜心内科</td>
-                                    <td>2025-03-03 14:20:00</td>
-                                    <td>
-                                        <div class="work-name">房颤治疗新策略<span class="work-type surgery-video">手术视频</span></div>
-                                        <div class="work-id">ID: c3d9f2e4b5a6c7d8e9f0a1b2c3d4e5f6</div>
-                                    </td>
-                                    <td>心律失常射频消融术</td>
-                                    <td>2025-03-07 16:30:00</td>
-                                    <td><span class="status-tag purchased">已采购</span></td>
-                                    <td>
-                                        <button class="action-btn view">详情</button>
-                                        <button class="action-btn transfer">学术传递</button>
-                                        <div class="action-dropdown">
-                                            <button class="action-btn more">更多</button>
-                                            <div class="dropdown-menu">
-                                                <a href="#">内容合适</a>
-                                                <a href="#">内容不合适</a>
-                                                <a href="#">分享作品</a>
-                                                <a href="#">撤回任务</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>赵六｜主治医师｜心内科</td>
-                                    <td>2025-03-04 11:00:00</td>
-                                    <td>
-                                        <div class="work-name">他汀类药物应用<span class="work-type medical-podcast">医学播客</span></div>
-                                        <div class="work-id">ID: d4e0f3a5b6c7d8e9f0a1b2c3d4e5f6a7</div>
-                                    </td>
-                                    <td>冠心病药物治疗方案</td>
-                                    <td>2025-03-08 09:00:00</td>
-                                    <td><span class="status-tag rejected">已驳回</span></td>
-                                    <td>
-                                        <button class="action-btn view">详情</button>
-                                        <button class="action-btn transfer">学术传递</button>
-                                        <div class="action-dropdown">
-                                            <button class="action-btn more">更多</button>
-                                            <div class="dropdown-menu">
-                                                <a href="#">内容合适</a>
-                                                <a href="#">内容不合适</a>
-                                                <a href="#">分享作品</a>
-                                                <a href="#">撤回任务</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>孙七｜副主任医师｜心内科</td>
-                                    <td>2025-03-09 08:45:00</td>
-                                    <td>
-                                        <div class="work-name">-</div>
-                                        <div class="work-id">未投稿</div>
-                                    </td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td><span class="status-tag pending">已报名</span></td>
-                                    <td>
-                                        <button class="action-btn view">详情</button>
-                                        <button class="action-btn transfer">学术传递</button>
-                                        <div class="action-dropdown">
-                                            <button class="action-btn more">更多</button>
-                                            <div class="dropdown-menu">
-                                                <a href="#">催稿</a>
-                                                <a href="#">分享作品</a>
-                                                <a href="#">撤回任务</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>周八｜主任医师｜心内科</td>
-                                    <td>2025-03-10 15:30:00</td>
-                                    <td>
-                                        <div class="work-name">-</div>
-                                        <div class="work-id">未投稿</div>
-                                    </td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td><span class="status-tag pending">已报名</span></td>
-                                    <td>
-                                        <button class="action-btn view">详情</button>
-                                        <button class="action-btn transfer">学术传递</button>
-                                        <div class="action-dropdown">
-                                            <button class="action-btn more">更多</button>
-                                            <div class="dropdown-menu">
-                                                <a href="#">催稿</a>
-                                                <a href="#">分享作品</a>
-                                                <a href="#">撤回任务</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="filter-section content-filter-section">
+                            <div class="filter-row">
+                                <div class="filter-group">
+                                    <input type="text" class="filter-input" placeholder="搜索作品名称或活动名称" id="contentSearch">
+                                </div>
+                                <div class="filter-group">
+                                    <select class="filter-select" id="contentTypeFilter">
+                                        <option value="all">全部类型</option>
+                                        <option value="medical-podcast">医学播客</option>
+                                        <option value="interactive-case">互动病例</option>
+                                        <option value="surgery-video">手术视频</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <select class="filter-select" id="contentStatusFilter">
+                                        <option value="all">全部内容状态</option>
+                                        <option value="pending">待审核</option>
+                                        <option value="approved">审核通过</option>
+                                        <option value="purchased">已采购</option>
+                                        <option value="rejected">已驳回</option>
+                                    </select>
+                                </div>
+                                <div class="filter-actions">
+                                    <button class="filter-btn" type="button" onclick="resetAcademicContentFilters()">重置</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content-table-toolbar">
+                            <div>
+                                <strong>学术内容列表</strong>
+                                <span>当前展示 <b id="visibleContentCount">0</b> 条</span>
+                            </div>
+                        </div>
+
+                        <div class="content-table-container">
+                            <table class="academic-content-table">
+                                <thead>
+                                    <tr>
+                                        <th>医生信息</th>
+                                        <th>报名时间</th>
+                                        <th>作品名称</th>
+                                        <th>所属活动 / 主题</th>
+                                        <th>投稿时间</th>
+                                        <th>作品状态</th>
+                                        <th>已传播人数</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="academicContentTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="content-empty-state" id="contentEmptyState">没有符合筛选条件的学术内容</div>
                     </div>
                 </div>
             </div>
@@ -600,19 +437,6 @@
             
             if (activeButton) activeButton.classList.add('active');
             if (activeContent) activeContent.classList.add('active');
-        }
-
-        function toggleExpand(id) {
-            const expandRow = document.getElementById('expand-' + id);
-            const button = document.querySelector(`[onclick="toggleExpand(${id})"]`);
-            
-            if (expandRow.style.display === 'none' || expandRow.style.display === '') {
-                expandRow.style.display = 'table-row';
-                button.textContent = '收起';
-            } else {
-                expandRow.style.display = 'none';
-                button.textContent = '展开';
-            }
         }
 
         function goToFeedbackForCurrentActivity() {
@@ -685,6 +509,309 @@
         function getTextContent(selector, fallback = '') {
             const element = document.querySelector(selector);
             return element ? element.textContent.trim() : fallback;
+        }
+
+        function escapeHtml(value) {
+            return String(value || '').replace(/[&<>"']/g, function(char) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[char];
+            });
+        }
+
+        const academicContentDetails = {
+            'work-cardio-1': {
+                id: 'work-cardio-1',
+                taskId: 'task-cardio-1',
+                title: '冠心病精准介入治疗实践',
+                type: '医学播客',
+                typeClass: 'medical-podcast',
+                activity: '心血管疾病病例征稿活动',
+                theme: '冠心病诊疗新进展',
+                doctor: '张明｜主任医师｜心内科',
+                hospital: '广州XX医院',
+                signupTime: '2026-05-02 10:35',
+                submitTime: '2026-05-05 14:20',
+                status: '审核通过',
+                statusKey: 'approved',
+                statusClass: 'approved',
+                flow: '待采购',
+                flowKey: 'ready',
+                spreadCount: 0,
+                summary: '内容围绕冠心病介入治疗中的影像评估、支架策略和术后药物管理展开，包含一个完整病例路径，适合用于产品学术沟通前的临床场景铺垫。'
+            },
+            'work-cardio-2': {
+                id: 'work-cardio-2',
+                taskId: 'task-cardio-2',
+                title: '心力衰竭长期随访管理病例',
+                type: '互动病例',
+                typeClass: 'interactive-case',
+                activity: '心血管疾病病例征稿活动',
+                theme: '心力衰竭管理',
+                doctor: '李华｜副主任医师｜心内科',
+                hospital: '广州XX医院',
+                signupTime: '2026-05-03 11:20',
+                submitTime: '2026-05-06 10:15',
+                status: '待审核',
+                statusKey: 'pending',
+                statusClass: 'pending',
+                flow: '待审核',
+                flowKey: 'pending',
+                spreadCount: 0,
+                summary: '内容以心衰患者从入院评估到出院随访为主线，包含用药调整、依从性管理和复诊指标观察，目前等待企业侧确认内容适配度。'
+            },
+            'work-cardio-3': {
+                id: 'work-cardio-3',
+                taskId: 'task-cardio-3',
+                title: '房颤射频消融关键步骤',
+                type: '手术视频',
+                typeClass: 'surgery-video',
+                activity: '心血管疾病病例征稿活动',
+                theme: '心律失常诊治',
+                doctor: '王强｜主任医师｜心内科',
+                hospital: '北京XX医院',
+                signupTime: '2026-05-04 09:30',
+                submitTime: '2026-05-07 16:30',
+                status: '已采购',
+                statusKey: 'purchased',
+                statusClass: 'purchased',
+                flow: '待传播',
+                flowKey: 'transfer-pending',
+                spreadCount: 0,
+                summary: '视频拆解房颤射频消融术前评估、建模、消融路径和术后观察要点，已经完成采购，可进入下载、学术传递或二次内容整理流程。'
+            }
+        };
+
+        const usageTaskLabels = {
+            'task-cardio-1': '冠心病诊疗新进展 / 任务：ENT-A-冠心病-001',
+            'task-cardio-2': '心力衰竭管理 / 任务：ENT-A-心衰-002',
+            'task-cardio-3': '心律失常诊治 / 任务：ENT-B-心律-001'
+        };
+
+        function getAcademicContentRows(taskId = null) {
+            const rows = Object.values(academicContentDetails);
+            return taskId ? rows.filter(row => row.taskId === taskId) : rows;
+        }
+
+        function getDoctorCell(content) {
+            const canShowDoctorInfo = content.status === '已采购';
+            const [, title = '', dept = ''] = content.doctor.split('｜');
+            return {
+                name: canShowDoctorInfo ? content.doctor.split('｜')[0] : '医生信息采购后可见',
+                titleDept: [title, dept].filter(Boolean).join('｜'),
+                hospital: content.hospital
+            };
+        }
+
+        function renderAcademicContentTable(tbodyId, rows) {
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) return;
+
+            tbody.innerHTML = rows.map(content => {
+                const doctor = getDoctorCell(content);
+                return `
+                    <tr data-content-row data-content-id="${escapeHtml(content.id)}" data-task-id="${escapeHtml(content.taskId)}" data-type="${escapeHtml(content.typeClass)}" data-status="${escapeHtml(content.statusKey)}" data-flow="${escapeHtml(content.flowKey)}">
+                        <td class="doctor-cell">
+                            <strong>${escapeHtml(doctor.name)}</strong>
+                            <span>${escapeHtml(doctor.titleDept)}</span>
+                            <span>${escapeHtml(doctor.hospital)}</span>
+                        </td>
+                        <td>${escapeHtml(content.signupTime)}</td>
+                        <td class="content-title-cell">
+                            <strong>${escapeHtml(content.title)}</strong>
+                            <span>ID: ${escapeHtml(content.id.replace('work-', ''))}</span>
+                            <span class="work-type ${escapeHtml(content.typeClass)}">${escapeHtml(content.type)}</span>
+                        </td>
+                        <td class="activity-topic-cell">
+                            <strong>${escapeHtml(content.activity)}</strong>
+                            <span>${escapeHtml(content.theme)}</span>
+                        </td>
+                        <td>${escapeHtml(content.submitTime)}</td>
+                        <td><span class="status-tag ${escapeHtml(content.statusClass)}">${escapeHtml(content.status)}</span></td>
+                        <td>${escapeHtml(content.spreadCount)}</td>
+                        <td>
+                            <div class="content-actions">
+                                <button class="action-btn view" type="button">详情</button>
+                                <div class="content-more-menu-wrap">
+                                    <button class="action-btn more" type="button" onclick="toggleContentMoreMenu(event)">更多</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateAcademicContentStats() {
+            const rows = getAcademicContentRows();
+            const pending = rows.filter(row => row.statusKey === 'pending').length;
+            const purchased = rows.filter(row => ['purchased', 'transfer-pending', 'transferred'].includes(row.flowKey)).length;
+            const pendingTransfer = rows.filter(row => row.flowKey === 'transfer-pending').length;
+            const transferred = rows.filter(row => row.flowKey === 'transferred').length;
+            const stats = {
+                totalContentCount: rows.length,
+                pendingReviewCount: pending,
+                purchasedContentCount: purchased,
+                pendingTransferCount: pendingTransfer,
+                transferredContentCount: transferred
+            };
+
+            Object.entries(stats).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = value;
+            });
+        }
+
+        function filterContentRows(config) {
+            const keyword = (document.getElementById(config.searchId)?.value || '').trim().toLowerCase();
+            const type = document.getElementById(config.typeId)?.value || 'all';
+            const status = document.getElementById(config.statusId)?.value || 'all';
+            const rows = document.querySelectorAll(`#${config.bodyId} tr[data-content-row]`);
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const workTitle = row.querySelector('.content-title-cell strong')?.textContent || '';
+                const activityTitle = row.querySelector('.activity-topic-cell strong')?.textContent || '';
+                const themeTitle = row.querySelector('.activity-topic-cell span')?.textContent || '';
+                const text = `${workTitle} ${activityTitle} ${themeTitle}`.toLowerCase();
+                const matchedKeyword = !keyword || text.includes(keyword);
+                const matchedType = type === 'all' || row.dataset.type === type;
+                const matchedStatus = status === 'all' || row.dataset.status === status;
+                const visible = matchedKeyword && matchedType && matchedStatus;
+                row.style.display = visible ? '' : 'none';
+                if (visible) visibleCount += 1;
+            });
+
+            const countEl = document.getElementById(config.countId);
+            if (countEl) countEl.textContent = visibleCount;
+
+            const emptyState = document.getElementById(config.emptyId);
+            if (emptyState) emptyState.style.display = visibleCount ? 'none' : 'block';
+        }
+
+        function filterAcademicContents() {
+            filterContentRows({
+                searchId: 'contentSearch',
+                typeId: 'contentTypeFilter',
+                statusId: 'contentStatusFilter',
+                bodyId: 'academicContentTableBody',
+                countId: 'visibleContentCount',
+                emptyId: 'contentEmptyState'
+            });
+        }
+
+        function resetAcademicContentFilters() {
+            const fields = {
+                contentSearch: '',
+                contentTypeFilter: 'all',
+                contentStatusFilter: 'all'
+            };
+
+            Object.entries(fields).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) element.value = value;
+            });
+            filterAcademicContents();
+        }
+
+        function filterUsageContents() {
+            filterContentRows({
+                searchId: 'usageContentSearch',
+                typeId: 'usageContentTypeFilter',
+                statusId: 'usageContentStatusFilter',
+                bodyId: 'usageContentTableBody',
+                countId: 'visibleUsageContentCount',
+                emptyId: 'usageContentEmptyState'
+            });
+        }
+
+        function resetUsageContentFilters() {
+            const fields = {
+                usageContentSearch: '',
+                usageContentTypeFilter: 'all',
+                usageContentStatusFilter: 'all'
+            };
+
+            Object.entries(fields).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) element.value = value;
+            });
+            filterUsageContents();
+        }
+
+        function openUsageContentModal(taskId) {
+            const modal = document.getElementById('usageContentModal');
+            const title = document.getElementById('usageContentModalTitle');
+            const meta = document.getElementById('usageContentModalMeta');
+            if (!modal) return;
+
+            if (title) title.textContent = '活动参与明细内容';
+            if (meta) meta.textContent = usageTaskLabels[taskId] || '当前任务';
+            renderAcademicContentTable('usageContentTableBody', getAcademicContentRows(taskId));
+            resetUsageContentFilters();
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeUsageContentModal() {
+            const modal = document.getElementById('usageContentModal');
+            if (modal) modal.classList.remove('active');
+            closeContentMoreMenus();
+            document.body.style.overflow = '';
+        }
+
+        function handleContentAction(message) {
+            closeContentMoreMenus();
+            alert(message);
+        }
+
+        function getContentMoreMenu() {
+            let menu = document.getElementById('contentMoreMenu');
+            if (menu) return menu;
+
+            menu = document.createElement('div');
+            menu.id = 'contentMoreMenu';
+            menu.className = 'content-more-menu';
+            menu.innerHTML = `
+                <span class="content-more-menu-item disabled">编辑</span>
+                <span class="content-more-menu-item disabled">内容合适</span>
+                <span class="content-more-menu-item disabled">内容不合适</span>
+                <button type="button" onclick="handleContentAction('已进入学术传递')">学术传递</button>
+                <button type="button" onclick="handleContentAction('已撤回该作品')">撤回</button>
+                <button type="button" onclick="handleContentAction('已打开观看链接')">观看链接</button>
+                <button type="button" onclick="handleContentAction('已打开观看记录')">观看记录</button>
+                <span class="content-more-menu-item disabled">分享作品</span>
+            `;
+            document.body.appendChild(menu);
+            return menu;
+        }
+
+        function closeContentMoreMenus(exceptMenu = null) {
+            document.querySelectorAll('.content-more-menu.active').forEach(menu => {
+                if (menu !== exceptMenu) menu.classList.remove('active');
+            });
+        }
+
+        function toggleContentMoreMenu(event) {
+            event.stopPropagation();
+            const menu = getContentMoreMenu();
+            const shouldOpen = !menu.classList.contains('active');
+            closeContentMoreMenus(menu);
+            if (!shouldOpen) {
+                menu.classList.remove('active');
+                return;
+            }
+
+            const rect = event.currentTarget.getBoundingClientRect();
+            const menuWidth = 148;
+            const left = Math.min(rect.right - menuWidth, window.innerWidth - menuWidth - 12);
+            menu.style.left = `${Math.max(12, left)}px`;
+            menu.style.top = `${rect.bottom + 6}px`;
+            menu.classList.add('active');
         }
 
         function getSelectedOptionText(selectOrId) {
@@ -957,6 +1084,23 @@
             loadComponents();
             updateChooseUseButton();
             initializeThemeCategoryCounts();
+            renderAcademicContentTable('academicContentTableBody', getAcademicContentRows());
+            updateAcademicContentStats();
+            filterAcademicContents();
+
+            ['contentSearch', 'contentTypeFilter', 'contentStatusFilter'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener(element.tagName === 'INPUT' ? 'input' : 'change', filterAcademicContents);
+                }
+            });
+
+            ['usageContentSearch', 'usageContentTypeFilter', 'usageContentStatusFilter'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener(element.tagName === 'INPUT' ? 'input' : 'change', filterUsageContents);
+                }
+            });
 
             const useSettingModal = document.getElementById('useSettingModal');
             if (useSettingModal) {
@@ -1001,6 +1145,19 @@
                     }
                 });
             }
+
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.content-more-menu-wrap') && !event.target.closest('.content-more-menu')) {
+                    closeContentMoreMenus();
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeContentMoreMenus();
+                    closeUsageContentModal();
+                }
+            });
         });
 
         function openUseSettingModal(activityId) {
@@ -1009,7 +1166,6 @@
             document.getElementById('useSettingModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
 
-            document.getElementById('useSettingProductTag').value = 'all';
             document.getElementById('themeSearchInput').value = '';
             document.getElementById('batchPurchaseCount').value = '';
             ['province', 'hospital', 'doctor', 'dept'].forEach(field => {
@@ -1028,16 +1184,10 @@
 
         function confirmUseSetting() {
             const activityId = document.getElementById('useSettingActivityId').value;
-            const productTag = document.getElementById('useSettingProductTag').value;
             const selectedThemeInputs = getSelectedThemeInputs();
             
             if (!selectedThemeInputs.length) {
                 alert('请至少选择一个活动主题');
-                return;
-            }
-
-            if (productTag === 'all') {
-                alert('请选择产品标签');
                 return;
             }
 
@@ -1076,8 +1226,6 @@
                 selectedThemeName: selectedThemes.map(theme => theme.name).join('、'),
                 purchaseCount: totalPurchaseCount,
                 totalPurchaseCount,
-                productTag,
-                productTagName: getSelectedOptionText('useSettingProductTag'),
                 usedAt: new Date().toISOString()
             });
 
@@ -1086,6 +1234,77 @@
             updateChooseUseButton();
         }
     </script>
+
+    <!-- 活动参与明细内容弹窗 -->
+    <div id="usageContentModal" class="content-modal">
+        <div class="content-modal-dialog usage-content-dialog">
+            <div class="content-modal-header">
+                <div>
+                    <h2 id="usageContentModalTitle">活动参与明细内容</h2>
+                    <p id="usageContentModalMeta">当前任务</p>
+                </div>
+                <button class="content-modal-close" type="button" onclick="closeUsageContentModal()" aria-label="关闭">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="content-modal-body">
+                <div class="filter-section content-filter-section">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <input type="text" class="filter-input" placeholder="搜索作品名称" id="usageContentSearch">
+                        </div>
+                        <div class="filter-group">
+                            <select class="filter-select" id="usageContentTypeFilter">
+                                <option value="all">全部类型</option>
+                                <option value="medical-podcast">医学播客</option>
+                                <option value="interactive-case">互动病例</option>
+                                <option value="surgery-video">手术视频</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select class="filter-select" id="usageContentStatusFilter">
+                                <option value="all">全部内容状态</option>
+                                <option value="pending">待审核</option>
+                                <option value="approved">审核通过</option>
+                                <option value="purchased">已采购</option>
+                                <option value="rejected">已驳回</option>
+                            </select>
+                        </div>
+                        <div class="filter-actions">
+                            <button class="filter-btn" type="button" onclick="resetUsageContentFilters()">重置</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-table-toolbar">
+                    <div>
+                        <strong>学术内容列表</strong>
+                        <span>当前展示 <b id="visibleUsageContentCount">0</b> 条</span>
+                    </div>
+                </div>
+                <div class="content-table-container">
+                    <table class="academic-content-table">
+                        <thead>
+                            <tr>
+                                <th>医生信息</th>
+                                <th>报名时间</th>
+                                <th>作品名称</th>
+                                <th>所属活动 / 主题</th>
+                                <th>投稿时间</th>
+                                <th>作品状态</th>
+                                <th>已传播人数</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usageContentTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="content-empty-state" id="usageContentEmptyState">没有符合筛选条件的学术内容</div>
+            </div>
+        </div>
+    </div>
 
     <!-- 使用设置弹窗 -->
     <div id="useSettingModal" class="use-setting-modal">
@@ -1105,19 +1324,6 @@
 
             <div class="use-setting-body">
                 <input type="hidden" id="useSettingActivityId">
-
-                <div class="use-form-grid">
-                    <label class="use-form-field">
-                        <span>产品标签 <em>*</em></span>
-                        <select id="useSettingProductTag">
-                            <option value="all">请选择产品标签</option>
-                            <option value="medical">医疗设备</option>
-                            <option value="pharmaceutical">药品</option>
-                            <option value="consumables">耗材</option>
-                            <option value="service">服务</option>
-                        </select>
-                    </label>
-                </div>
 
                 <div class="use-setting-layout">
                     <section class="theme-picker-panel">
